@@ -1,0 +1,82 @@
+.map-container {
+    height:93vh;
+    width:89%;
+  }
+  .topnav input[type=text] {
+    float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+  }
+  
+  .scroll{
+    height: 90vh; 
+    overflow-x: hidden; 
+    overflow-y: auto; 
+    text-align:justify; 
+    float:right;
+    width:48vw;
+    padding:10px;
+  }
+  .main{
+    display: flex;
+    flex-direction: row;
+  }
+  .map-frame {
+    height: 100%;
+  }
+  
+  #map {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .menu-spacer {
+    flex: 1 1 auto;
+  }
+  .lol { writing-mode: tb-rl; 
+        color:rgb(63,81,181) ;
+        text-align: center ;
+    }
+
+  th{
+    background-color:rgb(63,81,181) ;
+    color:white;
+    font-weight: 200;
+    border-radius: 3px;
+  }
+
+
+
+.searchIcon{
+  outline-style: none;
+}
+
+
+@media (max-width: 1000px) {
+ .main{
+   flex-direction: column;
+   margin: 6px;
+ }
+ .map-container{
+   width: 95%;
+   height:60vh
+ }
+ .nationCase{
+   flex-direction: column;
+ }
+ .scroll{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   padding: 0;
+ }
+ .seem{
+   margin-top: 3px;
+ }
+ .fg{
+   flex-direction: column;
+ }
+}

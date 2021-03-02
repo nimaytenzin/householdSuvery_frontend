@@ -1,0 +1,186 @@
+<mat-toolbar>
+  <span>Register Building</span>
+  <span class="menu-spacer"></span>
+</mat-toolbar>
+<div class="form-wraper" style="text-align:center">
+  <div class="form-container card" *ngIf="displayForm">
+    <div class="form-body">
+
+       <!-- Start of Building Form-->
+       <form [formGroup]="buildingForm">
+        <h4>Building Owner Details</h4>
+        <mat-form-field class="justifier">
+          <mat-label>CID</mat-label>
+          <input matInput type="text"  formControlName="cidOwner" >
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="nameOfBuildingOwner" >
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Contact Number</mat-label>
+          <input matInput type="number" name="contactOwner" formControlName="contactOwner" >
+        </mat-form-field>
+
+        <h4>Building Details</h4>
+
+        <mat-form-field class="justifier">
+          <mat-label>Existancy Status</mat-label>
+          <mat-select  formControlName="existancyStatus" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of existancyStatuss" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Cost of Construction</mat-label>
+          <input matInput type="number" name="contactOwner" formControlName="contactOwner" >
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Year of Construction</mat-label>
+          <mat-select  formControlName="constructionYear" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of constructionYears" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Building Use</mat-label>
+          <mat-select  formControlName="buildingUse" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of buildingUses" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+        <mat-form-field class="justifier">
+          <mat-label>Number of Floors</mat-label>
+          <mat-select  formControlName="numberOfFloors" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of floors" [value]="option.value">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Attic</mat-label>
+          <mat-select  formControlName="attic" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of atticOptions" [value]="option.value">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Basement</mat-label>
+          <mat-select name="buildingOwnership" formControlName="basement" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of basementOptions" [value]="option.value">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>     
+        
+        <mat-form-field class="justifier">
+          <mat-label>Building Style</mat-label>
+          <mat-select name="buildingOwnership" formControlName="buildingStyle" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of buildingStyles" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Structure Type</mat-label>
+          <mat-select  formControlName="buildingTypology" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of structureTypes" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Building Typology</mat-label>
+          <mat-select  formControlName="buildingTypology" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of buildingTopologies" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Floor Type</mat-label>
+          <mat-select  formControlName="floorType" [readonly]="disableForm"  (selectionChange) = "showOtherFloorType($event)">
+            <mat-option *ngFor="let option of floorTypes" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier" *ngIf="showOtherFloorTypes" style="width: 90%; text-align: right;justify-content: right;">
+          <mat-label>**Others Please Specify </mat-label>
+          <input matInput type="text"   formControlName="floorTypeOthers" [readonly]="disableForm" >
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Roofing Material</mat-label>
+          <mat-select  formControlName="roofingMaterial" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of roofingMaterials" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <h4>Building Services</h4>
+
+
+        <mat-form-field class="justifier">
+          <mat-label>Sewer Treatment</mat-label>
+          <mat-select  formControlName="sewerTreatment" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of sewerTreatmentOptions" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Waste Collection</mat-label>
+          <mat-select  formControlName="wasteCollection" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of wasteCollectionOptions" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+
+        <mat-form-field class="justifier">
+          <mat-label>Waste Collection Frequency</mat-label>
+          <input matInput type="number" name="nameOfTheBuilding" formControlName="wasteCollectionFrequency" >
+        </mat-form-field>
+
+        <mat-form-field class="justifier">
+          <mat-label>Water Supply</mat-label>
+          <mat-select  formControlName="waterSupply" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of waterSupplyOptions" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>                     
+    </form>
+
+    <!-- End of Building Form-->
+
+
+
+    </div>
+    <div class="form-footer">
+      <button mat-raised-button class="btn custom-btn" (click)="submit()" color="primary" >
+        <mat-icon>note_add</mat-icon> Submit
+      </button>
+    </div>
+  </div>
+</div>

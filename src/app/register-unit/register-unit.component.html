@@ -1,0 +1,341 @@
+<mat-toolbar>
+  <span>Register Unit</span>
+  <span class="menu-spacer"></span>
+</mat-toolbar>
+<div class="form-wraper" style="text-align:center">
+  <div class="form-container card" >
+    <div class="form-body">
+          <!-- Hoh = Head of household-->  
+
+          <form [formGroup]="householdForm">
+          <h4>Unit Details</h4>
+          <mat-form-field class="justifier">
+            <mat-label>Are you Sharing the unit with other family?</mat-label>
+            <mat-select  formControlName="numberOfRooms" [readonly]="disableForm" >
+              <mat-option *ngFor="let room of yesNoOptions" [value]="room.name">
+                {{room.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        
+          <mat-form-field class="justifier">
+            <mat-label>House Occupation</mat-label>
+            <mat-select  (selectionChange) = "houseOccupationListener($event)" formControlName="houseOccupationStatus" [readonly]="disableForm" >
+              <mat-option *ngFor="let option of unitOccupationOptions" [value]="option.name">
+                {{option.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+            <mat-form-field class="justifier">
+              <mat-label>Unit Use</mat-label>
+              <mat-select  formControlName="unitUse" [readonly]="disableForm" >
+                <mat-option *ngFor="let use of unitUses" [value]="use.name">
+                  {{use.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Number of Bed Rooms</mat-label>
+              <mat-select  formControlName="numberOfRooms" [readonly]="disableForm" >
+                <mat-option *ngFor="let room of numberOfRooms" [value]="room.value">
+                  {{room.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+
+          <h4>Details of the Head of Household</h4>
+
+
+            <mat-form-field class="justifier">
+              <mat-label>CID</mat-label>
+              <input matInput type="text"  formControlName="cidHoh"[readonly]="disableForm" >
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Name</mat-label>
+              <input matInput type="text"  formControlName="nameHoh"[readonly]="disableForm" >
+            </mat-form-field>
+
+          
+            <mat-form-field class="justifier">
+              <mat-label>Gender</mat-label>
+              <mat-select  formControlName="genderHoh" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of genders" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          
+
+            <mat-form-field class="justifier">
+              <mat-label>Age</mat-label>
+              <input matInput type="number"   formControlName="ageHoh"[readonly]="disableForm" >
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Marital Status</mat-label>
+              <mat-select  formControlName="maritalStatusHoh" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of maritalStatusOptions" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Employment Status</mat-label>
+              <mat-select  formControlName="employmentStatusHoh" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of employmentOptions" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Name of Working Agency</mat-label>
+              <input matInput type="text" formControlName="workAgencyHoh"[readonly]="disableForm" >
+            </mat-form-field>
+
+
+            <mat-form-field class="justifier">
+              <mat-label>Number of Years in Service</mat-label>
+              <input matInput type="number"   formControlName="serviceYearHoh"[readonly]="disableForm" >
+            </mat-form-field>
+
+            <h4>Household Details</h4>
+         
+            <mat-form-field class="justifier">
+              <mat-label>Number of Household Members</mat-label>
+              <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of numbers" [value]="option.count">
+                  {{option.count}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+           <app-data-table></app-data-table>
+
+        
+            <mat-form-field class="justifier">
+              <mat-label>Number of Income Earners</mat-label>
+              <mat-select  formControlName="numberIncomeEarners" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of numbers" [value]="option.count">
+                  {{option.count}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Total Monthly Household Income</mat-label>
+              <input matInput type="text"  formControlName="monthlyIncome" [readonly]="disableForm" >
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Do you own a house in Bhutan?</mat-label>
+              <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of booleanDropdownOptions" [value]="option.value">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field class="justifier">
+              <mat-label>Distance to place of work</mat-label>
+              <input matInput type="number" name="rent" formControlName="workPlaceDistance" [readonly]="disableForm" >
+            </mat-form-field>
+
+            
+            <mat-form-field class="justifier">
+              <mat-label>Mode of Transport to work</mat-label>
+              <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of modeOfTransports" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+
+            <mat-form-field class="justifier">
+              <mat-label>Utility Bills</mat-label>
+              <input matInput type="number" name="rent" formControlName="commutingCost" [readonly]="disableForm" >
+            </mat-form-field>
+
+           
+
+         
+
+
+            <div *ngIf= "showRentalUnitDetails">
+              <h4>Rental Details</h4>
+              <mat-form-field class="justifier">
+                <mat-label>Monthly Rent</mat-label>
+                <input matInput type="number"   formControlName="monthlyRent" [readonly]="disableForm" >
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Rental Type</mat-label>
+                <mat-select  formControlName="rentalType" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of rentalTypes" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+         
+              <mat-form-field class="justifier">
+                <mat-label>How long have you been living here?</mat-label>
+                <input matInput type="number"  formControlName="livingYears" [readonly]="disableForm" >
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Did your landlord increase rent more than 10% in last two years? </mat-label>
+                <mat-select  formControlName="rentIncrease" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of booleanDropdownOptions" [value]="option.value">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Rent Waiver during Pandemic</mat-label>
+                <mat-select  formControlName="rentWaiver" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of booleanDropdownOptions" [value]="option.value">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Rent Waiver Amount</mat-label>
+                <input matInput type="number"  formControlName="rentWaiverPercentage" [readonly]="disableForm" >
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Which of the following is biggest hindrance for you to own home in Bhutan?</mat-label>
+                <mat-select  (selectionChange) = "hindranceRemarksShow($event)" formControlName="hindrance" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of hindrances" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier" *ngIf="showHindranceRemarks" style="width: 90%;">
+                <mat-label>**Others Please Specify </mat-label>
+                <input matInput type="text" name="rent" formControlName="hindranceOthers" [readonly]="disableForm" >
+              </mat-form-field>
+
+
+              <h5 style="text-align: left;">Land Lord Services</h5>
+              <mat-form-field class="justifier">
+                <mat-label>My landlord responds to my complaint as soon as possible</mat-label>
+                <mat-select  formControlName="complaintResponse" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>My landlord does maintenance to my building every year</mat-label>
+                <mat-select  formControlName="maintenanceFrequency" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>I have adequate water supply to my residence</mat-label>
+                <mat-select  formControlName="waterAdequacy" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>I have adequate parking space</mat-label>
+                <mat-select  formControlName="parkingAdequacy" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>The access road to my residence is in good condition</mat-label>
+                <mat-select  formControlName="accessAdequacy" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+          
+            </div>
+
+            <div *ngIf= "showOwnedUnitDetails">
+              <h4>Owned Units</h4>
+
+              <mat-form-field class="justifier">
+                <mat-label>Ownership Type</mat-label>
+                <mat-select  formControlName="ownedUnitType" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of unitOwnershipOptions" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>How did you own?</mat-label>
+                <mat-select  (selectionChange) = "meansOfOwnershipListner($event)"  formControlName="meansOfOwning" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of meansOfOwnership" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div *ngIf= "showPurchasedUnitDetails">
+                <mat-form-field class="justifier">
+                  <mat-label>Year of Acquisition</mat-label>
+                  <input matInput type="number" name="rent" formControlName="acquisitionYear" [readonly]="disableForm" >
+                </mat-form-field>
+
+                <mat-form-field class="justifier">
+                  <mat-label>Price/Cost</mat-label>
+                  <input matInput type="number" name="rent" formControlName="costPrice" [readonly]="disableForm" >
+                </mat-form-field>
+
+                <mat-form-field class="justifier">
+                  <mat-label>Means of Finance</mat-label>
+                  <mat-select  formControlName="financeMode" [readonly]="disableForm" >
+                    <mat-option *ngFor="let option of meansOfFinance" [value]="option.name">
+                      {{option.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="justifier">
+                  <mat-label>Monthly EMI</mat-label>
+                  <input matInput type="number" formControlName="monthlyEmi" [readonly]="disableForm" >
+                </mat-form-field>
+              </div>               
+            </div>
+
+
+      </form>
+    
+<!-- End of Resident Form--> 
+  
+    </div>
+    <div class="form-footer">
+      <button mat-raised-button class="btn custom-btn" (click)="submit()">
+        <mat-icon>note_add</mat-icon> Submit
+      </button>
+    </div>
+  </div>
+</div>

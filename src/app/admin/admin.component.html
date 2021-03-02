@@ -1,0 +1,263 @@
+<div class="main"> 
+  <div class="map-container">
+    <div class="map-frame">
+      <div id="map">
+        
+        <div class="leaflet-bottom leaflet-right">
+            <button style="
+            width: 42px;
+            border-radius: 23px;
+            height: 42px;
+            background: #ffffffa3;
+            margin-bottom: 20px;
+            border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getMyLocation()">
+              <mat-icon style="color: blue;">location_searching</mat-icon>
+            </button>
+        </div>
+        <div class="leaflet-top leaflet-right">
+          <mat-label style="
+          margin-bottom: 20px;
+          font-size: 13px;
+          font-weight: bold;
+          color: white;
+          background-color:#6EA1F6;
+          padding: 5px;
+          margin-right: 50px;">Select a building by clicking on the dots</mat-label>
+        </div>
+      </div>
+    </div>
+    <div class="leaflet-top leaflet-left">
+    </div>
+  </div>
+  <div class = "scroll" style="margin: 0;">
+    <h3 style="text-align: center;">National Covid Cases Summary |After December 20,2020</h3>
+   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
+    <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
+
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row; padding: 0;" >
+            <img src="../../assets/bhutan.png" alt="" width="100px" height="auto">       
+          <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
+            <p style="font-size: small;">National: Total Cases</p>
+             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
+           </mat-card>
+           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
+             <p style="font-size: small;">Total HotSpot Building</p>
+             <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
+           </mat-card>
+           <h3 class="lol">National</h3>
+        </div>
+        <hr>
+        <div style="display: flex; flex-direction: row;">
+         
+            <img src="../../assets/thimphu.png" alt="" width="100px">
+          
+          <mat-card style="align-items: center; justify-content: center;padding-top: 2px;">
+            <p style="font-size: small;">Thimphu: Total Cases</p>
+             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{thimphuCases}}</h1>
+           </mat-card>
+           <mat-card style="align-items: center; justify-content: center;padding-top: 2px;">  
+             <p style="font-size: small;">Total HotSpot Building</p>
+             <h1 style="color: red; font-weight: bolder;">{{thimphuBuildings}}</h1>
+           </mat-card>
+           <h3 class="lol">Thimphu</h3>
+        </div>
+      </div>
+      </div>
+      
+   </div>
+    <div>
+     
+      <canvas id="myChart" width="620px " height="320px"></canvas>
+      <canvas id="casesByDzongkhag" width="620px " height="330px"></canvas>
+    </div>
+    <br>
+    <br>
+
+    <div class= "seem" style="width: 100%;display: flex; flex-direction:column;">
+      <form  [formGroup]="searchForm">
+        <mat-form-field style="width: 90%;">
+          <input matInput type="number" placeholder="Search by building number" name="search" formControlName="searchBuilding"  >
+        </mat-form-field>
+
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+          <button mat-flat-button color="primary" (click)="submit()" style="width : 10%;"><mat-icon appearance="none">search</mat-icon></button>
+          <button  mat-flat-button color="primary" style="width:fit-content;" (click) = reset(); >Clear  | <mat-icon appearance="none">cached</mat-icon></button>
+          <button mat-flat-button color="primary" (click)=showSelectZone();>Select Zone</button>
+        </div>
+        
+      </form>
+    </div>
+    <br>
+      <br>
+    <form [formGroup]="zoneForm" *ngIf="selectZone">
+      
+      <mat-form-field class="justifier">
+        <mat-label>Dzongkhag</mat-label>
+        <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" (selectionChange) = "changeDiff($event)" required>
+          <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">
+            {{dzongkhag.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="justifier" *ngIf="showSuperZone" >
+        <mat-label>Super Zone</mat-label>
+        <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)" >
+          <mat-option *ngFor="let zone of zones" [value]="zone.id">
+            {{zone.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="justifier" *ngIf="showSubZone">
+        <mat-label>Zone</mat-label>
+        <mat-select formControlName="subZoneControl" name="subZone" >
+          <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
+            {{subZone.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)= "zoneSearch()" style="width : 100%;">Go To Selected</button>
+    </form>
+ 
+    <div *ngIf="buildingInfo">
+      <h3>Details</h3>
+      <h3>Building Details</h3>    
+      <table style = "width:100%;">
+        <tr>
+          <th>Building ID</th>
+          <td>{{buildingId}}</td>
+        </tr>
+        <tr>
+          <th>Building Name</th>
+          <td>{{buildingInfo.BuildingName}}</td>
+        </tr>
+        <tr>
+          <th>Building Owner</th>
+          <td>{{buildingInfo.BuildingOwner}}</td>
+        </tr>
+        <tr>
+          <th>Contact of owner</th>
+          <td>{{buildingInfo.Contact}}</td>
+        </tr>
+        <tr>
+          <th>Building Use</th>
+          <td>{{buildingInfo.BuildingUse}}</td>
+        </tr>
+        <tr>
+          <th>Remarks</th>
+          <td>{{buildingInfo.Remarks}}</td>
+        </tr>
+
+        <tr>
+          <th>Total Units</th>
+          <td>{{units.length}}</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+<br>
+    
+
+    <div *ngIf="units">
+      Unit Details
+
+      <table style = "width:100%;">
+        <tr>
+          <th>Unit Number</th>
+          <th>Unit Use</th>
+          <th>Unit Name</th>
+          <th>Contact Number</th>
+          <th>Details</th>
+ 
+        </tr>
+        <tr *ngFor = "let unit of units">
+          <td>{{unit.unitNumber}}</td>
+          <td>{{unit.unitUse}}</td>
+          <td>{{unit.unitName}}</td>
+          <td>{{unit.contact}}</td>
+          <td>
+            <a *ngIf="unit.unitUse === 'Residential'" (click)="showResident(unit.id)">Details</a>
+          </td>
+         
+        </tr>
+      </table>
+
+      
+    </div>
+    <br><br>
+    <div *ngIf="resident">
+      Resident Details
+      <table style = "width:100%;">
+        <tr>
+          <th>Head of household</th>
+          <td>{{this.resident[0]['headHousehold']}}</td>
+        </tr>
+        <tr>
+          <th>Famile Income</th>
+          <td>{{this.resident[0]['familyIncome']}}</td>
+        </tr>
+        <tr>
+          <th>Contact Number</th>
+          <td>{{this.resident[0]['contactNumberHead']}}</td>
+        </tr>
+        <tr>
+          <th>CID/ Permit No.</th>
+          <td>{{this.resident[0]['cid']}}</td>
+        </tr>
+        <tr>
+          <th>Male Below 6</th>
+          <td>{{this.resident[0]['maleBelow6']}}</td>
+        </tr>
+        <tr>
+          <th>Female Below 6</th>
+          <td>{{this.resident[0]['femaleBelow6']}}</td>
+        </tr>
+        <tr>
+          <th>Male 6 to 17</th>
+          <td>{{this.resident[0]['male617']}}</td>
+        </tr>
+        <tr>
+          <th>Female 6 to 17</th>
+          <td>{{this.resident[0]['female617']}}</td>
+        </tr>
+        <tr>
+          <th>Male 18 to 24</th>
+          <td>{{this.resident[0]['male1824']}}</td>
+        </tr>
+        <tr>
+          <th>Female 18 to 24</th>
+          <td>{{this.resident[0]['female1824']}}</td>
+        </tr>
+        <tr>
+          <th>Male 25 to 59</th>
+          <td>{{this.resident[0]['male2559']}}</td>
+        </tr>
+        <tr>
+          <th>Female 25 to 59</th>
+          <td>{{this.resident[0]['female2559']}}</td>
+        </tr>
+        <tr>
+          <th>Male above 59</th>
+          <td>{{this.resident[0]['male60']}}</td>
+        </tr>
+        <tr>
+          <th>Female above 59</th>
+          <td>{{this.resident[0]['female60']}}</td>
+        </tr>
+        <tr>
+          <th>Remarks</th>
+          <td>{{this.resident[0]['residentRemarks']}}</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <div>
+      <mat-list-item *ngFor="let image of imgs">
+            <img src="{{image.uri}}">
+            {{image.uri}}
+      </mat-list-item>
+  </div>
+  </div>
+
+</div>

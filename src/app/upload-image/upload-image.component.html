@@ -1,0 +1,24 @@
+<h1 mat-dialog-title>Take Picture</h1>
+<div>
+    <div class="snapshot" *ngIf="webcamImage">
+        <img [src]="webcamImage.imageAsDataUrl" />
+		<div title="Take Picture">
+            <div>
+                <mat-icon class="actionBtn" (click)="uploadImg()">check</mat-icon> 
+            </div>
+            <div>
+                <mat-icon  class="actionBtn"(click)="clearImg()">clear</mat-icon> 
+            </div>
+		</div>
+    </div>
+    <app-camera (pictureTaken)="handleImage($event)" *ngIf="!webcamImage"></app-camera>
+
+    <div class=" snapshot form-container card" (click)="goback()" style="background-color: #f2f8f9;">
+        <div (click)="goback();" title="Go back to dashboard">
+            <mat-icon>arrow_left</mat-icon> 
+        </div>
+        <div class="form-body" style="letter-spacing: 2px;margin-top: 12px;text-align: center;">
+            Go back to dashboard 
+        </div>
+    </div>
+</div>
