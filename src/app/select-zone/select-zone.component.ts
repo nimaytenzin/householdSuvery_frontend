@@ -44,7 +44,7 @@ interface Dzongkhag {
 export class SelectZoneComponent implements OnInit {
 
   zoneForm: FormGroup;
-  dzongkhags: Dzongkhag[] = [];
+  dzongkhags= [];
   zones: Zone[] = [];
   subZones: Subzone[] = [];
   shops: Shop[] = [];
@@ -74,13 +74,11 @@ export class SelectZoneComponent implements OnInit {
     const dzongkhagId = sessionStorage.getItem('dzongkhagId');
     const zoneId = sessionStorage.getItem('zoneId');
     const subZoneId = sessionStorage.getItem('subZoneId');
-    const shopId = sessionStorage.getItem('shopId');
     this.getZoneList(dzongkhagId);
     this.getSubzoneList(zoneId);
     this.dzongkhag = dzongkhagId;
     this.zone = zoneId;
     this.subZone = subZoneId;
-    this.shop = shopId;
   }
 
   reactiveForm() {
@@ -95,12 +93,14 @@ export class SelectZoneComponent implements OnInit {
   getDzongkhagList() {
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data;
+      console.log(this.dzongkhags)
     });
   }
 
   getZoneList(dzongkhagId) {
     this.dataService.getZones(dzongkhagId).subscribe(response => {
       this.zones = response.data;
+      console.log()
     });
   }
 
@@ -115,7 +115,6 @@ export class SelectZoneComponent implements OnInit {
       sessionStorage.setItem('dzongkhagId', this.zoneForm.get('dzongkhagControl').value);
       sessionStorage.setItem('zoneId', this.zoneForm.get('zoneControl').value);
       sessionStorage.setItem('subZoneId', this.zoneForm.get('subZoneControl').value);
-      sessionStorage.setItem('shopId', this.zoneForm.get('shopControl').value);
       if(sessionStorage.getItem('isadmin') === "TRUE"){
         this.router.navigate(['admin']);
       }else{

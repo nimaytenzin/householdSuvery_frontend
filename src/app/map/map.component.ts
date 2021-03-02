@@ -310,22 +310,22 @@ export class MapComponent implements OnInit {
   }
 
   onMapReady(map: L.Map) {
-    const zoneId = Number(sessionStorage.getItem('subZoneId'));
-    const geojson = this.http.get(`/assets/geojson/conv_T${zoneId}.geojson`).subscribe((json:any)=>{
-      this.bound= L.geoJSON(json,{
-        style: (feature)=>{
-          return {
-            color:"red",
-            fillOpacity:0
-          }
-        }
-      }).addTo(this.map);
-      this.map.fitBounds(this.bound.getBounds());
-    })
+    const zoneID = Number(sessionStorage.getItem('subZoneId'));
+    // const geojson = this.http.get(`/assets/geojson/conv_T${zoneId}.geojson`).subscribe((json:any)=>{
+    //   this.bound= L.geoJSON(json,{
+    //     style: (feature)=>{
+    //       return {
+    //         color:"red",
+    //         fillOpacity:0
+    //       }
+    //     }
+    //   }).addTo(this.map);
+    //   this.map.fitBounds(this.bound.getBounds());
+    // })
 
     // this.http.get(`${this.API_URL}/str-json/${zoneId}`).subscribe((json: any) => {
 
-    this.http.get(`${this.API_URL}/get-buildings-json/${zoneId}`).subscribe((json: any) => {
+    this.dataService.getStructure(zoneID).subscribe((json: any) => {
       this.json = json;
       console.log(json);
       const geoJson = L.geoJSON(this.json, {
@@ -358,7 +358,9 @@ export class MapComponent implements OnInit {
             }
           }
         }).addTo(map);
+        this.map.fitBounds(geoJson.getBounds());
     });
+    
   }
 
   toggleAdd() {

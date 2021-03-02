@@ -62,7 +62,7 @@ export class DataService {
 
   getDzongkhags() {
     return this.http
-      .get<any>(`${this.API_URL}/get-all-dzo`, this.httpOptions)
+      .get<any>(`${this.API_URL}/dzongkhag/get-all`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -70,7 +70,7 @@ export class DataService {
 
   getZones(dzongkhagId) {
     return this.http
-      .get<any>(`${this.API_URL}/get-zones/${dzongkhagId}`, this.httpOptions)
+      .get<any>(`${this.API_URL}/zone/get-zone/${dzongkhagId}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -78,7 +78,7 @@ export class DataService {
 
   getSubZones(zoneId) {
     return this.http
-      .get<any>(`${this.API_URL}/get-subzones/${zoneId}`, this.httpOptions)
+      .get<any>(`${this.API_URL}/zone/get-sub-zone/${zoneId}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
@@ -106,9 +106,9 @@ export class DataService {
       );
   }
   
-  getStructure(strId){
+  getStructure(subzoneID){
     return this.http
-      .get(`${this.API_URL}/get-structure/${strId}`,this.httpOptions)
+      .get(`${this.API_URL}/structure/get-json-zone/${subzoneID}`,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       )

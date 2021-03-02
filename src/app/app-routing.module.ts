@@ -14,7 +14,7 @@ import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  {path: '', component: DashboardComponent},
+  {path: '', component: SelectZoneComponent},
   {path: 'login', component: LoginComponent},
 
   {path: 'selectzone', component: SelectZoneComponent },
@@ -25,7 +25,7 @@ const routes: Routes = [
   {path: 'admin', component: AdminComponent, canActivate:[RouteGuard]},
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},
   // {path: 'changepassword', component: ChangePasswordComponent, canActivate: [RouteGuard]},
-  {path: 'map', component: MapComponent,canActivate: [RouteGuard] },
+  {path: 'map', component: MapComponent},
   {path: 'camera',component: UploadImageComponent,canActivate: [RouteGuard]},
   {path: 'atm', component: RegisterAtmComponent},
   {path: '**', component: ErrorComponent},
