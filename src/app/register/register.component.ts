@@ -290,7 +290,7 @@ export class RegisterComponent implements OnInit {
 
   changeCid(e){
     let cid = this.building.cidOwner = this.buildingForm.get('cidOwner').value;
-    if(cid.length > 11){
+    if(cid.length > 10){
       this.dataService.getCid(cid).subscribe(res=>{
         if(res.success === "true"){
           let data = res.data.citizendetails.citizendetail
