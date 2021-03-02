@@ -165,7 +165,7 @@
 
             <mat-form-field class="justifier">
               <mat-label>Total Monthly Household Income (Nu.)</mat-label>
-              <input matInput type="text"  formControlName="monthlyIncome" [readonly]="disableForm" >
+              <input matInput type="number"  formControlName="monthlyIncome" [readonly]="disableForm" >
             </mat-form-field>
 
             <mat-form-field class="justifier">
@@ -218,6 +218,13 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>
+                  What was the frequency and amount of rent increase/s in the last 5 years?</mat-label>
+                <input matInput type="text"  formControlName="rentIncreaseFiveYears" [readonly]="disableForm" >
+              </mat-form-field>
+
 
               <mat-form-field class="justifier">
                 <mat-label>Rent Waiver during Pandemic</mat-label>

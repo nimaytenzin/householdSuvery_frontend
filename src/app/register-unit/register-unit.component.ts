@@ -51,21 +51,20 @@ export class Household{
     householdIncome: number;
     ownHouse: boolean;
     censusDzo: string;
-    
-
+  
     rent:number;
     typeRent: string;
     yearsResiding: number;
     rentIncreased: boolean;
     rentWaived: boolean;
     rentWaivedAmount: number;
+    rentIncreaseFiveYears:string;
     hindrance:string;
     compliantResponse:string;
     maintenanceFrequency:string;
     waterAdequacy:string;
     parkingAedequacy:string;
     accessAdequacy:String;
-
     ownType: string;
     meansOwning:string;
     yearAcquisition: number;
@@ -299,8 +298,8 @@ export class RegisterUnitComponent implements OnInit {
   //Qualitative options  disagree/disagree/neutral/agree/strongly disagree
 
   likerthScale:DropDownOptions[]=[
+    {id:5, name: "Strongly Agree"},
     {id:4, name: "Agree"},
-    {id:4, name: "Strongly Agree"},
     {id:3, name: "Neutral"},
     {id:2, name: "Disagree"},
     {id:1, name: "Strongly Disagree"}
@@ -383,6 +382,7 @@ reactiveForms() {
     rentalType:[],
     howLongLiving:[],
     rentIncrease:[],
+    rentIncreaseFiveYears:[],
     rentWaiver:[],
     rentWaiverAmount:[],
     hindrance:[],
@@ -458,7 +458,7 @@ reactiveForms() {
     this.household.incomeEarner = this.householdForm.get('numberIncomeEarners').value;
     this.household.householdIncome = this.householdForm.get('monthlyIncome').value;
     this.household.ownHouse = this.householdForm.get('ownHouse').value;
-
+    this.household.rentIncreaseFiveYears = this.householdForm.get('rentIncreaseFiveYears').value
     this.household.rent = this.householdForm.get('monthlyRent').value;
     this.household.typeRent = this.householdForm.get('rentalType').value
     this.household.yearsResiding = this.householdForm.get('howLongLiving').value;
