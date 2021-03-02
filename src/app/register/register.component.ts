@@ -288,6 +288,22 @@ export class RegisterComponent implements OnInit {
       });
   }
 
+  changeCid(e){
+    let cid = this.building.cidOwner = this.buildingForm.get('cidOwner').value;
+    if(cid.length > 11){
+      this.dataService.getCid(cid).subscribe(res=>{
+        if(res.success === "true"){
+          let data = res.data.citizendetails.citizendetail
+          this.buildingForm.patchValue({
+            building_owner : data.firstName + data.lastName
+
+          })
+        }
+      })
+
+    }
+  }
+
 
   submit(){
     // this.registerBuilding();
@@ -309,7 +325,6 @@ export class RegisterComponent implements OnInit {
     this.building.structure_id = Number(sessionStorage.getItem('buildingId'));
     this.building.block_no = this.buildingForm.get('blockNumber').value;
     this.building.building_owner = this.buildingForm.get('nameOfBuildingOwner').value;
-    this.building.cidOwner = this.buildingForm.get('cidOwner').value;
     this.building.cidOwner = this.buildingForm.get('cidOwner').value;
     this.building.existancyStatus = this.buildingForm.get('existancyStatus').value;
     this.building.buildingUse = this.buildingForm.get('buildingUse').value;

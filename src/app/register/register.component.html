@@ -11,7 +11,7 @@
         <h4>Building Owner Details</h4>
         <mat-form-field class="justifier">
           <mat-label>CID</mat-label>
-          <input matInput type="text"  formControlName="cidOwner" >
+          <input matInput type="text"  formControlName="cidOwner" (input)="changeCid($event)" >
         </mat-form-field>
 
         <mat-form-field class="justifier">

@@ -52,6 +52,14 @@ export class DataService {
       );
   }
 
+  getCid(cid){
+    return this.http
+      .get<any>(`${this.API_URL}/api/get/${cid}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getDzongkhags() {
     return this.http
       .get<any>(`${this.API_URL}/get-all-dzo`, this.httpOptions)
