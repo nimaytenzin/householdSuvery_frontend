@@ -24,44 +24,51 @@ interface DropDownNumber{
   value:number
 }
 
-
-
 export class Household{
     structure_id: number;
-    head: string;
-    gender: string;
-    cidHead: string;
+    familiesSharing:number;
+    unitOwnership:string;
+    unitUse:string;
+    numberOfRooms:number;
+
+
+    cid: string;
+    name: string;
+    gender:string;
     age:number;
     martialStatus: string;
     employment:string;
     employmentOrg: string;
     yearsInService: number;
+
+
     numberHousehold: number;
     incomeEarner: number;
     householdIncome: number;
     ownHouse: boolean;
     censusDzo: string;
     distToWork: number;
+    modeTransport:string;
     commuteCost: number;
-    houseOccupation: string;
-    unitUse:string;
-    rent: number;
+    utilityBill:number;
+
+    rent:number;
     typeRent: string;
-    rooms: number;
     yearsResiding: number;
     rentIncreased: boolean;
     rentWaived: boolean;
-    rentWaivedPrecent: number;
+    rentWaivedAmount: number;
+    hindrance:string;
     compliantResponse:string;
+    maintenanceFrequency:string;
     waterAdequacy:string;
     parkingAedequacy:string;
     accessAdequacy:String;
-    hindrance:string;
+
     ownType: string;
-    roomsOwned:number;
-    howOwned: string;
+    meansOwning:string;
     yearAcquisition: number;
-    cost: number;
+    purchasePrice: number;
     meanFinance: string;
     emi:number
 }
@@ -345,36 +352,44 @@ changeDiff($event){
 reactiveForms() {
 
   this.householdForm = this.fb.group({
+    familySharing:[],
+    unitOwnership:[],
+    unitUse:[],
+    numberOfRooms:[],
+
+    cidHoh:[],
     nameHoh:[],
     genderHoh:[],
-    cidHoh:[],
     ageHoh:[],
     maritalStatusHoh:[],
     employmentStatusHoh:[],
     workAgencyHoh:[],
     serviceYearHoh:[],
+
     numberHouseholdMembers:[],
     numberIncomeEarners:[],
     monthlyIncome:[],
-    unitUse:[],
     ownHouse:[],
     workPlaceDistance:[],
+    modeTransport:[],
     commutingCost:[],
-    houseOccupationStatus:[],
+    utilityBills:[],
+
     monthlyRent:[],
     rentalType:[],
-    numberOfRooms:[],
     livingYears:[],
+    howLongLiving:[],
     rentIncrease:[],
     rentWaiver:[],
-    rentWaiverPercentage:[],
+    rentWaiverAmount:[],
+    hindrance:[],
+    hindranceOthers:[],
     complaintResponse:[],
     maintenanceFrequency:[],
     waterAdequacy:[],
     parkingAdequacy:[],
     accessAdequacy:[],
-    hindrance:[],
-    hindranceOthers:[],
+
     ownedUnitType:[],
     meansOfOwning:[],
     acquisitionYear:[],
@@ -417,9 +432,9 @@ reactiveForms() {
   submit(){
     console.log(this.dataService.familyMember)
 
-    this.household.head = this.householdForm.get('nameHoh').value;
+    this.household.name = this.householdForm.get('nameHoh').value;
     this.household.gender = this.householdForm.get('genderHoh').value;
-    this.household.cidHead = this.householdForm.get('cidHoh').value
+    this.household.cid = this.householdForm.get('cidHoh').value
     this.household.age = this.householdForm.get('ageHoh').value;
     this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
     this.household.employment = this.householdForm.get('employmentStatusHoh').value;
@@ -433,14 +448,14 @@ reactiveForms() {
     this.household.distToWork = this.householdForm.get('workPlaceDistance').value;
     this.household.commuteCost = this.householdForm.get('commutingCost').value;
     this.household.unitUse = this.householdForm.get('unitUse').value;
-    this.household.houseOccupation = this.householdForm.get('houseOccupationStatus').value;
+    this.household.unitOwnership = this.householdForm.get('houseOccupationStatus').value;
     this.household.rent = this.householdForm.get('monthlyRent').value;
     this.household.typeRent = this.householdForm.get('rentalType').value;
-    this.household.rooms = this.householdForm.get('numberOfRooms').value;
+    this.household.numberOfRooms = this.householdForm.get('numberOfRooms').value;
     this.household.yearsResiding = this.householdForm.get('livingYears').value;
     this.household.rentIncreased = this.householdForm.get('rentIncrease').value;
     this.household.rentWaived  = this.householdForm.get('rentWaiver').value;
-    this.household.rentWaivedPrecent = this.householdForm.get('rentWaiverPercentage').value;
+    this.household.rentWaivedAmount = this.householdForm.get('rentWaiverPercentage').value;
     this.household.compliantResponse = this.householdForm.get('complaintResponse').value;
     this.household.waterAdequacy = this.householdForm.get('waterAdequacy').value;
     this.household.accessAdequacy = this.householdForm.get('accessAdequacy').value;
@@ -458,7 +473,7 @@ reactiveForms() {
     // cost = costPrice || 
 
     this.household.yearAcquisition = this.householdForm.get('acquisitionYear').value 
-    this.household.cost = this.householdForm.get('costPrice').value 
+    this.household.purchasePrice = this.householdForm.get('costPrice').value 
     this.household.meanFinance = this.householdForm.get('financeMode').value 
     this.household.emi  = this.householdForm.get('monthlyEmi').value 
 

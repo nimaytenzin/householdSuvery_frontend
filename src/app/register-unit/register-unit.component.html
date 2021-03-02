@@ -11,7 +11,7 @@
           <h4>Unit Details</h4>
           <mat-form-field class="justifier">
             <mat-label>Number of Families sharing the Units</mat-label>
-            <mat-select  formControlName="numberOfRooms" [readonly]="disableForm" >
+            <mat-select  formControlName="familySharing" [readonly]="disableForm" >
               <mat-option *ngFor="let room of numberOfFamilies" [value]="room.value">
                 {{room.value}}
               </mat-option>
@@ -21,7 +21,7 @@
         
           <mat-form-field class="justifier">
             <mat-label>Unit Ownership</mat-label>
-            <mat-select  (selectionChange) = "houseOccupationListener($event)" formControlName="houseOccupationStatus" [readonly]="disableForm" >
+            <mat-select  (selectionChange) = "houseOccupationListener($event)" formControlName="unitOwnership" [readonly]="disableForm" >
               <mat-option *ngFor="let option of unitOccupationOptions" [value]="option.name">
                 {{option.name}}
               </mat-option>
@@ -106,11 +106,40 @@
               <input matInput type="number"   formControlName="serviceYearHoh"[readonly]="disableForm" >
             </mat-form-field>
 
+            
+            <mat-form-field class="justifier">
+              <mat-label>Distance to place of work(Km)</mat-label>
+              <input matInput type="number" name="rent" formControlName="workPlaceDistance" [readonly]="disableForm" >
+            </mat-form-field>
+
+            
+            <mat-form-field class="justifier">
+              <mat-label>Mode of Transport to work</mat-label>
+              <mat-select  formControlName="modeTransport" [readonly]="disableForm" >
+                <mat-option *ngFor="let option of modeOfTransports" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field class="justifier">
+              <mat-label>Transportation Cost</mat-label>
+              <input matInput type="number" name="rent" formControlName="commutingCost" [readonly]="disableForm" >
+            </mat-form-field>
+
+                
+
+            <mat-form-field class="justifier">
+              <mat-label>Utility Bills</mat-label>
+              <input matInput type="number" name="rent" formControlName="utilityBills" [readonly]="disableForm" >
+            </mat-form-field>
+
+
             <h4>Household Details</h4>
          
             <mat-form-field class="justifier">
               <mat-label>Number of Household Members</mat-label>
-              <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
+              <mat-select  formControlName="numberHouseholdMembers" [readonly]="disableForm" >
                 <mat-option *ngFor="let option of numberOfRooms" [value]="option.value">
                   {{option.value}}
                 </mat-option>
@@ -130,7 +159,7 @@
             </mat-form-field>
 
             <mat-form-field class="justifier">
-              <mat-label>Total Monthly Household Income</mat-label>
+              <mat-label>Total Monthly Household Income (Nu.)</mat-label>
               <input matInput type="text"  formControlName="monthlyIncome" [readonly]="disableForm" >
             </mat-form-field>
 
@@ -143,32 +172,7 @@
               </mat-select>
             </mat-form-field>
     
-            <mat-form-field class="justifier">
-              <mat-label>Distance to place of work(Km)</mat-label>
-              <input matInput type="number" name="rent" formControlName="workPlaceDistance" [readonly]="disableForm" >
-            </mat-form-field>
-
-            
-            <mat-form-field class="justifier">
-              <mat-label>Mode of Transport to work</mat-label>
-              <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
-                <mat-option *ngFor="let option of modeOfTransports" [value]="option.name">
-                  {{option.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            
-            <mat-form-field class="justifier">
-              <mat-label>Transportation Cost</mat-label>
-              <input matInput type="number" name="rent" formControlName="commutingCost" [readonly]="disableForm" >
-            </mat-form-field>
-            
-
-            <mat-form-field class="justifier">
-              <mat-label>Utility Bills</mat-label>
-              <input matInput type="number" name="rent" formControlName="commutingCost" [readonly]="disableForm" >
-            </mat-form-field>
-
+        
            
 
          
@@ -199,7 +203,7 @@
 
               <mat-form-field class="justifier">
                 <mat-label>How long have you been living here?</mat-label>
-                <mat-select  formControlName="ownHouse" [readonly]="disableForm" >
+                <mat-select  formControlName="howLongLiving" [readonly]="disableForm" >
                   <mat-option *ngFor="let option of livingYears" [value]="option.name">
                     {{option.name}}
                   </mat-option>
@@ -226,7 +230,7 @@
 
               <mat-form-field class="justifier">
                 <mat-label>Rent Waiver Amount</mat-label>
-                <input matInput type="number"  formControlName="rentWaiverPercentage" [readonly]="disableForm" >
+                <input matInput type="number"  formControlName="rentWaiverAmount" [readonly]="disableForm" >
               </mat-form-field>
 
               <mat-form-field class="justifier">
