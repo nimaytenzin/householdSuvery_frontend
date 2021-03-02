@@ -26,7 +26,17 @@
       {{option.name}}
     </mat-option>
   </mat-select>
-</mat-form-field>  
+</mat-form-field> 
+
+
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>Income Earner?</mat-label>
+  <mat-select [(ngModel)]="local_data.incomeEarner">
+    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
   <ng-template #elseTemplate>
    </ng-template> 
 </div>

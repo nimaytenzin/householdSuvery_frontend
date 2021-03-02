@@ -10,6 +10,7 @@ export interface UsersData {
   cid: string;
   age: number;
   gender:string;
+  incomeEarner:string;
 
 }
 
@@ -25,7 +26,7 @@ export class DataTableComponent  {
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   i=1;
 
-  displayedColumns: string[] = ['id','cid', 'age', 'gender', 'action'];
+  displayedColumns: string[] = ['id','cid', 'age', 'gender', 'IncomeEarner','action'];
   dataSource = ELEMENT_DATA;
 
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
@@ -54,6 +55,7 @@ export class DataTableComponent  {
       cid:row_obj.cid,
       age:row_obj.age,
       gender:row_obj.gender,
+      incomeEarner:row_obj.incomeEarner,
       household_id:123
     });
     this.table.renderRows();

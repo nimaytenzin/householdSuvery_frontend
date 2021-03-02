@@ -301,6 +301,26 @@
                 </mat-select>
               </mat-form-field>
 
+              
+              <mat-form-field class="justifier">
+                <mat-label>I have easy Access to Public Transport from my residence</mat-label>
+                <mat-select  formControlName="publicTransportAccess" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+                 
+              <mat-form-field class="justifier">
+                <mat-label>The current location of my residence is safe for the female houshold Members</mat-label>
+                <mat-select  formControlName="femaleSafety" [readonly]="disableForm" >
+                  <mat-option *ngFor="let option of likerthScale" [value]="option.name">
+                    {{option.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
           
             </div>
 

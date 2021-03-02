@@ -65,6 +65,9 @@ export class Household{
     waterAdequacy:string;
     parkingAedequacy:string;
     accessAdequacy:String;
+    publicTransportAccess:string;
+    femaleSafety:string;
+
     ownType: string;
     meansOwning:string;
     yearAcquisition: number;
@@ -392,7 +395,8 @@ reactiveForms() {
     waterAdequacy:[],
     parkingAdequacy:[],
     accessAdequacy:[],
-
+    femaleSafety:[],
+    publicTransportAccess:[],
     ownedUnitType:[],
     meansOfOwning:[],
     acquisitionYear:[],
@@ -477,7 +481,9 @@ reactiveForms() {
     this.household.waterAdequacy = this.householdForm.get('waterAdequacy').value;
     this.household.accessAdequacy = this.householdForm.get('accessAdequacy').value;
     this.household.parkingAedequacy = this.householdForm.get('parkingAdequacy').value;
-
+    this.household.publicTransportAccess = this.householdForm.get('publicTransportAccess').value;
+    this.household.femaleSafety = this.householdForm.get('femaleSafety').value;
+    
     this.household.ownType = this.householdForm.get('ownedUnitType').value;
     this.household.meansOwning = this.householdForm.get('meansOfOwning').value;
     this.household.yearAcquisition= this.householdForm.get('acquisitionYear').value;

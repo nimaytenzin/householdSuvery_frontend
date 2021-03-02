@@ -7,7 +7,8 @@ export interface UsersData {
   id:number;
   cid: string;
   age: number;
-  gender:string
+  gender:string;
+  incomeEarner:string;
 }
 
 export interface DropDownOptions{
@@ -31,6 +32,10 @@ export class DialogBoxComponent {
     {id:2, name: "Female"}
   ]
 
+  bools:DropDownOptions[]=[
+    {id:1, name: "Yes"},
+    {id:2, name: "No"}
+  ]
   identifications:DropDownOptions[]=[
     {id:1, name: "CID"},
     {id:2, name: "Work Permit"},
