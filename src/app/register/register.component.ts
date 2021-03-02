@@ -6,28 +6,32 @@ import { DataService } from '../service/data.service';
 
 // interface Building Form
 
-
 export class Building{
     structure_id: number;
-    block_no: string;
-    building_owner: string;
+    buildingOwnership:string;
     cidOwner: string;
+    nameOfBuildingOwner: string;
     contactOwner: number;
     existancyStatus:string;
-    constYear: number;
-    floors: number;
+    costOfConstruction: number;
+    constructionYear:number;
+    buildingUse:string;
+    floors: string;
     attic: boolean;
-    basement: boolean
+    basement: boolean;
+    jamthog:boolean;
     buildingStyle:string;
-    buildingTypology:string;
     structureType: string;
-    roofMaterial: string;
+    buildingMaterial:string;
+    floorType:string;
+    roofingMaterial: string;
     sewerTreatment: string;
     wasteCollection: string;
     wasteCollectionFrequency: string;
     waterSupply: string;
-    buildingUse: string;
 }
+
+
 
 interface Floor{
   name:string,
@@ -263,28 +267,27 @@ export class RegisterComponent implements OnInit {
 
    reactiveForms() {
     this.buildingForm = this.fb.group({
-      nameOfBuildingOwner:[],
+      buildingOwnership:[],
       cidOwner:[],
+      nameOfBuildingOwner:[],
       contactOwner:[],
       existancyStatus:[],
-      buildingUse:[],
+      costOfConstruction:[],
       constructionYear:[],
+      buildingUse:[],
       numberOfFloors:[],
       attic:[],
       basement:[],
+      jamthog:[],
       buildingStyle:[],
-      buildingTypology:[],
       structureType:[],
+      buildingMaterial:[],
       floorType:[],
-      floorTypeOthers:[],
       roofingMaterial:[],
       sewerTreatment:[],
       wasteCollection:[],
       wasteCollectionFrequency:[],
-      waterSupply:[],
-      residentialUnits:[],
-      commercialUnits:[],
-      officeUnits:[]
+      waterSupply:[]
       });
   }
 
@@ -306,7 +309,8 @@ export class RegisterComponent implements OnInit {
 
 
   submit(){
-    // this.registerBuilding();
+    this.registerBuilding();
+    console.log(this.building)
     // // this.router.navigate(['dashboard',this.buildingId]);
     // console.log(this.building)
     this.router.navigate(['dashboard',1]);
@@ -323,23 +327,29 @@ export class RegisterComponent implements OnInit {
 
   registerBuilding(){
     this.building.structure_id = Number(sessionStorage.getItem('buildingId'));
-    this.building.block_no = this.buildingForm.get('blockNumber').value;
-    this.building.building_owner = this.buildingForm.get('nameOfBuildingOwner').value;
+    this.building.buildingOwnership  = this.buildingForm.get('buildingOwnership').value;
     this.building.cidOwner = this.buildingForm.get('cidOwner').value;
+    this.building.nameOfBuildingOwner = this.buildingForm.get('nameOfBuildingOwner').value;
+    this.building.contactOwner = this.buildingForm.get('contactOwner').value;
+
     this.building.existancyStatus = this.buildingForm.get('existancyStatus').value;
+    this.building.costOfConstruction = this.buildingForm.get('costOfConstruction').value;
+    this.building.constructionYear = this.buildingForm.get('constructionYear').value;
     this.building.buildingUse = this.buildingForm.get('buildingUse').value;
-    this.building.constYear = this.buildingForm.get('constructionYear').value;
+    this.building.buildingUse = this.buildingForm.get('buildingUse').value;
     this.building.floors = this.buildingForm.get('numberOfFloors').value;
     this.building.attic = this.buildingForm.get('attic').value;
     this.building.basement = this.buildingForm.get('basement').value;
+    this.building.jamthog = this.buildingForm.get('jamthog').value;
     this.building.buildingStyle = this.buildingForm.get('buildingStyle').value;
     this.building.structureType = this.buildingForm.get('structureType').value;
-    this.building.roofMaterial = this.buildingForm.get('roofingMaterial').value;
+    this.building.buildingMaterial = this.buildingForm.get('buildingMaterial').value;
+    this.building.floorType = this.buildingForm.get('floorType').value;
+    this.building.roofingMaterial = this.buildingForm.get('roofingMaterial').value;
     this.building.sewerTreatment = this.buildingForm.get('sewerTreatment').value;
-    //buildingOwnership
-    this.building.wasteCollection = this.buildingForm.get('wasteCollection').value
-    this.building.wasteCollectionFrequency = this.buildingForm.get('wasteCollectionFrequency').value
-    this.building.waterSupply = this.buildingForm.get('waterSupply').value
+    this.building.wasteCollection = this.buildingForm.get('wasteCollection').value;
+    this.building.wasteCollectionFrequency = this.buildingForm.get('wasteCollectionFrequency').value;
+    this.building.waterSupply = this.buildingForm.get('waterSupply').value;
 
   }
   
