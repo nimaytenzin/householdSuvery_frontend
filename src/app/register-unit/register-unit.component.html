@@ -8,6 +8,11 @@
           <!-- Hoh = Head of household-->  
 
           <form [formGroup]="householdForm">
+            <mat-form-field class="justifier">
+              <mat-label>Unit ID</mat-label>
+              <input matInput type="text"  formControlName="unidID" [readonly]="disableForm">
+            </mat-form-field>
+
           <h4>Unit Details</h4>
           <mat-form-field class="justifier">
             <mat-label>Number of Families sharing the Units</mat-label>
@@ -194,12 +199,7 @@
                 </mat-select>
               </mat-form-field>
 
-         
-              <mat-form-field class="justifier">
-                <mat-label>How long have you been living here?</mat-label>
-                <input matInput type="number"  formControlName="livingYears" [readonly]="disableForm" >
-              </mat-form-field>
-
+        
 
               <mat-form-field class="justifier">
                 <mat-label>How long have you been living here?</mat-label>
@@ -325,7 +325,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="justifier" *ngIf= "showConst">
-                  <mat-label>Price/Cost</mat-label>
+                  <mat-label>Price/Cost (in Lakhs)</mat-label>
                   <input matInput type="number" name="rent" formControlName="costPrice" [readonly]="disableForm" >
                 </mat-form-field>
 
