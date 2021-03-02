@@ -364,6 +364,35 @@ reactiveForms() {
 }
 
 
+  getAge(age2){
+    var from = age2.split("/");
+    var birthdateTimeStamp = new Date(from[2], from[1] - 1, from[0]);
+    var cur = new Date().getTime();
+    var diff = cur - birthdateTimeStamp.getTime();
+    var currentAge = Math.floor(diff/31557600000);
+    return currentAge
+  }
+
+  hohCid(){
+    let cid = this.householdForm.get('cidHoh').value;
+    if(cid.length > 10){
+      this.dataService.getCid(cid).subscribe(res=>{
+        if(res.success === "true"){
+          let data = res.data.citizendetails.citizendetail[0]
+          let name = data.firstName+" "+data.lastName
+          let age = this.getAge(data.dob)
+          let gender = data.gender === "F" ? "Female" : "Male"
+          this.householdForm.patchValue({
+            nameHoh: name,
+            ageHoh:age,
+            genderHoh: gender
+          })
+        }
+      })
+
+    }
+  }
+
   submit(){
     console.log(this.dataService.familyMember)
 

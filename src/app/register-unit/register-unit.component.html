@@ -52,7 +52,7 @@
 
             <mat-form-field class="justifier">
               <mat-label>CID</mat-label>
-              <input matInput type="text"  formControlName="cidHoh"[readonly]="disableForm" >
+              <input matInput type="text"  formControlName="cidHoh"[readonly]="disableForm" (input)="hohCid()" >
             </mat-form-field>
 
             <mat-form-field class="justifier">

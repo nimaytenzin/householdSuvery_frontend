@@ -1,5 +1,6 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
   household_id:number
@@ -23,6 +24,7 @@ export class DialogBoxComponent {
   showDetails:boolean=false;
   action:string;
   local_data:any;
+  selectionType: any;
 
   genders:DropDownOptions[]=[
     {id:1, name: "Male"},
@@ -37,6 +39,7 @@ export class DialogBoxComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogBoxComponent>,
+    public dataService: DataService,
     //@Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: UsersData) {
     this.local_data = {...data};
@@ -52,8 +55,38 @@ export class DialogBoxComponent {
     this.dialogRef.close({event:'Cancel'});
   }
 
+  getAge(age2){
+    var from = age2.split("/");
+    var birthdateTimeStamp = new Date(from[2], from[1] - 1, from[0]);
+    var cur = new Date().getTime();
+    var diff = cur - birthdateTimeStamp.getTime();
+    var currentAge = Math.floor(diff/31557600000);
+    return currentAge
+  }
+
+  pingApi(){
+    if(this.selectionType === "CID"){
+      if(this.local_data.cid.length > 10){
+        this.dataService.getCid(this.local_data.cid).subscribe(res=>{
+          if(res.success === "true"){
+            let data = res.data.citizendetails.citizendetail[0]
+            let name = data.firstName+" "+data.lastName
+            let age = this.getAge(data.dob)
+            let gender = data.gender === "F" ? "Female" : "Male"
+            this.local_data.age = age
+            this.local_data.gender = gender
+          }
+        })
+      }
+    }
+    if(this.selectionType === "Work Permit"){
+
+    }
+  }
+
   showDetail(e){
     if(e.value !== "Minor"){
+      this.selectionType = e.value
       this.showDetails = true
     }else{
       this.local_data.cid = "Minor"

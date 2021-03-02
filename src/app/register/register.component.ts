@@ -289,14 +289,14 @@ export class RegisterComponent implements OnInit {
   }
 
   changeCid(e){
-    let cid = this.building.cidOwner = this.buildingForm.get('cidOwner').value;
+    let cid = this.buildingForm.get('cidOwner').value;
     if(cid.length > 10){
       this.dataService.getCid(cid).subscribe(res=>{
         if(res.success === "true"){
-          let data = res.data.citizendetails.citizendetail
+          let data = res.data.citizendetails.citizendetail[0]
+          let name = data.firstName+" "+data.lastName
           this.buildingForm.patchValue({
-            building_owner : data.firstName + data.lastName
-
+            nameOfBuildingOwner : name
           })
         }
       })
