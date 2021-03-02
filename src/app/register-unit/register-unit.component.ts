@@ -483,7 +483,7 @@ reactiveForms() {
     this.household.parkingAedequacy = this.householdForm.get('parkingAdequacy').value;
     this.household.publicTransportAccess = this.householdForm.get('publicTransportAccess').value;
     this.household.femaleSafety = this.householdForm.get('femaleSafety').value;
-    
+
     this.household.ownType = this.householdForm.get('ownedUnitType').value;
     this.household.meansOwning = this.householdForm.get('meansOfOwning').value;
     this.household.yearAcquisition= this.householdForm.get('acquisitionYear').value;
@@ -491,8 +491,7 @@ reactiveForms() {
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
  
-    console.log(this.household)
-    // this.router.navigate(['dashboard']);
+    this.router.navigate(['dashboard', this.buildingId]);
 
     // this.registerUnit();
     // this.snackBar.open('Unit Registration Complete', '', {
