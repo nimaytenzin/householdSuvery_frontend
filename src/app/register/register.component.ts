@@ -83,14 +83,19 @@ export class RegisterComponent implements OnInit {
   buildingStyles: DropDownOptions[]=[
     {id:'1', name:"Contemporary"},
     {id:'2', name:"Traditional"},
-    {id:'3', name:"Composite"}
+    {id:'3', name:"Composite"},
+    {id:'4', name:"Informal Construction"}
+
   ]
 
   existancyStatuss:DropDownOptions[]=[
     {id:'1', name:"Standing"},
     {id:'2', name:"Under Construction"},
-    {id:'3', name:"Demolished"},
-    {id:'4', name:"Abandoned"}
+    {id:'3', name:"Abandoned"}
+  ]
+  ownership:DropDownOptions[]=[
+    {id:'1', name:"Singly Owned"},
+    {id:'2', name:"Joint Ownership"},
   ]
 
   structureTypes:DropDownOptions[]=[
@@ -101,13 +106,11 @@ export class RegisterComponent implements OnInit {
   ]
 
   buildingTopologies :DropDownOptions[]=[
-    {id:'1', name:"RCC Frame Structure"},
     {id:'2', name:"Rammed Earth"},
     {id:'3', name:"Adobe Block"},
     {id:'4', name:"CSEB"},
     {id:'5', name:"Timber"},
     {id:'6', name:"Ekra"},
-    {id:'7', name:"Confined Masonry"},
     {id:'8', name:"Concrete Block with No Reinforcement"},
     {id:'9', name:"Concrete Block with Reinforcement"},
     {id:'10', name:"Red Bricks with No Reinforcement"},
@@ -121,7 +124,8 @@ export class RegisterComponent implements OnInit {
     {id:'18', name:"Cut Stone with Mud Mortar"},
     {id:'19', name:"Cut Stone with Cement Mortar"},
     {id:'20', name:"Cut Stone with Cement Mortar and Reinforcement"},
-    {id:'21', name:"Informal Constructions"}
+    {id:'21', name:"Others"}
+
   ]
 
 
@@ -176,12 +180,8 @@ export class RegisterComponent implements OnInit {
     {id:'3', name:"Mixed Use"},
     {id:'4', name:"Office"},
     {id:'5', name:"Industrial"},
-    {id:'6', name:"Hospital"},
-    {id:'7', name:"Educational"},
-    {id:'8', name:"Religious Institution"},
-    {id:'9', name:"Storage"},
-    {id:'10', name:"Assembly"},
-    {id:'11', name:"Others"}
+    {id:'6', name:"Institutional"},
+    {id:'7', name:"Others"}
 
   ]
 

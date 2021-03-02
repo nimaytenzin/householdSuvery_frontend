@@ -106,7 +106,7 @@ export class RegisterUnitComponent implements OnInit {
   multiUnitUseControl: FormGroup;
   household:Household;
   familyMember:FamilyMember;
-
+  showConst:boolean;
 
   disableForm = false;
   displayForm = true;
@@ -145,6 +145,14 @@ export class RegisterUnitComponent implements OnInit {
     {value:25}
   ]
 
+  numberOfFamilies:DropDownNumber[]=[
+    {value:1},
+    {value:2},
+    {value:3},
+    {value:4},
+    {value:5}
+  ]
+
   //married /single /divorced /widow/widower
 
   maritalStatusOptions:DropDownOptions[]=[
@@ -162,7 +170,11 @@ export class RegisterUnitComponent implements OnInit {
     {id:3, name: "Private Employee"},
     {id:4, name: "Self Employee"},
     {id:5, name: "Unemployed"},
-    {id:6, name: "Project Employee"}
+    {id:6, name: "Project Employee"},
+    {id:6, name: "Farmer"},
+    {id:6, name: "Others"}
+
+
   ]
 
   numbers:Counts[]=[
@@ -184,7 +196,9 @@ export class RegisterUnitComponent implements OnInit {
     {id:1, name: "Residential"},
     {id:2, name: "Shop"},
     {id:3, name: "Office"},
-    {id:4, name: "Commercial"}
+    {id:4, name: "Commercial"},
+    {id:5, name: "Others"}
+
   ]
   modeOfTransports:DropDownOptions[]=[
     {id:1, name: "Private"},
@@ -237,9 +251,16 @@ export class RegisterUnitComponent implements OnInit {
   ]
 
   // NHDCL quarters /Employer provided housing / Private rented housing/others
-
+  livingYears:DropDownOptions[]=[
+    {id:1, name: "Less than a year"},
+    {id:1, name: "One to three Years"},
+    {id:2, name: "Three to Five Years"},
+    {id:3, name: "Five to Eight Years"},
+    {id:4, name: "More than Eight Years"}  
+  ]
   rentalTypes: DropDownOptions[]=[
-    {id:1, name: "NHDCL quarters"},
+    {id:1, name: "NHDCL Quarters"},
+    {id:1, name: "NPPF Quarters"},
     {id:2, name: "Employer provided housing"},
     {id:3, name: "Private rented housing"},
     {id:4, name: "Others"}  
@@ -269,11 +290,11 @@ export class RegisterUnitComponent implements OnInit {
   //Qualitative options  disagree/disagree/neutral/agree/strongly disagree
 
   likerthScale:DropDownOptions[]=[
-    {id:1, name: "Strongly Disagree"},
-    {id:2, name: "Disagree"},
-    {id:3, name: "Neutral"},
     {id:4, name: "Agree"},
-    {id:4, name: "Strongly Agree"}
+    {id:4, name: "Strongly Agree"},
+    {id:3, name: "Neutral"},
+    {id:2, name: "Disagree"},
+    {id:1, name: "Strongly Disagree"}
   ]
 
   //lack of affordable finance scheme from banks/ owns home in other parts of Bhutan / no land /higher cost of construction/Other…specify
@@ -283,7 +304,7 @@ export class RegisterUnitComponent implements OnInit {
     {id:1, name: "Lack of affordable finance schemes from banks"},
     {id:2, name: "Owns home in other parts of Bhutan"},
     {id:3, name: "No land"},
-    {id:4, name: "higher Cost of Construction"},
+    {id:4, name: "Higher Cost of Construction"},
     {id:4, name: "Others"}
   ]
 
@@ -616,8 +637,12 @@ houseOccupationListener(e){
 
 
 meansOfOwnershipListner(e){ 
-  if(e.value === "Constructed on my Own" || e.value === "Purchased"){
+  if(e.value === "Constructed on my Own" ){
     this.showPurchasedUnitDetails = true;
+    this.showConst = false
+  }else if(e.value === "Purchased"){
+    this.showPurchasedUnitDetails = true;
+    this.showConst = true
   }else{
     this.showPurchasedUnitDetails = false;
   }
