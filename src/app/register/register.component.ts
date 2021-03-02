@@ -290,9 +290,10 @@ export class RegisterComponent implements OnInit {
 
 
   submit(){
-    this.registerBuilding();
-    // this.router.navigate(['dashboard',this.buildingId]);
-    console.log(this.building)
+    // this.registerBuilding();
+    // // this.router.navigate(['dashboard',this.buildingId]);
+    // console.log(this.building)
+    this.router.navigate(['dashboard',1]);
   }
 
   showOtherFloorType(e){

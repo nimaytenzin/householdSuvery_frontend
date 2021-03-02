@@ -14,12 +14,12 @@ import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: DashboardComponent},
   {path: 'login', component: LoginComponent},
 
-  {path: 'selectzone', component: SelectZoneComponent,canActivate: [RouteGuard]},
+  {path: 'selectzone', component: SelectZoneComponent },
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},
-  {path: 'dashboard/:id', component: DashboardComponent,canActivate: [RouteGuard]},
+  {path: 'dashboard/:id', component: DashboardComponent },
   {path: 'building', component: RegisterComponent },
   {path: 'unit', component: RegisterUnitComponent},
   {path: 'admin', component: AdminComponent, canActivate:[RouteGuard]},
