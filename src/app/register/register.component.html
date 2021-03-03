@@ -104,10 +104,20 @@
           </mat-select>
         </mat-form-field>  
         
+
         <mat-form-field class="justifier">
           <mat-label>Building Style</mat-label>
           <mat-select name="buildingOwnership" formControlName="buildingStyle" [readonly]="disableForm" >
             <mat-option *ngFor="let option of buildingStyles" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>  
+
+        <mat-form-field class="justifier">
+          <mat-label>Building Type</mat-label>
+          <mat-select name="buildingType" formControlName="buildingType" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of buildingTypes" [value]="option.name">
               {{option.name}}
             </mat-option>
           </mat-select>
@@ -124,7 +134,7 @@
 
         <mat-form-field class="justifier">
           <mat-label>Material Type</mat-label>
-          <mat-select multiple  formControlName="buildingMaterial" [readonly]="disableForm" >
+          <mat-select multiple  formControlName="buildingMaterial" [readonly]="disableForm" (selectionChange)="selectMaterial($event)">
             <mat-option *ngFor="let option of buildingTopologies" [value]="option.name">
               {{option.name}}
             </mat-option>
@@ -144,7 +154,7 @@
 
         <mat-form-field class="justifier">
           <mat-label>Roofing Material</mat-label>
-          <mat-select multiple  formControlName="roofingMaterial" [readonly]="disableForm" >
+          <mat-select multiple  formControlName="roofingMaterial" [readonly]="disableForm" (selectionChange)="selectRoofMaterial($event)" >
             <mat-option *ngFor="let option of roofingMaterials" [value]="option.name">
               {{option.name}}
             </mat-option>
@@ -180,7 +190,7 @@
 
         <mat-form-field class="justifier">
           <mat-label>Water Supply</mat-label>
-          <mat-select multiple  formControlName="waterSupply" [readonly]="disableForm" >
+          <mat-select multiple  formControlName="waterSupply" [readonly]="disableForm" (selectionChange)="selectWater($event)">
             <mat-option *ngFor="let option of waterSupplyOptions" [value]="option.name">
               {{option.name}}
             </mat-option>

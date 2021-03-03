@@ -48,6 +48,7 @@ export class Household{
 
     numberHousehold: number;
     incomeEarner: number;
+    schoolGoers: number;
     householdIncome: number;
     ownHouse: boolean;
     censusDzo: string;
@@ -381,6 +382,7 @@ reactiveForms() {
 
     numberHouseholdMembers:[],
     numberIncomeEarners:[],
+    numberSchoolGoers:[],
     monthlyIncome:[],
     ownHouse:[],
     
@@ -464,6 +466,7 @@ reactiveForms() {
     
     this.household.numberHousehold = this.householdForm.get('numberHouseholdMembers').value;
     this.household.incomeEarner = this.householdForm.get('numberIncomeEarners').value;
+    this.household.schoolGoers= this.householdForm.get('numberSchoolGoers').value;
     this.household.householdIncome = this.householdForm.get('monthlyIncome').value;
     this.household.ownHouse = this.householdForm.get('ownHouse').value;
     this.household.rentIncreaseFiveYears = this.householdForm.get('rentIncreaseFiveYears').value
@@ -499,15 +502,15 @@ reactiveForms() {
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
       console.log(res)
-      // if(res.success === "true"){
-      //   this.router.navigate(['dashboard', this.buildingId]);
-      // }else{
-      //   this.snackBar.open('Registration error', '', {
-      //     duration: 5000,
-      //     verticalPosition: 'bottom',
-      //     panelClass: ['error-snackbar']
-      //   });
-      // }
+      if(res.success === "true"){
+        this.router.navigate(['dashboard', this.buildingId]);
+      }else{
+        this.snackBar.open('Registration error', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar']
+        });
+      }
     })
  
     // this.router.navigate(['dashboard', this.buildingId]);
