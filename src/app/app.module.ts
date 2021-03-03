@@ -9,6 +9,8 @@ import { ErrorComponent } from './error/error.component';
 import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterAtmComponent } from './register-atm/register-atm.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 import { MatTableModule } from '@angular/material/table'
 import {
   MatButtonModule,
@@ -40,6 +42,7 @@ import { AdminComponent } from './admin/admin.component';
 import { DataTableComponent} from './DataTable/data-table/data-table.component'
 import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +87,8 @@ import { EditUnitComponent } from './edit-unit/edit-unit.component';
     MatListModule,
     MatCheckboxModule,
     WebcamModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}

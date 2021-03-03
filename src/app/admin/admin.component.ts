@@ -2,9 +2,8 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import * as L from 'leaflet';
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import 'leaflet.heat';
 import { HttpClient } from '@angular/common/http';
-import { Data, Router } from '@angular/router';
+import {  Router } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -69,17 +68,12 @@ interface IdName{
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  //chart js
-  canvas1: any;
-  ctx1: any;
-  canvas2: any;
-  ctx2: any;
-
-  totalCases: number;
-  totalHotspotBuilding: number;
-  thimphuBuildings:number;
-  thimphuCases:number;
-
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'view', 'update','delete'];
+  totalBuilding:number;
+  totalCompleted:number;
+  precentCompleted:number;
+  progressShow:boolean =false;
+  showFamilyMembers:boolean = false;
 
   //chart js
   API_URL =environment.API_URL;
@@ -111,7 +105,7 @@ export class AdminComponent implements OnInit {
   postiveCaseMap: any;
   buildingId: number;
   imgs:any;
-  units:any;
+  residentTableShow:boolean=false;
   isAddAllowed = false;
   buildings:any;
   building: any;
@@ -282,6 +276,23 @@ export class AdminComponent implements OnInit {
 
   ];
 
+  units=[
+    {"id":1,"unitNumber": 101, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
+    {"id":2,"unitNumber": 102, "unitUse": "Commercial", "unitName": "KK General Store", "contact": 17662522},
+    {"id":3,"unitNumber": 103, "unitUse": "Commercial", "unitName": "HK Pan Shop", "contact": 17662522},
+    {"id":4,"unitNumber": 104, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
+
+  ]
+
+
+
+  familyMembers = [
+    {"type": "CID", "cid": "10302000402", "gender": "Male", "age":24, "incomeEarner": true},
+    {"type": "Minor", "cid": "Minor", "gender": "Female", "age":3, "incomeEarner": false},
+    {"type": "CID", "cid": "10302000433", "gender": "Female", "age":24, "incomeEarner": true}
+
+  ]
+
   setViewValue: boolean;
 
 
@@ -305,10 +316,6 @@ export class AdminComponent implements OnInit {
     Chart.plugins.unregister(ChartDataLabels);
     this.getDzongkhagList();
     this.reactiveForm();
-    this.renderChart();
-    this.casesByDzongkhag();
-    this.caseOverview();
-
     const zoneId = sessionStorage.getItem('zoneId');
     const subZoneId = sessionStorage.getItem('subZoneId');
     const dzongkhagId = sessionStorage.getItem('dzongkhagId')
@@ -320,134 +327,6 @@ export class AdminComponent implements OnInit {
 
   }
 
-  caseOverview(){
-    fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/caseDetails")
-          .then(res => res.json())
-          .then(data => {
-            this.totalCases = data.totalCases;
-            this.totalHotspotBuilding = data.buildings;
-            this.thimphuBuildings = data.thimphuBuildings;
-            this.thimphuCases = data.thimphuCases;
-          })
-  }
-
-  renderChart(){
-
-    this.canvas1 = document.getElementById('myChart');
-    this.ctx1 = this.canvas1.getContext('2d');
-    var dates =[];
-    var cases =[];
-
-    fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/dailyCovidCase")
-        .then(res => res.json())
-        .then(data => {
-          for(let i =0; i<data.length; i++){
-            dates.push(data[i].date)
-            cases.push(data[i].cases)
-          }
-          const myChart = new Chart(this.ctx1, {
-            type: 'line',
-            data: {
-            labels: dates,
-            datasets: [{
-                  data: cases,
-                  backgroundColor:"transparent",
-                  borderColor:"rgb(63,81,181)",
-                  pointRadius: 5,
-                  pointHoverRadius: 10,
-                  pointHitRadius: 30,
-                  pointBorderWidth: 2,
-            }]
-            },
-           
-            options: {
-              
-              title: {
-                    display: true,
-                    text: 'Daily Covid Cases'
-                },
-              lengend:{
-                display: false
-             },
-             scales: {
-              xAxes: [{
-                  gridLines: {
-                      display:false
-                  }
-              }],
-              yAxes: [{
-                  gridLines: {
-                      display:false
-                  }   
-              }]
-          }
-            }
-        
-            });  
-          
-        })
-    
-  }
-
-  casesByDzongkhag(){
-    this.canvas2 = document.getElementById('casesByDzongkhag');
-    this.ctx2 = this.canvas2.getContext('2d');
-  
-    fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/dzongkhagCase") 
-        .then(res => res.json())
-        .then(data => {
-          var dataLabels = [];
-          var dataData= [];
-          var backColor =[];
-          for(let i = 0; i< data.length; i ++){
-            dataData.push(data[i].cases)
-            dataLabels.push(data[i].dzongkhag)
-            backColor.push(data[i].background)
-
-          }
-        
-          var myChart = new Chart(this.ctx2, {
-            type: 'bar',
-            data: {
-              labels: dataLabels,
-              
-              datasets: [{
-                label: 'cases',
-                data: dataData,
-                backgroundColor: backColor,
-                borderWidth: 1
-              }]
-            },
-            plugins: [ChartDataLabels],
-            options: {
-              responsive: true,
-
-              title: {
-                display: true,
-                text: 'Cases By Dzongkhag'
-            },
-              lengend:{
-                display: false
-            },
-            scales: {
-              xAxes: [{
-                  gridLines: {
-                      display:false
-                  }
-              }],
-              yAxes: [{
-                  gridLines: {
-                      display:false
-                  }   
-              }]
-      }
-            }
-          });
-        })
-          
-              
-        
-  }
 
 
   submit(){
@@ -515,38 +394,10 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  getMyLocation(){
-    this.map.locate({setView:this.setViewValue,watch:true,enableHighAccuracy:true});
-    if(this.setViewValue === true){
-      this.setViewValue =false
-    }
-    
-  }
+
 
   renderMap(dataservice: DataService){
-    var thimphuZone = "https://raw.githubusercontent.com/nimaytenzin/cdrs/main/ThimphuZonee.geojson";
-    // var heatmapURL = "https://raw.githubusercontent.com/nimaytenzin/cdrs/main/heatMap.geojson"; //hsp to kml to geojson
 
-    var relaxedZoneUrl = "https://raw.githubusercontent.com/nimaytenzin/cdrs/main/relaxationZone.geojson";
-    var thimphuGateUrl ="https://raw.githubusercontent.com/nimaytenzin/cdrs/main/gates.geojson";
-
-//marker Styles
-      var nationalCovidMarker = {
-        radius: 5,
-        fillColor: "rgb(247,247,0)",
-        color: "rgb(247,247,0)",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.7
-      };
-
-
-  
-     var myStyle = {
-        "color": "#444DF8",
-        "weight": 3,
-        "opacity": 1
-    };
 
           
         function zoneStyle(feature) {
@@ -587,110 +438,8 @@ export class AdminComponent implements OnInit {
           minZoom: 9,
           layers: [sat]
         });
-      
-        const zoneMap = L.geoJSON(null, { 
-          onEachFeature:  (feature, layer)=> {
-            
-            layer.on('click',(e) =>{
-              layer.bindPopup(`${feature.properties.Zone}`)
-            })},style:zoneStyle      
-        })
+       
 
-        const relaxedZoneMap = L.geoJSON(null,{
-         style:broadZones  
-        })
-
-
-        var thimphuGateMap = L.geoJSON(null,  {
-          pointToLayer:  (feature, latlng) => { 
-          return L.circleMarker(latlng,myStyle);
-        }
-    }) 
-
-           
-
-
-    fetch(thimphuZone)
-      .then(res => res.json())
-      .then( data => {
-        zoneMap.addData(data);
-      })
-
-    fetch(relaxedZoneUrl)
-      .then(res => res.json())
-      .then(data => {
-        relaxedZoneMap.addData(data)
-      })
-
-      fetch(thimphuGateUrl)
-        .then(res => res.json())
-        .then(data => {
-          thimphuGateMap.addData(data)
-      })
-
-
-      var NationalCase = L.geoJSON(null,  {
-            pointToLayer:  (feature, latlng) => { 
-            return L.circleMarker(latlng,nationalCovidMarker);
-          }
-      }) 
-
-      fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/nationalCase.geojson")
-        .then(res => res.json())
-        .then(data => {
-          NationalCase.addData(data)
-        })
-
-      var overlayMaps = {
-        "Broad Zone": relaxedZoneMap,
-        "Gates": thimphuGateMap,
-        "National Covid Case": NationalCase,
-        "Zone Map" : zoneMap
-      };
-
-      var layer: L.GeoJSON[] = [];
-      
-      var url = "https://raw.githubusercontent.com/nimaytenzin/cdrs/main/positive";
-
-      fetch(url).then(res => res.json()).then(data => {
-          for(let i=0; i<data.length; i ++){
-            layer[i] = L.geoJSON(null,  {
-              onEachFeature:  (feature, layer)=> {
-              layer.on('click',(e) =>{
-                this.buildingId = feature.properties.id;
-                this.showBuilding(this.buildingId);
-                this.showCaseDetails = true;
-                this.clearData = true;
-                layer.bindPopup(`Building ID : ${this.buildingId}`)
-        
-                      if(this.units !== undefined){
-                        this.units = null;
-                      }
-                      this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                        this.units = json.data;
-                      });
-            
-                      if(this.imgs !== undefined){
-                        this.imgs = null
-                      }
-                      this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                        this.imgs= json.data;
-                      });
-              })},
-                pointToLayer:  (feature, latlng) => { 
-                  return L.circleMarker(latlng,data[i].style);
-                }
-            })           
-              fetch(data[i].dataUrl)
-                .then(res => res.json())
-                .then(data => {
-                  layer[i].addData(data).addTo(this.map)
-                })
-              overlayMaps[data[i].name] = layer[i]
-          }        
-      
-          L.control.layers(baseMaps,overlayMaps).addTo(this.map);
-      })
       
       var baseMaps = {
         "Satellite Image": sat,
@@ -750,65 +499,10 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  changeDiff($event){
-    this.showSubZone = false;
-    this.showSuperZone = false;
-
-    if($event.value=== 21){
-      this.showSubZone= true;
-      this.showSuperZone = true;
-    }
-  }
 
   zoneSearch() {
       const zoneId = this.zoneForm.get('subZoneControl').value;
-      const dzongkhagId = this.zoneForm.get('dzongkhagControl').value;
-      
- 
-      this.http.get(`/assets/geojson/conv_T${zoneId}.geojson`)     
-              .subscribe((response:any)=>{
-                if(this.bound !== undefined){
-                  this.map.removeLayer(this.bound)
-                  this.bound = null;
-                }
-                this.bound= L.geoJSON(response,{
-                  style: (feature)=>{
-                    return {
-                      color:"red",
-                      fillOpacity:0
-                    }
-                  }
-                }).addTo(this.map)
-                this.map.fitBounds(this.bound.getBounds());
-              },
-              (error) => {
-                  if(error){
-                    this.http.get(`/assets/geojson/${dzongkhagId}.geojson`)
-                        .subscribe(
-                          (res: any) =>{
-                            if(this.bound !== undefined){
-                              this.map.removeLayer(this.bound)
-                              this.bound = null;
-                            }
-                            this.bound = L.geoJSON(res, {
-                              style: (feature) =>{
-                                return {
-                                  color: "yellow",
-                                  fillOpacity: 0
-                                }
-                              }
-                            }).addTo(this.map)
-                            this.map.fitBounds(this.bound.getBounds())
-                          }
-                        )
-                  }
-              }
-              
-              )
-
-              //end zone zoom to bound
-      this.http.get(`${this.API_URL}/get-str/${zoneId}`).subscribe((json: any) => {
-    
+      this.dataService.getStructure(zoneId).subscribe((json: any) => {
         this.json = json;
         this.http.get(`${this.API_URL}/get-resident-in-attic/${zoneId}`).subscribe((json:any)=>{
           this.residentAttic = json.data[0];
@@ -818,11 +512,16 @@ export class AdminComponent implements OnInit {
           this.map.removeLayer(this.buildingGeojson)
           this.buildingGeojson = null
         }
+       this.totalBuilding = this.json.length
+       console.log(this.json)
+       this.totalCompleted =0
 
+       console.log('sss',this.precentCompleted)
         this.buildingGeojson = L.geoJSON(this.json, {
                    onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
                 this.buildingId = feature.properties.structure_id;
+                alert(`Showing Information for ${this.buildingId}` )
                 this.showBuilding(this.buildingId);
                 this.clearData = true;
                 this.resident = null;
@@ -845,11 +544,16 @@ export class AdminComponent implements OnInit {
                 }
                 return L.marker(latLng,{icon: this.myMarker});
               } else{
+                this.precentCompleted ++
                 return L.marker(latLng, {icon: this.greenMarker});
               }
             }
           });
           this.map.addLayer(this.buildingGeojson)
+          this.map.fitBounds(this.buildingGeojson.getBounds());
+          
+       this.precentCompleted = (this.totalCompleted/this.totalBuilding)*100;
+        this.progressShow = true;
       });
  
   }
@@ -859,6 +563,8 @@ export class AdminComponent implements OnInit {
   
   showResident(unitid){
     this.resident = null;
+    this.residentTableShow = true
+    alert(`${unitid}`)
     this.dataService.getResident(unitid).subscribe(resp=>{
       this.resident = resp.data;
     });
@@ -893,23 +599,6 @@ export class AdminComponent implements OnInit {
 
   }
 
-  getDzongkhagList() {
-    this.dataService.getDzongkhags().subscribe(response => {
-      this.dzongkhags = response.data;
-    });
-  }
-
-  getZoneList(dzongkhagId) {
-    this.dataService.getZones(dzongkhagId).subscribe(response => {
-      this.zones = response.data;
-    });
-  }
-
-  getSubzoneList(zoneId) {
-    this.dataService.getSubZones(zoneId).subscribe(response => {
-      this.subZones = response.data;
-    });
-  }
 
   reset(){
     this.zoneForm.reset();
@@ -934,6 +623,30 @@ export class AdminComponent implements OnInit {
     
   }
 
+  getDzongkhagList() {
+    this.dataService.getDzongkhags().subscribe(response => {
+      this.dzongkhags = response.data;
+      console.log(this.dzongkhags)
+    });
+  }
+
+  getZoneList(dzongkhagId) {
+    this.dataService.getZones(dzongkhagId).subscribe(response => {
+      this.zones = response.data;
+      console.log()
+    });
+  }
+
+  getSubzoneList(zoneId) {
+    this.dataService.getSubZones(zoneId).subscribe(response => {
+      this.subZones = response.data;
+    });
+  }
+
+  showFamilyMemberDetail(unitId){
+    this.showFamilyMembers = true
+  }
+
   showSelectZone(){
   
     if(this.selectZone === false){
@@ -947,6 +660,15 @@ export class AdminComponent implements OnInit {
     }else{
       this.clearData = false
     }
+  }
+
+  unlockBuilding(){
+    alert("Unlocked Building")
+  }
+
+  editBuilding(){
+    this.router.navigate(['building'])
+    alert("Redirecting to building form")
   }
 
 } 
