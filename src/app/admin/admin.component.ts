@@ -778,23 +778,6 @@ export class AdminComponent implements OnInit {
 
   }
 
-  getDzongkhagList() {
-    this.dataService.getDzongkhags().subscribe(response => {
-      this.dzongkhags = response.data;
-    });
-  }
-
-  getZoneList(dzongkhagId) {
-    this.dataService.getZones(dzongkhagId).subscribe(response => {
-      this.zones = response.data;
-    });
-  }
-
-  getSubzoneList(zoneId) {
-    this.dataService.getSubZones(zoneId).subscribe(response => {
-      this.subZones = response.data;
-    });
-  }
 
   reset(){
     this.zoneForm.reset();
@@ -817,6 +800,26 @@ export class AdminComponent implements OnInit {
       // this.searchmarker = null;
     }
     
+  }
+
+  getDzongkhagList() {
+    this.dataService.getDzongkhags().subscribe(response => {
+      this.dzongkhags = response.data;
+      console.log(this.dzongkhags)
+    });
+  }
+
+  getZoneList(dzongkhagId) {
+    this.dataService.getZones(dzongkhagId).subscribe(response => {
+      this.zones = response.data;
+      console.log()
+    });
+  }
+
+  getSubzoneList(zoneId) {
+    this.dataService.getSubZones(zoneId).subscribe(response => {
+      this.subZones = response.data;
+    });
   }
 
   showSelectZone(){

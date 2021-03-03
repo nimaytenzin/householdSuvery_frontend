@@ -30,9 +30,12 @@
     </div>
   </div>
   <div class = "scroll" style="margin: 0;">
+    <h3 style="text-align: center;">Admin Dashboard | Houshold Survey</h3>
+
     <div class= "seem" style="width: 100%;display: flex; flex-direction:column;">
       <form  [formGroup]="searchForm">
         <mat-form-field style="width: 90%;">
+          Search
           <input matInput type="number" placeholder="Search by building number" name="search" formControlName="searchBuilding"  >
         </mat-form-field>
 
@@ -45,16 +48,8 @@
       </form>
     </div>
     <br>
-    <br>
-   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
-   
-      
-   </div>
-    <br>
-   
-    <br>
-      <br>
     <form [formGroup]="zoneForm" *ngIf="selectZone">
+      
       <mat-form-field class="justifier">
         <mat-label>Dzongkhag</mat-label>
         <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" (selectionChange) = "changeDiff($event)" required>
@@ -64,7 +59,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="justifier" *ngIf="showSuperZone" >
-        <mat-label>Super Zone</mat-label>
+        <mat-label>Thromdes</mat-label>
         <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)" >
           <mat-option *ngFor="let zone of zones" [value]="zone.id">
             {{zone.name}}
@@ -72,7 +67,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="justifier" *ngIf="showSubZone">
-        <mat-label>Zone</mat-label>
+        <mat-label>Zones</mat-label>
         <mat-select formControlName="subZoneControl" name="subZone" >
           <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
             {{subZone.name}}
@@ -81,28 +76,38 @@
       </mat-form-field>
       <button mat-flat-button color="primary" (click)= "zoneSearch()" style="width : 100%;">Go To Selected</button>
     </form>
-    <!-- <div *ngIf="buildingInfo"> -->
-      <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
 
-        <div style="display: flex; flex-direction: column;">
-          <div style="display: flex; flex-direction: row; padding: 0;" >  
-            <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
-              <p style="font-size: small;">Total Buildings</p>
-               <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
-             </mat-card>
-             <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
-               <p style="font-size: small;">Total Completed</p>
-               <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
-             </mat-card>
-             <h3 class="lol">Status</h3>
-          </div>
-          <hr>
-          <div style="display: flex; flex-direction: row;">
-            <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-          </div>
+
+   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
+    <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
+
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row; padding: 0;" >     
+          <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
+            <p style="font-size: small;">Total Buildings</p>
+             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
+           </mat-card>
+           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
+             <p style="font-size: small;">Total Completed</p>
+             <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
+           </mat-card>
+           <h3 class="lol">Progress</h3>
+        </div>
+        <hr>
+        <div style="display: flex; flex-direction: row;">
+          <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
         </div>
       </div>
-    <div  >
+      </div>
+      
+   </div>
+  
+    <br>
+
+   
+    <!-- <div *ngIf="buildingInfo"> -->
+ 
+    <div >
       <h3>Details</h3>
       <h3>Building Details</h3>    
       <table style = "width:100%;">
@@ -111,26 +116,27 @@
           <td>{{buildingId}}</td>
         </tr>
         <tr>
-          <th>Building Name</th>
-          <td>{{buildingInfo.BuildingName}}</td>
-        </tr>
-        <tr>
-          <th>Building Owner</th>
-          <td>{{buildingInfo.BuildingOwner}}</td>
-        </tr>
-        <tr>
-          <th>Contact of owner</th>
-          <td>{{buildingInfo.Contact}}</td>
-        </tr>
-        <tr>
           <th>Building Use</th>
           <td>{{buildingInfo.BuildingUse}}</td>
         </tr>
         <tr>
-          <th>Remarks</th>
+          <th>Height</th>
           <td>{{buildingInfo.Remarks}}</td>
         </tr>
 
+        Owner Details
+        <tr>
+          <th>CID</th>
+          <td>{{buildingInfo.BuildingName}}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{buildingInfo.BuildingOwner}}</td>
+        </tr>
+        <tr>
+          <th>Contact</th>
+          <td>{{buildingInfo.Contact}}</td>
+        </tr>
         <tr>
           <th>Total Units</th>
           <td>{{units.length}}</td>
@@ -143,6 +149,7 @@
 
     <div *ngIf="units">
       Unit Details
+
       <table style = "width:100%;">
         <tr>
           <th>Unit Number</th>
