@@ -48,6 +48,7 @@ export class Household{
 
     numberHousehold: number;
     incomeEarner: number;
+    schoolGoers: number;
     householdIncome: number;
     ownHouse: boolean;
     censusDzo: string;
@@ -74,6 +75,8 @@ export class Household{
     purchasePrice: number;
     meanFinance: string;
     emi:number;
+
+    members:[];
 }
 
 
@@ -379,6 +382,7 @@ reactiveForms() {
 
     numberHouseholdMembers:[],
     numberIncomeEarners:[],
+    numberSchoolGoers:[],
     monthlyIncome:[],
     ownHouse:[],
     
@@ -439,7 +443,7 @@ reactiveForms() {
   }
 
   submit(){
-    this.household.structure_id = this.houseHoldId;
+    this.household.structure_id = this.buildingId;
     this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
@@ -462,6 +466,7 @@ reactiveForms() {
     
     this.household.numberHousehold = this.householdForm.get('numberHouseholdMembers').value;
     this.household.incomeEarner = this.householdForm.get('numberIncomeEarners').value;
+    this.household.schoolGoers= this.householdForm.get('numberSchoolGoers').value;
     this.household.householdIncome = this.householdForm.get('monthlyIncome').value;
     this.household.ownHouse = this.householdForm.get('ownHouse').value;
     this.household.rentIncreaseFiveYears = this.householdForm.get('rentIncreaseFiveYears').value
@@ -492,6 +497,21 @@ reactiveForms() {
     this.household.purchasePrice = this.householdForm.get('costPrice').value;
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
+    this.household.members = this.dataService.familyMember
+
+    console.log(this.household)
+    this.dataService.postHousehold(this.household).subscribe(res=>{
+      console.log(res)
+      if(res.success === "true"){
+        this.router.navigate(['dashboard', this.buildingId]);
+      }else{
+        this.snackBar.open('Registration error', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar']
+        });
+      }
+    })
  
     // this.router.navigate(['dashboard', this.buildingId]);
 
@@ -504,68 +524,13 @@ reactiveForms() {
 
     //   }
     // })
-    console.log("family emebr")
-    console.log(this.dataService.familyMember)
-    this.snackBar.open('Unit Registration Complete', '', {
-      duration: 5000,
-      verticalPosition: 'bottom',
-      panelClass: ['success-snackbar']
-    });
-    this.router.navigate(['dashboard',this.buildingId]);
-
+    // this.snackBar.open('Unit Registration Complete', '', {
+    //   duration: 5000,
+    //   verticalPosition: 'bottom',
+    //   panelClass: ['success-snackbar']
+    // });
+    // this.router.navigate(['dashboard',this.buildingId]);
   }
-  // registerUnit(){
-  //   this.unit.structure_id=Number(sessionStorage.getItem('buildingId'));
-  //   this.unit.unitNumber = this.multiUnitForm.get('multiUnitIdControl').value;
-  //   this.unit.unitName = this.multiUnitForm.get('unitNameControl').value;
-  //   this.unit.occupancyStatus = this.multiUnitForm.get('occupancyStatusControl').value;
-  //   this.unit.floorLevel = this.multiUnitForm.get('floorLevelControl').value;
-  //   this.unit.unitOwnership = this.multiUnitForm.get('unitOwnershipControl').value;
-  //   this.unit.rent = this.multiUnitForm.get('rentControl').value;
-
-  //   this.unitUse = this.multiUnitForm.get('multiUnitUseControl').value;
-  //   if(this.unitUse=== "Others"){
-  //     this.unitUse = this.multiUnitForm.get('otherUseRemarkControl').value;
-  //   }
-  //   this.unit.unitUse = this.unitUse;
-  //   this.unit.remarks = this.multiUnitForm.get('multiUnitRemarksControl').value;
-  //   this.unit.contact = this.contactForm.get('contactControl').value;
-  //   this.unit.user_id = Number(sessionStorage.getItem('userId'));
-
-  //   this.dataService.postUnit(this.unit).subscribe(response=>{
-  //     if(response.success === "true"){
-  //       this.unitId = response.data.id
-  //       this.dataService.postProgress(this.buildingId).subscribe(resp=>{
-  //         if(resp['success']==="true"){
-  //           console.log("marked progress")
-  //         }
-  //       });
-  //       if(this.unitUse === "Residential"){
-  //         this.registerResident(this.unitId)
-  //       }else{
-  //         this.snackBar.open('Registration complete', '', {
-  //           duration: 5000,
-  //           verticalPosition: 'bottom',
-  //           panelClass: ['success-snackbar']
-  //         });
-  //         this.router.navigate(['dashboard',this.buildingId])
-  //       }
-  //     }else if (response.success === "false"){
-  //       this.snackBar.open('Cannot register unit', '', {
-  //         duration: 5000,
-  //         verticalPosition: 'bottom',
-  //         panelClass: ['error-snackbar']
-  //       });
-  //     }else if(response.success === "error"){
-  //       this.snackBar.open('Error Registering unit', '', {
-  //         duration: 5000,
-  //         verticalPosition: 'bottom',
-  //         panelClass: ['error-snackbar']
-  //       });
-  //     }
-  //   });
-  // }
-
 
 houseOccupationListener(e){
   if(e.value === "Owned"){

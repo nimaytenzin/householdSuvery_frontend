@@ -9,6 +9,7 @@ export interface UsersData {
   age: number;
   gender:string;
   incomeEarner:string;
+  type:string;
 }
 
 export interface DropDownOptions{
@@ -52,6 +53,7 @@ export class DialogBoxComponent {
   }
 
   doAction(){
+    this.local_data.type = this.selectionType
     console.log(this.local_data)
     this.dialogRef.close({event:this.action,data:this.local_data});
   }
@@ -94,7 +96,6 @@ export class DialogBoxComponent {
       this.selectionType = e.value
       this.showDetails = true
     }else{
-      this.local_data.cid = "Minor"
       this.showDetails = false
     }
   }

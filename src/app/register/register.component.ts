@@ -21,6 +21,7 @@ export class Building{
     basement: boolean;
     jamthog:boolean;
     buildingStyle:string;
+    buildingType:string;
     structureType: string;
     buildingMaterial:string;
     floorType:string;
@@ -89,9 +90,12 @@ export class RegisterComponent implements OnInit {
     {id:'2', name:"Traditional"},
     {id:'3', name:"Composite"},
     {id:'4', name:"Informal Construction"}
-
   ]
 
+  buildingTypes: DropDownOptions[]=[
+    {id:'1', name:"Permanent"},
+    {id:'2', name:"Temporary"},
+  ]
   existancyStatuss:DropDownOptions[]=[
     {id:'1', name:"Standing"},
     {id:'2', name:"Under Construction"},
@@ -280,6 +284,7 @@ export class RegisterComponent implements OnInit {
       basement:[],
       jamthog:[],
       buildingStyle:[],
+      buildingType:[],
       structureType:[],
       buildingMaterial:[],
       floorType:[],
@@ -310,10 +315,20 @@ export class RegisterComponent implements OnInit {
 
   submit(){
     this.registerBuilding();
-    console.log(this.building)
+    // console.log(this.building)
     // // this.router.navigate(['dashboard',this.buildingId]);
     // console.log(this.building)
-    this.router.navigate(['dashboard', this.buildingId]);
+    this.dataService.postBuilding(this.building).subscribe(res=>{
+      if(res.success === "true"){
+        this.router.navigate(['dashboard', this.buildingId]);
+      }else{
+        this.snackBar.open('Registration error', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar']
+        });
+      }
+    })
   }
 
   showOtherFloorType(e){
@@ -322,6 +337,21 @@ export class RegisterComponent implements OnInit {
     }else{
       this.showOtherFloorTypes = false
     }
+  }
+
+  selectRoofMaterial($e){
+    this.building.roofingMaterial = $e.source.value.toString();
+    console.log(this.building.roofingMaterial)
+  }
+
+  selectMaterial($e){
+    this.building.buildingMaterial= $e.source.value.toString();
+    console.log(this.building.buildingMaterial)
+  }
+
+  selectWater($e){
+    this.building.waterSupply= $e.source.value.toString();
+    console.log(this.building.waterSupply)
   }
 
 
@@ -342,10 +372,9 @@ export class RegisterComponent implements OnInit {
     this.building.basement = this.buildingForm.get('basement').value;
     this.building.jamthog = this.buildingForm.get('jamthog').value;
     this.building.buildingStyle = this.buildingForm.get('buildingStyle').value;
+    this.building.buildingType = this.buildingForm.get('buildingType').value;
     this.building.structureType = this.buildingForm.get('structureType').value;
-    this.building.buildingMaterial = this.buildingForm.get('buildingMaterial').value;
     this.building.floorType = this.buildingForm.get('floorType').value;
-    this.building.roofingMaterial = this.buildingForm.get('roofingMaterial').value;
     this.building.sewerTreatment = this.buildingForm.get('sewerTreatment').value;
     this.building.wasteCollection = this.buildingForm.get('wasteCollection').value;
     this.building.wasteCollectionFrequency = this.buildingForm.get('wasteCollectionFrequency').value;
