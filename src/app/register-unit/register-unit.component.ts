@@ -498,6 +498,9 @@ reactiveForms() {
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
     this.household.members = this.dataService.familyMember
+    this.household.members.forEach(function(v:any){
+      delete v.id;
+    });
 
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
