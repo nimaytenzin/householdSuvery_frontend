@@ -51,7 +51,7 @@ export class DataTableComponent  {
   addRowData(row_obj){
     this.dataSource.push({
       id: this.i++,
-      cid:row_obj.cid,
+      idNumber:row_obj.cid,
       age:row_obj.age,
       gender:row_obj.gender,
       incomeEarner:row_obj.incomeEarner,
@@ -64,7 +64,7 @@ export class DataTableComponent  {
   updateRowData(row_obj){
     this.dataSource = this.dataSource.filter((value,key)=>{
       if(value.id === row_obj.id){
-        value.cid = row_obj.cid;
+        value.idNumber= row_obj.cid;
         value.age = row_obj.age;
         value.gender = row_obj.gender;
       }
@@ -75,7 +75,7 @@ export class DataTableComponent  {
   }
   deleteRowData(row_obj){
     this.dataSource = this.dataSource.filter((value,key)=>{
-      return value.cid != row_obj.cid;
+      return value.idNumber!= row_obj.cid;
     });
     this.dataservice.familyMember = this.dataSource
 

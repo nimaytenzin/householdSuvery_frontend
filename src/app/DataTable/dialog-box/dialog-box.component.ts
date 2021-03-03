@@ -96,7 +96,6 @@ export class DialogBoxComponent {
       this.selectionType = e.value
       this.showDetails = true
     }else{
-      this.local_data.cid = "Minor"
       this.showDetails = false
     }
   }

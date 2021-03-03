@@ -441,7 +441,7 @@ reactiveForms() {
   }
 
   submit(){
-    this.household.structure_id = this.houseHoldId;
+    this.household.structure_id = this.buildingId;
     this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
@@ -498,15 +498,16 @@ reactiveForms() {
 
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
-      if(res.success === "true"){
-        this.router.navigate(['dashboard', this.buildingId]);
-      }else{
-        this.snackBar.open('Registration error', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }
+      console.log(res)
+      // if(res.success === "true"){
+      //   this.router.navigate(['dashboard', this.buildingId]);
+      // }else{
+      //   this.snackBar.open('Registration error', '', {
+      //     duration: 5000,
+      //     verticalPosition: 'bottom',
+      //     panelClass: ['error-snackbar']
+      //   });
+      // }
     })
  
     // this.router.navigate(['dashboard', this.buildingId]);
