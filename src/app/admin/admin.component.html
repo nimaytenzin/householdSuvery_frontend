@@ -30,31 +30,6 @@
     </div>
   </div>
   <div class = "scroll" style="margin: 0;">
-    <h3 style="text-align: center;">Admin</h3>
-   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
-    <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
-
-      <div style="display: flex; flex-direction: column;">
-        <div style="display: flex; flex-direction: row; padding: 0;" >  
-          <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
-            <p style="font-size: small;">Total Buildings</p>
-             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
-           </mat-card>
-           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
-             <p style="font-size: small;">Total Completed</p>
-             <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
-           </mat-card>
-           <h3 class="lol">Status</h3>
-        </div>
-        <hr>
-        <div style="display: flex; flex-direction: row;">
-          <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-        </div>
-      </div>
-      </div>
-      
-   </div>
-    <br>
     <div class= "seem" style="width: 100%;display: flex; flex-direction:column;">
       <form  [formGroup]="searchForm">
         <mat-form-field style="width: 90%;">
@@ -69,6 +44,14 @@
         
       </form>
     </div>
+    <br>
+    <br>
+   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
+   
+      
+   </div>
+    <br>
+   
     <br>
       <br>
     <form [formGroup]="zoneForm" *ngIf="selectZone">
@@ -99,7 +82,26 @@
       <button mat-flat-button color="primary" (click)= "zoneSearch()" style="width : 100%;">Go To Selected</button>
     </form>
     <!-- <div *ngIf="buildingInfo"> -->
- 
+      <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
+
+        <div style="display: flex; flex-direction: column;">
+          <div style="display: flex; flex-direction: row; padding: 0;" >  
+            <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
+              <p style="font-size: small;">Total Buildings</p>
+               <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
+             </mat-card>
+             <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
+               <p style="font-size: small;">Total Completed</p>
+               <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
+             </mat-card>
+             <h3 class="lol">Status</h3>
+          </div>
+          <hr>
+          <div style="display: flex; flex-direction: row;">
+            <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+          </div>
+        </div>
+      </div>
     <div  >
       <h3>Details</h3>
       <h3>Building Details</h3>    
