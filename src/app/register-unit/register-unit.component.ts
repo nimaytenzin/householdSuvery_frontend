@@ -83,6 +83,7 @@ export class FamilyMember{
   age:number;
   gender:string;
   type:string;
+  incomeEarner:boolean;
 }
 
 
@@ -492,104 +493,27 @@ reactiveForms() {
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
  
-    this.router.navigate(['dashboard', this.buildingId]);
+    // this.router.navigate(['dashboard', this.buildingId]);
 
-    // this.registerUnit();
-    // this.snackBar.open('Unit Registration Complete', '', {
-    //   duration: 5000,
-    //   verticalPosition: 'bottom',
-    //   panelClass: ['success-snackbar']
-    // });
-    // this.router.navigate(['dashboard',this.buildingId]);
+    // this.dataService.postHousehold(this.household).subscribe(res=>{
+    //   console.log(res)
+    //   if(res.success === "true"){
+    //     let hhId = res.data.id
+    //     let memberobj= this.dataService.familyMember
+    //     memberobj.
+
+    //   }
+    // })
+    console.log("family emebr")
+    console.log(this.dataService.familyMember)
+    this.snackBar.open('Unit Registration Complete', '', {
+      duration: 5000,
+      verticalPosition: 'bottom',
+      panelClass: ['success-snackbar']
+    });
+    this.router.navigate(['dashboard',this.buildingId]);
 
   }
-  // registerResident(unitid){
-  //   this.resident.unit_id = unitid;
-  //   this.resident.structure_id= Number(sessionStorage.getItem('buildingId'));
-  //   this.resident.headHousehold = this.residentForm.get('headHouseholdControl').value;
-  //   this.resident.contactNumberHead = this.residentForm.get('contactNumberHeadControl').value;
-  //   this.resident.cid = this.residentForm.get('cidControl').value;
-  //   this.resident.bhutaneseNationals = this.residentForm.get('bhutaneseNationalsControl').value;
-  //   this.resident.nonBhutaneseNationals= this.residentForm.get('nonBhutaneseNationalsControl').value;
-  //   this.resident.nationalityRemarks = this.residentForm.get('nationalityRemarksControl').value;
-  //   this.resident.buddhismMale = this.residentForm.get('buddhismMaleControl').value;
-  //   this.resident.buddhismFemale = this.residentForm.get('buddhismFemaleControl').value;
-  //   this.resident.hinduismMale = this.residentForm.get('hinduismMaleControl').value;
-  //   this.resident.hinduismFemale = this.residentForm.get('hinduismFemaleControl').value;
-  //   this.resident.christianityMale = this.residentForm.get('christianityMaleControl').value;
-  //   this.resident.christianityFemale = this.residentForm.get('christianityFemaleControl').value;
-  //   this.resident.otherMaleR = this.residentForm.get('otherMaleRControl').value;
-  //   this.resident.otherFemaleR = this.residentForm.get('otherFemaleRControl').value;
-  //   this.resident.maleBelow6= this.residentForm.get('maleBelow6Control').value;
-  //   this.resident.femaleBelow6 = this.residentForm.get('femaleBelow6Control').value;
-  //   this.resident.male617 = this.residentForm.get('male617Control').value;
-  //   this.resident.female617 = this.residentForm.get('female617Control').value;
-  //   this.resident.male1824 =  this.residentForm.get('male1824Control').value;
-  //   this.resident.female1824 = this.residentForm.get('female1824Control').value;
-  //   this.resident.male2559 = this.residentForm.get('male2559Control').value;
-  //   this.resident.female2559 = this.residentForm.get('female2559Control').value;
-  //   this.resident.male60 = this.residentForm.get('male60Control').value;
-  //   this.resident.female60 = this.residentForm.get('female60Control').value;
-
-   
-  //   this.resident.armedMale = this.residentForm.get("armedMaleControl").value;
-  //   this.resident.armedFemale = this.residentForm.get("armedFemaleControl").value;
-  //   this.resident.civilMale = this.residentForm.get("civilMaleControl").value;
-  //   this.resident.civilFemale = this.residentForm.get("civilFemaleControl").value;
-  //   this.resident.farmerMale = this.residentForm.get("farmerMaleControl").value;
-  //   this.resident.farmerFemale = this.residentForm.get("farmerFemaleControl").value;
-  //   this.resident.houseHusband = this.residentForm.get("houseHusbandControl").value;
-  //   this.resident.houseWife = this.residentForm.get("houseWifeControl").value;
-  //   this.resident.jobSeekerMale = this.residentForm.get("jobSeekerMaleControl").value;
-  //   this.resident.jobSeekerFemale = this.residentForm.get("jobSeekerFemaleControl").value;
-  //   this.resident.monk = this.residentForm.get("monkControl").value;
-  //   this.resident.nun = this.residentForm.get("nunControl").value;
-  //   this.resident.privateEmployeeMale = this.residentForm.get("privateEmployeeMaleControl").value;
-  //   this.resident.privateEmployeeFemale = this.residentForm.get("privateEmployeeFemaleControl").value;
-  //   this.resident.retireeMale = this.residentForm.get("retireeMaleControl").value;
-  //   this.resident.retireeFemale = this.residentForm.get("retireeFemaleControl").value;
-  //   this.resident.corporateMale = this.residentForm.get("corporateMaleControl").value;
-  //   this.resident.corporateFemale = this.residentForm.get("corporateFemaleControl").value;
-  //   this.resident.studentMale = this.residentForm.get("studentMaleControl").value;
-  //   this.resident.studentFemale = this.residentForm.get("studentFemaleControl").value;
-  //   this.resident.othersMale = this.residentForm.get("othersMaleControl").value;
-  //   this.resident.othersFemale = this.residentForm.get("othersFemaleControl").value;
-  //   this.resident.familyIncome = this.residentForm.get("familyIncomeControl").value;
-  //   this.resident.differentlyAbled = this.residentForm.get("differentlyAbledControl").value;
-  //   this.resident.electricCar = this.residentForm.get("electricCarControl").value;
-  //   this.resident.hybridCar = this.residentForm.get("hybridCarControl").value;
-  //   this.resident.taxi = this.residentForm.get("taxiControl").value;
-  //   this.resident.resParking = this.residentForm.get("resParkingControl").value;
-  //   this.resident.otherVehicle = this.residentForm.get("otherVehicleControl").value;
-  //   this.resident.busTransport = this.residentForm.get("busTransportControl").value;
-  //   this.resident.ownLand = this.residentForm.get("ownLandControl").value;
-  //   this.resident.workPlaceSchool = this.residentForm.get("workPlaceSchoolControl").value;
-  //   this.resident.ownHouse = this.residentForm.get("ownHouseControl").value;
-  //   this.resident.residentRemarks = this.residentForm.get("residentRemarksControl").value;
-
-  //   this.dataService.postResident(this.resident).subscribe(response=>{
-  //     if(response.success === "true"){
-  //       this.snackBar.open('Registration complete', '', {
-  //         duration: 5000,
-  //         verticalPosition: 'bottom',
-  //         panelClass: ['success-snackbar']
-  //       });
-  //       this.router.navigate(['dashboard',this.buildingId])
-  //     }else if (response.success === "false"){
-  //       this.snackBar.open('Cannot register unit', '', {
-  //         duration: 5000,
-  //         verticalPosition: 'bottom',
-  //         panelClass: ['error-snackbar']
-  //       });
-  //     }else if(response.success === "error"){
-  //       this.snackBar.open('Error Registering unit', '', {
-  //         duration: 5000,
-  //         verticalPosition: 'bottom',
-  //         panelClass: ['error-snackbar']
-  //       });
-  //     }
-  //   })
-  // }
   // registerUnit(){
   //   this.unit.structure_id=Number(sessionStorage.getItem('buildingId'));
   //   this.unit.unitNumber = this.multiUnitForm.get('multiUnitIdControl').value;
