@@ -2,7 +2,6 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import * as L from 'leaflet';
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import 'leaflet.heat';
 import { HttpClient } from '@angular/common/http';
 import { Data, Router } from '@angular/router';
 import { DataService } from '../service/data.service';
@@ -69,11 +68,7 @@ interface IdName{
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  //chart js
-  canvas1: any;
-  ctx1: any;
-  canvas2: any;
-  ctx2: any;
+
 
   totalCases: number;
   totalHotspotBuilding: number;
@@ -306,7 +301,6 @@ export class AdminComponent implements OnInit {
     this.getDzongkhagList();
     this.reactiveForm();
     this.renderChart();
-    this.casesByDzongkhag();
     this.caseOverview();
 
     const zoneId = sessionStorage.getItem('zoneId');
@@ -333,120 +327,11 @@ export class AdminComponent implements OnInit {
 
   renderChart(){
 
-    this.canvas1 = document.getElementById('myChart');
-    this.ctx1 = this.canvas1.getContext('2d');
+    
     var dates =[];
     var cases =[];
 
-    fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/dailyCovidCase")
-        .then(res => res.json())
-        .then(data => {
-          for(let i =0; i<data.length; i++){
-            dates.push(data[i].date)
-            cases.push(data[i].cases)
-          }
-          const myChart = new Chart(this.ctx1, {
-            type: 'line',
-            data: {
-            labels: dates,
-            datasets: [{
-                  data: cases,
-                  backgroundColor:"transparent",
-                  borderColor:"rgb(63,81,181)",
-                  pointRadius: 5,
-                  pointHoverRadius: 10,
-                  pointHitRadius: 30,
-                  pointBorderWidth: 2,
-            }]
-            },
-           
-            options: {
-              
-              title: {
-                    display: true,
-                    text: 'Daily Covid Cases'
-                },
-              lengend:{
-                display: false
-             },
-             scales: {
-              xAxes: [{
-                  gridLines: {
-                      display:false
-                  }
-              }],
-              yAxes: [{
-                  gridLines: {
-                      display:false
-                  }   
-              }]
-          }
-            }
-        
-            });  
-          
-        })
-    
-  }
-
-  casesByDzongkhag(){
-    this.canvas2 = document.getElementById('casesByDzongkhag');
-    this.ctx2 = this.canvas2.getContext('2d');
   
-    fetch("https://raw.githubusercontent.com/nimaytenzin/cdrs/main/dzongkhagCase") 
-        .then(res => res.json())
-        .then(data => {
-          var dataLabels = [];
-          var dataData= [];
-          var backColor =[];
-          for(let i = 0; i< data.length; i ++){
-            dataData.push(data[i].cases)
-            dataLabels.push(data[i].dzongkhag)
-            backColor.push(data[i].background)
-
-          }
-        
-          var myChart = new Chart(this.ctx2, {
-            type: 'bar',
-            data: {
-              labels: dataLabels,
-              
-              datasets: [{
-                label: 'cases',
-                data: dataData,
-                backgroundColor: backColor,
-                borderWidth: 1
-              }]
-            },
-            plugins: [ChartDataLabels],
-            options: {
-              responsive: true,
-
-              title: {
-                display: true,
-                text: 'Cases By Dzongkhag'
-            },
-              lengend:{
-                display: false
-            },
-            scales: {
-              xAxes: [{
-                  gridLines: {
-                      display:false
-                  }
-              }],
-              yAxes: [{
-                  gridLines: {
-                      display:false
-                  }   
-              }]
-      }
-            }
-          });
-        })
-          
-              
-        
   }
 
 

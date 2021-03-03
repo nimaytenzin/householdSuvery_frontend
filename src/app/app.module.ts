@@ -9,6 +9,8 @@ import { ErrorComponent } from './error/error.component';
 import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterAtmComponent } from './register-atm/register-atm.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 import { MatTableModule } from '@angular/material/table'
 import {
   MatButtonModule,
@@ -82,7 +84,8 @@ import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component'
     MatListModule,
     MatCheckboxModule,
     WebcamModule,
-    MatTableModule
+    MatTableModule,
+    MatProgressBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}

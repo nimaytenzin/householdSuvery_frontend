@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'dashboard/:id', component: DashboardComponent },
   {path: 'building', component: RegisterComponent },
   {path: 'unit', component: RegisterUnitComponent},
-  {path: 'admin', component: AdminComponent, canActivate:[RouteGuard]},
+  {path: 'admin', component: AdminComponent},
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},
   // {path: 'changepassword', component: ChangePasswordComponent, canActivate: [RouteGuard]},
   {path: 'map', component: MapComponent},
