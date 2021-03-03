@@ -98,12 +98,20 @@ export class DataService {
         catchError(this.handleError)
       )
   }
-  getUnits(buildingId){
+  getHouseholds(sid){
     return this.http
-      .get(`${this.API_URL}/getunits/${buildingId}`,this.httpOptions)
+      .get<any>(`${this.API_URL}/household/get-all/${sid}`,this.httpOptions)
       .pipe(
         catchError(this.handleError)
-      );
+      )
+  }
+
+  getAHousehold(hhid){
+    return this.http
+      .get<any>(`${this.API_URL}/household/get/${hhid}`,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
   
   getStructure(subzoneID){
@@ -190,15 +198,19 @@ export class DataService {
   }
 
   postCompletion(buildingId) {
-    return this.http
-      .get(`${this.API_URL}/markComplete/${buildingId}`,  this.httpOptions)
+    let data = {
+      "structure_id":buildingId
+    }
+    return this.http.patch<any>(`${this.API_URL}/structure/mark-complete`,data,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
   postProgress(bid){
-    return this.http
-      .get(`${this.API_URL}/markProgress/${bid}`,  this.httpOptions)
+    let data = {
+      "structure_id":bid
+    }
+    return this.http.patch<any>(`${this.API_URL}/structure/mark-progress`,data, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

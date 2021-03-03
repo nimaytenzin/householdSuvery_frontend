@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate([path]);
   }
   getUnits(bid){
-    this.dataService.getUnits(bid).subscribe(response=>{
+    this.dataService.getHouseholds(bid).subscribe(response=>{
       if(response['success']=="true"){
         this.units=response['data'];
       }else if(response['success']=="false"){
@@ -66,6 +66,10 @@ export class DashboardComponent implements OnInit {
       }
     }) 
   } 
+
+  editUnit(id){
+    console.log(id)
+  }
 
   gotocamera(){
     this.router.navigate(['camera']);

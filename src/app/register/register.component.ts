@@ -320,7 +320,17 @@ export class RegisterComponent implements OnInit {
     // console.log(this.building)
     this.dataService.postBuilding(this.building).subscribe(res=>{
       if(res.success === "true"){
-        this.router.navigate(['dashboard', this.buildingId]);
+        this.dataService.postProgress(this.buildingId).subscribe(res=>{
+          if(res.success === "true"){
+            this.router.navigate(['dashboard', this.buildingId]);
+          }else{
+            this.snackBar.open('Registration error', '', {
+              duration: 5000,
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar']
+            });
+          }
+        })
       }else{
         this.snackBar.open('Registration error', '', {
           duration: 5000,
@@ -378,8 +388,6 @@ export class RegisterComponent implements OnInit {
     this.building.sewerTreatment = this.buildingForm.get('sewerTreatment').value;
     this.building.wasteCollection = this.buildingForm.get('wasteCollection').value;
     this.building.wasteCollectionFrequency = this.buildingForm.get('wasteCollectionFrequency').value;
-    this.building.waterSupply = this.buildingForm.get('waterSupply').value;
-
   }
   
   
