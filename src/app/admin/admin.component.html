@@ -3,17 +3,6 @@
     <div class="map-frame">
       <div id="map">
         
-        <div class="leaflet-bottom leaflet-right">
-            <button style="
-            width: 42px;
-            border-radius: 23px;
-            height: 42px;
-            background: #ffffffa3;
-            margin-bottom: 20px;
-            border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getMyLocation()">
-              <mat-icon style="color: blue;">location_searching</mat-icon>
-            </button>
-        </div>
         <div class="leaflet-top leaflet-right">
           <mat-label style="
           margin-bottom: 20px;
@@ -26,53 +15,10 @@
         </div>
       </div>
     </div>
-    <div class="leaflet-top leaflet-left">
-    </div>
+  
   </div>
   <div class = "scroll" style="margin: 0;">
-    <h3 style="text-align: center;">National Covid Cases Summary |After December 20,2020</h3>
-   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
-    <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
-
-      <div style="display: flex; flex-direction: column;">
-        <div style="display: flex; flex-direction: row; padding: 0;" >
-            <img src="../../assets/bhutan.png" alt="" width="100px" height="auto">       
-          <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
-            <p style="font-size: small;">National: Total Cases</p>
-             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalCases}}</h1>
-           </mat-card>
-           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
-             <p style="font-size: small;">Total HotSpot Building</p>
-             <h1 style="color: red; font-weight: bolder;">{{totalHotspotBuilding}}</h1>
-           </mat-card>
-           <h3 class="lol">National</h3>
-        </div>
-        <hr>
-        <div style="display: flex; flex-direction: row;">
-         
-            <img src="../../assets/thimphu.png" alt="" width="100px">
-          
-          <mat-card style="align-items: center; justify-content: center;padding-top: 2px;">
-            <p style="font-size: small;">Thimphu: Total Cases</p>
-             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{thimphuCases}}</h1>
-           </mat-card>
-           <mat-card style="align-items: center; justify-content: center;padding-top: 2px;">  
-             <p style="font-size: small;">Total HotSpot Building</p>
-             <h1 style="color: red; font-weight: bolder;">{{thimphuBuildings}}</h1>
-           </mat-card>
-           <h3 class="lol">Thimphu</h3>
-        </div>
-      </div>
-      </div>
-      
-   </div>
-    <div>
-     
-      <canvas id="myChart" width="620px " height="320px"></canvas>
-      <canvas id="casesByDzongkhag" width="620px " height="330px"></canvas>
-    </div>
-    <br>
-    <br>
+    <h3 style="text-align: center;">Admin Dashboard | Houshold Survey</h3>
 
     <div class= "seem" style="width: 100%;display: flex; flex-direction:column;">
       <form  [formGroup]="searchForm">
@@ -83,74 +29,100 @@
         <div style="display: flex; flex-direction: row; justify-content: space-between;">
           <button mat-flat-button color="primary" (click)="submit()" style="width : 10%;"><mat-icon appearance="none">search</mat-icon></button>
           <button  mat-flat-button color="primary" style="width:fit-content;" (click) = reset(); >Clear  | <mat-icon appearance="none">cached</mat-icon></button>
-          <button mat-flat-button color="primary" (click)=showSelectZone();>Select Zone</button>
         </div>
         
       </form>
     </div>
     <br>
-      <br>
-    <form [formGroup]="zoneForm" *ngIf="selectZone">
-      
-      <mat-form-field class="justifier">
+    <form [formGroup]="zoneForm"  style="padding: 0%;margin: 0%;display: flex;flex-direction: row;">
+      <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
         <mat-label>Dzongkhag</mat-label>
-        <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" (selectionChange) = "changeDiff($event)" required>
+        <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" required>
           <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">
             {{dzongkhag.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="justifier" *ngIf="showSuperZone" >
-        <mat-label>Super Zone</mat-label>
+      <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
+        <mat-label>Thromdes</mat-label>
         <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)" >
           <mat-option *ngFor="let zone of zones" [value]="zone.id">
             {{zone.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="justifier" *ngIf="showSubZone">
-        <mat-label>Zone</mat-label>
+      <mat-form-field class="justifier " style="padding: 0%;margin: 0%;">
+        <mat-label>Zones</mat-label>
         <mat-select formControlName="subZoneControl" name="subZone" >
           <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
             {{subZone.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-flat-button color="primary" (click)= "zoneSearch()" style="width : 100%;">Go To Selected</button>
+      <button mat-flat-button  (click)= "zoneSearch()" style="width : 100%;">Go To Selected</button>
     </form>
- 
-    <div *ngIf="buildingInfo">
-      <h3>Details</h3>
-      <h3>Building Details</h3>    
+
+<br>
+   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;" *ngIf="progressShow">
+    <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
+
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row; padding: 0;" >     
+          <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
+            <p style="font-size: small;">Total Buildings</p>
+             <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalBuilding}}</h1>
+           </mat-card>
+           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
+             <p style="font-size: small;">Total Completed</p>
+             <h1 style="color: red; font-weight: bolder;">{{totalCompleted}}</h1>
+           </mat-card>
+           <h3 class="lol">Progress</h3>
+        </div>
+        <hr>
+        <div style="display: flex; flex-direction: row;">
+          <mat-progress-bar mode="determinate" [value]="precentCompleted"></mat-progress-bar>
+        </div>
+      </div>
+      </div>
+      
+   </div>
+  
+    <br>
+
+   
+    <!-- <div *ngIf="buildingInfo"> -->
+
+    <div *ngIf="buildingInfo" >
+      <h3>Building Details</h3>  
+      <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;">Unlock for editing</button>
+      <button mat-flat-button color="primary" (click)=editBuilding(); style="float: left;">Edit Building Details</button>
+      <br>
+    
       <table style = "width:100%;">
         <tr>
           <th>Building ID</th>
           <td>{{buildingId}}</td>
         </tr>
         <tr>
-          <th>Building Name</th>
-          <td>{{buildingInfo.BuildingName}}</td>
-        </tr>
-        <tr>
-          <th>Building Owner</th>
-          <td>{{buildingInfo.BuildingOwner}}</td>
-        </tr>
-        <tr>
-          <th>Contact of owner</th>
-          <td>{{buildingInfo.Contact}}</td>
-        </tr>
-        <tr>
           <th>Building Use</th>
-          <td>{{buildingInfo.BuildingUse}}</td>
+          <td>Residential</td>
+        </tr>
+        Owner Details
+        <tr>
+          <th>CID</th>
+          <td>10302000402</td>
         </tr>
         <tr>
-          <th>Remarks</th>
-          <td>{{buildingInfo.Remarks}}</td>
+          <th>Name</th>
+          <td>Nima Yoezer Tenzin</td>
         </tr>
-
+        <tr>
+          <th>Contact</th>
+          <td>17263764</td>
+        </tr>
         <tr>
           <th>Total Units</th>
-          <td>{{units.length}}</td>
+          <td>12</td>
         </tr>
       </table>
     </div>
@@ -158,99 +130,116 @@
 <br>
     
 
-    <div *ngIf="units">
+    <div  *ngIf="buildingInfo">
       Unit Details
 
-      <table style = "width:100%;">
-        <tr>
-          <th>Unit Number</th>
-          <th>Unit Use</th>
-          <th>Unit Name</th>
-          <th>Contact Number</th>
-          <th>Details</th>
- 
-        </tr>
-        <tr *ngFor = "let unit of units">
-          <td>{{unit.unitNumber}}</td>
-          <td>{{unit.unitUse}}</td>
-          <td>{{unit.unitName}}</td>
-          <td>{{unit.contact}}</td>
-          <td>
-            <a *ngIf="unit.unitUse === 'Residential'" (click)="showResident(unit.id)">Details</a>
-          </td>
-         
-        </tr>
-      </table>
+      <table mat-table [dataSource]="units" class="mat-elevation-z8">
 
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> Unit ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitNumber}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Unit Use </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitUse}} </td>
+        </ng-container>
+      
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Unit Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Contact </th>
+          <td mat-cell *matCellDef="let element"> {{element.contact}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="view">
+          <th mat-header-cell *matHeaderCellDef> View Details </th>
+          <td mat-cell *matCellDef="let element"> view </td>
+        </ng-container>
+
+        <ng-container matColumnDef="update">
+          <th mat-header-cell *matHeaderCellDef> Update </th>
+          <td mat-cell *matCellDef="let element"> Update </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <td mat-cell *matCellDef="let element"> Delete </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      
       
     </div>
+    
     <br><br>
-    <div *ngIf="resident">
-      Resident Details
+    <div *ngIf="residentTableShow">
+      Household Details
       <table style = "width:100%;">
         <tr>
           <th>Head of household</th>
-          <td>{{this.resident[0]['headHousehold']}}</td>
+          <td>Nima Yoezer</td>
         </tr>
         <tr>
           <th>Famile Income</th>
-          <td>{{this.resident[0]['familyIncome']}}</td>
+          <td>125000</td>
         </tr>
         <tr>
           <th>Contact Number</th>
-          <td>{{this.resident[0]['contactNumberHead']}}</td>
+          <td>17558645</td>
         </tr>
         <tr>
           <th>CID/ Permit No.</th>
-          <td>{{this.resident[0]['cid']}}</td>
+          <td>10302000555</td>
         </tr>
         <tr>
-          <th>Male Below 6</th>
-          <td>{{this.resident[0]['maleBelow6']}}</td>
+          <th>Total Household Member</th>
+          <td>4</td>
         </tr>
         <tr>
-          <th>Female Below 6</th>
-          <td>{{this.resident[0]['femaleBelow6']}}</td>
+          <th>Total Income Earner</th>
+          <td>5</td>
         </tr>
+
         <tr>
-          <th>Male 6 to 17</th>
-          <td>{{this.resident[0]['male617']}}</td>
+          <th>View Family Member Details</th>
+          <td><button (click)="showFamilyMemberDetail(1)">Clcik</button></td>
         </tr>
+      </table>
+
+
+     
+    </div>
+
+
+
+    <br>
+
+    <div *ngIf="showFamilyMembers">
+      Family Member Details
+     
+      <table style = "width:100%;">
         <tr>
-          <th>Female 6 to 17</th>
-          <td>{{this.resident[0]['female617']}}</td>
+          <th>Identification Type</th>
+          <th>Identification Number</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Is Income Earner?</th>
         </tr>
-        <tr>
-          <th>Male 18 to 24</th>
-          <td>{{this.resident[0]['male1824']}}</td>
-        </tr>
-        <tr>
-          <th>Female 18 to 24</th>
-          <td>{{this.resident[0]['female1824']}}</td>
-        </tr>
-        <tr>
-          <th>Male 25 to 59</th>
-          <td>{{this.resident[0]['male2559']}}</td>
-        </tr>
-        <tr>
-          <th>Female 25 to 59</th>
-          <td>{{this.resident[0]['female2559']}}</td>
-        </tr>
-        <tr>
-          <th>Male above 59</th>
-          <td>{{this.resident[0]['male60']}}</td>
-        </tr>
-        <tr>
-          <th>Female above 59</th>
-          <td>{{this.resident[0]['female60']}}</td>
-        </tr>
-        <tr>
-          <th>Remarks</th>
-          <td>{{this.resident[0]['residentRemarks']}}</td>
+        <tr *ngFor = "let member of familyMembers">
+          <td>{{member.type}}</td>
+          <td>{{member.cid}}</td>
+          <td>{{member.gender}}</td>
+          <td>{{member.age}}</td>
+          <td>{{member.incomeEarner}}</td>         
         </tr>
       </table>
     </div>
-    <br>
 
     <div>
       <mat-list-item *ngFor="let image of imgs">
@@ -260,4 +249,4 @@
   </div>
   </div>
 
-</div>
+</div> 
