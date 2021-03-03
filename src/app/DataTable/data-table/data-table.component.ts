@@ -6,10 +6,11 @@ import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
   id:number;
-  cid: string;
+  idNumber: string;
   age: number;
   gender:string;
   incomeEarner:string;
+  type:string;
 }
 
 const ELEMENT_DATA: UsersData[] = [
@@ -53,7 +54,8 @@ export class DataTableComponent  {
       cid:row_obj.cid,
       age:row_obj.age,
       gender:row_obj.gender,
-      incomeEarner:row_obj.incomeEarner
+      incomeEarner:row_obj.incomeEarner,
+      type:row_obj.type
     });
     this.table.renderRows();
     this.dataservice.familyMember = this.dataSource
