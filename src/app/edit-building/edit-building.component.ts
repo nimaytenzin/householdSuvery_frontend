@@ -113,25 +113,20 @@ export class EditBuildingComponent implements OnInit {
   ]
 
   buildingTopologies :DropDownOptions[]=[
-    {id:'2', name:"Rammed Earth"},
-    {id:'3', name:"Adobe Block"},
-    {id:'4', name:"CSEB"},
-    {id:'5', name:"Timber"},
-    {id:'6', name:"Ekra"},
-    {id:'8', name:"Concrete Block with No Reinforcement"},
-    {id:'9', name:"Concrete Block with Reinforcement"},
-    {id:'10', name:"Red Bricks with No Reinforcement"},
-    {id:'11', name:"Red Bricks with Reinforcement"},
-    {id:'12', name:"Rubble Stone with Mud Mortar"},
-    {id:'13', name:"Rubble Stone with Cement Mortar"},
-    {id:'14', name:"Rubble Stone with Cement Mortar and Reinforcement"},
-    {id:'15', name:"Dressed Stone with Mud Mortar"},
-    {id:'16', name:"Dressed Stone with Cement Mortar"},
-    {id:'17', name:"Dressed Stone with Cement Mortar and Reinforcement"},
-    {id:'18', name:"Cut Stone with Mud Mortar"},
-    {id:'19', name:"Cut Stone with Cement Mortar"},
-    {id:'20', name:"Cut Stone with Cement Mortar and Reinforcement"},
-    {id:'21', name:"Others"}
+    {id:'1', name:"Rammed Earth"},
+    {id:'2', name:"Adobe Block"},
+    {id:'3', name:"CSEB(Cement Stabilized Earth Block)"},
+    {id:'4', name:"Timber"},
+    {id:'5', name:"Ekra"},
+    {id:'6', name:"Confined Masonry"},
+    {id:'7', name:"Concrete Blocks"},
+    {id:'8', name:"Red Bricks"},
+    {id:'9', name:"Rubble Stone Masonry"},
+    {id:'10', name:"Dressed Stone Masonry with Mud Mortar"},
+    {id:'11', name:"Dressed Stone Masonry with Cement Mortar"},
+    {id:'12', name:"Cut Stone Masonry with Mud Mortar"},
+    {id:'13', name:"Cut Stone Masonry with Cement Mortar"},
+    {id:'14', name:"Others"}
 
   ]
 
