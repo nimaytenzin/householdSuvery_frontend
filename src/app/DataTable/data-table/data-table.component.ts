@@ -5,7 +5,7 @@ import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.comp
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
-  household_id:number;
+  hhId:number;
   id:number;
   cid: string;
   age: number;
@@ -56,7 +56,7 @@ export class DataTableComponent  {
       age:row_obj.age,
       gender:row_obj.gender,
       incomeEarner:row_obj.incomeEarner,
-      household_id:123
+      hhId:123
     });
     this.table.renderRows();
     this.dataservice.familyMember = this.dataSource

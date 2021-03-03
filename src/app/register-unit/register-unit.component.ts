@@ -73,15 +73,16 @@ export class Household{
     yearAcquisition: number;
     purchasePrice: number;
     meanFinance: string;
-    emi:number
+    emi:number;
 }
 
 
 export class FamilyMember{
-  household_id:number;
-  cid:string;
+  hhId:number;
+  idNumber:number;
   age:number;
-  gender:string
+  gender:string;
+  type:string;
 }
 
 

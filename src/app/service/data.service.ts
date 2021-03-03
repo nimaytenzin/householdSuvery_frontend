@@ -122,6 +122,12 @@ export class DataService {
       );
   }
 
+  postHousehold(data){
+    return this.http.post<any>(`${this.API_URL}/household/create`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   postRegistration(item) {
     return this.http
       .post(`${this.API_URL}/household-details`, item, this.httpOptions)
