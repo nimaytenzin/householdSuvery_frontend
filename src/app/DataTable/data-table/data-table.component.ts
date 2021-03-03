@@ -5,13 +5,11 @@ import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.comp
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
-  hhId:number;
   id:number;
   cid: string;
   age: number;
   gender:string;
   incomeEarner:string;
-
 }
 
 const ELEMENT_DATA: UsersData[] = [
@@ -55,8 +53,7 @@ export class DataTableComponent  {
       cid:row_obj.cid,
       age:row_obj.age,
       gender:row_obj.gender,
-      incomeEarner:row_obj.incomeEarner,
-      hhId:123
+      incomeEarner:row_obj.incomeEarner
     });
     this.table.renderRows();
     this.dataservice.familyMember = this.dataSource
