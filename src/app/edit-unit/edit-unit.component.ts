@@ -342,55 +342,54 @@ ngOnInit() {
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
     if(res.success==="true"){
       this.householdForm.patchValue({
+        // unidID:res.data.unitId,
+        // familySharing:res.data.,
+        // unitOwnership:res.data.,
+        // unitUse:res.data.,
+        // numberOfRooms:res.data.,
 
-    unidID:res.data.,
-    familySharing:res.data.,
-    unitOwnership:res.data.,
-    unitUse:res.data.,
-    numberOfRooms:res.data.,
+        // cidHoh:res.data.,
+        // nameHoh:res.data.,
+        // genderHoh:res.data.,
+        // ageHoh:res.data.,
+        // maritalStatusHoh:res.data.,
+        // employmentStatus:res.data.,[],
+        // workAgencyHoh:res.data.,
+        // serviceYearHoh:res.data.,
+        // workPlaceDistanc:res.data.,,
+        // modeTransport:res.data.,
+        // commutingCost:res.data.,
+        // utilityBills:res.data.,
 
-    cidHoh:res.data.,
-    nameHoh:res.data.,
-    genderHoh:res.data.,
-    ageHoh:res.data.,
-    maritalStatusHoh:res.data.,
-    employmentStatus:res.data.,[],
-    workAgencyHoh:res.data.,
-    serviceYearHoh:res.data.,
-    workPlaceDistanc:res.data.,,
-    modeTransport:res.data.,
-    commutingCost:res.data.,
-    utilityBills:res.data.,
+        // numberHouseholdM:res.data.,rs:[],
+        // numberIncomeEarn:res.data.,[],
+        // numberSchoolGoer:res.data.,,
+        // monthlyIncome:res.data.,
+        // ownHouse:res.data.,
+        
 
-    numberHouseholdM:res.data.,rs:[],
-    numberIncomeEarn:res.data.,[],
-    numberSchoolGoer:res.data.,,
-    monthlyIncome:res.data.,
-    ownHouse:res.data.,
-    
-
-    monthlyRent:res.data.,
-    rentalType:res.data.,
-    howLongLiving:res.data.,
-    rentIncrease:res.data.,
-    rentIncreaseFive:res.data.,s:[],
-    rentWaiver:res.data.,
-    rentWaiverAmount:res.data.,
-    hindrance:res.data.,
-    hindranceOthers:res.data.,
-    complaintRespons:res.data.,,
-    maintenanceFrequ:res.data.,:[],
-    waterAdequacy:res.data.,
-    parkingAdequacy:res.data.,
-    accessAdequacy:res.data.,
-    femaleSafety:res.data.,
-    publicTransportA:res.data.,s:[],
-    ownedUnitType:res.data.,
-    meansOfOwning:res.data.,
-    acquisitionYear:res.data.,
-    costPrice:res.data.,
-    financeMode:res.data.,
-    monthlyEm:res.data.,
+        // monthlyRent:res.data.,
+        // rentalType:res.data.,
+        // howLongLiving:res.data.,
+        // rentIncrease:res.data.,
+        // rentIncreaseFive:res.data.,s:[],
+        // rentWaiver:res.data.,
+        // rentWaiverAmount:res.data.,
+        // hindrance:res.data.,
+        // hindranceOthers:res.data.,
+        // complaintRespons:res.data.,,
+        // maintenanceFrequ:res.data.,:[],
+        // waterAdequacy:res.data.,
+        // parkingAdequacy:res.data.,
+        // accessAdequacy:res.data.,
+        // femaleSafety:res.data.,
+        // publicTransportA:res.data.,s:[],
+        // ownedUnitType:res.data.,
+        // meansOfOwning:res.data.,
+        // acquisitionYear:res.data.,
+        // costPrice:res.data.,
+        // financeMode:res.data.,
+        // monthlyEm:res.data.,
 
       })
 
@@ -501,7 +500,7 @@ reactiveForms() {
   }
 
   submit(){
-    this.household.structure_id = this.buildingId;
+    // this.household.structure_id = this.buildingId;
     this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
@@ -561,7 +560,7 @@ reactiveForms() {
     this.dataService.postHousehold(this.household).subscribe(res=>{
       console.log(res)
       if(res.success === "true"){
-        this.router.navigate(['dashboard', this.buildingId]);
+        // this.router.navigate(['dashboard', this.buildingId]);
       }else{
         this.snackBar.open('Registration error', '', {
           duration: 5000,
