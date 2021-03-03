@@ -2,6 +2,14 @@
     height:93vh;
     width:50%;
   }
+
+  .mat-table{
+    width: 100%;
+  }
+
+  .mat-row:hover {
+    background-color: #55C6E6;
+  }
   .topnav input[type=text] {
     float: right;
     padding: 6px;
@@ -10,7 +18,11 @@
     margin-right: 16px;
     font-size: 17px;
   }
-  
+ .unitDetails{
+    :hover {
+      background-color: #EBECCD;
+  }
+  }
   .scroll{
     height: 90vh; 
     overflow-x: hidden; 

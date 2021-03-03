@@ -41,6 +41,7 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { AdminComponent } from './admin/admin.component';
 import { DataTableComponent} from './DataTable/data-table/data-table.component'
 import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component';
+
 @NgModule({
   declarations: [
     AppComponent,
