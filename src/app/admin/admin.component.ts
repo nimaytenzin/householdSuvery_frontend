@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone} from '@angular/core';
 import * as L from 'leaflet';
 import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -71,10 +71,12 @@ export class AdminComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'view', 'update','delete'];
   totalBuilding:number;
   totalCompleted:number;
+  showBuildingInfo:boolean=false;
   precentCompleted:number;
   progressShow:boolean =false;
   showFamilyMembers:boolean = false;
-
+  addDeleteButtons:boolean =false;
+  deleteButton:boolean = false;
   //chart js
   API_URL =environment.API_URL;
   BASE_URL = environment.BASE_URL;
@@ -516,24 +518,39 @@ export class AdminComponent implements OnInit {
        console.log(this.json)
        this.totalCompleted =0
 
+       var dd = document.getElementById('dd')
        console.log('sss',this.precentCompleted)
         this.buildingGeojson = L.geoJSON(this.json, {
                    onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
-                this.buildingId = feature.properties.structure_id;
-                alert(`Showing Information for ${this.buildingId}` )
-                this.showBuilding(this.buildingId);
-                this.clearData = true;
-                this.resident = null;
-                this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                  this.units = json.data;
-                });
-                this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                  this.imgs= json.data;
-                });
+
+                if(feature.properties.status == 'INCOMPLETE'){
+                this.deleteButton = true
+                this.showBuildingInfo = false;
+                  this.snackBar.open('Data Not Added' , '', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar']
+                  });
+                }else{
+                  this.buildingId = feature.properties.structure_id;
+                  this.addDeleteButtons = true;
+                this.showBuildingInfo = true;
+                  this.showBuilding(this.buildingId); 
+                  this.clearData = true;
+                  this.resident = null;
+                  this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+                    this.units = json.data;
+                  });
+                  this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+                    this.imgs= json.data;
+                  });
+                }
+               
               });
             }, pointToLayer: (feature, latLng) => {
               if(feature.properties.status == 'INCOMPLETE'){
+                
                 return L.marker(latLng, {icon: this.redMarker});
               }else if(feature.properties.status == "PROGRESS"){
                 return L.marker(latLng, {icon: this.yellowMarker});
@@ -564,10 +581,49 @@ export class AdminComponent implements OnInit {
   showResident(unitid){
     this.resident = null;
     this.residentTableShow = true
-    alert(`${unitid}`)
+
+    this.snackBar.open('Scroll down' , '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
     this.dataService.getResident(unitid).subscribe(resp=>{
       this.resident = resp.data;
     });
+  }
+
+  deleteUnit(id){
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title: "Confirm Delete Unit",
+        message: "Are you sure you want to delete the Unit? You will be held accountable for information loss and User details will be recorded"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result=>{
+      if(result == true){
+        this.snackBar.open('Unit Deleted' , '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+          }else{
+              this.snackBar.open('Unit kept' , '', {
+                duration: 3000,
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
+              });
+          }
+    });
+  }
+
+  selectedRowIndex = -1;
+
+  highlight(row){
+      this.selectedRowIndex = row.id;
+  }
+
+  updateUnit(unitID){
+    alert(`redirecting to update form for unit id ${unitID}`)
   }
 
   toggleClearData(){
@@ -576,6 +632,30 @@ export class AdminComponent implements OnInit {
     }else{
       this.clearData = false
     }
+  }
+
+  deleteBuilding(){
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title: "Delete Building?",
+        message: "Are you sure you want to delete the Building? You will be held accountable for information loss and User details will be recorded"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result=>{
+      if(result == true){
+        this.snackBar.open('Deleted' , '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+          }else{
+              this.snackBar.open('Oks' , '', {
+                duration: 3000,
+                verticalPosition: 'top',
+                panelClass: ['success-snackbar']
+              });
+          }
+    });
   }
 
   showBuilding(unitid){
@@ -603,7 +683,8 @@ export class AdminComponent implements OnInit {
   reset(){
     this.zoneForm.reset();
     this.selectZone = false;
-
+    this.showFamilyMembers = false;
+    this.progressShow = false
     this.buildingInfo = null; 
     this.units = null;
     this.imgs = null;
@@ -626,14 +707,12 @@ export class AdminComponent implements OnInit {
   getDzongkhagList() {
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data;
-      console.log(this.dzongkhags)
     });
   }
 
   getZoneList(dzongkhagId) {
     this.dataService.getZones(dzongkhagId).subscribe(response => {
       this.zones = response.data;
-      console.log()
     });
   }
 
@@ -644,6 +723,11 @@ export class AdminComponent implements OnInit {
   }
 
   showFamilyMemberDetail(unitId){
+    this.snackBar.open('Scroll down' , '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
     this.showFamilyMembers = true
   }
 

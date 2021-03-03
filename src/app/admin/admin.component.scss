@@ -7,8 +7,12 @@
     width: 100%;
   }
 
+  .highlight{
+    background: rgb(208,208,208); /* green */
+  }
+
   .mat-row:hover {
-    background-color: #55C6E6;
+    background-color: #E4E6EB;
   }
   .topnav input[type=text] {
     float: right;
@@ -57,7 +61,6 @@
     background-color:rgb(63,81,181) ;
     color:white;
     font-weight: 200;
-    border-radius: 3px;
   }
 
 

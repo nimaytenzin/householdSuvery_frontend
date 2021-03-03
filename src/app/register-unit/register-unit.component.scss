@@ -4,3 +4,9 @@ ul {
     margin-top: 4px;
     padding-inline-start: 10px;
 }
+
+.mat-label{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
