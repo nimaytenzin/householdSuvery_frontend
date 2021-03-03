@@ -13,6 +13,7 @@ import { UploadImageComponent } from './upload-image/upload-image.component';
 import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import { AdminComponent } from './admin/admin.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
+import { EditBuildingComponent } from './edit-building/edit-building.component';
 
 const routes: Routes = [
   {path: '', component: SelectZoneComponent},
@@ -23,9 +24,9 @@ const routes: Routes = [
   {path: 'dashboard/:id', component: DashboardComponent },
   {path: 'building', component: RegisterComponent },
   {path: 'unit', component: RegisterUnitComponent},
-
+{path:'edit-building/:sid', component:EditBuildingComponent},
   {path: 'edit-unit/:id', component: EditUnitComponent},
-  {path: 'admin', component: AdminComponent, canActivate:[RouteGuard]},
+  {path: 'admin', component: AdminComponent },
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},
   // {path: 'changepassword', component: ChangePasswordComponent, canActivate: [RouteGuard]},
   {path: 'map', component: MapComponent},

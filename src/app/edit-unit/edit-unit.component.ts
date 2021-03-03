@@ -76,7 +76,6 @@ export class Household{
     purchasePrice: number;
     meanFinance: string;
     emi:number;
-
     members:[];
 }
 
@@ -340,62 +339,76 @@ constructor(
 ngOnInit() {
   this.hhId = this.route.snapshot.params['id'];
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
-    if(res.success==="true"){
-      this.householdForm.patchValue({
-
-    unidID:res.data.,
-    familySharing:res.data.,
-    unitOwnership:res.data.,
-    unitUse:res.data.,
-    numberOfRooms:res.data.,
-
-    cidHoh:res.data.,
-    nameHoh:res.data.,
-    genderHoh:res.data.,
-    ageHoh:res.data.,
-    maritalStatusHoh:res.data.,
-    employmentStatus:res.data.,[],
-    workAgencyHoh:res.data.,
-    serviceYearHoh:res.data.,
-    workPlaceDistanc:res.data.,,
-    modeTransport:res.data.,
-    commutingCost:res.data.,
-    utilityBills:res.data.,
-
-    numberHouseholdM:res.data.,rs:[],
-    numberIncomeEarn:res.data.,[],
-    numberSchoolGoer:res.data.,,
-    monthlyIncome:res.data.,
-    ownHouse:res.data.,
     
 
-    monthlyRent:res.data.,
-    rentalType:res.data.,
-    howLongLiving:res.data.,
-    rentIncrease:res.data.,
-    rentIncreaseFive:res.data.,s:[],
-    rentWaiver:res.data.,
-    rentWaiverAmount:res.data.,
-    hindrance:res.data.,
-    hindranceOthers:res.data.,
-    complaintRespons:res.data.,,
-    maintenanceFrequ:res.data.,:[],
-    waterAdequacy:res.data.,
-    parkingAdequacy:res.data.,
-    accessAdequacy:res.data.,
-    femaleSafety:res.data.,
-    publicTransportA:res.data.,s:[],
-    ownedUnitType:res.data.,
-    meansOfOwning:res.data.,
-    acquisitionYear:res.data.,
-    costPrice:res.data.,
-    financeMode:res.data.,
-    monthlyEm:res.data.,
+    
+    if(res.success==="true"){
+      console.log(res.data)
+      if(res.data.unitOwnership === "Rented"){
+        this.showRentalUnitDetails = true;
+      }else{
+        this.showRentalUnitDetails = false;
+      }
+    
+       let gender;
+      if(res.data.gender === "m"){
+        gender = "Male"
+      }else{
+        gender = "Female"
+      }
+
+    this.householdForm.patchValue({
+    unidID:res.data.unitId,
+    familySharing:res.data.familiesSharing,
+    unitOwnership:res.data.unitOwnership,
+    unitUse:res.data.unitUse,
+    numberOfRooms:res.data.numberOfRooms,
+
+    cidHoh:res.data.cid,
+    nameHoh:res.data.name,
+    genderHoh:gender,
+    ageHoh:res.data.age,
+    maritalStatusHoh:res.data.martialStatus,
+    employmentStatus:res.data.employment,
+    workAgencyHoh:res.data.employmentOrg,
+    serviceYearHoh:res.data.yearsInService,
+    workPlaceDistanc:res.data.distToWork,
+    modeTransport:res.data.modeTransport,
+    commutingCost:res.data.commuteCost,
+    utilityBills:res.data.utilityBill,
+    numberHouseholdM:res.data.numberHousehold,
+    numberIncomeEarn:res.data.incomeEarner,
+    numberSchoolGoer:res.data.schoolGoers,
+    monthlyIncome:res.data.householdIncome,
+    ownHouse:res.data.ownHouse,
+    monthlyRent:res.data.rent,
+    rentalType:res.data.typeRent,
+    howLongLiving:res.data.yearsResiding,
+    rentIncrease:res.data.rentIncreased,
+    rentIncreaseFive:res.data.rentIncreaseFiveYears,
+    rentWaiver:res.data.rentWaived,
+    rentWaiverAmount:res.data.rentWaivedAmount,
+    hindrance:res.data.hindrance,
+    complaintRespons:res.data.compliantResponse,
+    maintenanceFrequ:res.data.maintenanceFrequency,
+    waterAdequacy:res.data.waterAdequacy,
+    parkingAdequacy:res.data.parkingAedequacy,
+    accessAdequacy:res.data.accessAdequacy,
+    femaleSafety:res.data.femaleSafety,
+    publicTransportA:res.data.publicTransportAccess,
+    ownedUnitType:res.data.ownType,
+    meansOfOwning:res.data.meansOwning,
+    acquisitionYear:res.data.yearAcquisition,
+    costPrice:res.data.purchasePrice,
+    financeMode:res.datameanFinance,
+    monthlyEm:res.data.emi,
 
       })
 
     }
   })
+
+
   this.reactiveForms();
 }
 
@@ -501,7 +514,7 @@ reactiveForms() {
   }
 
   submit(){
-    this.household.structure_id = this.buildingId;
+    // this.household.structure_id = this.buildingId;
     this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
@@ -561,7 +574,7 @@ reactiveForms() {
     this.dataService.postHousehold(this.household).subscribe(res=>{
       console.log(res)
       if(res.success === "true"){
-        this.router.navigate(['dashboard', this.buildingId]);
+        // this.router.navigate(['dashboard', this.buildingId]);
       }else{
         this.snackBar.open('Registration error', '', {
           duration: 5000,

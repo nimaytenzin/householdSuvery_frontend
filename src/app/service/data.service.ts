@@ -93,7 +93,7 @@ export class DataService {
 
   getBuildingInfo(bid){
     return this.http
-      .get<any>(`${this.API_URL}/get-building-info/${bid}`,this.httpOptions)
+      .get<any>(`${this.API_URL}/building/get/${bid}`,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       )

@@ -42,6 +42,7 @@ import { AdminComponent } from './admin/admin.component';
 import { DataTableComponent} from './DataTable/data-table/data-table.component'
 import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
+import { EditBuildingComponent } from './edit-building/edit-building.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { EditUnitComponent } from './edit-unit/edit-unit.component';
     AdminComponent,
     DataTableComponent,
     DialogBoxComponent,
-    EditUnitComponent
+    EditUnitComponent,
+    EditBuildingComponent
   ],
   imports: [
     BrowserModule,

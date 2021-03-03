@@ -77,6 +77,9 @@ export class AdminComponent implements OnInit {
   showFamilyMembers:boolean = false;
   addDeleteButtons:boolean =false;
   deleteButton:boolean = false;
+
+  buildingData:any;
+
   //chart js
   API_URL =environment.API_URL;
   BASE_URL = environment.BASE_URL;
@@ -327,6 +330,8 @@ export class AdminComponent implements OnInit {
     this.renderMap(this.dataService);
     Chart.defaults.global.legend.display = false;
 
+    
+
   }
 
 
@@ -515,14 +520,15 @@ export class AdminComponent implements OnInit {
           this.buildingGeojson = null
         }
        this.totalBuilding = this.json.length
-       console.log(this.json)
        this.totalCompleted =0
-
-       var dd = document.getElementById('dd')
-       console.log('sss',this.precentCompleted)
+      
         this.buildingGeojson = L.geoJSON(this.json, {
                    onEachFeature: (feature, layer) => {
+                    if(feature.properties.status == "COMPLETE"){
+                      this.totalCompleted ++
+                    }
               layer.on('click', (e) => {
+               
 
                 if(feature.properties.status == 'INCOMPLETE'){
                 this.deleteButton = true
@@ -534,6 +540,12 @@ export class AdminComponent implements OnInit {
                   });
                 }else{
                   this.buildingId = feature.properties.structure_id;
+                  this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                    this.buildingData = res.data
+                  })
+                  this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                    console.log(res)
+                  })
                   this.addDeleteButtons = true;
                 this.showBuildingInfo = true;
                   this.showBuilding(this.buildingId); 
@@ -751,8 +763,7 @@ export class AdminComponent implements OnInit {
   }
 
   editBuilding(){
-    this.router.navigate(['building'])
-    alert("Redirecting to building form")
+    this.router.navigate([`edit-building/${this.buildingId}`])
   }
 
 } 
