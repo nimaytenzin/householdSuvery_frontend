@@ -67,7 +67,7 @@ interface IdName{
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'view', 'update','delete'];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view', 'update','delete'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
@@ -329,7 +329,15 @@ export class AdminComponent implements OnInit {
 
     this.getZoneList(dzongkhagId);
     this.getSubzoneList(zoneId);
-    this.renderMap(this.dataService);  
+    this.renderMap(this.dataService);
+    
+    if (sessionStorage.getItem("subzoneID") !== null) {
+      
+      this.renderBuildings(sessionStorage.getItem("subzoneID"))
+
+    }else{
+      alert("sss")
+    }
 
   }
 
@@ -372,7 +380,7 @@ export class AdminComponent implements OnInit {
               this.resident = null;
 
               this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                this.unitsData = json.data;
+                // this.unitsData = json.data;
               });
             
 
@@ -403,9 +411,6 @@ export class AdminComponent implements OnInit {
 
 
   renderMap(dataservice: DataService){
-
-
-          
         function zoneStyle(feature) {
           return {
           fillColor:'white',
@@ -508,87 +513,86 @@ export class AdminComponent implements OnInit {
 
   zoneSearch() {
       const zoneId = this.zoneForm.get('subZoneControl').value;
-      this.dataService.getStructure(zoneId).subscribe((json: any) => {
-        this.json = json;
-        this.http.get(`${this.API_URL}/get-resident-in-attic/${zoneId}`).subscribe((json:any)=>{
-          this.residentAttic = json.data[0];
-        })
-
-        if(this.buildingGeojson !== undefined){
-          this.map.removeLayer(this.buildingGeojson)
-          this.buildingGeojson = null
-        }
-       this.totalBuilding = this.json.length
-       this.totalCompleted =0
-      
-        this.buildingGeojson = L.geoJSON(this.json, {
-                   onEachFeature: (feature, layer) => {
-                    if(feature.properties.status == "COMPLETE"){
-                      this.totalCompleted ++
-                    }
-              layer.on('click', (e) => {
-               
-
-                if(feature.properties.status == 'INCOMPLETE'){
-                this.deleteButton = true
-                this.showBuildingInfo = false;
-                  this.snackBar.open('Data Not Added' , '', {
-                    duration: 3000,
-                    verticalPosition: 'top',
-                    panelClass: ['error-snackbar']
-                  });
-                }else{
-                  this.buildingId = feature.properties.structure_id;
-                  this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                    this.buildingData = res.data
-                  })
-                  this.dataService.getHouseholds(this.buildingId).subscribe(res => {
-                    this.unitsData = res.data
-                    console.log(res)
-                  })
-                  this.addDeleteButtons = true;
-                this.showBuildingInfo = true;
-                  this.showBuilding(this.buildingId); 
-                  this.clearData = true;
-                  this.resident = null;
-                  this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                    this.unitsData = json.data;
-                  });
-                  this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                    this.imgs= json.data;
-                  });
-                }
-               
-              });
-            }, pointToLayer: (feature, latLng) => {
-              if(feature.properties.status == 'INCOMPLETE'){
-                
-                return L.marker(latLng, {icon: this.redMarker});
-              }else if(feature.properties.status == "PROGRESS"){
-                return L.marker(latLng, {icon: this.yellowMarker});
-              }else if(this.showattic){
-                for(var i = 0;i<this.residentAttic.length;i++){
-                  // if(this.residentAttic[i]['structure_id'] == this.);
-                  // if()
-                }
-                return L.marker(latLng,{icon: this.myMarker});
-              } else{
-                this.precentCompleted ++
-                return L.marker(latLng, {icon: this.greenMarker});
-              }
-            }
-          });
-          this.map.addLayer(this.buildingGeojson)
-          this.map.fitBounds(this.buildingGeojson.getBounds());
-          
-       this.precentCompleted = (this.totalCompleted/this.totalBuilding)*100;
-        this.progressShow = true;
-      });
- 
+      this.renderBuildings(zoneId)
+      sessionStorage.setItem('subzoneID', zoneId)
   }
 
   //zone Search End
 
+  renderBuildings(zoneId){
+    this.dataService.getStructure(zoneId).subscribe((json: any) => {
+      this.json = json;
+      if(this.buildingGeojson !== undefined){
+        this.map.removeLayer(this.buildingGeojson)
+        this.buildingGeojson = null
+      }
+     this.totalBuilding = this.json.length
+     this.totalCompleted =0
+    
+      this.buildingGeojson = L.geoJSON(this.json, {
+                 onEachFeature: (feature, layer) => {
+                  if(feature.properties.status == "COMPLETE"){
+                    this.totalCompleted ++
+                  }
+            layer.on('click', (e) => {
+              if(feature.properties.status == 'INCOMPLETE'){
+              this.deleteButton = true
+              this.showBuildingInfo = false;
+                this.snackBar.open('Data Not Added' , '', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                  panelClass: ['error-snackbar']
+                });
+              }else{
+                this.buildingId = feature.properties.structure_id;
+                 this.deleteButton = true
+
+                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                  this.buildingData = res.data
+                })
+                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                  this.unitsData = res.data
+                  console.log("unitddata", this.unitsData)
+                })
+                this.addDeleteButtons = true;
+                this.showBuildingInfo = true;
+                this.showBuilding(this.buildingId); 
+                this.clearData = true;
+                this.resident = null;
+                // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+                //   this.unitsData = json.data;
+                // });
+                // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+                //   this.imgs= json.data;
+                // });
+              }
+             
+            });
+          }, pointToLayer: (feature, latLng) => {
+            if(feature.properties.status == 'INCOMPLETE'){
+              
+              return L.marker(latLng, {icon: this.redMarker});
+            }else if(feature.properties.status == "PROGRESS"){
+              return L.marker(latLng, {icon: this.yellowMarker});
+            }else if(this.showattic){
+              for(var i = 0;i<this.residentAttic.length;i++){
+                // if(this.residentAttic[i]['structure_id'] == this.);
+                // if()
+              }
+              return L.marker(latLng,{icon: this.myMarker});
+            } else{
+              this.precentCompleted ++
+              return L.marker(latLng, {icon: this.greenMarker});
+            }
+          }
+        });
+        this.map.addLayer(this.buildingGeojson)
+        this.map.fitBounds(this.buildingGeojson.getBounds());
+        
+     this.precentCompleted = (this.totalCompleted/this.totalBuilding)*100;
+      this.progressShow = true;
+    });
+  }
   
   showResident(unitid){
     console.log(unitid)
@@ -643,9 +647,7 @@ export class AdminComponent implements OnInit {
       this.selectedRowIndex = row.id;
   }
 
-  updateUnit(unitID){
-    alert(`redirecting to update form for unit id ${unitID}`)
-  }
+
 
   toggleClearData(){
     if(this.clearData ===false){
@@ -768,14 +770,69 @@ export class AdminComponent implements OnInit {
   }
 
   unlockBuilding(){
-    this.dataService.postProgress(this.buildingId).subscribe(res => {
-      console.log(res)
-    })
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title: "Unlock Building?",
+        message: "Are you sure?"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result=>{
+      if(result == true){
+        this.dataService.postProgress(this.buildingId).subscribe(res => {
+          if(res.success === "true"){
+            this.snackBar.open('Unlocked Successfully' , '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar']
+            });
+          }
+         })
+      }
+    });
+
+
+    
     
   }
 
   editBuilding(){
     this.router.navigate([`edit-building/${this.buildingId}`])
+  }
+
+  editFamilyMember(){
+    this.snackBar.open('Redirect to update Family Member Component' , '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+  }
+
+  deleteFamilyMember(){
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title: "Delete Family Member?",
+        message: "Are you sure?"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result=>{
+      if(result == true){
+        this.snackBar.open('Deleted' , '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+      }else{
+        this.snackBar.open('Ok' , '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        });
+      }
+    });
+  }
+
+  updateUnit(unitID){
+    this.router.navigate([`edit-unit/${unitID}`])
   }
 
 } 

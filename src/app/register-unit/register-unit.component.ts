@@ -79,7 +79,8 @@ export class Household{
     members:[];
     shopOfficeName:string;
     shopOfficeContact:number;
-    shopOfficeRent:number
+    shopOfficeRent:number;
+    remarks:string
 }
 
 
@@ -134,7 +135,7 @@ export class RegisterUnitComponent implements OnInit {
   displayShopForm = false;
 
   displayOtherUse = false;
-
+  unitUseShow:boolean;
   numberOfRooms:DropDownNumber[]=[
     {value:0},
     {value:1},
@@ -266,6 +267,8 @@ export class RegisterUnitComponent implements OnInit {
   unitOccupationOptions:DropDownOptions[]=[
     {id:1, name: "Owned"},
     {id:2, name: "Rented"},
+    {id:2, name: "Vacant"}
+
   ]
 
   // NHDCL quarters /Employer provided housing / Private rented housing/others
@@ -414,7 +417,8 @@ reactiveForms() {
 
     shopOfficeName:[],
     shopOfficeRent:[],
-    shopOfficeContact:[]
+    shopOfficeContact:[],
+    remarks:[]
     })    
 }
 
@@ -469,7 +473,6 @@ reactiveForms() {
     this.household.commuteCost = this.householdForm.get('commutingCost').value;
     this.household.utilityBill = this.householdForm.get("utilityBills").value;
 
-    
     this.household.numberHousehold = this.householdForm.get('numberHouseholdMembers').value;
     this.household.incomeEarner = this.householdForm.get('numberIncomeEarners').value;
     this.household.schoolGoers= this.householdForm.get('numberSchoolGoers').value;
@@ -507,6 +510,7 @@ reactiveForms() {
     this.household.shopOfficeContact = this.householdForm.get('shopOfficeContact').value;
     this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
     this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
+    this.household.remarks = this.householdForm.get('remarks').value;
 
     this.household.members.forEach(function(v:any){
       delete v.id;
@@ -549,11 +553,20 @@ reactiveForms() {
 houseOccupationListener(e){
   if(e.value === "Owned"){
     this.showOwnedUnitDetails = true;
+    this.unitUseShow = true
     this.showRentalUnitDetails = false;
-  }else{  
+  }else if(e.value === "Vacant"){
+    this.unitUseShow = false
+    this.displayShopsOffice = false;
+    this.showAllfields = false;
+  } else{  
     this.showOwnedUnitDetails = false;
+    this.unitUseShow = true
+
     this.showRentalUnitDetails = true;
   }
+ 
+
 }
 
 
