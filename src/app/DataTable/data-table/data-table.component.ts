@@ -1,4 +1,4 @@
-import { Component,  ViewChild } from '@angular/core';
+import { Component,  Input,  OnInit,  ViewChild , OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.component';
@@ -21,7 +21,7 @@ const ELEMENT_DATA: UsersData[] = [
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.scss']
 })
-export class DataTableComponent  {
+export class DataTableComponent  implements OnInit{
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   i=1;
 
@@ -29,6 +29,19 @@ export class DataTableComponent  {
   dataSource = ELEMENT_DATA;
 
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
+
+  @Input() members:UsersData[];
+
+  ngOnInit(){
+    this.dataservice.familyMember = null
+    this.dataSource = [];
+  }
+
+  ngOnChanges(changes: SimpleChanges){
+    if(changes['members']){
+      this.dataSource = this.members
+    }
+  }
 
   openDialog(action,obj) {
     obj.action = action;

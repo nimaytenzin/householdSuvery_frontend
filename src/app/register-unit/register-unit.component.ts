@@ -498,6 +498,7 @@ reactiveForms() {
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
     this.household.members = this.dataService.familyMember
+
     this.household.members.forEach(function(v:any){
       delete v.id;
     });
@@ -515,6 +516,7 @@ reactiveForms() {
         });
       }
     })
+    this.dataService.familyMember = null;
  
     // this.router.navigate(['dashboard', this.buildingId]);
 

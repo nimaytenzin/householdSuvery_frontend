@@ -7,11 +7,7 @@ export const environment = {
 
   // API_URL: 'http://localhost:8000',
   // API_URL: 'https://zhichar.ddnsfree.com/hpi',
-<<<<<<< HEAD
-  API_URL: 'https://zhichar.ddnsfree.com/hpi',
-=======
   API_URL: 'http://localhost:7777',
->>>>>>> 0c89334c72d6a55ea31ab0848c8f5af167ae3209
   BASE_URL: 'http://localhost:4200'
 
 };

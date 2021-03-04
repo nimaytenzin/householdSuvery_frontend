@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
   } 
 
   editUnit(id){
+    this.router.navigate(['edit-unit',id]);
     console.log(id)
   }
 
