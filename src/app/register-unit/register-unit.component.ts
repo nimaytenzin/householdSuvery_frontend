@@ -508,6 +508,10 @@ reactiveForms() {
     this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
     this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
 
+    this.household.members.forEach(function(v:any){
+      delete v.id;
+    });
+
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
       console.log(res)
@@ -521,6 +525,7 @@ reactiveForms() {
         });
       }
     })
+    this.dataService.familyMember = null;
  
     // this.router.navigate(['dashboard', this.buildingId]);
 

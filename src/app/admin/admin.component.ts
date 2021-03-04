@@ -80,6 +80,7 @@ export class AdminComponent implements OnInit {
   buildingData:any;
   unitsData:any;
   housholdsData:any;
+  familyMembers:any;
 
   //chart js
   API_URL =environment.API_URL;
@@ -292,12 +293,12 @@ export class AdminComponent implements OnInit {
 
 
 
-  familyMembers = [
-    {"type": "CID", "cid": "10302000402", "gender": "Male", "age":24, "incomeEarner": true},
-    {"type": "Minor", "cid": "Minor", "gender": "Female", "age":3, "incomeEarner": false},
-    {"type": "CID", "cid": "10302000433", "gender": "Female", "age":24, "incomeEarner": true}
+  // familyMembers = [
+  //   {"type": "CID", "cid": "10302000402", "gender": "Male", "age":24, "incomeEarner": true},
+  //   {"type": "Minor", "cid": "Minor", "gender": "Female", "age":3, "incomeEarner": false},
+  //   {"type": "CID", "cid": "10302000433", "gender": "Female", "age":24, "incomeEarner": true}
 
-  ]
+  // ]
 
   setViewValue: boolean;
 
@@ -603,7 +604,10 @@ export class AdminComponent implements OnInit {
       console.log(resp)
       this.housholdsData = resp.data
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
-        console.log(resp)
+       this.familyMembers = resp.data
+       console.log(this.familyMembers)
+       console.log(resp)
+
       })
       
     });
@@ -764,7 +768,10 @@ export class AdminComponent implements OnInit {
   }
 
   unlockBuilding(){
-    alert("Unlocked Building")
+    this.dataService.postProgress(this.buildingId).subscribe(res => {
+      console.log(res)
+    })
+    
   }
 
   editBuilding(){

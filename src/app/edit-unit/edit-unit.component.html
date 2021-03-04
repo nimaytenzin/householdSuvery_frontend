@@ -151,7 +151,7 @@
               </mat-select>
             </mat-form-field>
 
-           <app-data-table></app-data-table>
+           <app-data-table [members]="members"></app-data-table>
 
         
             <mat-form-field class="justifier">
@@ -186,12 +186,6 @@
               </mat-select>
             </mat-form-field>
     
-        
-           
-
-         
-
-
             <div *ngIf= "showRentalUnitDetails">
               <h4>Rental Details</h4>
               <mat-form-field class="justifier">

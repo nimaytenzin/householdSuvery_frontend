@@ -311,17 +311,17 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: L.Map) {
     const zoneID = Number(sessionStorage.getItem('subZoneId'));
-    // const geojson = this.http.get(`/assets/geojson/conv_T${zoneId}.geojson`).subscribe((json:any)=>{
-    //   this.bound= L.geoJSON(json,{
-    //     style: (feature)=>{
-    //       return {
-    //         color:"red",
-    //         fillOpacity:0
-    //       }
-    //     }
-    //   }).addTo(this.map);
-    //   this.map.fitBounds(this.bound.getBounds());
-    // })
+    const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneID}`).subscribe((json:any)=>{
+      this.bound= L.geoJSON(json.data,{
+        style: (feature)=>{
+          return {
+            color:"red",
+            fillOpacity:0
+          }
+        }
+      }).addTo(this.map);
+      // this.map.fitBounds(this.bound.getBounds());
+    })
 
     // this.http.get(`${this.API_URL}/str-json/${zoneId}`).subscribe((json: any) => {
 

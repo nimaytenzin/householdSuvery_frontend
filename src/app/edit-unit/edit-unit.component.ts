@@ -131,6 +131,8 @@ export class EditUnitComponent implements OnInit {
   displayShopForm = false;
 
   displayOtherUse = false;
+  
+  members:[];
 
   numberOfRooms:DropDownNumber[]=[
     {value:0},
@@ -338,78 +340,68 @@ constructor(
 
 ngOnInit() {
   this.hhId = this.route.snapshot.params['id'];
+  this.reactiveForms();
+
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
-    
-
-    
+    let data:Household = res.data;
     if(res.success==="true"){
-      console.log(res.data)
-      if(res.data.unitOwnership === "Rented"){
-        this.showRentalUnitDetails = true;
-      }else{
-        this.showRentalUnitDetails = false;
-      }
-    
-       let gender;
-      if(res.data.gender === "m"){
-        gender = "Male"
-      }else{
-        gender = "Female"
-      }
+      this.householdForm.patchValue({
+        unidID:res.data.unitId,
+        familySharing:data.familiesSharing,
+        unitOwnership:data.unitOwnership,
+        unitUse:data.unitUse,
+        numberOfRooms:data.numberOfRooms,
 
-    this.householdForm.patchValue({
-    unidID:res.data.unitId,
-    familySharing:res.data.familiesSharing,
-    unitOwnership:res.data.unitOwnership,
-    unitUse:res.data.unitUse,
-    numberOfRooms:res.data.numberOfRooms,
+        cidHoh:data.cid,
+        nameHoh:data.name,
+        genderHoh:data.gender,
+        ageHoh:data.age,
+        maritalStatusHoh:data.martialStatus,
+        employmentStatusHoh: data.employment,
+        workAgencyHoh:data.employmentOrg,
+        serviceYearHoh:data.yearsInService,
+        workPlaceDistance:data.distToWork,
+        modeTransport:data.modeTransport,
+        commutingCost:data.commuteCost,
+        utilityBills:data.utilityBill,
 
-    cidHoh:res.data.cid,
-    nameHoh:res.data.name,
-    genderHoh:gender,
-    ageHoh:res.data.age,
-    maritalStatusHoh:res.data.martialStatus,
-    employmentStatus:res.data.employment,
-    workAgencyHoh:res.data.employmentOrg,
-    serviceYearHoh:res.data.yearsInService,
-    workPlaceDistanc:res.data.distToWork,
-    modeTransport:res.data.modeTransport,
-    commutingCost:res.data.commuteCost,
-    utilityBills:res.data.utilityBill,
-    numberHouseholdM:res.data.numberHousehold,
-    numberIncomeEarn:res.data.incomeEarner,
-    numberSchoolGoer:res.data.schoolGoers,
-    monthlyIncome:res.data.householdIncome,
-    ownHouse:res.data.ownHouse,
-    monthlyRent:res.data.rent,
-    rentalType:res.data.typeRent,
-    howLongLiving:res.data.yearsResiding,
-    rentIncrease:res.data.rentIncreased,
-    rentIncreaseFive:res.data.rentIncreaseFiveYears,
-    rentWaiver:res.data.rentWaived,
-    rentWaiverAmount:res.data.rentWaivedAmount,
-    hindrance:res.data.hindrance,
-    complaintRespons:res.data.compliantResponse,
-    maintenanceFrequ:res.data.maintenanceFrequency,
-    waterAdequacy:res.data.waterAdequacy,
-    parkingAdequacy:res.data.parkingAedequacy,
-    accessAdequacy:res.data.accessAdequacy,
-    femaleSafety:res.data.femaleSafety,
-    publicTransportA:res.data.publicTransportAccess,
-    ownedUnitType:res.data.ownType,
-    meansOfOwning:res.data.meansOwning,
-    acquisitionYear:res.data.yearAcquisition,
-    costPrice:res.data.purchasePrice,
-    financeMode:res.datameanFinance,
-    monthlyEm:res.data.emi,
+        numberHouseholdMembers:data.numberHousehold,
+        numberIncomeEarn:data.incomeEarner,
+        numberSchoolGoer:data.schoolGoers,
+        monthlyIncome:data.householdIncome,
+        ownHouse:data.ownHouse,
+        
 
+        monthlyRent:data.rent,
+        rentalType:data.typeRent,
+        howLongLiving:data.yearsResiding,
+        rentIncrease:data.rentIncreased,
+        rentIncreaseFive:data.rentIncreaseFiveYears,
+        rentWaiver:data.rentWaived,
+        rentWaiverAmount:data.rentWaivedAmount,
+        hindrance:data.hindrance,
+        complaintResponse:data.compliantResponse,
+        maintenanceFrequency:data.maintenanceFrequency,
+        waterAdequacy:data.waterAdequacy,
+        parkingAdequacy:data.parkingAedequacy,
+        accessAdequacy:data.accessAdequacy,
+        femaleSafety:data.femaleSafety,
+        publicTransportAccess:data.publicTransportAccess,
+        ownedUnitType:data.ownType,
+        meansOfOwning:data.meansOwning,
+        acquisitionYear:data.yearAcquisition,
+        costPrice:data.purchasePrice,
+        financeMode:data.meanFinance,
+        monthlyEm:data.emi
       })
-
     }
   })
 
-
-  this.reactiveForms();
+  this.dataService.getFamilyMembers(this.hhId).subscribe(res=>{
+    if(res.success === "true"){
+      this.members = res.data
+    }
+  })
 }
 
 changeDiff($event){
@@ -423,7 +415,6 @@ changeDiff($event){
     this.displayOtherUse =true;
     this.displayShopForm = true;
   }else{ 
-
     this.displayShopForm = true;
   }
 };

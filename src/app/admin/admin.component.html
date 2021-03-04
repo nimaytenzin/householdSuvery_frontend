@@ -227,14 +227,12 @@
           <th>Identification Number</th>
           <th>Gender</th>
           <th>Age</th>
-          <th>Is Income Earner?</th>
         </tr>
         <tr *ngFor = "let member of familyMembers">
           <td>{{member.type}}</td>
-          <td>{{member.cid}}</td>
+          <td>{{member.idNumber}}</td>
           <td>{{member.gender}}</td>
           <td>{{member.age}}</td>
-          <td>{{member.incomeEarner}}</td>         
         </tr>
       </table>
     </div>
