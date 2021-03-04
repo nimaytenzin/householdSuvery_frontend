@@ -143,6 +143,11 @@ export class DataService {
       catchError(this.handleError)
     );
   }
+  updateHousehold(data){
+    return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 
   postRegistration(item) {
     return this.http
@@ -152,13 +157,6 @@ export class DataService {
       );
   }
 
-  postUpdateHouseHold(item, houseHoldId) {
-    return this.http
-      .put(`${this.API_URL}/household-details/${houseHoldId}`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
   postUnit(item){
     return this.http
       .post<any>(`${this.API_URL}/createunit`,item,this.httpOptions)

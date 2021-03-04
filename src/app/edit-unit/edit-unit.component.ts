@@ -366,8 +366,8 @@ ngOnInit() {
         utilityBills:data.utilityBill,
 
         numberHouseholdMembers:data.numberHousehold,
-        numberIncomeEarn:data.incomeEarner,
-        numberSchoolGoer:data.schoolGoers,
+        numberIncomeEarners:data.incomeEarner,
+        numberSchoolGoers:data.schoolGoers,
         monthlyIncome:data.householdIncome,
         ownHouse:data.ownHouse,
         

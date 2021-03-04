@@ -239,11 +239,6 @@ export class EditBuildingComponent implements OnInit {
 
     this.dataService.getBuildingInfo(this.buildingId).subscribe(resp=>{
       if(resp['success']=="true"){
-        console.log(resp.data.buildingMaterial)
-        let mt = []
-        mt.push(resp.data.buildingMaterial)
-        console.log(mt)
-        console.log(resp)
         this.buildingForm.patchValue({
           buildingOwnership:resp.data.buildingOwnership,
           cidOwner:resp.data.cidOwner,
@@ -260,16 +255,16 @@ export class EditBuildingComponent implements OnInit {
           buildingStyle:resp.data.buildingStyle,
           structureType:resp.data.structureType,
           buildingType:resp.data.buildingType,
-          buildingMaterial:mt,
+          buildingMaterial: resp.data.buildingMaterial.split(","),
           floorType:resp.data.floorType,
-          // roofingMaterial:resp.data.roofingMaterial,
+          roofingMaterial:resp.data.roofingMaterial.split(","),
           sewerTreatment:resp.data.sewerTreatment,
           wasteCollection:resp.data.wasteCollection,
           wasteCollectionFrequency:resp.data.wasteCollectionFrequency,
-          // waterSupply:resp.data.waterSupply
+          waterSupply:resp.data.waterSupply.split(",")
+        })
+      }
     })
-    }
-  })
     this.reactiveForms();
   }
 
