@@ -113,6 +113,14 @@ export class DataService {
         catchError(this.handleError)
       )
   }
+
+  getFamilyMembers(hhid){
+    return this.http
+    .get<any>(`${this.API_URL}/member/get-all/${hhid}`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
   
   getStructure(subzoneID){
     return this.http

@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone} from '@angular/core';
 import * as L from 'leaflet';
-import * as Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import {  Router } from '@angular/router';
@@ -79,6 +78,8 @@ export class AdminComponent implements OnInit {
   deleteButton:boolean = false;
 
   buildingData:any;
+  unitsData:any;
+  housholdsData:any;
 
   //chart js
   API_URL =environment.API_URL;
@@ -281,13 +282,13 @@ export class AdminComponent implements OnInit {
 
   ];
 
-  units=[
-    {"id":1,"unitNumber": 101, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
-    {"id":2,"unitNumber": 102, "unitUse": "Commercial", "unitName": "KK General Store", "contact": 17662522},
-    {"id":3,"unitNumber": 103, "unitUse": "Commercial", "unitName": "HK Pan Shop", "contact": 17662522},
-    {"id":4,"unitNumber": 104, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
+  // units=[
+  //   {"id":1,"unitNumber": 101, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
+  //   {"id":2,"unitNumber": 102, "unitUse": "Commercial", "unitName": "KK General Store", "contact": 17662522},
+  //   {"id":3,"unitNumber": 103, "unitUse": "Commercial", "unitName": "HK Pan Shop", "contact": 17662522},
+  //   {"id":4,"unitNumber": 104, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
 
-  ]
+  // ]
 
 
 
@@ -318,7 +319,7 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    Chart.plugins.unregister(ChartDataLabels);
+   
     this.getDzongkhagList();
     this.reactiveForm();
     const zoneId = sessionStorage.getItem('zoneId');
@@ -327,10 +328,7 @@ export class AdminComponent implements OnInit {
 
     this.getZoneList(dzongkhagId);
     this.getSubzoneList(zoneId);
-    this.renderMap(this.dataService);
-    Chart.defaults.global.legend.display = false;
-
-    
+    this.renderMap(this.dataService);  
 
   }
 
@@ -373,7 +371,7 @@ export class AdminComponent implements OnInit {
               this.resident = null;
 
               this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                this.units = json.data;
+                this.unitsData = json.data;
               });
             
 
@@ -544,6 +542,7 @@ export class AdminComponent implements OnInit {
                     this.buildingData = res.data
                   })
                   this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                    this.unitsData = res.data
                     console.log(res)
                   })
                   this.addDeleteButtons = true;
@@ -552,7 +551,7 @@ export class AdminComponent implements OnInit {
                   this.clearData = true;
                   this.resident = null;
                   this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                    this.units = json.data;
+                    this.unitsData = json.data;
                   });
                   this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
                     this.imgs= json.data;
@@ -591,6 +590,7 @@ export class AdminComponent implements OnInit {
 
   
   showResident(unitid){
+    console.log(unitid)
     this.resident = null;
     this.residentTableShow = true
 
@@ -599,8 +599,13 @@ export class AdminComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: ['success-snackbar']
     });
-    this.dataService.getResident(unitid).subscribe(resp=>{
-      this.resident = resp.data;
+    this.dataService.getAHousehold(unitid).subscribe(resp=>{
+      console.log(resp)
+      this.housholdsData = resp.data
+      this.dataService.getFamilyMembers(unitid).subscribe(resp => {
+        console.log(resp)
+      })
+      
     });
   }
 
@@ -698,7 +703,7 @@ export class AdminComponent implements OnInit {
     this.showFamilyMembers = false;
     this.progressShow = false
     this.buildingInfo = null; 
-    this.units = null;
+    this.unitsData = null;
     this.imgs = null;
     this.resident = null;
     if(this.bound !== null){

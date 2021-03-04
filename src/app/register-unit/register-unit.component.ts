@@ -77,6 +77,9 @@ export class Household{
     emi:number;
 
     members:[];
+    shopOfficeName:string;
+    shopOfficeContact:number;
+    shopOfficeRent:number
 }
 
 
@@ -103,14 +106,14 @@ export class RegisterUnitComponent implements OnInit {
   showPurchasedUnitDetails:boolean = false;
   showConstructedUnitDetails:boolean = false;
   showHindranceRemarks:boolean
-
+  showAllfields:boolean = true;
   householdForm:FormGroup;
 
   multiUnitForm: FormGroup;
   residentForm: FormGroup;
 
   contactForm: FormGroup;
-
+  displayShopsOffice:boolean=false;
   showScanner = false;
   buildingId: number;
   qrId: string;
@@ -210,9 +213,8 @@ export class RegisterUnitComponent implements OnInit {
 
   unitUses:DropDownOptions[]=[
     {id:1, name: "Residential"},
-    {id:2, name: "Shop"},
-    {id:3, name: "Office"},
-    {id:4, name: "Commercial"},
+    {id:2, name: "Commercial"},
+    {id:4, name: "Office"},
     {id:5, name: "Others"}
 
   ]
@@ -408,7 +410,11 @@ reactiveForms() {
     acquisitionYear:[],
     costPrice:[],
     financeMode:[],
-    monthlyEmi:[]
+    monthlyEmi:[],
+
+    shopOfficeName:[],
+    shopOfficeRent:[],
+    shopOfficeContact:[]
     })    
 }
 
@@ -497,7 +503,10 @@ reactiveForms() {
     this.household.purchasePrice = this.householdForm.get('costPrice').value;
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
-    this.household.members = this.dataService.familyMember
+    this.household.members = this.dataService.familyMember;
+    this.household.shopOfficeContact = this.householdForm.get('shopOfficeContact').value;
+    this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
+    this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
 
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
@@ -562,6 +571,16 @@ hindranceRemarksShow(e){
    
   }else{
     this.showHindranceRemarks = false
+  }
+}
+
+useChange(e){
+  if(e.value !== "Residential"){
+    this.displayShopsOffice = true;
+    this.showAllfields = false;
+  }else{
+    this.showAllfields = true;
+    this.displayShopsOffice = false;
   }
 }
 }

@@ -115,19 +115,26 @@ export class RegisterComponent implements OnInit {
 
   buildingTopologies :DropDownOptions[]=[
     {id:'1', name:"Rammed Earth"},
-    {id:'2', name:"Adobe Block"},
-    {id:'3', name:"CSEB(Cement Stabilized Earth Block)"},
-    {id:'4', name:"Timber"},
-    {id:'5', name:"Ekra"},
-    {id:'6', name:"Confined Masonry"},
-    {id:'7', name:"Concrete Blocks"},
-    {id:'8', name:"Red Bricks"},
-    {id:'9', name:"Rubble Stone Masonry"},
-    {id:'10', name:"Dressed Stone Masonry with Mud Mortar"},
-    {id:'11', name:"Dressed Stone Masonry with Cement Mortar"},
-    {id:'12', name:"Cut Stone Masonry with Mud Mortar"},
-    {id:'13', name:"Cut Stone Masonry with Cement Mortar"},
-    {id:'14', name:"Others"}
+    {id:'2', name:"AAC(Aerated Autoclaved Concrete)"},
+    {id:'3', name:"Adobe Block"},
+    {id:'4', name:"CSEB(Cement Stabilized Earth Block)"},
+    {id:'5', name:"Timber"},
+    {id:'6', name:"Ekra"},
+    {id:'7', name:"Confined Masonry"},
+    {id:'8', name:"Concrete Blocks with no reinforcement"},
+    {id:'9', name:"Concrete Blocks with  reinforcement"},
+    {id:'10', name:"Red Bricks with no reinforcement"},
+    {id:'11', name:"Red Bricks with reinforcement"},
+    {id:'12', name:"Rubble Stone With Mud Mortar"},
+    {id:'13', name:"Rubble Stone With Cement Mortar"},
+    {id:'14', name:"Rubble Stone With Cement Mortar and reinforcement"},
+    {id:'15', name:"Dressed Stone with Mud Mortar"},
+    {id:'16', name:"Dressed Stone with Cement Mortar"},
+    {id:'17', name:"Dressed Stone with Cement Mortar and reinforcement"},
+    {id:'18', name:"Cut Stone with Mud Mortar"},
+    {id:'19', name:"Cut Stone with Cement Mortar"},
+    {id:'20', name:"Cut Stone with Cement Mortar and reinforcement"},
+    {id:'21', name:"Others"}
 
   ]
 
