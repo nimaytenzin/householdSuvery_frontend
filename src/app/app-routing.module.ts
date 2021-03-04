@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'dashboard/:id', component: DashboardComponent },
   {path: 'building', component: RegisterComponent },
   {path: 'unit', component: RegisterUnitComponent},
-{path:'edit-building/:sid', component:EditBuildingComponent},
+  {path:'edit-building/:sid', component:EditBuildingComponent},
   {path: 'edit-unit/:id', component: EditUnitComponent},
   {path: 'admin', component: AdminComponent },
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},

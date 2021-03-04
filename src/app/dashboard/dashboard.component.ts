@@ -55,6 +55,9 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  editBuilding(){
+    this.router.navigate(['edit-building',this.buildingId])
+  }
   redirect(path) {
     sessionStorage.setItem('transactionType', 'registration');
     this.router.navigate([path]);
