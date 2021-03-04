@@ -132,6 +132,8 @@ export class EditUnitComponent implements OnInit {
   displayShopForm = false;
 
   displayOtherUse = false;
+  
+  members:[];
 
   numberOfRooms:DropDownNumber[]=[
     {value:0},
@@ -393,7 +395,12 @@ ngOnInit() {
         financeMode:data.meanFinance,
         monthlyEm:data.emi
       })
+    }
+  })
 
+  this.dataService.getMembers(this.hhId).subscribe(res=>{
+    if(res.success === "true"){
+      this.members = res.data
     }
   })
 }
