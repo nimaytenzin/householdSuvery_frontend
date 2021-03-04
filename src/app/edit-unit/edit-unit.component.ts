@@ -339,63 +339,63 @@ constructor(
 
 ngOnInit() {
   this.hhId = this.route.snapshot.params['id'];
+  this.reactiveForms();
+
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
+    let data:Household = res.data;
     if(res.success==="true"){
       this.householdForm.patchValue({
-        // unidID:res.data.unitId,
-        // familySharing:res.data.,
-        // unitOwnership:res.data.,
-        // unitUse:res.data.,
-        // numberOfRooms:res.data.,
+        unidID:res.data.unitId,
+        familySharing:data.familiesSharing,
+        unitOwnership:data.unitOwnership,
+        unitUse:data.unitUse,
+        numberOfRooms:data.numberOfRooms,
 
-        // cidHoh:res.data.,
-        // nameHoh:res.data.,
-        // genderHoh:res.data.,
-        // ageHoh:res.data.,
-        // maritalStatusHoh:res.data.,
-        // employmentStatus:res.data.,[],
-        // workAgencyHoh:res.data.,
-        // serviceYearHoh:res.data.,
-        // workPlaceDistanc:res.data.,,
-        // modeTransport:res.data.,
-        // commutingCost:res.data.,
-        // utilityBills:res.data.,
+        cidHoh:data.cid,
+        nameHoh:data.name,
+        genderHoh:data.gender,
+        ageHoh:data.age,
+        maritalStatusHoh:data.martialStatus,
+        employmentStatusHoh: data.employment,
+        workAgencyHoh:data.employmentOrg,
+        serviceYearHoh:data.yearsInService,
+        workPlaceDistance:data.distToWork,
+        modeTransport:data.modeTransport,
+        commutingCost:data.commuteCost,
+        utilityBills:data.utilityBill,
 
-        // numberHouseholdM:res.data.,rs:[],
-        // numberIncomeEarn:res.data.,[],
-        // numberSchoolGoer:res.data.,,
-        // monthlyIncome:res.data.,
-        // ownHouse:res.data.,
+        numberHouseholdMembers:data.numberHousehold,
+        numberIncomeEarn:data.incomeEarner,
+        numberSchoolGoer:data.schoolGoers,
+        monthlyIncome:data.householdIncome,
+        ownHouse:data.ownHouse,
         
 
-        // monthlyRent:res.data.,
-        // rentalType:res.data.,
-        // howLongLiving:res.data.,
-        // rentIncrease:res.data.,
-        // rentIncreaseFive:res.data.,s:[],
-        // rentWaiver:res.data.,
-        // rentWaiverAmount:res.data.,
-        // hindrance:res.data.,
-        // hindranceOthers:res.data.,
-        // complaintRespons:res.data.,,
-        // maintenanceFrequ:res.data.,:[],
-        // waterAdequacy:res.data.,
-        // parkingAdequacy:res.data.,
-        // accessAdequacy:res.data.,
-        // femaleSafety:res.data.,
-        // publicTransportA:res.data.,s:[],
-        // ownedUnitType:res.data.,
-        // meansOfOwning:res.data.,
-        // acquisitionYear:res.data.,
-        // costPrice:res.data.,
-        // financeMode:res.data.,
-        // monthlyEm:res.data.,
-
+        monthlyRent:data.rent,
+        rentalType:data.typeRent,
+        howLongLiving:data.yearsResiding,
+        rentIncrease:data.rentIncreased,
+        rentIncreaseFive:data.rentIncreaseFiveYears,
+        rentWaiver:data.rentWaived,
+        rentWaiverAmount:data.rentWaivedAmount,
+        hindrance:data.hindrance,
+        complaintResponse:data.compliantResponse,
+        maintenanceFrequency:data.maintenanceFrequency,
+        waterAdequacy:data.waterAdequacy,
+        parkingAdequacy:data.parkingAedequacy,
+        accessAdequacy:data.accessAdequacy,
+        femaleSafety:data.femaleSafety,
+        publicTransportAccess:data.publicTransportAccess,
+        ownedUnitType:data.ownType,
+        meansOfOwning:data.meansOwning,
+        acquisitionYear:data.yearAcquisition,
+        costPrice:data.purchasePrice,
+        financeMode:data.meanFinance,
+        monthlyEm:data.emi
       })
 
     }
   })
-  this.reactiveForms();
 }
 
 changeDiff($event){
@@ -409,7 +409,6 @@ changeDiff($event){
     this.displayOtherUse =true;
     this.displayShopForm = true;
   }else{ 
-
     this.displayShopForm = true;
   }
 };
