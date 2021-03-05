@@ -7,6 +7,7 @@ import { DataService } from '../service/data.service';
 // interface Building Form
 
 export class Building{
+    id:number;
     structure_id: number;
     buildingOwnership:string;
     cidOwner: string;
@@ -239,11 +240,11 @@ export class EditBuildingComponent implements OnInit {
 
     this.dataService.getBuildingInfo(this.buildingId).subscribe(resp=>{
       if(resp['success']=="true"){
-        console.log(resp.data.buildingMaterial)
-        let mt = []
-        mt.push(resp.data.buildingMaterial)
-        console.log(mt)
-        console.log(resp)
+        let bbm = resp.data.buildingMaterial;
+        let roofmaterial= resp.data.roofingMaterial;
+        let water= resp.data.waterSupply;
+
+        this.building.id = resp.data.id;
         this.buildingForm.patchValue({
           buildingOwnership:resp.data.buildingOwnership,
           cidOwner:resp.data.cidOwner,
@@ -260,16 +261,16 @@ export class EditBuildingComponent implements OnInit {
           buildingStyle:resp.data.buildingStyle,
           structureType:resp.data.structureType,
           buildingType:resp.data.buildingType,
-          buildingMaterial:mt,
           floorType:resp.data.floorType,
-          // roofingMaterial:resp.data.roofingMaterial,
           sewerTreatment:resp.data.sewerTreatment,
           wasteCollection:resp.data.wasteCollection,
           wasteCollectionFrequency:resp.data.wasteCollectionFrequency,
-          // waterSupply:resp.data.waterSupply
+          buildingMaterial: bbm === null ? null: bbm.split(","),
+          roofingMaterial: roofmaterial === null ? null :  roofmaterial.split(","),
+          waterSupply: water === null ? null : water.split(",")
+        })
+      }
     })
-    }
-  })
     this.reactiveForms();
   }
 
@@ -339,36 +340,23 @@ export class EditBuildingComponent implements OnInit {
 
   submit(){
     this.registerBuilding();
-    this.snackBar.open('Add update route and retain The previous state of admin', '', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            panelClass: ['success-snackbar']
-          });
-    this.router.navigate(['admin'])
-    // console.log(this.building)
-    // // this.router.navigate(['dashboard',this.buildingId]);
-    // console.log(this.building)
-    // this.dataService.postBuilding(this.building).subscribe(res=>{
-    //   if(res.success === "true"){
-    //     this.dataService.postProgress(this.buildingId).subscribe(res=>{
-    //       if(res.success === "true"){
-    //         this.router.navigate(['dashboard', this.buildingId]);
-    //       }else{
-    //         this.snackBar.open('Registration error', '', {
-    //           duration: 5000,
-    //           verticalPosition: 'bottom',
-    //           panelClass: ['error-snackbar']
-    //         });
-    //       }
-    //     })
-    //   }else{
-    //     this.snackBar.open('Registration error', '', {
-    //       duration: 5000,
-    //       verticalPosition: 'bottom',
-    //       panelClass: ['error-snackbar']
-    //     });
-    //   }
-    // })
+    this.dataService.updateBuilding(this.building).subscribe(res=>{
+      if(res.success === "true"){
+        this.snackBar.open('Edited the building information', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['success-snackbar']
+        });
+        this.router.navigate(['dashboard',this.buildingId]);
+      }else{
+        this.snackBar.open('Error submitting edit', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar']
+        });
+
+      }
+    })
   }
 
   showOtherFloorType(e){
@@ -392,6 +380,10 @@ export class EditBuildingComponent implements OnInit {
   selectWater($e){
     this.building.waterSupply= $e.source.value.toString();
     console.log(this.building.waterSupply)
+  }
+
+  back(){
+    this.router.navigate(['dashboard',this.buildingId]);
   }
 
 

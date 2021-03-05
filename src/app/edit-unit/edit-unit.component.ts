@@ -5,7 +5,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { DataService } from '../service/data.service';
 import { count } from 'rxjs/operators';
 
-
+//this is updated
 interface DropDownOptions{
   id:number,
   name:string
@@ -26,6 +26,7 @@ interface DropDownNumber{
 }
 
 export class Household{
+    id:number;
     structure_id: number;
     unitId:string;
     familiesSharing:number;
@@ -103,6 +104,8 @@ export class EditUnitComponent implements OnInit {
   showPurchasedUnitDetails:boolean = false;
   showConstructedUnitDetails:boolean = false;
   showHindranceRemarks:boolean
+
+  buildingId: number;
 
   householdForm:FormGroup;
 
@@ -339,12 +342,15 @@ constructor(
 }
 
 ngOnInit() {
+  this.buildingId = Number(sessionStorage.getItem('buildingId'));
   this.hhId = this.route.snapshot.params['id'];
   this.reactiveForms();
 
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
     let data:Household = res.data;
     if(res.success==="true"){
+      this.household.id = res.data.id
+
       this.householdForm.patchValue({
         unidID:res.data.unitId,
         familySharing:data.familiesSharing,
@@ -366,8 +372,8 @@ ngOnInit() {
         utilityBills:data.utilityBill,
 
         numberHouseholdMembers:data.numberHousehold,
-        numberIncomeEarn:data.incomeEarner,
-        numberSchoolGoer:data.schoolGoers,
+        numberIncomeEarners:data.incomeEarner,
+        numberSchoolGoers:data.schoolGoers,
         monthlyIncome:data.householdIncome,
         ownHouse:data.ownHouse,
         
@@ -562,10 +568,10 @@ reactiveForms() {
     this.household.members = this.dataService.familyMember
 
     console.log(this.household)
-    this.dataService.postHousehold(this.household).subscribe(res=>{
+    this.dataService.updateHousehold(this.household).subscribe(res=>{
       console.log(res)
       if(res.success === "true"){
-        // this.router.navigate(['dashboard', this.buildingId]);
+        this.router.navigate(['dashboard', this.buildingId]);
       }else{
         this.snackBar.open('Registration error', '', {
           duration: 5000,
