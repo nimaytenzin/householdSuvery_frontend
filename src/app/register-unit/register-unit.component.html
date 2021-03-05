@@ -23,7 +23,7 @@
             </mat-select>
           </mat-form-field>
 
-            <mat-form-field class="justifier">
+            <mat-form-field class="justifier" *ngIf="unitUseShow">
               <mat-label>Unit Use</mat-label>
               <mat-select  formControlName="unitUse" [readonly]="disableForm" (selectionChange) = "useChange($event)" >
                 <mat-option *ngFor="let use of unitUses" [value]="use.name">
@@ -378,7 +378,7 @@
             <div *ngIf="displayShopsOffice">
               <mat-form-field class="justifier">
                 <mat-label>Unit Name</mat-label>
-                <input matInput type="number"   formControlName="shopOfficeName" [readonly]="disableForm" >
+                <input matInput type="text"   formControlName="shopOfficeName" [readonly]="disableForm" >
               </mat-form-field>
 
               <mat-form-field class="justifier">
@@ -393,7 +393,10 @@
 
             </div>
 
-
+            <mat-form-field class="justifier">
+              <mat-label>Remarks</mat-label>
+              <input matInput type="text"   formControlName="remarks" [readonly]="disableForm" >
+            </mat-form-field>
       </form>
     
 <!-- End of Resident Form--> 
