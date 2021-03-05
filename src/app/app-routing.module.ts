@@ -30,7 +30,7 @@ const routes: Routes = [
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},
   // {path: 'changepassword', component: ChangePasswordComponent, canActivate: [RouteGuard]},
   {path: 'map', component: MapComponent},
-  {path: 'camera',component: UploadImageComponent,canActivate: [RouteGuard]},
+  {path: 'camera',component: UploadImageComponent},
   {path: 'atm', component: RegisterAtmComponent},
   {path: '**', component: ErrorComponent},
   

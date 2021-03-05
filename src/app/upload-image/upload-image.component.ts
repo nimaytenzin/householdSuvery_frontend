@@ -33,36 +33,42 @@ export class UploadImageComponent implements OnInit {
   }
 
   uploadImg(){
+    this.snackBar.open('Uploaded ','', {
+                duration: 5000,
+                verticalPosition: 'bottom',
+                panelClass: ['success-snackbar']
+              });
+    this.clearImg()
 
     // this.router.navigate(['dashboard',this.buildingId]);
-    if(this.webcamImage){
-      let jsonObject = {
-        "building_id":this.buildingId,
-        "imageDataUrl":this.webcamImage.imageAsDataUrl
-      }
-      this.dataService.uploadImg(jsonObject).subscribe(response=>{
-        if(response.success === "true"){
-          this.router.navigate(['dashboard',this.buildingId]);
-          this.snackBar.open('Uploaded Image', '', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            panelClass: ['success-snackbar']
-          });
-        }else if(response.success === "false"){
-          this.snackBar.open('Could not upload image'+response.msg, '', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            panelClass: ['error-snackbar']
-          });
-        }else if(response.success === "error"){
-          this.snackBar.open('Error Uploading Image', '', {
-            duration: 5000,
-            verticalPosition: 'bottom',
-            panelClass: ['error-snackbar']
-          });
-        }
-    })
-  }
+  //   if(this.webcamImage){
+  //     let jsonObject = {
+  //       "building_id":this.buildingId,
+  //       "imageDataUrl":this.webcamImage.imageAsDataUrl
+  //     }
+  //     this.dataService.uploadImg(jsonObject).subscribe(response=>{
+  //       if(response.success === "true"){
+  //         this.router.navigate(['dashboard',this.buildingId]);
+  //         this.snackBar.open('Uploaded Image', '', {
+  //           duration: 5000,
+  //           verticalPosition: 'bottom',
+  //           panelClass: ['success-snackbar']
+  //         });
+  //       }else if(response.success === "false"){
+  //         this.snackBar.open('Could not upload image'+response.msg, '', {
+  //           duration: 5000,
+  //           verticalPosition: 'bottom',
+  //           panelClass: ['error-snackbar']
+  //         });
+  //       }else if(response.success === "error"){
+  //         this.snackBar.open('Error Uploading Image', '', {
+  //           duration: 5000,
+  //           verticalPosition: 'bottom',
+  //           panelClass: ['error-snackbar']
+  //         });
+  //       }
+  //   })
+  // }
 }
 
   handleImage(webcamImage: WebcamImage) {
