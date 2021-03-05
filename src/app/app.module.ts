@@ -43,6 +43,7 @@ import { DataTableComponent} from './DataTable/data-table/data-table.component'
 import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
+import { MemberTableComponent } from './member-table/member-table.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { EditBuildingComponent } from './edit-building/edit-building.component';
     DataTableComponent,
     DialogBoxComponent,
     EditUnitComponent,
-    EditBuildingComponent
+    EditBuildingComponent,
+    MemberTableComponent
   ],
   imports: [
     BrowserModule,

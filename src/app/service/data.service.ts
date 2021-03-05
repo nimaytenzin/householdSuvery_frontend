@@ -161,6 +161,29 @@ export class DataService {
     );
   }
 
+  updateHousehold(data){
+    return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateMember(data){
+    return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateBuilding(data){
+    return this.http.patch<any>(`${this.API_URL}/building/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteMember(memberid){
+    return this.http.delete<any>(`${this.API_URL}/member/delete/${memberid}`,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
+  }
+
   postRegistration(item) {
     return this.http
       .post(`${this.API_URL}/household-details`, item, this.httpOptions)
@@ -169,13 +192,6 @@ export class DataService {
       );
   }
 
-  postUpdateHouseHold(item, houseHoldId) {
-    return this.http
-      .put(`${this.API_URL}/household-details/${houseHoldId}`, item, this.httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
   postUnit(item){
     return this.http
       .post<any>(`${this.API_URL}/createunit`,item,this.httpOptions)

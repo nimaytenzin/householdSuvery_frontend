@@ -132,10 +132,8 @@
 <br>
     
 
-    <div  *ngIf="buildingInfo"  class="unitDIV">
+    <div  *ngIf="unitDetailShow"  class="unitDIV">
      <h3> Unit Details</h3>
-
-      
      <table mat-table [dataSource]="unitsData" class="mat-elevation-z8">
 
       <ng-container matColumnDef="position">

@@ -71,7 +71,7 @@ export class AdminComponent implements OnInit {
   addDeleteButtons:boolean =false;
   deleteButton:boolean = false;
   deleteID:number;
-
+  unitDetailShow=false;
   buildingData:any;
   unitsData:any;
   housholdsData:any;
@@ -529,6 +529,7 @@ export class AdminComponent implements OnInit {
               this.deleteButton = true
               this.deleteID = feature.properties.structure_id  
               this.showBuildingInfo = false;
+              this.unitDetailShow =false
                 this.snackBar.open('Data Not Added' , '', {
                   duration: 3000,
                   verticalPosition: 'top',
@@ -537,7 +538,10 @@ export class AdminComponent implements OnInit {
               }else{
                 this.buildingId = feature.properties.structure_id;
                  this.deleteButton = true
+              this.unitDetailShow =true
+
                  this.deleteID = feature.properties.structure_id  
+                 this.buildingData =null;
 
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.buildingData = res.data

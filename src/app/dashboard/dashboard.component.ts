@@ -30,6 +30,8 @@ export class DashboardComponent implements OnInit {
   units = [];
   buildingId:number;
 
+  showBuildingEdit: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -45,8 +47,17 @@ export class DashboardComponent implements OnInit {
     this.buildingId = this.route.snapshot.params['id'];
     sessionStorage.setItem('buildingId',this.buildingId.toString());
     this.getUnits(this.buildingId);
+    this.dataService.getBuildingInfo(this.buildingId).subscribe(res=>{
+      console.log(res)
+      if(res.success === "true"){
+        this.showBuildingEdit = true;
+      }
+    })
   }
 
+  editBuilding(){
+    this.router.navigate(['edit-building',this.buildingId])
+  }
   redirect(path) {
     sessionStorage.setItem('transactionType', 'registration');
     this.router.navigate([path]);
