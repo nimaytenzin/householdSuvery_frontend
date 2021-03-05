@@ -13,8 +13,7 @@ export interface UsersData {
   type:string;
 }
 
-const ELEMENT_DATA: UsersData[] = [
-];
+const ELEMENT_DATA: UsersData[] = [];
 
 @Component({
   selector: 'app-member-table',
@@ -80,9 +79,12 @@ export class MemberTableComponent implements OnInit {
     let obj={}
     this.dataSource = this.dataSource.filter((value,key)=>{
       if(value.sid === row_obj.sid){
+        value.sid = row_obj.sid;
         value.idNumber= row_obj.cid;
         value.age = row_obj.age;
         value.gender = row_obj.gender;
+        value.type = row_obj.type;
+        value.incomeEarner = row_obj.incomeEarner;
       }
       obj = value
       console.log(obj)
