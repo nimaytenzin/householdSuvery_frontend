@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone} from '@angular/core';
 import * as L from 'leaflet';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { HttpClient } from '@angular/common/http';
 import {  Router } from '@angular/router';
 import { DataService } from '../service/data.service';
@@ -34,17 +33,12 @@ interface Subzone {
   name: string;
   zone_id: number;
 }
-
-
-
 interface Dzongkhag {
   id: string;
   name: string;
   created_at: string;
   updated_at: string;
 }
-
-
 export class BuildingInfo{
   BuildingName: string;
   BuildingOwner: string;
@@ -76,6 +70,7 @@ export class AdminComponent implements OnInit {
   showFamilyMembers:boolean = false;
   addDeleteButtons:boolean =false;
   deleteButton:boolean = false;
+  deleteID:number;
 
   buildingData:any;
   unitsData:any;
@@ -282,26 +277,7 @@ export class AdminComponent implements OnInit {
     {id:'8', name:"G+7"},
 
   ];
-
-  // units=[
-  //   {"id":1,"unitNumber": 101, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
-  //   {"id":2,"unitNumber": 102, "unitUse": "Commercial", "unitName": "KK General Store", "contact": 17662522},
-  //   {"id":3,"unitNumber": 103, "unitUse": "Commercial", "unitName": "HK Pan Shop", "contact": 17662522},
-  //   {"id":4,"unitNumber": 104, "unitUse": "Residential", "unitName": "Residential", "contact": 17662522},
-
-  // ]
-
-
-
-  // familyMembers = [
-  //   {"type": "CID", "cid": "10302000402", "gender": "Male", "age":24, "incomeEarner": true},
-  //   {"type": "Minor", "cid": "Minor", "gender": "Female", "age":3, "incomeEarner": false},
-  //   {"type": "CID", "cid": "10302000433", "gender": "Female", "age":24, "incomeEarner": true}
-
-  // ]
-
   setViewValue: boolean;
-
 
   constructor(
     private http: HttpClient,
@@ -336,25 +312,27 @@ export class AdminComponent implements OnInit {
       this.renderBuildings(sessionStorage.getItem("subzoneID"))
 
     }else{
-      alert("sss")
+
     }
 
   }
 
-
-
   submit(){
     let result = this.searchForm.get("searchBuilding").value;
-    this.dataService.getStructure(result).subscribe(resp=>{
-      let structure = resp;
-      this.zoomToSearched(structure)
-    });
+    this.dataService.getAStructure(result).subscribe(res => {
+      console.log(res)
+      this.zoomToSearched(res)
+    })
   }
 
   zoomToSearched(response:any){
     let lat,lng,id = 0
     if(response.success === "false"){
-      alert("Building not found");
+      this.snackBar.open('Building Not Found' , '', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
     }else{
       if(this.searchmarker !== undefined){
         this.map.removeLayer(this.searchmarker);  
@@ -520,6 +498,18 @@ export class AdminComponent implements OnInit {
   //zone Search End
 
   renderBuildings(zoneId){
+    const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json:any)=>{
+      this.bound= L.geoJSON(json.data,{
+        style: (feature)=>{
+          return {
+            color:"red",
+            fillOpacity:0
+          }
+        }
+      }).addTo(this.map);
+      // this.map.fitBounds(this.bound.getBounds());
+    })
+
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
       this.json = json;
       if(this.buildingGeojson !== undefined){
@@ -537,6 +527,7 @@ export class AdminComponent implements OnInit {
             layer.on('click', (e) => {
               if(feature.properties.status == 'INCOMPLETE'){
               this.deleteButton = true
+              this.deleteID = feature.properties.structure_id  
               this.showBuildingInfo = false;
                 this.snackBar.open('Data Not Added' , '', {
                   duration: 3000,
@@ -546,6 +537,7 @@ export class AdminComponent implements OnInit {
               }else{
                 this.buildingId = feature.properties.structure_id;
                  this.deleteButton = true
+                 this.deleteID = feature.properties.structure_id  
 
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.buildingData = res.data
@@ -661,16 +653,19 @@ export class AdminComponent implements OnInit {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
       data:{
         title: "Delete Building?",
-        message: "Are you sure you want to delete the Building? You will be held accountable for information loss and User details will be recorded"
+        message: `Are you sure you want to delete ${this.deleteID}? You will be held accountable, User details will be recorded`
       }
     });
     confirmDialog.afterClosed().subscribe(result=>{
       if(result == true){
-        this.snackBar.open('Deleted' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
+        this.dataService.deleteBuilding(this.deleteID).subscribe(res => {
+          this.snackBar.open('Deleted. You may want to refresh the browser to see the changes' , '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar']
+          });
+        })
+        
           }else{
               this.snackBar.open('Oks' , '', {
                 duration: 3000,

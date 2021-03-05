@@ -384,20 +384,15 @@ export class MapComponent implements OnInit {
         this.building.lat = latlng.lat;
         this.building.lng = latlng.lng;
         this.building.sub_zone_id = Number(sessionStorage.getItem('subZoneId'));
-        this.dataService.postNewBuilding(this.building).subscribe(response => {
+        this.dataService.postBuilding(this.building).subscribe(response => {
           console.log(response);
           this.buildingId = response.data.id;
 
-          this.snackBar.open('Building number ' + this.buildingId + ' has been successfully identified', '', {
+          this.snackBar.open('Building number ' + this.buildingId + ' has been successfully Added', '', {
             duration: 3000,
             verticalPosition: 'top',
             panelClass: ['success-snackbar']
           });
-          if (sessionStorage.getItem('transactionType') === 'registration') {
-            this.router.navigate(['register', this.buildingId]);
-          } else {
-            this.router.navigate(['dashboard', this.buildingId]);
-          }
         });
       }else{
         this.map.removeLayer(this.newMarker)
