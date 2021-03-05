@@ -21,7 +21,7 @@ export class AuthenticationService {
   ) { }
 
   validateLogin(cid, password) {
-    return this.http.post<any>(`${this.API_URL}/login`, {
+    return this.http.post<any>(`${this.API_URL}/user/login`, {
       cid,
       password
     }).pipe(

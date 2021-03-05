@@ -16,7 +16,7 @@ import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 
 const routes: Routes = [
-  {path: '', component: SelectZoneComponent},
+  {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
 
   {path: 'selectzone', component: SelectZoneComponent },
