@@ -30,8 +30,8 @@ export class LoginComponent implements OnInit {
 
   reactiveForm() {
     this.loginForm = this.fb.group({
-      cid: ['', Validators.compose([Validators.required, Validators.maxLength(11), Validators.minLength(11)])],
-      password: ['', Validators.compose([Validators.required])]
+      cid: [''],
+      password: ['']
     });
 
     this.loginForm.controls.cid.setValue(localStorage.getItem('loginId'));
