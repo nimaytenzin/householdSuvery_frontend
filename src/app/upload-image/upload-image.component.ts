@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 
+//sdsd
 @Component({
   selector: 'app-upload-image',
   templateUrl: './upload-image.component.html',
