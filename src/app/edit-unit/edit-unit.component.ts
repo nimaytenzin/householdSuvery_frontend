@@ -5,7 +5,6 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { DataService } from '../service/data.service';
 import { count } from 'rxjs/operators';
 
-
 interface DropDownOptions{
   id:number,
   name:string
