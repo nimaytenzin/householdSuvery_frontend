@@ -143,10 +143,28 @@ export class DataService {
       catchError(this.handleError)
     );
   }
+
   updateHousehold(data){
     return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
       catchError(this.handleError)
     );
+  }
+  updateMember(data){
+    return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updateBuilding(data){
+    return this.http.patch<any>(`${this.API_URL}/building/update`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  deleteMember(memberid){
+    return this.http.delete<any>(`${this.API_URL}/member/delete/${memberid}`,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
   }
 
   postRegistration(item) {

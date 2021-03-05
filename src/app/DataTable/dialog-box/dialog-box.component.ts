@@ -4,7 +4,6 @@ import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
   hhID:number
-  id:number;
   cid: string;
   age: number;
   gender:string;

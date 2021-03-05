@@ -508,10 +508,11 @@ reactiveForms() {
     this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
     this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
 
-    this.household.members.forEach(function(v:any){
-      delete v.id;
-    });
-
+    if(this.household.members !== null){
+      this.household.members.forEach(function(v:any){
+        delete v.id;
+      });
+    }
     console.log(this.household)
     this.dataService.postHousehold(this.household).subscribe(res=>{
       console.log(res)
