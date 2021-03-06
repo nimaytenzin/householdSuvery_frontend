@@ -357,9 +357,13 @@ export class AdminComponent implements OnInit {
               this.resident = null;
               if(response.data.status == 'INCOMPLETE'){
                 this.buildingData= null
+                this.familyMembers = null;
+                this.unitsData =null
+                this.housholdsData =null
                 this.deleteButton = true
                 this.deleteID = feature.properties.structure_id  
                 this.showBuildingInfo = false;
+                this.residentTableShow = false;
                 this.unitDetailShow =false
                   this.snackBar.open('Data Not Added' , '', {
                     duration: 3000,
@@ -368,6 +372,9 @@ export class AdminComponent implements OnInit {
                   });
                 }else{
                   this.buildingData= null
+                  this.familyMembers = null;
+                  this.housholdsData =null
+                  this.unitsData =null
                   this.buildingId = feature.properties.structure_id;
                   this.deleteButton = true
                   this.unitDetailShow =true
@@ -553,11 +560,21 @@ export class AdminComponent implements OnInit {
                     this.totalCompleted ++
                   }
                   layer.on('click', (e) => {
+                    this.buildingData= null
+                    this.unitsData =null
+                    this.familyMembers = null;
+                    this.housholdsData =null
+
                     if(feature.properties.status == 'INCOMPLETE'){
                     this.buildingData= null
+                    this.unitsData =null
+
+                    this.familyMembers = null;
+                    this.housholdsData =null
                     this.deleteButton = true
                     this.deleteID = feature.properties.structure_id  
                     this.showBuildingInfo = false;
+                    this.residentTableShow = false
                     this.unitDetailShow =false
                       this.snackBar.open('Data Not Added' , '', {
                         duration: 3000,
@@ -566,6 +583,9 @@ export class AdminComponent implements OnInit {
                       });
                     }else{
                       this.buildingData= null
+                      this.unitsData =null
+                      this.familyMembers = null;
+                      this.housholdsData =null
                       this.buildingId = feature.properties.structure_id;
                       this.deleteButton = true
                       this.unitDetailShow =true
