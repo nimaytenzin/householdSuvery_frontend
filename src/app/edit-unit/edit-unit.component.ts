@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { DataService } from '../service/data.service';
-import { count } from 'rxjs/operators';
 
 //this is updated
 interface DropDownOptions{

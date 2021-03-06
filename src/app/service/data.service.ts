@@ -169,13 +169,19 @@ export class DataService {
     );
   }
 
+  createMember(data){
+    return this.http.post<any>(`${this.API_URL}/member/create`,data,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   updateHousehold(data){
     return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
   updateMember(data){
-    return this.http.patch<any>(`${this.API_URL}/household/update`,data,this.httpOptions).pipe(
+    return this.http.patch<any>(`${this.API_URL}/member/update`,data,this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
@@ -246,7 +252,7 @@ export class DataService {
 
   uploadImg(item){
     return this.http
-      .post<any>(`${this.API_URL}/upload-img`,item,this.httpOptions)
+      .post<any>(`${this.API_URL}/image/create`,item,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

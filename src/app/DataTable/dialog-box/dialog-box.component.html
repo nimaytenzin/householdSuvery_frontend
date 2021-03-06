@@ -11,7 +11,7 @@
 
  <div *ngIf="showDetails">
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input type="text" placeholder="{{action}} cid/workpermit" matInput (input)="pingApi()" [(ngModel)]="local_data.cid">
+    <input type="text" placeholder="{{action}} cid/workpermit" matInput (input)="pingApi()" [(ngModel)]="local_data.idNumber">
   </mat-form-field>
   
  </div>

@@ -5,7 +5,6 @@ import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.comp
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
-  sid:number;
   idNumber: string;
   age: number;
   gender:string;
@@ -13,7 +12,7 @@ export interface UsersData {
   type:string;
 }
 
-const ELEMENT_DATA: UsersData[] = [];
+const ELEMENT_DATA = [];
 
 @Component({
   selector: 'app-member-table',
@@ -30,7 +29,7 @@ export class MemberTableComponent implements OnInit {
 
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
 
-  @Input() members:UsersData[];
+  @Input() members;
 
   ngOnInit(){
     this.dataservice.familyMember = null
@@ -57,49 +56,70 @@ export class MemberTableComponent implements OnInit {
         this.updateRowData(result.data);
       }else if(result.event == 'Delete'){
         this.deleteRowData(result.data);
-        // console.log("test")
       }
     });
   }
 
   addRowData(row_obj){
-    this.dataSource.push({
-      sid: this.i++,
-      idNumber:row_obj.cid,
+    let obj = {
+      hhId : this.members[0].hhId,
+      idNumber:row_obj.idNumber,
       age:row_obj.age,
       gender:row_obj.gender,
-      incomeEarner:row_obj.incomeEarner,
-      type:row_obj.type
-    });
-    this.table.renderRows();
-    this.dataservice.familyMember = this.dataSource
-
-  }
-  updateRowData(row_obj){
-    let obj={}
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      if(value.sid === row_obj.sid){
-        value.sid = row_obj.sid;
-        value.idNumber= row_obj.cid;
-        value.age = row_obj.age;
-        value.gender = row_obj.gender;
-        value.type = row_obj.type;
-        value.incomeEarner = row_obj.incomeEarner;
+      incomeEarner: row_obj.incomeEarner,
+      type: row_obj.type
+    }
+    this.dataservice.createMember(obj).subscribe(res=>{
+      if(res.success === "true"){
+        this.dataSource.push({
+          idNumber:row_obj.idNumber,
+          age:row_obj.age,
+          gender:row_obj.gender,
+          incomeEarner: row_obj.incomeEarner,
+          type: row_obj.type
+        });
+        this.table.renderRows();
+        this.dataservice.familyMember = this.dataSource
       }
-      obj = value
-      console.log(obj)
-      return true;
-    });
-    this.dataservice.familyMember = this.dataSource
+    })
+  }
+
+  updateRowData(row_obj){
+    let obj = {
+      hhId : this.members[0].hhId,
+      id: row_obj.id,
+      idNumber:row_obj.idNumber,
+      age:row_obj.age,
+      gender:row_obj.gender,
+      incomeEarner: row_obj.incomeEarner,
+      type: row_obj.type
+    }
+    console.log(obj)
+
+    this.dataservice.updateMember(obj).subscribe(res=>{
+      if(res.success === "true"){
+        this.dataSource = this.dataSource.filter((value,key)=>{
+          if(value.id === row_obj.id){
+            value.id = row_obj.id;
+            value.idNumber= row_obj.idNumber;
+            value.age = row_obj.age;
+            value.gender = row_obj.gender;
+            value.type = row_obj.type;
+            value.incomeEarner = row_obj.incomeEarner;
+          }
+          return true;
+        });
+        this.dataservice.familyMember = this.dataSource
+      }
+    })
   }
   deleteRowData(row_obj){
-    this.dataSource = this.dataSource.filter((value,key)=>{
-      return value.idNumber != row_obj.cid;
-    });
-    this.dataservice.familyMember = this.dataSource
     this.dataservice.deleteMember(row_obj.id).subscribe(res=>{
       if(res.success === "true"){
-        console.log(res)
+        this.dataSource = this.dataSource.filter((value,key)=>{
+          return value.id != row_obj.id;
+        });
+        this.dataservice.familyMember = this.dataSource
       }
     })
   }
