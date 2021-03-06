@@ -94,6 +94,8 @@ export class DialogBoxComponent {
       this.selectionType = e.value
       this.showDetails = true
     }else{
+      this.selectionType = e.value
+      this.local_data.idNumber = 0
       this.showDetails = false
     }
   }
