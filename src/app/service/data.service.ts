@@ -126,7 +126,7 @@ export class DataService {
 
   deleteBuilding(structure_id){
     return this.http
-      .delete(`${this.API_URL}/structure/delete/${structure_id}`,this.httpOptions)
+      .delete<any>(`${this.API_URL}/structure/delete/${structure_id}`,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       )
