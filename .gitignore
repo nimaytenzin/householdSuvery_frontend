@@ -1,1 +1,4 @@
 /node_modules/
+certificate.cnf
+localhost.crt
+localhost.key
