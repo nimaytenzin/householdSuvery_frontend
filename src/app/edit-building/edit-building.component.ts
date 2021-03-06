@@ -8,7 +8,6 @@ import { DataService } from '../service/data.service';
 
 export class Building{
     id:number;
-    structure_id: number;
     buildingOwnership:string;
     cidOwner: string;
     nameOfBuildingOwner: string;
@@ -68,11 +67,11 @@ export class EditBuildingComponent implements OnInit {
   unitUse: string;
   shopUse: string;
   unitId: number;
-  
   latitude: number;
   longitude: number;
   accuracy: number;
   building: Building;
+  id:any;
 
   disableForm = false;
   displayForm = true;
@@ -243,8 +242,7 @@ export class EditBuildingComponent implements OnInit {
         let bbm = resp.data.buildingMaterial;
         let roofmaterial= resp.data.roofingMaterial;
         let water= resp.data.waterSupply;
-
-        this.building.id = resp.data.id;
+        this.id = resp.data.id;
         this.buildingForm.patchValue({
           buildingOwnership:resp.data.buildingOwnership,
           cidOwner:resp.data.cidOwner,
@@ -337,10 +335,29 @@ export class EditBuildingComponent implements OnInit {
     }
   }
 
-
   submit(){
     this.registerBuilding();
-    this.dataService.updateBuilding(this.building).subscribe(res=>{
+    console.log(this.building)
+    if(sessionStorage.getItem('isadmin') === "TRUE"){
+      this.dataService.updateBuilding(this.building).subscribe(res=>{
+        if(res.success === "true"){
+          this.snackBar.open('Edited the building information', '', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            panelClass: ['success-snackbar']
+          });
+          this.router.navigate(['admin']);
+        }else{
+          this.snackBar.open('Error submitting edit', '', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            panelClass: ['error-snackbar']
+          });
+  
+        }
+      })
+    }else{
+       this.dataService.updateBuilding(this.building).subscribe(res=>{
       if(res.success === "true"){
         this.snackBar.open('Edited the building information', '', {
           duration: 5000,
@@ -357,6 +374,9 @@ export class EditBuildingComponent implements OnInit {
 
       }
     })
+    }
+
+   
   }
 
   showOtherFloorType(e){
@@ -388,12 +408,11 @@ export class EditBuildingComponent implements OnInit {
 
 
   registerBuilding(){
-    this.building.structure_id = Number(sessionStorage.getItem('buildingId'));
     this.building.buildingOwnership  = this.buildingForm.get('buildingOwnership').value;
     this.building.cidOwner = this.buildingForm.get('cidOwner').value;
     this.building.nameOfBuildingOwner = this.buildingForm.get('nameOfBuildingOwner').value;
     this.building.contactOwner = this.buildingForm.get('contactOwner').value;
-
+    this.building.id = this.id;
     this.building.existancyStatus = this.buildingForm.get('existancyStatus').value;
     this.building.costOfConstruction = this.buildingForm.get('costOfConstruction').value;
     this.building.constructionYear = this.buildingForm.get('constructionYear').value;

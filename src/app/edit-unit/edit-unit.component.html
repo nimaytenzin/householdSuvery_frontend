@@ -13,17 +13,7 @@
               <input matInput type="text"  formControlName="unidID" [readonly]="disableForm">
             </mat-form-field>
 
-          <h4>Unit Details</h4>
-          <mat-form-field class="justifier">
-            <mat-label>Number of Families sharing the Units</mat-label>
-            <mat-select  formControlName="familySharing" [readonly]="disableForm" >
-              <mat-option *ngFor="let room of numberOfFamilies" [value]="room.value">
-                {{room.value}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        
-        
+          <h4>Unit Details</h4>        
           <mat-form-field class="justifier">
             <mat-label>Unit Ownership</mat-label>
             <mat-select  (selectionChange) = "houseOccupationListener($event)" formControlName="unitOwnership" [readonly]="disableForm" >
@@ -35,13 +25,14 @@
 
             <mat-form-field class="justifier">
               <mat-label>Unit Use</mat-label>
-              <mat-select  formControlName="unitUse" [readonly]="disableForm" >
+              <mat-select  formControlName="unitUse" [readonly]="disableForm" (selectionChange) = "useChange($event)" >
                 <mat-option *ngFor="let use of unitUses" [value]="use.name">
                   {{use.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
+           <div *ngIf="showAllfields">
             <mat-form-field class="justifier">
               <mat-label>Number of Bed Rooms</mat-label>
               <mat-select  formControlName="numberOfRooms" [readonly]="disableForm" >
@@ -50,11 +41,17 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
-
+            
+            <mat-form-field class="justifier">
+              <mat-label>Number of Families sharing the Units</mat-label>
+              <mat-select  formControlName="familySharing" [readonly]="disableForm" >
+                <mat-option *ngFor="let room of numberOfFamilies" [value]="room.value">
+                  {{room.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          
           <h4>Details of the Head of Household</h4>
-
-
             <mat-form-field class="justifier">
               <mat-label>CID</mat-label>
               <input matInput type="text"  formControlName="cidHoh"[readonly]="disableForm" (input)="hohCid()" >
@@ -62,7 +59,7 @@
 
             <mat-form-field class="justifier">
               <mat-label>Name</mat-label>
-              <input matInput type="text"  formControlName="nameHoh"[readonly]="disableForm" >
+              <input matInput type="text"  formControlName="nameHoh" [readonly]="disableForm" >
             </mat-form-field>
 
           
@@ -74,8 +71,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
-          
 
             <mat-form-field class="justifier">
               <mat-label>Age</mat-label>
@@ -132,8 +127,6 @@
               <input matInput type="number" name="rent" formControlName="commutingCost" [readonly]="disableForm" >
             </mat-form-field>
 
-                
-
             <mat-form-field class="justifier">
               <mat-label>Utility Bills</mat-label>
               <input matInput type="number" name="rent" formControlName="utilityBills" [readonly]="disableForm" >
@@ -151,8 +144,7 @@
               </mat-select>
             </mat-form-field>
 
-           <!-- <app-data-table [members]="members"></app-data-table> -->
-           <app-member-table [members]="members"></app-member-table>
+           <app-data-table></app-data-table>
 
         
             <mat-form-field class="justifier">
@@ -187,6 +179,7 @@
               </mat-select>
             </mat-form-field>
     
+
             <div *ngIf= "showRentalUnitDetails">
               <h4>Rental Details</h4>
               <mat-form-field class="justifier">
@@ -375,8 +368,30 @@
                 </mat-form-field>
               </div>               
             </div>
+           </div>
 
+            <div *ngIf="displayShopsOffice">
+              <mat-form-field class="justifier">
+                <mat-label>Unit Name</mat-label>
+                <input matInput type="text"   formControlName="shopOfficeName" [readonly]="disableForm" >
+              </mat-form-field>
 
+              <mat-form-field class="justifier">
+                <mat-label>Monthly Rent</mat-label>
+                <input matInput type="number"   formControlName="shopOfficeRent" [readonly]="disableForm" >
+              </mat-form-field>
+
+              <mat-form-field class="justifier">
+                <mat-label>Contact Number</mat-label>
+                <input matInput type="number"   formControlName="shopOfficeContact" [readonly]="disableForm" >
+              </mat-form-field>
+
+            </div>
+
+            <mat-form-field class="justifier">
+              <mat-label>Remarks</mat-label>
+              <input matInput type="text"   formControlName="remarks" [readonly]="disableForm" >
+            </mat-form-field>
       </form>
     
 <!-- End of Resident Form--> 
@@ -389,4 +404,3 @@
     </div>
   </div>
 </div>
-

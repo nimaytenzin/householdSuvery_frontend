@@ -122,6 +122,14 @@ export class DataService {
     )
   }
 
+  postStructure(item){
+    return this.http
+      .post<any>(`${this.API_URL}/structure/create`,item,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
 
 
   deleteBuilding(structure_id){
@@ -141,7 +149,7 @@ export class DataService {
   
   getStructure(subzoneID){
     return this.http
-      .get(`${this.API_URL}/structure/get-json-zone/${subzoneID}`,this.httpOptions)
+      .get<any>(`${this.API_URL}/structure/get-json-zone/${subzoneID}`,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       )
@@ -176,6 +184,12 @@ export class DataService {
     return this.http.patch<any>(`${this.API_URL}/building/update`,data,this.httpOptions).pipe(
       catchError(this.handleError)
     );
+  }
+
+  deleteHousehold(hhid){
+    return this.http.delete<any>(`${this.API_URL}/household/delete/${hhid}`,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
   }
 
   deleteMember(memberid){
@@ -217,7 +231,7 @@ export class DataService {
   }
   postBuilding(item){
     return this.http
-      .post<any>(`${this.API_URL}/structure/create`,item,this.httpOptions)
+      .post<any>(`${this.API_URL}/building/create`,item,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
