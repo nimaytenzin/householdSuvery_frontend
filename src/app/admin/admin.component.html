@@ -225,17 +225,16 @@
           <th>Identification Number</th>
           <th>Gender</th>
           <th>Age</th>
-          <th>Edit</th>
-          <th>Delete</th>
-
+          <th>Income Earner</th>
+    
         </tr>
         <tr *ngFor = "let member of familyMembers">
           <td>{{member.type}}</td>
           <td>{{member.idNumber}}</td>
           <td>{{member.gender}}</td>
           <td>{{member.age}}</td>
-          <td (click)="editFamilyMember()">Edit</td>
-          <td (click)="deleteFamilyMember()">Delete</td>
+          <td>{{member.incomeEarner}}</td>
+   
         </tr>
       </table>
     </div>
