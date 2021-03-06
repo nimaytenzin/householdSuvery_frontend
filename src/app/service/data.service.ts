@@ -251,8 +251,7 @@ export class DataService {
   }
 
   uploadImg(item){
-    return this.http
-      .post<any>(`${this.API_URL}/image/create`,item,this.httpOptions)
+    return this.http.post<any>(`${this.API_URL}/image/create`,item,this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

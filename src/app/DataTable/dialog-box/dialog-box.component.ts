@@ -71,7 +71,7 @@ export class DialogBoxComponent {
 
   pingApi(){
     if(this.selectionType === "CID"){
-      if(this.local_data.cid.length > 10){
+      if(this.local_data.idNumber.length > 10){
         this.dataService.getCid(this.local_data.cid).subscribe(res=>{
           if(res.success === "true"){
             let data = res.data.citizendetails.citizendetail[0]
