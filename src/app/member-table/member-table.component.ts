@@ -30,6 +30,7 @@ export class MemberTableComponent implements OnInit {
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
 
   @Input() members;
+  @Input() householdId;
 
   ngOnInit(){
     this.dataservice.familyMember = null
@@ -62,7 +63,7 @@ export class MemberTableComponent implements OnInit {
 
   addRowData(row_obj){
     let obj = {
-      hhId : this.members[0].hhId,
+      hhId: this.householdId,
       idNumber:row_obj.idNumber,
       age:row_obj.age,
       gender:row_obj.gender,
@@ -86,7 +87,7 @@ export class MemberTableComponent implements OnInit {
 
   updateRowData(row_obj){
     let obj = {
-      hhId : this.members[0].hhId,
+      hhId: this.householdId,
       id: row_obj.id,
       idNumber:row_obj.idNumber,
       age:row_obj.age,
