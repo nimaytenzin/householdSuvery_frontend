@@ -71,7 +71,7 @@ export class AdminComponent implements OnInit {
   addDeleteButtons:boolean =false;
   deleteButton:boolean = false;
   deleteID:number;
-  unitDetailShow=false;
+  unitDetailShow:boolean;
   buildingData:any;
   unitsData:any;
   housholdsData:any;
@@ -320,7 +320,6 @@ export class AdminComponent implements OnInit {
   submit(){
     let result = this.searchForm.get("searchBuilding").value;
     this.dataService.getAStructure(result).subscribe(res => {
-      console.log(res)
       this.zoomToSearched(res)
     })
   }
@@ -356,15 +355,44 @@ export class AdminComponent implements OnInit {
               this.buildingId = feature.properties.structure_id;
               this.showBuilding(this.buildingId);
               this.resident = null;
+              if(response.data.status == 'INCOMPLETE'){
+                this.buildingData= null
+                this.deleteButton = true
+                this.deleteID = feature.properties.structure_id  
+                this.showBuildingInfo = false;
+                this.unitDetailShow =false
+                  this.snackBar.open('Data Not Added' , '', {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: ['error-snackbar']
+                  });
+                }else{
+                  this.buildingData= null
+                  this.buildingId = feature.properties.structure_id;
+                  this.deleteButton = true
+                  this.unitDetailShow =true
+                  this.showBuildingInfo = true;
+                  this.deleteID = feature.properties.structure_id  
+                  this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                    this.buildingData = res.data
+                  })
+                  this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                    this.unitsData = res.data
+                  })
+                  this.addDeleteButtons = true;
+                  this.showBuildingInfo = true;
+                  this.showBuilding(this.buildingId); 
+                  this.clearData = true;
+                  this.resident = null;
+                  // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+                  //   this.unitsData = json.data;
+                  // });
+                  // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+                  //   this.imgs= json.data;
+                  // });
+                }
 
-              this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                // this.unitsData = json.data;
-              });
             
-
-              this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                this.imgs= json.data;
-              });
               
             });
           }, pointToLayer: (feature, latLng) => {
@@ -524,44 +552,44 @@ export class AdminComponent implements OnInit {
                   if(feature.properties.status == "COMPLETE"){
                     this.totalCompleted ++
                   }
-            layer.on('click', (e) => {
-              if(feature.properties.status == 'INCOMPLETE'){
-              this.deleteButton = true
-              this.deleteID = feature.properties.structure_id  
-              this.showBuildingInfo = false;
-              this.unitDetailShow =false
-                this.snackBar.open('Data Not Added' , '', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: ['error-snackbar']
-                });
-              }else{
-                this.buildingId = feature.properties.structure_id;
-                 this.deleteButton = true
-              this.unitDetailShow =true
+                  layer.on('click', (e) => {
+                    if(feature.properties.status == 'INCOMPLETE'){
+                    this.buildingData= null
+                    this.deleteButton = true
+                    this.deleteID = feature.properties.structure_id  
+                    this.showBuildingInfo = false;
+                    this.unitDetailShow =false
+                      this.snackBar.open('Data Not Added' , '', {
+                        duration: 3000,
+                        verticalPosition: 'top',
+                        panelClass: ['error-snackbar']
+                      });
+                    }else{
+                      this.buildingData= null
+                      this.buildingId = feature.properties.structure_id;
+                      this.deleteButton = true
+                      this.unitDetailShow =true
+                      this.showBuildingInfo = true;
 
-                 this.deleteID = feature.properties.structure_id  
-                 this.buildingData =null;
-
-                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                  this.buildingData = res.data
-                })
-                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
-                  this.unitsData = res.data
-                  console.log("unitddata", this.unitsData)
-                })
-                this.addDeleteButtons = true;
-                this.showBuildingInfo = true;
-                this.showBuilding(this.buildingId); 
-                this.clearData = true;
-                this.resident = null;
-                // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                //   this.unitsData = json.data;
-                // });
-                // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                //   this.imgs= json.data;
-                // });
-              }
+                      this.deleteID = feature.properties.structure_id  
+                      this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                        this.buildingData = res.data
+                      })
+                      this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                        this.unitsData = res.data
+                      })
+                      this.addDeleteButtons = true;
+                      this.showBuildingInfo = true;
+                      this.showBuilding(this.buildingId); 
+                      this.clearData = true;
+                      this.resident = null;
+                      // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+                      //   this.unitsData = json.data;
+                      // });
+                      // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+                      //   this.imgs= json.data;
+                      // });
+                    }
              
             });
           }, pointToLayer: (feature, latLng) => {
@@ -591,7 +619,6 @@ export class AdminComponent implements OnInit {
   }
   
   showResident(unitid){
-    console.log(unitid)
     this.resident = null;
     this.residentTableShow = true
 
@@ -601,19 +628,16 @@ export class AdminComponent implements OnInit {
       panelClass: ['success-snackbar']
     });
     this.dataService.getAHousehold(unitid).subscribe(resp=>{
-      console.log(resp)
       this.housholdsData = resp.data
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
        this.familyMembers = resp.data
-       console.log(this.familyMembers)
-       console.log(resp)
-
       })
       
     });
   }
 
   deleteUnit(id){
+    console.log(id)
     const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
       data:{
         title: "Confirm Delete Unit",
@@ -622,18 +646,22 @@ export class AdminComponent implements OnInit {
     });
     confirmDialog.afterClosed().subscribe(result=>{
       if(result == true){
-        this.snackBar.open('Unit Deleted' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
+        this.dataService.deleteHousehold(id).subscribe(res => {
+          if(res.success = "true"){
+            this.snackBar.open('Unit Deleted' , '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar']
+            });
           }else{
-              this.snackBar.open('Unit kept' , '', {
-                duration: 3000,
-                verticalPosition: 'top',
-                panelClass: ['success-snackbar']
-              });
-          }
+            this.snackBar.open('Unit kept' , '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar']
+            });
+        }
+        })   
+     }
     });
   }
 

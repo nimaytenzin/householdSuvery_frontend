@@ -23,7 +23,7 @@ export class MapComponent implements OnInit {
   API_URL = environment.API_URL;
   BASE_URL = environment.BASE_URL; 
 
-
+  geojson:any
   latitude: number;
   longitude: number;
   accuracy: number;
@@ -57,6 +57,8 @@ export class MapComponent implements OnInit {
     iconUrl: 'assets/mymarker.png',
     iconSize: [20, 20]
   });
+
+  
 
   constructor(
     private http: HttpClient,
@@ -294,8 +296,6 @@ export class MapComponent implements OnInit {
         this.mycircle = L.circle(e.latlng,radius).addTo(this.map);
       }
     });
-
-
     this.map.on('click', <LeafletMouseEvent>($e) => {
       if (this.isAddAllowed) {
         if (this.newMarker !== undefined) {
@@ -303,6 +303,7 @@ export class MapComponent implements OnInit {
         }
         this.newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
         this.presentAlert($e.latlng);
+        console.log($e)
       }
     });
 
@@ -311,7 +312,11 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: L.Map) {
     const zoneID = Number(sessionStorage.getItem('subZoneId'));
-    const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneID}`).subscribe((json:any)=>{
+    let geojson;
+    if(geojson !== undefined){
+      this.map.removeLayer(geojson)
+    }else{
+      geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneID}`).subscribe((json:any)=>{
       this.bound= L.geoJSON(json.data,{
         style: (feature)=>{
           return {
@@ -320,8 +325,10 @@ export class MapComponent implements OnInit {
           }
         }
       }).addTo(this.map);
-      // this.map.fitBounds(this.bound.getBounds());
+      this.map.fitBounds(this.bound.getBounds());
     })
+    }
+    
 
     // this.http.get(`${this.API_URL}/str-json/${zoneId}`).subscribe((json: any) => {
 
@@ -358,7 +365,7 @@ export class MapComponent implements OnInit {
             }
           }
         }).addTo(map);
-        this.map.fitBounds(geoJson.getBounds());
+        // this.map.fitBounds(geoJson.getBounds());
     });
     
   }
@@ -372,6 +379,8 @@ export class MapComponent implements OnInit {
     this.isAddAllowed = true;
   }
 
+
+
   presentAlert(latlng) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
@@ -384,15 +393,23 @@ export class MapComponent implements OnInit {
         this.building.lat = latlng.lat;
         this.building.lng = latlng.lng;
         this.building.sub_zone_id = Number(sessionStorage.getItem('subZoneId'));
-        this.dataService.postBuilding(this.building).subscribe(response => {
-          console.log(response);
+        this.dataService.postStructure(this.building).subscribe(response => {
           this.buildingId = response.data.id;
-
-          this.snackBar.open('Building number ' + this.buildingId + ' has been successfully Added', '', {
+          this.snackBar.open('Building number ' + this.buildingId + ' has been successfully identified', '', {
             duration: 3000,
             verticalPosition: 'top',
             panelClass: ['success-snackbar']
           });
+          this.isAddAllowed = false;
+          if(this.geojson!== undefined){
+            this.map.removeLayer(this.geojson)
+            this.geojson= undefined
+          }
+          if(this.newMarker !== undefined){
+            this.map.removeLayer(this.newMarker)
+            this.newMarker = undefined
+          }
+          this.getBuilding(this.map)
         });
       }else{
         this.map.removeLayer(this.newMarker)
@@ -400,4 +417,34 @@ export class MapComponent implements OnInit {
       }
     });
   }
+
+  getBuilding(map: L.Map){
+    // Added buildings here
+    const zoneID = Number(sessionStorage.getItem('subZoneId'));
+    this.dataService.getStructure(zoneID).subscribe(res => {
+     this.json = res
+      this.geojson = L.geoJSON(this.json, {
+        onEachFeature: (feature, layer) => {
+            layer.on('click', (e) => {
+              this.buildingId = feature.properties.structure_id;
+              console.log(this.buildingId);
+              if(this.geojson!== undefined){
+                this.map.removeLayer(this.geojson)
+                this.geojson= undefined
+              }
+              this.getBuilding(this.map)
+            });
+          }, pointToLayer: (feature, latLng) => {
+            if(feature.properties.status == 'INCOMPLETE'){
+              return L.marker(latLng, {icon: this.redMarker});
+            }else if(feature.properties.status == "PROGRESS"){
+              return L.marker(latLng, {icon: this.yellowMarker});
+            } else{
+              return L.marker(latLng, {icon: this.greenMarker});
+            }
+          }
+        }).addTo(map);
+    });
+  }
+
 }

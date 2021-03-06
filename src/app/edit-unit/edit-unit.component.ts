@@ -98,11 +98,7 @@ export class FamilyMember{
 export class EditUnitComponent implements OnInit {
 
   //form question hide show logic
-  showRentalUnitDetails:boolean;
-  showOwnedUnitDetails:boolean;
-  showPurchasedUnitDetails:boolean = false;
-  showConstructedUnitDetails:boolean = false;
-  showHindranceRemarks:boolean
+ 
 
   buildingId: number;
 
@@ -133,6 +129,16 @@ export class EditUnitComponent implements OnInit {
   displayShopForm = false;
 
   displayOtherUse = false;
+
+  //display logic
+  showAllfields:boolean;
+  displayShopsOffice:boolean;
+  showRentalUnitDetails:boolean;
+  showOwnedUnitDetails:boolean;
+  showPurchasedUnitDetails:boolean = false;
+  showConstructedUnitDetails:boolean = false;
+  showHindranceRemarks:boolean
+
   
   members:[];
 
@@ -268,8 +274,8 @@ export class EditUnitComponent implements OnInit {
   unitOccupationOptions:DropDownOptions[]=[
     {id:1, name: "Owned"},
     {id:2, name: "Rented"},
+    {id:2, name: "Vacant"}
   ]
-
   // NHDCL quarters /Employer provided housing / Private rented housing/others
   livingYears:DropDownOptions[]=[
     {id:1, name: "Less than a year"},
@@ -344,19 +350,53 @@ ngOnInit() {
   this.buildingId = Number(sessionStorage.getItem('buildingId'));
   this.hhId = this.route.snapshot.params['id'];
   this.reactiveForms();
-
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
     let data:Household = res.data;
+    if(res.data.unitOwnership === "Vacant"){
+      this.showAllfields =false;
+      this.displayShopsOffice = false;
+        if(res.data.unitUse !== "Residential"){
+          this.displayShopsOffice = true;
+        }
+    }else if(res.data.unitOwnership === "Owned"){
+      this.showAllfields = true;
+      this.showOwnedUnitDetails = true;
+      this.showRentalUnitDetails = false;
+        if(res.data.unitUse === "Residential"){
+          this.showAllfields = true;
+          this.displayShopsOffice = false;
+        }else if(res.data.unitUse !== "Residential"){
+          this.showAllfields = false;
+          this.displayShopsOffice = true;
+        }
+        if(res.data.meansOwning === "Purchased"){
+          this.showPurchasedUnitDetails = true;
+          this.showConst = false
+        }else if(res.data.meansOwning === "Constructed on my Own"){
+          this.showPurchasedUnitDetails = true;
+          this.showConst = false
+        }
+    }else if(res.data.unitOwnership === "Rented"){
+      this.showOwnedUnitDetails = false;
+      this.showAllfields = true
+      this.showRentalUnitDetails = true;
+        if(res.data.unitUse === "Residential"){
+          this.showAllfields = true;
+          this.displayShopsOffice = false;
+        }else if(res.data.unitUse !== "Residential"){
+          this.showAllfields = false;
+          this.displayShopsOffice = true;
+        }
+    }
+
     if(res.success==="true"){
       this.household.id = res.data.id
-
       this.householdForm.patchValue({
         unidID:res.data.unitId,
         familySharing:data.familiesSharing,
         unitOwnership:data.unitOwnership,
         unitUse:data.unitUse,
         numberOfRooms:data.numberOfRooms,
-
         cidHoh:data.cid,
         nameHoh:data.name,
         genderHoh:data.gender,
@@ -369,14 +409,11 @@ ngOnInit() {
         modeTransport:data.modeTransport,
         commutingCost:data.commuteCost,
         utilityBills:data.utilityBill,
-
         numberHouseholdMembers:data.numberHousehold,
         numberIncomeEarners:data.incomeEarner,
         numberSchoolGoers:data.schoolGoers,
         monthlyIncome:data.householdIncome,
         ownHouse:data.ownHouse,
-        
-
         monthlyRent:data.rent,
         rentalType:data.typeRent,
         howLongLiving:data.yearsResiding,
@@ -475,7 +512,13 @@ reactiveForms() {
     acquisitionYear:[],
     costPrice:[],
     financeMode:[],
-    monthlyEmi:[]
+    monthlyEmi:[],
+
+    shopOfficeName:[],
+    shopOfficeRent:[],
+    shopOfficeContact:[],
+    remarks:[]
+
     })    
 }
 
