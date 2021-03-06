@@ -79,157 +79,7 @@ export class MapComponent implements OnInit {
     this.map.locate({watch:true,enableHighAccuracy:true});
   }
 
-  // getMyLocation() {
-  //   if (navigator.geolocation) {
-  //     const iconRetinaUrl = 'assets/mymarker.png';
-  //     const iconUrl = 'assets/mymarker.png';
-  //     const iconDefault = L.icon({
-  //       iconRetinaUrl,
-  //       iconUrl,
-  //       iconSize: [20, 20],
-  //       iconAnchor: [12, 41],
-  //       popupAnchor: [1, -34],
-  //       tooltipAnchor: [16, -28],
-  //       shadowSize: [41, 41]
-  //     });
-
-  //     const options = {
-  //       enableHighAccuracy: true,
-  //       timeout: 5000,
-  //       maximumAge: 0
-  //     };
-
-  //     navigator.geolocation.getCurrentPosition((position) => {
-  //       this.longitude = position.coords.longitude;
-  //       this.latitude = position.coords.latitude;
-  //       this.accuracy = position.coords.accuracy;
-
-  //       if (this.accuracy > 100) {
-  //         L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //         .bindPopup('You are here')
-  //         .openPopup();
-  //         this.map.flyTo([this.latitude, this.longitude], 19);
-  //         navigator.geolocation.clearWatch(this.watchId);
-  //       } else {
-  //         L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //         .bindPopup('You are here')
-  //         .openPopup();
-  //         L.circle([this.latitude, this.longitude], {
-  //           color: '#3498db',
-  //           fillColor: '#3498db',
-  //           fillOpacity: 0.3,
-  //           radius: this.accuracy
-  //         }).addTo(this.map);
-  //         this.map.flyTo([this.latitude, this.longitude], 19);
-  //       }
-
-  //       // myMarker = L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //       // .bindPopup('You are here')
-  //       // .openPopup();
-  //       // myCircle = L.circle([this.latitude, this.longitude], {
-  //       //   color: '#3498db',
-  //       //   fillColor: '#3498db',
-  //       //   fillOpacity: 0.5,
-  //       //   radius: position.coords.accuracy
-  //       // }).addTo(this.map);
-
-  //       // this.map.flyTo([this.latitude, this.longitude], 19);
-  //     }, error => {
-  //       console.error('No support for geolocation');
-  //     }, options);
-  //   }
-  // }
-
-  // getLocation(): void {
-  //   if (navigator.geolocation) {
-  //       const iconRetinaUrl = 'assets/mymarker.png';
-  //       const iconUrl = 'assets/mymarker.png';
-  //       const iconDefault = L.icon({
-  //         iconRetinaUrl,
-  //         iconUrl,
-  //         iconSize: [20, 20],
-  //         iconAnchor: [12, 41],
-  //         popupAnchor: [1, -34],
-  //         tooltipAnchor: [16, -28],
-  //         shadowSize: [41, 41]
-  //       });
-
-  //       const options = {
-  //         enableHighAccuracy: true,
-  //         timeout: 5000,
-  //         maximumAge: 0
-  //       };
-
-  //       navigator.geolocation.getCurrentPosition((position) => {
-  //         this.longitude = position.coords.longitude;
-  //         this.latitude = position.coords.latitude;
-  //         this.accuracy = position.coords.accuracy;
-
-  //         if (this.accuracy > 100) {
-  //           L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //           .bindPopup('You are here')
-  //           .openPopup();
-  //           this.map.flyTo([this.latitude, this.longitude], 19);
-  //           navigator.geolocation.clearWatch(this.watchId);
-  //         } else {
-  //           L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //           .bindPopup('You are here')
-  //           .openPopup();
-  //           L.circle([this.latitude, this.longitude], {
-  //             color: '#3498db',
-  //             fillColor: '#3498db',
-  //             fillOpacity: 0.3,
-  //             radius: this.accuracy
-  //           }).addTo(this.map);
-  //           this.map.flyTo([this.latitude, this.longitude], 19);
-  //         }
-
-  //         // L.marker([this.latitude, this.longitude], {icon: iconDefault}).addTo(this.map)
-  //         // .bindPopup('You are here')
-  //         // .openPopup();
-  //         // L.circle([this.latitude, this.longitude], {
-  //         //   color: '#3498db',
-  //         //   fillColor: '#3498db',
-  //         //   fillOpacity: 0.5,
-  //         //   radius: position.coords.accuracy
-  //         // }).addTo(this.map);
-
-  //         // this.map.flyTo([this.latitude, this.longitude], 19);
-  //       }, err => {
-  //         if (err.code === 0) {
-  //           this.snackBar.open('Couldnot pull your location, please try again later', '', {
-  //             verticalPosition: 'top',
-  //             duration: 5000,
-  //             panelClass: ['error-snackbar']
-  //           });
-  //         }
-  //         if (err.code === 1) {
-  //           this.snackBar.open('Location service is disabled, please enable it and try again', '', {
-  //             verticalPosition: 'top',
-  //             duration: 5000,
-  //             panelClass: ['error-snackbar']
-  //           });
-  //         }
-  //         if (err.code === 2) {
-  //           this.snackBar.open('Your location couldnot be determined', '', {
-  //             verticalPosition: 'top',
-  //             duration: 5000,
-  //             panelClass: ['error-snackbar']
-  //           });
-  //         }
-  //         if (err.code === 3) {
-  //             this.snackBar.open('Couldnot get your location', '', {
-  //               verticalPosition: 'top',
-  //               duration: 5000,
-  //               panelClass: ['error-snackbar']
-  //             });
-  //           }
-  //       }, options);
-
-  //   } else {
-  //      console.error('No support for geolocation');
-  //   }
-  // }
+  
 
   renderMap() {
     var sat = L.tileLayer('https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
@@ -303,7 +153,6 @@ export class MapComponent implements OnInit {
         }
         this.newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
         this.presentAlert($e.latlng);
-        console.log($e)
       }
     });
 
@@ -444,9 +293,7 @@ export class MapComponent implements OnInit {
               if(this.geojson!== undefined){
                 this.map.removeLayer(this.geojson)
                 this.geojson= undefined
-              }
-              this.getBuilding(this.map)
-    
+              }    
           }, pointToLayer: (feature, latLng) => {
             if(feature.properties.status == 'INCOMPLETE'){
               return L.marker(latLng, {icon: this.redMarker});
@@ -457,6 +304,7 @@ export class MapComponent implements OnInit {
             }
           }
         }).addTo(map);
+      this.getBuilding(this.map)
     });
   }
 

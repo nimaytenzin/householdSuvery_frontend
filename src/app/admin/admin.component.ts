@@ -392,7 +392,7 @@ export class AdminComponent implements OnInit {
                 this.showBuildingInfo = false;
                 this.residentTableShow = false;
                 this.unitDetailShow =false
-                  this.snackBar.open('Data Not Added' , '', {
+                  this.snackBar.open(`buildingID: ${this.buildingId} No Data` , '', {
                     duration: 3000,
                     verticalPosition: 'top',
                     panelClass: ['error-snackbar']
@@ -409,7 +409,6 @@ export class AdminComponent implements OnInit {
                   this.showBuildingInfo = true;
                   this.deleteID = feature.properties.structure_id  
                   this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                    console.log(res)
                     this.bid = res.data.id
                     this.buildingUse = res.data.buildingUse;
                     this.cidOwner = res.data.cidOwner;
@@ -593,8 +592,8 @@ export class AdminComponent implements OnInit {
                     this.showBuildingInfo = false;
                     this.residentTableShow = false
                     this.unitDetailShow =false
-                      this.snackBar.open('Data Not Added' , '', {
-                        duration: 3000,
+                      this.snackBar.open(`buildingID: ${this.deleteID} No Data` , '', {
+                        duration: 4000,
                         verticalPosition: 'top',
                         panelClass: ['error-snackbar']
                       });
@@ -620,6 +619,12 @@ export class AdminComponent implements OnInit {
                       this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                         this.unitsData = res.data
                         this.length = res.data.length
+                      })
+                      this.dataService.getImg(this.buildingId).subscribe(res=>{
+                        console.log(res)
+                        if(res.success){
+                          this.imgs = res.data
+                        }
                       })
                       this.addDeleteButtons = true;
                       this.showBuildingInfo = true;
@@ -692,6 +697,7 @@ export class AdminComponent implements OnInit {
       if(result == true){
         this.dataService.deleteHousehold(id).subscribe(res => {
           if(res.success = "true"){
+            this.renderBuildings(sessionStorage.getItem('subzoneID'))
             this.snackBar.open('Unit Deleted' , '', {
               duration: 3000,
               verticalPosition: 'top',

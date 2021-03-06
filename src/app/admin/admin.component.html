@@ -89,7 +89,7 @@
     <br>
 <div>
   <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;padding-left: 10px;" *ngIf="showBuildingInfo">Unlock for editing</button>
-  <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Building</button>
+  <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Structure</button>
   <button mat-flat-button color="primary" (click)=editBuilding(); style="float: left;" *ngIf="showBuildingInfo">Edit Building Details</button>
 </div>
 
@@ -251,13 +251,18 @@
         </tr>
       </table>
     </div>
+    <br>
 
-    <div >
-      Imgaes
-      <mat-list-item *ngFor="let image of imgs">
-            <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}">
-            {{image.uri}}
+    <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+      <mat-list-item *ngFor="let image of imgs" >
+            <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;">
+
       </mat-list-item>
+      <!-- <mat-grid-list cols="2" rowHeight="2:1" *ngFor="let image of imgs">
+        <mat-grid-tile> <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;"></mat-grid-tile>
+       
+      </mat-grid-list> -->
+
     </div>
   </div>
 
