@@ -146,6 +146,12 @@ export class DataService {
         catchError(this.handleError)
       )
   }
+
+  deleteBuildingInfo(bid){
+    return this.http.delete<any>(`${this.API_URL}/building/delete/${bid}`,this.httpOptions).pipe(
+      catchError(this.handleError)
+    )
+  }
   
   getStructure(subzoneID){
     return this.http

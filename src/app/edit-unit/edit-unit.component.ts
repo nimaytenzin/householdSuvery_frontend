@@ -142,7 +142,7 @@ export class EditUnitComponent implements OnInit {
   showPurchasedUnitDetails:boolean = false;
   showConstructedUnitDetails:boolean = false;
   showHindranceRemarks:boolean
-
+  unitUseShow:boolean;
   
   members:[];
 
@@ -180,7 +180,20 @@ export class EditUnitComponent implements OnInit {
     {value:2},
     {value:3},
     {value:4},
-    {value:5}
+    {value:5},
+    {value:6},
+    {value:7},
+    {value:8},
+    {value:9},
+    {value:10},
+    {value:11},
+    {value:12},
+    {value:13},
+    {value:14},
+    {value:15},
+    {value:16},
+    {value:17},
+    {value:18}
   ]
 
   //married /single /divorced /widow/widower
@@ -658,45 +671,59 @@ reactiveForms() {
     // });
     // this.router.navigate(['dashboard',this.buildingId]);
   }
+    hindranceRemarksShow(e){
+      if(e.value === "Others"){
+        this.showHindranceRemarks = true
+      
+      }else{
+        this.showHindranceRemarks = false
+      }
+    }
 
-houseOccupationListener(e){
-  if(e.value === "Owned"){
-    this.showOwnedUnitDetails = true;
-    this.showRentalUnitDetails = false;
-  }else{  
-    this.showOwnedUnitDetails = false;
-    this.showRentalUnitDetails = true;
-  }
-}
+    back(){
+      if(sessionStorage.getItem('isadmin') === "TRUE"){
+        this.router.navigate(['admin'])
+      }else{
+        this.router.navigate(['dashboard',this.buildingId]);
+      }
+    }
 
+    meansOfOwnershipListner(e){ 
+      if(e.value === "Constructed on my Own" ){
+        this.showPurchasedUnitDetails = true;
+        this.showConst = false
+      }else if(e.value === "Purchased"){
+        this.showPurchasedUnitDetails = true;
+        this.showConst = true
+      }else{
+        this.showPurchasedUnitDetails = false;
+      }
+    }
 
+    houseOccupationListener(e){
+      if(e.value === "Owned"){
+        this.showOwnedUnitDetails = true;
+        this.unitUseShow = true
+        this.showRentalUnitDetails = false;
+      }else if(e.value === "Vacant"){
+        this.unitUseShow = false
+        this.displayShopsOffice = false;
+        this.showAllfields = false;
+      } else{  
+        this.showOwnedUnitDetails = false;
+        this.unitUseShow = true
+    
+        this.showRentalUnitDetails = true;
+      }
+    }
 
-meansOfOwnershipListner(e){ 
-  if(e.value === "Constructed on my Own" ){
-    this.showPurchasedUnitDetails = true;
-    this.showConst = false
-  }else if(e.value === "Purchased"){
-    this.showPurchasedUnitDetails = true;
-    this.showConst = true
-  }else{
-    this.showPurchasedUnitDetails = false;
-  }
-}
-
-hindranceRemarksShow(e){
-  if(e.value === "Others"){
-    this.showHindranceRemarks = true
-   
-  }else{
-    this.showHindranceRemarks = false
-  }
-}
-
-back(){
-  if(sessionStorage.getItem('isadmin') === "TRUE"){
-    this.router.navigate(['admin'])
-  }else{
-    this.router.navigate(['dashboard',this.buildingId]);
-  }
-}
+    useChange(e){
+      if(e.value !== "Residential"){
+        this.displayShopsOffice = true;
+        this.showAllfields = false;
+      }else{
+        this.showAllfields = true;
+        this.displayShopsOffice = false;
+      }
+    }
 }

@@ -25,6 +25,13 @@ interface Zone {
   created_at: string;
   updated_date: string;
 }
+interface UNITSDATA{
+  id:number,
+  unitId:string,
+  unitOwnership:string,
+  unitUse:string,
+  familiesSharing:number
+}
 
 interface Subzone {
   id: string;
@@ -72,9 +79,39 @@ export class AdminComponent implements OnInit {
   deleteButton:boolean = false;
   deleteID:number;
   unitDetailShow:boolean;
-  buildingData:any;
+
+  //delete building info
+  bid:number;
+
+  buildingUse:string = "Not Added";
+  cidOwner:string = "Not Added";
+  nameOfBuildingOwner:string = "Not Added";
+  contactOwner:string = "Not Added";
+  length:number = 0;
+
+
   unitsData:any;
-  housholdsData:any;
+  housholdsData:{
+    unitId:number,
+    unitOwnership:string,
+    name:string,
+    numberHousehold:number,
+    incomeEarner:number,
+    householdIncome:number,
+    shopOfficeName:string,
+    shopOfficeContact:number,
+    shopOfficeRent:number
+  } = {
+    unitId: 0,
+    unitOwnership:"Not added",
+    name:"Not added",
+    numberHousehold:0,
+    incomeEarner:0,
+    householdIncome:0,
+    shopOfficeName :"NA",
+    shopOfficeContact: 0,
+    shopOfficeRent: 0
+  };
   familyMembers:any;
 
   //chart js
@@ -97,14 +134,12 @@ export class AdminComponent implements OnInit {
   dzongkhag: string;
   zoned: string;
   subZone: string;
-  shop: string;
   latitude: number;
   longitude: number;
   accuracy: number;
   json: any;
   bound: any;
   buildingGeojson: any;
-  postiveCaseMap: any;
   buildingId: number;
   imgs:any;
   residentTableShow:boolean=false;
@@ -117,12 +152,15 @@ export class AdminComponent implements OnInit {
   mycircle: L.Circle;
   resident: any;
   showattic= false;
-  residentAttic=[];
   showCaseDetails = false;
 
+  //logic
+  officeShopDetailShow:boolean
+  residentialUnitDetailShow:boolean
+
+
   map: L.Map;
-
-
+  
   greenMarker = L.icon({
     iconUrl: 'assets/marker-green.png',
     iconSize: [12, 12]
@@ -247,19 +285,7 @@ export class AdminComponent implements OnInit {
     {id:'2', name:"Private Company"},
     {id:'3', name:"Individual"},
   ];
-   buildingUse: IdName[] = [
-    {id:'1', name:"Residential"},
-    {id:'2', name:"Commercial"},
-    {id:'3', name:"Mixed Use"},
-    {id:'4', name:"Institution"},
-    {id:'5', name:"School"},
-    {id:'6', name:"Religious"},
-    {id:'7', name:"Hospital"},
-    {id:'8', name:"Workshop"},
-    {id:'9', name:"Sawmill"},
-    {id:'10', name:"Industry"},
-    {id:'11', name:"Others"},
-  ];
+ 
   parking: IdName[]=[
     {id:'1', name:"Designated Onstreet"},
     {id:'2', name:"Un-designated Onstreet"},
@@ -295,8 +321,7 @@ export class AdminComponent implements OnInit {
     this.setViewValue = true;
   }
 
-  ngOnInit() {
-   
+  ngOnInit() {   
     this.getDzongkhagList();
     this.reactiveForm();
     const zoneId = sessionStorage.getItem('zoneId');
@@ -308,9 +333,7 @@ export class AdminComponent implements OnInit {
     this.renderMap(this.dataService);
     
     if (sessionStorage.getItem("subzoneID") !== null) {
-      
       this.renderBuildings(sessionStorage.getItem("subzoneID"))
-
     }else{
 
     }
@@ -351,15 +374,17 @@ export class AdminComponent implements OnInit {
       this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
         onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
+              this.residentTableShow=false;
               this.clearData = true;
               this.buildingId = feature.properties.structure_id;
               this.showBuilding(this.buildingId);
-              this.resident = null;
+              // this.resident = null;
               if(response.data.status == 'INCOMPLETE'){
-                this.buildingData= null
-                this.familyMembers = null;
-                this.unitsData =null
-                this.housholdsData =null
+                // this.buildingData= null
+                // this.familyMembers = null;
+                // this.unitsData =null
+                // this.housholdsData =null
+              this.residentTableShow=false;
                 this.deleteButton = true
                 this.deleteID = feature.properties.structure_id  
                 this.showBuildingInfo = false;
@@ -371,20 +396,28 @@ export class AdminComponent implements OnInit {
                     panelClass: ['error-snackbar']
                   });
                 }else{
-                  this.buildingData= null
-                  this.familyMembers = null;
-                  this.housholdsData =null
-                  this.unitsData =null
+                  // this.buildingData= null
+                  // this.familyMembers = null;
+                  // this.housholdsData =null
+                  // this.unitsData =null
+              this.residentTableShow=false;
                   this.buildingId = feature.properties.structure_id;
                   this.deleteButton = true
                   this.unitDetailShow =true
                   this.showBuildingInfo = true;
                   this.deleteID = feature.properties.structure_id  
                   this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                    this.buildingData = res.data
+                    console.log(res)
+                    this.bid = res.data.id
+                    this.buildingUse = res.data.buildingUse;
+                    this.cidOwner = res.data.cidOwner;
+                    this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                    this.contactOwner = res.data.contactOwner;
                   })
                   this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                     this.unitsData = res.data
+                    this.length = res.data.length
+
                   })
                   this.addDeleteButtons = true;
                   this.showBuildingInfo = true;
@@ -397,10 +430,7 @@ export class AdminComponent implements OnInit {
                   // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
                   //   this.imgs= json.data;
                   // });
-                }
-
-            
-              
+                }  
             });
           }, pointToLayer: (feature, latLng) => {
               return L.marker(latLng,{icon: this.myMarker});
@@ -422,31 +452,13 @@ export class AdminComponent implements OnInit {
   }
 
 
+  resetHouseholdData(){
 
-  renderMap(dataservice: DataService){
-        function zoneStyle(feature) {
-          return {
-          fillColor:'white',
-          weight: 2,
-          opacity: 1,
-          color: 'yellow',
-          dashArray: '3',
-          fillOpacity: 0
-        };
-        }
+  }
 
-        function broadZones(feature) {
-          return {
-          fillColor:'white',
-          weight: 2,
-          opacity: 1,
-          color: 'red',
-          dashArray: '3',
-          fillOpacity: 0
-        };
-        }
 
-   
+
+  renderMap(dataservice: DataService){  
         var sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
           maxZoom: 20,
           minZoom: 9,
@@ -462,15 +474,11 @@ export class AdminComponent implements OnInit {
           minZoom: 9,
           layers: [sat]
         });
-       
-
-      
+           
       var baseMaps = {
         "Satellite Image": sat,
         "OSM base map": osm 
-      };
-  
-  
+      }; 
     this.map.on('locationerror',(err)=>{
           if (err.code === 0) {
             this.snackBar.open('Couldnot pull your location, please try again later', '', {
@@ -560,17 +568,18 @@ export class AdminComponent implements OnInit {
                     this.totalCompleted ++
                   }
                   layer.on('click', (e) => {
-                    this.buildingData= null
-                    this.unitsData =null
-                    this.familyMembers = null;
-                    this.housholdsData =null
+                    // this.buildingData= null
+                    // this.unitsData =null
+                    // this.familyMembers = null;
+                    // this.housholdsData =null
+                    this.residentTableShow=false;
 
                     if(feature.properties.status == 'INCOMPLETE'){
-                    this.buildingData= null
-                    this.unitsData =null
+                    // this.buildingData= null
+                    // this.unitsData =null
 
-                    this.familyMembers = null;
-                    this.housholdsData =null
+                    // this.familyMembers = null;
+                    // this.housholdsData =null
                     this.deleteButton = true
                     this.deleteID = feature.properties.structure_id  
                     this.showBuildingInfo = false;
@@ -582,10 +591,10 @@ export class AdminComponent implements OnInit {
                         panelClass: ['error-snackbar']
                       });
                     }else{
-                      this.buildingData= null
-                      this.unitsData =null
-                      this.familyMembers = null;
-                      this.housholdsData =null
+                      // this.buildingData= null
+                      // this.unitsData =null
+                      // this.familyMembers = null;
+                      // this.housholdsData =null
                       this.buildingId = feature.properties.structure_id;
                       this.deleteButton = true
                       this.unitDetailShow =true
@@ -593,10 +602,16 @@ export class AdminComponent implements OnInit {
 
                       this.deleteID = feature.properties.structure_id  
                       this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                        this.buildingData = res.data
+                      console.log(res)
+                        this.bid = res.data.id
+                        this.buildingUse = res.data.buildingUse;
+                        this.cidOwner = res.data.cidOwner;
+                        this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                        this.contactOwner = res.data.contactOwner;
                       })
                       this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                         this.unitsData = res.data
+                        this.length = res.data.length
                       })
                       this.addDeleteButtons = true;
                       this.showBuildingInfo = true;
@@ -614,15 +629,10 @@ export class AdminComponent implements OnInit {
             });
           }, pointToLayer: (feature, latLng) => {
             if(feature.properties.status == 'INCOMPLETE'){
-              
               return L.marker(latLng, {icon: this.redMarker});
             }else if(feature.properties.status == "PROGRESS"){
               return L.marker(latLng, {icon: this.yellowMarker});
             }else if(this.showattic){
-              for(var i = 0;i<this.residentAttic.length;i++){
-                // if(this.residentAttic[i]['structure_id'] == this.);
-                // if()
-              }
               return L.marker(latLng,{icon: this.myMarker});
             } else{
               this.precentCompleted ++
@@ -631,8 +641,7 @@ export class AdminComponent implements OnInit {
           }
         });
         this.map.addLayer(this.buildingGeojson)
-        this.map.fitBounds(this.buildingGeojson.getBounds());
-        
+        this.map.fitBounds(this.buildingGeojson.getBounds());       
      this.precentCompleted = (this.totalCompleted/this.totalBuilding)*100;
       this.progressShow = true;
     });
@@ -648,17 +657,23 @@ export class AdminComponent implements OnInit {
       panelClass: ['success-snackbar']
     });
     this.dataService.getAHousehold(unitid).subscribe(resp=>{
+      if(resp.data.unitUse !== "Residential"){
+        this.residentialUnitDetailShow = false
+        this.officeShopDetailShow = true
+      }else{
+        this.residentialUnitDetailShow = true
+        this.officeShopDetailShow = false
+      }
       this.housholdsData = resp.data
+
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
        this.familyMembers = resp.data
-       console.log('familymember',resp)
       })
       
     });
   }
 
   deleteUnit(id){
-    console.log(id)
     const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
       data:{
         title: "Confirm Delete Unit",
@@ -730,23 +745,8 @@ export class AdminComponent implements OnInit {
   }
 
   showBuilding(unitid){
-    // this.building = null;
     this.buildingInfo = null;
-    this.buildingInfo = new BuildingInfo();
-    this.dataService.getBuildingInfo(unitid).subscribe(resp=>{
-      this.buildingInfo.BuildingName = resp.data[0]['nameOfTheBuilding'];
-      this.buildingInfo.BuildingOwner = resp.data[0]['nameOfTheBuildingOwner'];
-      this.buildingInfo.Contact = resp.data[0]['contactNumberBuilding'];
-      this.buildingInfo.Water = resp.data[0]['waterSupply'];
-      // this.buildingInfo.BuildingUse = this.buildingUse(resp.data[0]['buildingUse']);
-      var useIndex = Number(resp.data[0]['buildingUse'])-1;
-      var sewerIndex = Number(resp.data[0]['sewerTreatment'])-1;
-      var wasteIndex = Number(resp.data[0]['wasteCollection'])-1;
-      this.buildingInfo.BuildingUse = this.buildingUse[useIndex]['name'];
-      this.buildingInfo.Sewer = this.sewerTreatment[sewerIndex]['name'];
-      this.buildingInfo.Waste = this.wasteCollection[wasteIndex]['name'];
-      this.buildingInfo.Remarks = resp.data[0]['buildingRemarksstring'];
-    });
+    this.buildingInfo = new BuildingInfo()
 
   }
 
@@ -762,15 +762,12 @@ export class AdminComponent implements OnInit {
     this.resident = null;
     if(this.bound !== null){
       this.map.removeLayer(this.bound)
-      // this.bound = null;
     }
     if(this.buildingGeojson !== null){
       this.map.removeLayer(this.buildingGeojson);
-      // this.buildingGeojson = null;
     }
     if(this.searchmarker !== undefined){
       this.map.removeLayer(this.searchmarker);
-      // this.searchmarker = null;
     }
     
   }
@@ -881,6 +878,19 @@ export class AdminComponent implements OnInit {
 
   updateUnit(unitID){
     this.router.navigate([`edit-unit/${unitID}`])
+  }
+
+  deleteBuildingInfo(){
+    this.dataService.deleteBuildingInfo(this.bid).subscribe(res =>{
+      if(res.success === "true"){
+          this.snackBar.open('Deleted Building Data' , '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['success-snackbar']
+          });
+
+      }
+    })
   }
 
 } 
