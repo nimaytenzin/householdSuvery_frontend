@@ -1,8 +1,7 @@
 <div class="main"> 
   <div class="map-container">
     <div class="map-frame">
-      <div id="map">
-        
+      <div id="map">        
         <div class="leaflet-top leaflet-right">
           <mat-label style="
           margin-bottom: 20px;
@@ -97,9 +96,8 @@
 <br>
     <div *ngIf="showBuildingInfo" >
       <h3>Building Details</h3>  
-    
+      <button  mat-flat-button color="primary" (click)=deleteBuildingInfo();>Delete Building Information</button>
       <br>
-    
       <table style = "width:100%;">
         <tr>
           <th>Building ID</th>
@@ -107,24 +105,24 @@
         </tr>
         <tr>
           <th>Building Use</th>
-          <td>{{buildingData.buildingUse}}</td>
+          <td>{{buildingUse}}</td>
         </tr>
         Owner Details
         <tr>
           <th>CID</th>
-          <td>{{buildingData.cidOwner}}</td>
+          <td>{{cidOwner}}</td>
         </tr>
         <tr>
           <th>Name</th>
-          <td>{{buildingData.nameOfBuildingOwner}}</td>
+          <td>{{nameOfBuildingOwner}}</td>
         </tr>
         <tr>
           <th>Contact</th>
-          <td>{{buildingData.contactOwner}}</td>
+          <td>{{contactOwner}}</td>
         </tr>
         <tr>
           <th>Total Units</th>
-          <td>{{unitsData.length}}</td>
+          <td>{{length}}</td>
         </tr>
       </table>
     </div>
@@ -189,7 +187,10 @@
         <tr>
           <th>Unit Ownership</th>
           <td>{{housholdsData.unitOwnership}}</td>
-        </tr>
+        </tr>       
+      </table>
+            
+      <table *ngIf="residentialUnitDetailShow">
         <tr>
           <th>Head of household</th>
           <td>{{housholdsData.name}}</td>
@@ -208,12 +209,22 @@
         </tr>
       </table>
 
-
-     
+        
+      <table *ngIf="officeShopDetailShow">
+        <tr>
+          <th>Unit Name</th>
+          <td>{{housholdsData.shopOfficeName}}</td>
+        </tr>
+        <tr>
+          <th>Contact</th>
+          <td>{{housholdsData.shopOfficeContact}}</td>
+        </tr>
+        <tr>
+          <th>Rent</th>
+          <td>{{housholdsData.shopOfficeRent}}</td>
+        </tr>
+      </table>
     </div>
-
-
-
     <br>
 
     <div *ngIf="residentTableShow">
@@ -226,7 +237,6 @@
           <th>Gender</th>
           <th>Age</th>
           <th>Income Earner</th>
-    
         </tr>
         <tr *ngFor = "let member of familyMembers">
           <td>{{member.type}}</td>
@@ -234,7 +244,6 @@
           <td>{{member.gender}}</td>
           <td>{{member.age}}</td>
           <td>{{member.incomeEarner}}</td>
-   
         </tr>
       </table>
     </div>
