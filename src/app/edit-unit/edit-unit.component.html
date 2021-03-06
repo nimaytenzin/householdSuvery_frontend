@@ -144,7 +144,9 @@
               </mat-select>
             </mat-form-field>
 
-           <app-data-table></app-data-table>
+           <!-- <app-data-table [members]="members"></app-data-table> -->
+           <app-member-table [members]="members" [householdId]="hhId"></app-member-table>
+
 
         
             <mat-form-field class="justifier">
