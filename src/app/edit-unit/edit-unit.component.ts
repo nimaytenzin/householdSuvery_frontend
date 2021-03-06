@@ -77,6 +77,10 @@ export class Household{
     meanFinance: string;
     emi:number;
     members:[];
+    shopOfficeName:string;
+    shopOfficeContact:number;
+    shopOfficeRent:number;
+    remarks:string
 }
 
 
@@ -371,7 +375,6 @@ ngOnInit() {
         }
         if(res.data.meansOwning === "Purchased"){
           this.showPurchasedUnitDetails = true;
-          this.showConst = false
         }else if(res.data.meansOwning === "Constructed on my Own"){
           this.showPurchasedUnitDetails = true;
           this.showConst = false
@@ -434,7 +437,13 @@ ngOnInit() {
         acquisitionYear:data.yearAcquisition,
         costPrice:data.purchasePrice,
         financeMode:data.meanFinance,
-        monthlyEm:data.emi
+        monthlyEmi:data.emi,
+        shopOfficeName:data.shopOfficeName,
+        shopOfficeRent:data.shopOfficeRent,
+        shopOfficeContact:data.shopOfficeContact,
+        remarks:data.remarks,
+        rentIncreaseFiveYears:data.rentIncreaseFiveYears
+
       })
     }
   })
@@ -607,7 +616,11 @@ reactiveForms() {
     this.household.purchasePrice = this.householdForm.get('costPrice').value;
     this.household.meanFinance= this.householdForm.get('financeMode').value;
     this.household.emi = this.householdForm.get('monthlyEmi').value
-    this.household.members = this.dataService.familyMember
+    this.household.members = this.dataService.familyMember;
+    this.household.shopOfficeContact = this.householdForm.get('shopOfficeContact').value;
+    this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
+    this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
+    this.household.remarks = this.householdForm.get('remarks').value;
 
     console.log(this.household)
     this.dataService.updateHousehold(this.household).subscribe(res=>{
