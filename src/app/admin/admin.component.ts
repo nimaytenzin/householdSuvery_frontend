@@ -421,6 +421,12 @@ export class AdminComponent implements OnInit {
                     this.length = res.data.length
 
                   })
+                  this.dataService.getImg(this.buildingId).subscribe(res=>{
+                    console.log(res)
+                    if(res.success){
+                      this.imgs = res.data
+                    }
+                  })
                   this.addDeleteButtons = true;
                   this.showBuildingInfo = true;
                   this.showBuilding(this.buildingId); 

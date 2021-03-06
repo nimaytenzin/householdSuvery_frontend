@@ -263,6 +263,13 @@ export class DataService {
       );
   }
 
+  getImg(sid){
+    return this.http.get<any>(`${this.API_URL}/image/get-all/${sid}`,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   postCompletion(buildingId) {
     let data = {
       "structure_id":buildingId
