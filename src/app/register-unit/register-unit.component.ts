@@ -80,7 +80,8 @@ export class Household{
     shopOfficeName:string;
     shopOfficeContact:number;
     shopOfficeRent:number;
-    remarks:string
+    remarks:string;
+    userId:number;
 }
 
 
@@ -525,6 +526,9 @@ reactiveForms() {
     this.household.shopOfficeName = this.householdForm.get('shopOfficeName').value;
     this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
     this.household.remarks = this.householdForm.get('remarks').value;
+
+    //set userif from session
+    this.household.userId = Number(sessionStorage.getItem('userId'));
 
     if(this.household.members !== null){
       this.household.members.forEach(function(v:any){

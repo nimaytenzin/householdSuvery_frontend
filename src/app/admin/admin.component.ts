@@ -735,12 +735,16 @@ export class AdminComponent implements OnInit {
     confirmDialog.afterClosed().subscribe(result=>{
       if(result == true){
         this.dataService.deleteBuilding(this.deleteID).subscribe(res => {
-          this.snackBar.open('Deleted. You may want to refresh the browser to see the changes' , '', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['success-snackbar']
-          });
-        })
+          if(res.success === "true"){
+            this.renderBuildings(sessionStorage.getItem('subzoneID'))
+            this.snackBar.open('Deleted. You may want to refresh the browser to see the changes' , '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar']
+            });
+ 
+          }
+       })
         
           }else{
               this.snackBar.open('Oks' , '', {
