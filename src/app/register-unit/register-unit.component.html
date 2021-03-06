@@ -210,6 +210,9 @@
                 </mat-select>
               </mat-form-field>
 
+              <p style="text-align: left;">
+                Did your landlord increase rent more than 10% in last two years? 
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>Did your landlord increase rent more than 10% in last two years? </mat-label>
                 <mat-select  formControlName="rentIncrease" [readonly]="disableForm" >
@@ -219,12 +222,15 @@
                 </mat-select>
               </mat-form-field>
 
+
+              <p style="text-align: left;">
+                What was the frequency and amount of rent increase/s in the last 5 years?
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>
                   What was the frequency and amount of rent increase/s in the last 5 years?</mat-label>
                 <input matInput type="text"  formControlName="rentIncreaseFiveYears" [readonly]="disableForm" >
               </mat-form-field>
-
 
               <mat-form-field class="justifier">
                 <mat-label>Rent Waiver during Pandemic</mat-label>
@@ -240,6 +246,9 @@
                 <input matInput type="number"  formControlName="rentWaiverAmount" [readonly]="disableForm" >
               </mat-form-field>
 
+              <p style="text-align: left;">
+                Which of the following is biggest hindrance for you to own home in Bhutan?
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>Which of the following is biggest hindrance for you to own home in Bhutan?</mat-label>
                 <mat-select  (selectionChange) = "hindranceRemarksShow($event)" formControlName="hindrance" [readonly]="disableForm" >
@@ -256,6 +265,9 @@
 
 
               <h5 style="text-align: left;">Land Lord Services</h5>
+              <p style="text-align: left;">
+                Q. My landlord responds to my complaint as soon as possible
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>My landlord responds to my complaint as soon as possible</mat-label>
                 <mat-select  formControlName="complaintResponse" [readonly]="disableForm" >
@@ -264,7 +276,10 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-
+              
+              <p style="text-align: left;">
+                Q. My landlord does maintenance to my building every year
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>My landlord does maintenance to my building every year</mat-label>
                 <mat-select  formControlName="maintenanceFrequency" [readonly]="disableForm" >
@@ -273,7 +288,9 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-
+              <p style="text-align: left;">
+                Q. I have adequate water supply to my residence
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>I have adequate water supply to my residence</mat-label>
                 <mat-select  formControlName="waterAdequacy" [readonly]="disableForm" >
@@ -282,7 +299,9 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-
+              <p style="text-align: left;">
+                Q. I have adequate parking space
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>I have adequate parking space</mat-label>
                 <mat-select  formControlName="parkingAdequacy" [readonly]="disableForm" >
@@ -292,8 +311,11 @@
                 </mat-select>
               </mat-form-field>
 
+              <p style="text-align: left;">
+               Q.The access to my residence is in good condition
+              </p>
               <mat-form-field class="justifier">
-                <mat-label>The access road to my residence is in good condition</mat-label>
+                <mat-label>The access to my residence is in good condition</mat-label>
                 <mat-select  formControlName="accessAdequacy" [readonly]="disableForm" >
                   <mat-option *ngFor="let option of likerthScale" [value]="option.name">
                     {{option.name}}
@@ -301,7 +323,9 @@
                 </mat-select>
               </mat-form-field>
 
-              
+              <p style="text-align: left;">
+                Q. I have easy Access to Public Transport from my residence
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>I have easy Access to Public Transport from my residence</mat-label>
                 <mat-select  formControlName="publicTransportAccess" [readonly]="disableForm" >
@@ -311,7 +335,9 @@
                 </mat-select>
               </mat-form-field>
 
-                 
+              <p style="text-align: left;">
+                Q. The current location of my residence is safe for the female houshold Members
+              </p>
               <mat-form-field class="justifier">
                 <mat-label>The current location of my residence is safe for the female houshold Members</mat-label>
                 <mat-select  formControlName="femaleSafety" [readonly]="disableForm" >

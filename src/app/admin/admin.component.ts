@@ -631,6 +631,7 @@ export class AdminComponent implements OnInit {
       this.housholdsData = resp.data
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
        this.familyMembers = resp.data
+       console.log('familymember',resp)
       })
       
     });
