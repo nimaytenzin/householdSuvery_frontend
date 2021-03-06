@@ -3,9 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
-  hhID:number
-  sid:number
-  cid: string;
+  idNumber: string;
   age: number;
   gender:string;
   incomeEarner:string;

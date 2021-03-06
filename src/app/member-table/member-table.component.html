@@ -7,11 +7,11 @@
   <table mat-table [dataSource]="dataSource" #mytable class="my-table mat-elevation-z8">
     <ng-container matColumnDef="sid" >
       <th mat-header-cell *matHeaderCellDef> Sl.no</th>
-      <td mat-cell *matCellDef="let element"> {{element.sid}} </td>
+      <td mat-cell *matCellDef="let element;let i = index"> {{i + 1}}</td>
     </ng-container>
     <ng-container matColumnDef="cid">
       <th mat-header-cell *matHeaderCellDef> CID/WorkPermit </th>
-      <td mat-cell *matCellDef="let element"> {{element.cid}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.idNumber}} </td>
     </ng-container>
 
     <ng-container matColumnDef="age">
