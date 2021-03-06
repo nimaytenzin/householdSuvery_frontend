@@ -403,7 +403,11 @@ export class EditBuildingComponent implements OnInit {
   }
 
   back(){
-    this.router.navigate(['dashboard',this.buildingId]);
+    if(sessionStorage.getItem('isadmin') === "TRUE"){
+      this.router.navigate(['admin'])
+    }else{
+      this.router.navigate(['dashboard',this.buildingId]);
+    }
   }
 
 

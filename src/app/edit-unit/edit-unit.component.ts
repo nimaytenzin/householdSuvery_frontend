@@ -613,7 +613,11 @@ reactiveForms() {
     this.dataService.updateHousehold(this.household).subscribe(res=>{
       console.log(res)
       if(res.success === "true"){
-        this.router.navigate(['dashboard', this.buildingId]);
+        if(sessionStorage.getItem('isadmin') === "TRUE"){
+          this.router.navigate(['admin'])
+        }else{
+          this.router.navigate(['dashboard',this.buildingId]);
+        }
       }else{
         this.snackBar.open('Registration error', '', {
           duration: 5000,
@@ -672,6 +676,14 @@ hindranceRemarksShow(e){
    
   }else{
     this.showHindranceRemarks = false
+  }
+}
+
+back(){
+  if(sessionStorage.getItem('isadmin') === "TRUE"){
+    this.router.navigate(['admin'])
+  }else{
+    this.router.navigate(['dashboard',this.buildingId]);
   }
 }
 }
