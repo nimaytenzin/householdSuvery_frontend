@@ -35,6 +35,7 @@ export class Household{
 
     cid: string;
     name: string;
+    contact:number;
     gender:string;
     age:number;
     martialStatus: string;
@@ -389,6 +390,7 @@ reactiveForms() {
 
     cidHoh:[],
     nameHoh:[],
+    contactHoh:[],
     genderHoh:[],
     ageHoh:[],
     maritalStatusHoh:[],
@@ -476,6 +478,7 @@ reactiveForms() {
     this.household.numberOfRooms = this.householdForm.get('numberOfRooms').value
 
     this.household.cid = this.householdForm.get('cidHoh').value
+    this.household.contact = this.householdForm.get('contactHoh').value
     this.household.name = this.householdForm.get('nameHoh').value;
     this.household.gender = this.householdForm.get('genderHoh').value;
     this.household.age = this.householdForm.get('ageHoh').value;

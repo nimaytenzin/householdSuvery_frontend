@@ -64,6 +64,10 @@
               <mat-label>Name</mat-label>
               <input matInput type="text"  formControlName="nameHoh" [readonly]="disableForm" >
             </mat-form-field>
+            <mat-form-field class="justifier">
+              <mat-label>Contact</mat-label>
+              <input matInput type="text"  formControlName="contactHoh" [readonly]="disableForm" >
+            </mat-form-field>
 
           
             <mat-form-field class="justifier">
@@ -432,6 +436,10 @@
     <div class="form-footer">
       <button mat-raised-button class="btn custom-btn" (click)="submit()">
         <mat-icon>note_add</mat-icon> Submit
+      </button>
+      <br><br>
+      <button mat-raised-button class="btn custom-btn" (click)="back()" color="accent" >
+        <mat-icon>arrow_left</mat-icon>Back 
       </button>
     </div>
   </div>

@@ -60,6 +60,14 @@ export class DataService {
       );
   }
 
+  getUserInfo(id){
+    return this.http
+      .get<any>(`${this.API_URL}/user/get/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getDzongkhags() {
     return this.http
       .get<any>(`${this.API_URL}/dzongkhag/get-all`, this.httpOptions)

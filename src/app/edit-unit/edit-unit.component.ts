@@ -36,6 +36,7 @@ export class Household{
 
     cid: string;
     name: string;
+    contact:number;
     gender:string;
     age:number;
     martialStatus: string;
@@ -377,6 +378,7 @@ ngOnInit() {
         }
     }else if(res.data.unitOwnership === "Owned"){
       this.showAllfields = true;
+      this.unitUseShow = true;
       this.showOwnedUnitDetails = true;
       this.showRentalUnitDetails = false;
         if(res.data.unitUse === "Residential"){
@@ -394,6 +396,7 @@ ngOnInit() {
         }
     }else if(res.data.unitOwnership === "Rented"){
       this.showOwnedUnitDetails = false;
+      this.unitUseShow = true;
       this.showAllfields = true
       this.showRentalUnitDetails = true;
         if(res.data.unitUse === "Residential"){
@@ -415,6 +418,7 @@ ngOnInit() {
         numberOfRooms:data.numberOfRooms,
         cidHoh:data.cid,
         nameHoh:data.name,
+        contactHoh:data.contact,
         genderHoh:data.gender,
         ageHoh:data.age,
         maritalStatusHoh:data.martialStatus,
@@ -495,6 +499,7 @@ reactiveForms() {
 
     cidHoh:[],
     nameHoh:[],
+    contactHoh:[],
     genderHoh:[],
     ageHoh:[],
     maritalStatusHoh:[],
@@ -584,6 +589,7 @@ reactiveForms() {
 
     this.household.cid = this.householdForm.get('cidHoh').value
     this.household.name = this.householdForm.get('nameHoh').value;
+    this.household.contact = this.householdForm.get('contactHoh').value
     this.household.gender = this.householdForm.get('genderHoh').value;
     this.household.age = this.householdForm.get('ageHoh').value;
     this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
@@ -705,17 +711,20 @@ reactiveForms() {
         this.showOwnedUnitDetails = true;
         this.unitUseShow = true
         this.showRentalUnitDetails = false;
-      }else if(e.value === "Vacant"){
-        this.unitUseShow = false
-        this.displayShopsOffice = false;
-        this.showAllfields = false;
-      } else{  
-        this.showOwnedUnitDetails = false;
-        this.unitUseShow = true
-    
+      }else if(e.value === "Rented"){
+        this.unitUseShow = true;   
         this.showRentalUnitDetails = true;
+        this.showOwnedUnitDetails = false;
+        this.displayShopsOffice = false;
+        this.showAllfields = true;
+      } else{  
+        this.showAllfields = false;
+        this.unitUseShow = false
+       
       }
     }
+
+    
 
     useChange(e){
       if(e.value !== "Residential"){

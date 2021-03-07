@@ -88,11 +88,12 @@ export class AdminComponent implements OnInit {
   nameOfBuildingOwner:string = "Not Added";
   contactOwner:string = "Not Added";
   length:number = 0;
-
+  enumeratedBy:string = "No Info."
 
   unitsData:any;
   housholdsData:{
     unitId:number,
+    enumeratedBy:string,
     unitOwnership:string,
     name:string,
     cid:number,
@@ -104,6 +105,7 @@ export class AdminComponent implements OnInit {
     shopOfficeRent:number
   } = {
     unitId: 0,
+    enumeratedBy: 'No info',
     unitOwnership:"Not added",
     name:"Not added",
     cid:0,
@@ -418,6 +420,7 @@ export class AdminComponent implements OnInit {
                   this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                     this.unitsData = res.data
                     this.length = res.data.length
+                    console.log('fdd',res)
 
                   })
                   this.dataService.getImg(this.buildingId).subscribe(res=>{
@@ -619,6 +622,9 @@ export class AdminComponent implements OnInit {
                       this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                         this.unitsData = res.data
                         this.length = res.data.length
+            
+                       
+
                       })
                       this.dataService.getImg(this.buildingId).subscribe(res=>{
                         console.log(res)
@@ -670,6 +676,8 @@ export class AdminComponent implements OnInit {
       panelClass: ['success-snackbar']
     });
     this.dataService.getAHousehold(unitid).subscribe(resp=>{
+   
+
       if(resp.data.unitUse !== "Residential"){
         this.residentialUnitDetailShow = false
         this.officeShopDetailShow = true
@@ -678,9 +686,19 @@ export class AdminComponent implements OnInit {
         this.officeShopDetailShow = false
       }
       this.housholdsData = resp.data
-
+     
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
        this.familyMembers = resp.data
+      })
+      this.dataService.getUserInfo(resp.data.userId).subscribe(res => {
+        console.log(res)
+        if(res.success === "error"){
+          this.enumeratedBy = 'No Info.'
+        }else{
+          let userName = res.data.username + ',' + res.data.cid
+          this.enumeratedBy = userName
+        }
+       
       })
       
     });

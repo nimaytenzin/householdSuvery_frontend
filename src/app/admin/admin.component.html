@@ -179,6 +179,9 @@
     <br><br>
     <div *ngIf="residentTableShow">
      <h3> Household Details</h3>
+     
+      <p>Enumerated By: <strong>{{enumeratedBy}}</strong></p>
+
       <table style = "width:100%;">
         <tr>
           <th>Unit ID</th>
@@ -187,7 +190,8 @@
         <tr>
           <th>Unit Ownership</th>
           <td>{{housholdsData.unitOwnership}}</td>
-        </tr>       
+        </tr>
+           
       </table>
             
       <table *ngIf="residentialUnitDetailShow">
