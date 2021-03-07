@@ -1,0 +1,16 @@
+<div>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button class="example-icon" aria-label="back button" (click)="back()" *ngIf="isUserLoggedIn">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <img src="../assets/app-logo.png" style="height:90%">
+      <h1 style="margin-left: 10px;">ZHI CHAR | Housing Assessment Survey </h1>
+      <span class="menu-spacer"></span>
+      <button mat-icon-button (click)="logout()" *ngIf="isUserLoggedIn">
+        <mat-icon>settings_power</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <router-outlet></router-outlet>
+</div>

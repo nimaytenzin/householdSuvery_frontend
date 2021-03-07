@@ -1,0 +1,31 @@
+<div class="form-wraper" >
+  <div class="form-container card">
+    <div class="form-header">
+      <img src="../../assets/app-logo.png"  class="main-lock-icon" alt="">
+    </div>
+    <div class="form-body">
+      <form [formGroup]="loginForm">
+        <mat-form-field class="justifier">
+          <input matInput type="text" placeholder="CID Number" class="form-input" name="cid" formControlName="cid" [ngClass]="{ 'is-invalid': submitted && f.cid.errors }" required autofocus>
+          <div *ngIf="submitted && f.cid.errors" class="invalid-feedback">
+            <div *ngIf="f.cid.errors.required">CID number is required</div>
+          <div *ngIf="f.cid.errors.minlength">CID number must be atleast 11 characters</div>
+            <div *ngIf="f.cid.errors.maxlength">CID number must be less then 11 characters</div>
+          </div>
+        </mat-form-field>
+        <mat-form-field class="justifier">
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" class="form-input" name="password" formControlName="password"  [ngClass]="{ 'is-invalid': submitted && f.cid.errors }" required>
+          <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+          </div>
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="form-footer">
+        <button mat-raised-button class="btn custom-btn" (click)="login()" color="primary" [disabled]="!loginForm.valid"><mat-icon>input</mat-icon> Login</button>
+    </div>
+  </div>
+</div>

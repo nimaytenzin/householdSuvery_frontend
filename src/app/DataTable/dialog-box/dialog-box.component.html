@@ -1,0 +1,45 @@
+<h1 mat-dialog-title><strong>{{action}}</strong></h1>
+<div mat-dialog-content>
+  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+    <mat-label>Select Identification Type</mat-label>
+    <mat-select  (selectionChange) = "showDetail($event)">
+      <mat-option *ngFor="let option of identifications" [value]="option.name" matInput >
+        {{option.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+ <div *ngIf="showDetails">
+  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+    <input type="number" placeholder="{{action}} cid/workpermit" matInput (input)="pingApi()" [(ngModel)]="local_data.idNumber">
+  </mat-form-field>
+ </div>
+
+ <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <input type="number" placeholder="{{action}} age" matInput [(ngModel)]="local_data.age">
+</mat-form-field>
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>Gender</mat-label>
+  <mat-select [(ngModel)]="local_data.gender">
+    <mat-option *ngFor="let option of genders" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+
+
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>Income Earner?</mat-label>
+  <mat-select [(ngModel)]="local_data.incomeEarner">
+    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+  <ng-template #elseTemplate>
+   </ng-template> 
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="doAction()">{{action}}</button>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>

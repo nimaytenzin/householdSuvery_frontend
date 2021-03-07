@@ -1,0 +1,34 @@
+<mat-toolbar>
+    <span>Register ATM</span>
+    <span class="menu-spacer"></span>
+  </mat-toolbar>
+  <div class="form-wraper" style="text-align:center">
+    <div class="form-container card" >
+      <div class="form-body">
+  
+  
+      <form [formGroup]="atmForm">
+        <h4>ATM Detail Form</h4>
+        <mat-label>Select ATMs present:</mat-label>
+            <span class="example-list-section">
+              <ul>
+                <li *ngFor="let atm of atms">
+                  <mat-checkbox [checked]="atm.checked" (change) = "atmSelect(atm,$event)">
+                    {{atm.name}}
+                  </mat-checkbox>
+                </li>
+              </ul>
+            </span>
+             
+      </form>
+  
+    
+      </div>
+      <div class="form-footer">
+        <button mat-raised-button class="btn custom-btn" (click)="submit()">
+          <mat-icon>note_add</mat-icon> Submit
+        </button>
+      </div>
+    </div>
+  </div>
+  
