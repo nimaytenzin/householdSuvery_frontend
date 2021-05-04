@@ -44,6 +44,10 @@ import { DialogBoxComponent } from './DataTable/dialog-box/dialog-box.component'
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 import { MemberTableComponent } from './member-table/member-table.component';
+import { MarkPostiiveDialogComponent } from './dialog/mark-postiive-dialog/mark-postiive-dialog.component';
+import {  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { ViewPositiveMapComponent } from './view-positive-map/view-positive-map.component';
+import { EditPositiveDialogComponent } from './dialog/edit-positive-dialog/edit-positive-dialog.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +70,10 @@ import { MemberTableComponent } from './member-table/member-table.component';
     DialogBoxComponent,
     EditUnitComponent,
     EditBuildingComponent,
-    MemberTableComponent
+    MemberTableComponent,
+    MarkPostiiveDialogComponent,
+    ViewPositiveMapComponent,
+    EditPositiveDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -92,13 +99,15 @@ import { MemberTableComponent } from './member-table/member-table.component';
     MatCheckboxModule,
     WebcamModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+     MatNativeDateModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPostiiveDialogComponent]
 })
 export class AppModule { }

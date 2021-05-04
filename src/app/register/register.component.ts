@@ -303,6 +303,7 @@ export class RegisterComponent implements OnInit {
     if(cid.length > 10){
       this.dataService.getCid(cid).subscribe(res=>{
         if(res.success === "true"){
+          console.log(res.data)
           let data = res.data.citizendetails.citizendetail[0]
           let name = data.firstName+" "+data.lastName
           this.buildingForm.patchValue({

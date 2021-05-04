@@ -319,4 +319,21 @@ export class DataService {
         catchError(this.handleError)
       );
   }
+
+
+  addRedBuilding(item){
+    return this.http
+    .post<any>(`${this.API_URL}/case/create`, item, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getpositivecases(){
+    return this.http
+    .get<any>(`${this.API_URL}/case/get`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
 }

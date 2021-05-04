@@ -88,9 +88,10 @@
   
     <br>
 <div>
-  <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;padding-left: 10px;" *ngIf="showBuildingInfo">Unlock for editing</button>
-  <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Structure</button>
-  <button mat-flat-button color="primary" (click)=editBuilding(); style="float: left;" *ngIf="showBuildingInfo">Edit Building Details</button>
+  <!-- <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;padding-left: 10px;" *ngIf="showBuildingInfo">Unlock for editing</button> -->
+  <!-- <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Structure</button> -->
+  <!-- <button mat-flat-button color="primary" (click)=editBuilding(); style="float: left;" *ngIf="showBuildingInfo">Edit Building Details</button> -->
+  <button mat-flat-button color="primary" (click)=markAsPositive(); style="float: left;" *ngIf="showAddRedButton"  >Mark As Positive</button>
 </div>
 
 <br>
@@ -157,7 +158,7 @@
         <td mat-cell *matCellDef="let element"  (click)=showResident(element.id)> view </td>
       </ng-container>
 
-      <ng-container matColumnDef="update">
+      <!-- <ng-container matColumnDef="update">
         <th mat-header-cell *matHeaderCellDef> Update </th>
         <td mat-cell *matCellDef="let element"  (click)=updateUnit(element.id)> Update </td>
       </ng-container>
@@ -165,7 +166,7 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> Delete </th>
         <td mat-cell *matCellDef="let element"  (click)=deleteUnit(element.id)> Delete </td>
-      </ng-container>
+      </ng-container> -->
     
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"  

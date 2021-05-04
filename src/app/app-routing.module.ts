@@ -14,6 +14,7 @@ import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import { AdminComponent } from './admin/admin.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
+import { ViewPositiveMapComponent } from './view-positive-map/view-positive-map.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -27,6 +28,7 @@ const routes: Routes = [
   {path:'edit-building/:sid', component:EditBuildingComponent},
   {path: 'edit-unit/:id', component: EditUnitComponent},
   {path: 'admin', component: AdminComponent },
+  {path: 'covidmap', component: ViewPositiveMapComponent },
   // {path: 'update-household/:id', component: UpdateHouseholdComponent, canActivate: [RouteGuard]},
   // {path: 'changepassword', component: ChangePasswordComponent, canActivate: [RouteGuard]},
   {path: 'map', component: MapComponent},

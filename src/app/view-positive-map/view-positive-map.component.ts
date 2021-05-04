@@ -63,12 +63,13 @@ interface IdName{
   name: string;
 }
 
+
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  selector: 'app-view-positive-map',
+  templateUrl: './view-positive-map.component.html',
+  styleUrls: ['./view-positive-map.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class ViewPositiveMapComponent implements OnInit {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   totalBuilding:number;
   totalCompleted:number;
@@ -183,131 +184,6 @@ export class AdminComponent implements OnInit {
     iconSize: [12, 12]
   });
 
-  buildingOwnership:IdName[]=[
-    {id:'1', name:"Singly Owned"},
-    {id:'2', name:"Jointly Owned"},
-  ];
-  approvedDrawing:IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  occupancyCertificate:IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  associativePosition: IdName[]=[
-    {id:'1', name:"Main"},
-    {id:'2', name:"Ancillary"},
-  ];
-  existancyStatus: IdName[]=[
-    {id:'1', name:"Standing"},
-    {id:'2', name:"Under Construction"},
-    {id:'3', name:"Demolished"},
-    {id:'4', name:"Abandoned"},
-  ];
-  attic: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  stilt: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-   ];
-  jamthog: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  basement: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  buildingStyle: IdName[]=[
-    {id:'1', name:"Contemporary"},
-    {id:'2', name:"Traditional"},
-    {id:'3', name:"Composite"},
-  ];
-  structureType: IdName[]=[
-    {id:'1', name:"Framed"},
-    {id:'2', name:"Load Bearing"},
-    {id:'3', name:"Composite"},
-    {id:'4', name:"Others"},
-  ];
-  materialType: IdName[]=[
-    {id:'1', name:"Brick Masonry"},
-    {id:'2', name:"ACC Block"},
-    {id:'3', name:"Rammed Earth"},
-    {id:'4', name:"Steel"},
-    {id:'5', name:"Concrete Block"},
-    {id:'6', name:"Stabilized Mud Block"},
-    {id:'7', name:"Stone Masonry"},
-    {id:'8', name:"Reinforced Concrete"},
-    {id:'9', name:"Timbers"},
-    {id:'10', name:"Others"}
-  ];
-  waterSupply: IdName[]=[
-    {id:'1', name:"Thromde"},
-    {id:'2', name:"Rural Water Supply"},
-    {id:'3', name:"Private Individual"},
-    {id:'4', name:"Private Community"},
-    {id:'5', name:"Others"}
-  ];
-  roofType: IdName[]=[
-    {id:'1', name:"Gable"},
-    {id:'2', name:"Hipped"},
-    {id:'3', name:"Composite"},
-    {id:'4', name:"Others"},
-  ];
-  roofingMaterial: IdName[]=[
-    {id:'1', name:"CGI"},
-    {id:'2', name:"Wooden Shingles"},
-    {id:'3', name:"Slate"},
-    {id:'4', name:"Composite"},
-    {id:'6', name:"Others"},
-  ];
-  emergencyExit: IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  lift: IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-    {id:'3', name:"Provision Provided"},
-  ];
-  sewerTreatment: IdName[]=[
-    {id:'1', name:"Individual Septic Tank"},
-    {id:'2', name:"Combined Septic Tank"},
-    {id:'3', name:"Thromde Sewerage Network"},
-    {id:'4', name:"Pit Latrine"},
-    {id:'5', name:"Others"},
-  ];
-  wasteCollection: IdName[]=[
-    {id:'1', name:"Thromde"},
-    {id:'2', name:"Dzongkhag"},
-    {id:'2', name:"Private Company"},
-    {id:'3', name:"Individual"},
-  ];
- 
-  parking: IdName[]=[
-    {id:'1', name:"Designated Onstreet"},
-    {id:'2', name:"Un-designated Onstreet"},
-    {id:'3', name:"Offstreet"},
-    {id:'4', name:"Private Parking"}
-  ];
-  numberOfFloors: IdName[]=[
-    {id:'1', name:"G"},
-    {id:'2', name:"G+1"},
-    {id:'3', name:"G+2"},
-    {id:'4', name:"G+3"},
-    {id:'5', name:"G+4"},
-    {id:'6', name:"G+5"},
-    {id:'7', name:"G+6"},
-    {id:'8', name:"G+7"},
-
-  ];
   setViewValue: boolean;
 
   constructor(
@@ -342,6 +218,10 @@ export class AdminComponent implements OnInit {
     }else{
 
     }
+
+
+
+ 
 
   }
 
@@ -383,13 +263,9 @@ export class AdminComponent implements OnInit {
               this.clearData = true;
               this.buildingId = feature.properties.structure_id;
               this.showBuilding(this.buildingId);
-              this.addPositiveDialog(feature);
-              // this.resident = null;
+ 
               if(response.data.status == 'INCOMPLETE'){
-                // this.buildingData= null
-                // this.familyMembers = null;
-                // this.unitsData =null
-                // this.housholdsData =null
+                 
               this.residentTableShow=false;
                 this.deleteButton = true
                 this.deleteID = feature.properties.structure_id  
@@ -402,10 +278,7 @@ export class AdminComponent implements OnInit {
                     panelClass: ['error-snackbar']
                   });
                 }else{
-                  // this.buildingData= null
-                  // this.familyMembers = null;
-                  // this.housholdsData =null
-                  // this.unitsData =null
+    
               this.residentTableShow=false;
                   this.buildingId = feature.properties.structure_id;
                   this.deleteButton = true
@@ -434,12 +307,7 @@ export class AdminComponent implements OnInit {
                   this.showBuilding(this.buildingId); 
                   this.clearData = true;
                   this.resident = null;
-                  // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                  //   this.unitsData = json.data;
-                  // });
-                  // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                  //   this.imgs= json.data;
-                  // });
+          
                 }  
             });
           }, pointToLayer: (feature, latLng) => {
@@ -473,12 +341,8 @@ export class AdminComponent implements OnInit {
           maxZoom: 20,
           minZoom: 9,
         });
-        var osm = L.tileLayer('https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png', {
-          maxZoom: 20,
-          minZoom: 9,
-        });
         this.map = L.map('map',{
-          center:[27.4712,89.64191],
+          center:[26.864894, 89.38203],
           zoom: 13,
           maxZoom: 20,
           minZoom: 9,
@@ -486,8 +350,7 @@ export class AdminComponent implements OnInit {
         });
            
       var baseMaps = {
-        "Satellite Image": sat,
-        "OSM base map": osm 
+        "Satellite Image": sat
       }; 
     this.map.on('locationerror',(err)=>{
           if (err.code === 0) {
@@ -539,6 +402,40 @@ export class AdminComponent implements OnInit {
         newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
       }
     });
+
+    function markerColor(status){
+      if(status === "ACTIVE"){
+        return '#9D2933'
+      }else{
+        return '#F3C13A'
+      }
+    }
+
+    var nationalCovidMarker = {
+      radius: 5,
+      fillColor: "#9D2933",
+      color: "#9D2933",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 1
+    };
+
+
+      var NationalCase = L.geoJSON(null,  {
+        pointToLayer:  (feature, latlng) => { 
+          console.log(feature)
+          return L.circleMarker(latlng,{
+            radius: 5,
+            fillColor: markerColor(feature.properties.status),
+            color: markerColor(feature.properties.status),
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 1
+          });
+      }}).addTo(this.map)
+      const geojsosn = this.dataService.getpositivecases().subscribe(res => {
+        NationalCase.addData(res);
+      })
   }
 
 
@@ -548,7 +445,6 @@ export class AdminComponent implements OnInit {
       sessionStorage.setItem('subzoneID', zoneId)
   }
 
-  //zone Search End
 
   renderBuildings(zoneId){
     const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json:any)=>{
@@ -560,8 +456,10 @@ export class AdminComponent implements OnInit {
           }
         }
       }).addTo(this.map);
-      // this.map.fitBounds(this.bound.getBounds());
     })
+
+
+    
 
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
       this.json = json;
@@ -578,18 +476,10 @@ export class AdminComponent implements OnInit {
                     this.totalCompleted ++
                   }
                   layer.on('click', (e) => {
-                    // this.buildingData= null
-                    // this.unitsData =null
-                    // this.familyMembers = null;
-                    // this.housholdsData =null
+            
                     this.residentTableShow=false;
-                    this.addPositiveDialog(feature);
                     if(feature.properties.status == 'INCOMPLETE'){
-                    // this.buildingData= null
-                    // this.unitsData =null
-
-                    // this.familyMembers = null;
-                    // this.housholdsData =null
+                    
                     this.deleteButton = true
                     this.deleteID = feature.properties.structure_id  
                     this.showBuildingInfo = false;
@@ -629,12 +519,7 @@ export class AdminComponent implements OnInit {
                       this.showBuilding(this.buildingId); 
                       this.clearData = true;
                       this.resident = null;
-                      // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-                      //   this.unitsData = json.data;
-                      // });
-                      // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-                      //   this.imgs= json.data;
-                      // });
+                    
                     }
              
             });
@@ -695,34 +580,7 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  // deleteUnit(id){
-  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-  //     data:{
-  //       title: "Confirm Delete Unit",
-  //       message: "Are you sure you want to delete the Unit? You will be held accountable for information loss and User details will be recorded"
-  //     }
-  //   });
-  //   confirmDialog.afterClosed().subscribe(result=>{
-  //     if(result == true){
-  //       this.dataService.deleteHousehold(id).subscribe(res => {
-  //         if(res.success = "true"){
-  //           this.renderBuildings(sessionStorage.getItem('subzoneID'))
-  //           this.snackBar.open('Unit Deleted' , '', {
-  //             duration: 3000,
-  //             verticalPosition: 'top',
-  //             panelClass: ['success-snackbar']
-  //           });
-  //         }else{
-  //           this.snackBar.open('Unit kept' , '', {
-  //             duration: 3000,
-  //             verticalPosition: 'top',
-  //             panelClass: ['success-snackbar']
-  //           });
-  //       }
-  //       })   
-  //    }
-  //   });
-  // }
+ 
 
   selectedRowIndex = -1;
 
@@ -739,37 +597,7 @@ export class AdminComponent implements OnInit {
       this.clearData = false
     }
   }
-
-  // deleteBuilding(){
-  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-  //     data:{
-  //       title: "Delete Building?",
-  //       message: `Are you sure you want to delete ${this.deleteID}? You will be held accountable, User details will be recorded`
-  //     }
-  //   });
-  //   confirmDialog.afterClosed().subscribe(result=>{
-  //     if(result == true){
-  //       this.dataService.deleteBuilding(this.deleteID).subscribe(res => {
-  //         if(res.success === "true"){
-  //           this.renderBuildings(sessionStorage.getItem('subzoneID'))
-  //           this.snackBar.open('Deleted. You may want to refresh the browser to see the changes' , '', {
-  //             duration: 3000,
-  //             verticalPosition: 'top',
-  //             panelClass: ['success-snackbar']
-  //           });
  
-  //         }
-  //      })
-        
-  //         }else{
-  //             this.snackBar.open('Oks' , '', {
-  //               duration: 3000,
-  //               verticalPosition: 'top',
-  //               panelClass: ['success-snackbar']
-  //             });
-  //         }
-  //   });
-  // }
 
   showBuilding(unitid){
     this.buildingInfo = null;
@@ -841,108 +669,8 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  // unlockBuilding(){
-  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-  //     data:{
-  //       title: "Unlock Building?",
-  //       message: "Are you sure?"
-  //     }
-  //   });
-  //   confirmDialog.afterClosed().subscribe(result=>{
-  //     if(result == true){
-  //       this.dataService.postProgress(this.buildingId).subscribe(res => {
-  //         if(res.success === "true"){
-  //           this.snackBar.open('Unlocked Successfully' , '', {
-  //             duration: 3000,
-  //             verticalPosition: 'top',
-  //             panelClass: ['success-snackbar']
-  //           });
-  //         }
-  //        })
-  //     }
-  //   });
 
 
-    
-    
-  // }
 
-  editBuilding(){
-    this.router.navigate([`edit-building/${this.buildingId}`])
-  }
 
-  editFamilyMember(){
-    this.snackBar.open('Redirect to update Family Member Component' , '', {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: ['success-snackbar']
-    });
-  }
-
-  deleteFamilyMember(){
-    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-      data:{
-        title: "Delete Family Member?",
-        message: "Are you sure?"
-      }
-    });
-    confirmDialog.afterClosed().subscribe(result=>{
-      if(result == true){
-        this.snackBar.open('Deleted' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
-      }else{
-        this.snackBar.open('Ok' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
-      }
-    });
-  }
-
-  updateUnit(unitID){
-    this.router.navigate([`edit-unit/${unitID}`])
-  }
-
-  deleteBuildingInfo(){
-    this.dataService.deleteBuildingInfo(this.bid).subscribe(res =>{
-      if(res.success === "true"){
-          this.snackBar.open('Deleted Building Data' , '', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['success-snackbar']
-          });
-
-      }
-    })
-  }
-
-  markAsPositive(e){
-    const confirmDialog = this.dialog.open(MarkPostiiveDialogComponent,{
-      data:{
-        object:e
-      }
-    });
-  }
-
-  addPositiveDialog(e){   
-    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-      data:{
-        title: "Mark as Red Building?",
-        message: "Are you sure?"
-      }
-    });
-    confirmDialog.afterClosed().subscribe(result=>{
-      if(result == true){
-        this.markAsPositive(e)
-      }else{
-        
-      }
-    });
-  }
-
-} 
-
+}
