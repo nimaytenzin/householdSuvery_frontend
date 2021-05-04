@@ -418,7 +418,7 @@ export class AdminComponent implements OnInit {
 
     function markerColor(status){
       if(status === "ACTIVE"){
-        return '#9D2933'
+        return '#EB3637'
       }else{
         return '#F3C13A'
       }
@@ -427,11 +427,11 @@ export class AdminComponent implements OnInit {
     var NationalCase = L.geoJSON(null,  {
       pointToLayer:  (feature, latlng) => { 
         return L.circleMarker(latlng,{
-          radius: 5,
+          radius: 6,
           fillColor: markerColor(feature.properties.status),
           color: markerColor(feature.properties.status),
-          weight: 1,
-          opacity: 1,
+          weight: 0.1,
+          opacity: 0.6,
           fillOpacity: 1
         });
     }, onEachFeature: (feature, layer) => {  
@@ -440,6 +440,8 @@ export class AdminComponent implements OnInit {
                       this.deleteButton = true
                       this.unitDetailShow =true
                       this.showBuildingInfo = true;
+                      this.residentialUnitDetailShow =false;
+                      this.residentTableShow = false;
 
                       this.deleteID = feature.properties.structure_id  
                       this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
@@ -461,8 +463,9 @@ export class AdminComponent implements OnInit {
 
       })
       layer.bindPopup(
-        '<p style:"color:tomtato"> Status: ' + feature.properties.status + '</p>'+
-        '<p style:"color:tomtato"> Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'+
+        '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>'+
+        '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>'+
+        '<p style:"color:tomtato">Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'+
         '<button class="edit">View/Edit </button>' +
         '<button class="normalize">Normalize Building</button>'
       ).on("popupopen", (a) => {
@@ -830,46 +833,46 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  deleteFamilyMember(){
-    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
-      data:{
-        title: "Delete Family Member?",
-        message: "Are you sure?"
-      }
-    });
-    confirmDialog.afterClosed().subscribe(result=>{
-      if(result == true){
-        this.snackBar.open('Deleted' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
-      }else{
-        this.snackBar.open('Ok' , '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
-        });
-      }
-    });
-  }
+  // deleteFamilyMember(){
+  //   const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+  //     data:{
+  //       title: "Delete Family Member?",
+  //       message: "Are you sure?"
+  //     }
+  //   });
+  //   confirmDialog.afterClosed().subscribe(result=>{
+  //     if(result == true){
+  //       this.snackBar.open('Deleted' , '', {
+  //         duration: 3000,
+  //         verticalPosition: 'top',
+  //         panelClass: ['success-snackbar']
+  //       });
+  //     }else{
+  //       this.snackBar.open('Ok' , '', {
+  //         duration: 3000,
+  //         verticalPosition: 'top',
+  //         panelClass: ['success-snackbar']
+  //       });
+  //     }
+  //   });
+  // }
 
-  updateUnit(unitID){
-    this.router.navigate([`edit-unit/${unitID}`])
-  }
+  // updateUnit(unitID){
+  //   this.router.navigate([`edit-unit/${unitID}`])
+  // }
 
-  deleteBuildingInfo(){
-    this.dataService.deleteBuildingInfo(this.bid).subscribe(res =>{
-      if(res.success === "true"){
-          this.snackBar.open('Deleted Building Data' , '', {
-            duration: 3000,
-            verticalPosition: 'top',
-            panelClass: ['success-snackbar']
-          });
+  // deleteBuildingInfo(){
+  //   this.dataService.deleteBuildingInfo(this.bid).subscribe(res =>{
+  //     if(res.success === "true"){
+  //         this.snackBar.open('Deleted Building Data' , '', {
+  //           duration: 3000,
+  //           verticalPosition: 'top',
+  //           panelClass: ['success-snackbar']
+  //         });
 
-      }
-    })
-  }
+  //     }
+  //   })
+  // }
 
   markAsPositive(e){
     const confirmDialog = this.dialog.open(MarkPostiiveDialogComponent,{
@@ -877,6 +880,9 @@ export class AdminComponent implements OnInit {
         object:e
       }
     });
+    confirmDialog.afterClosed().subscribe(e=>{
+      window.location.reload()
+    })
   }
 
   addPositiveDialog(e){   
@@ -914,6 +920,7 @@ export class AdminComponent implements OnInit {
     });
     confirmDialog.afterClosed().subscribe(result=>{
       if(result == true){
+       window.location.reload()
         this.dataService.normalizeBuilding(building).subscribe(res => {
           this.snackBar.open('Notmalized Building', '', {
             duration: 5000,
@@ -925,10 +932,6 @@ export class AdminComponent implements OnInit {
         
       }
     });
-  }
-
-  refreshPositiveMap(){
- 
   }
 
 } 
