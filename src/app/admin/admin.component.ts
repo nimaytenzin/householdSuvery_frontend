@@ -539,6 +539,30 @@ export class AdminComponent implements OnInit {
         newMarker = L.marker($e.latlng, {icon: this.myMarker}).addTo(this.map);
       }
     });
+
+    function markerColor(status){
+      if(status === "ACTIVE"){
+        return '#9D2933'
+      }else{
+        return '#F3C13A'
+      }
+    }
+
+    var NationalCase = L.geoJSON(null,  {
+      pointToLayer:  (feature, latlng) => { 
+        console.log(feature)
+        return L.circleMarker(latlng,{
+          radius: 5,
+          fillColor: markerColor(feature.properties.status),
+          color: markerColor(feature.properties.status),
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 1
+        });
+    }}).addTo(this.map)
+    const geojsosn = this.dataService.getpositivecases().subscribe(res => {
+      NationalCase.addData(res);
+    })
   }
 
 
