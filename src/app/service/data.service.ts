@@ -336,4 +336,17 @@ export class DataService {
       catchError(this.handleError)
     )
   }
+
+  
+  updatePositiveCase(item){
+    return this.http.patch<any>(`${this.API_URL}/case/update`,item,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  normalizeBuilding(item){
+    return this.http.patch<any>(`${this.API_URL}/case/unmark`,item,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

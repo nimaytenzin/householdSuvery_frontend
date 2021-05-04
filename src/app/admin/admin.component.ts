@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { environment } from '../../environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MarkPostiiveDialogComponent } from "../dialog/mark-postiive-dialog/mark-postiive-dialog.component";
+import { EditPositiveDialogComponent } from '../dialog/edit-positive-dialog/edit-positive-dialog.component';
 
 export class Building {
   lat: number;
@@ -69,7 +70,7 @@ interface IdName{
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
@@ -183,131 +184,6 @@ export class AdminComponent implements OnInit {
     iconSize: [12, 12]
   });
 
-  buildingOwnership:IdName[]=[
-    {id:'1', name:"Singly Owned"},
-    {id:'2', name:"Jointly Owned"},
-  ];
-  approvedDrawing:IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  occupancyCertificate:IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  associativePosition: IdName[]=[
-    {id:'1', name:"Main"},
-    {id:'2', name:"Ancillary"},
-  ];
-  existancyStatus: IdName[]=[
-    {id:'1', name:"Standing"},
-    {id:'2', name:"Under Construction"},
-    {id:'3', name:"Demolished"},
-    {id:'4', name:"Abandoned"},
-  ];
-  attic: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  stilt: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-   ];
-  jamthog: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  basement: IdName[]=[
-    {id:'1', name:"0"},
-    {id:'2', name:"1"},
-    {id:'3', name:"2"},
-  ];
-  buildingStyle: IdName[]=[
-    {id:'1', name:"Contemporary"},
-    {id:'2', name:"Traditional"},
-    {id:'3', name:"Composite"},
-  ];
-  structureType: IdName[]=[
-    {id:'1', name:"Framed"},
-    {id:'2', name:"Load Bearing"},
-    {id:'3', name:"Composite"},
-    {id:'4', name:"Others"},
-  ];
-  materialType: IdName[]=[
-    {id:'1', name:"Brick Masonry"},
-    {id:'2', name:"ACC Block"},
-    {id:'3', name:"Rammed Earth"},
-    {id:'4', name:"Steel"},
-    {id:'5', name:"Concrete Block"},
-    {id:'6', name:"Stabilized Mud Block"},
-    {id:'7', name:"Stone Masonry"},
-    {id:'8', name:"Reinforced Concrete"},
-    {id:'9', name:"Timbers"},
-    {id:'10', name:"Others"}
-  ];
-  waterSupply: IdName[]=[
-    {id:'1', name:"Thromde"},
-    {id:'2', name:"Rural Water Supply"},
-    {id:'3', name:"Private Individual"},
-    {id:'4', name:"Private Community"},
-    {id:'5', name:"Others"}
-  ];
-  roofType: IdName[]=[
-    {id:'1', name:"Gable"},
-    {id:'2', name:"Hipped"},
-    {id:'3', name:"Composite"},
-    {id:'4', name:"Others"},
-  ];
-  roofingMaterial: IdName[]=[
-    {id:'1', name:"CGI"},
-    {id:'2', name:"Wooden Shingles"},
-    {id:'3', name:"Slate"},
-    {id:'4', name:"Composite"},
-    {id:'6', name:"Others"},
-  ];
-  emergencyExit: IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-  ];
-  lift: IdName[]=[
-    {id:'1', name:"Yes"},
-    {id:'2', name:"No"},
-    {id:'3', name:"Provision Provided"},
-  ];
-  sewerTreatment: IdName[]=[
-    {id:'1', name:"Individual Septic Tank"},
-    {id:'2', name:"Combined Septic Tank"},
-    {id:'3', name:"Thromde Sewerage Network"},
-    {id:'4', name:"Pit Latrine"},
-    {id:'5', name:"Others"},
-  ];
-  wasteCollection: IdName[]=[
-    {id:'1', name:"Thromde"},
-    {id:'2', name:"Dzongkhag"},
-    {id:'2', name:"Private Company"},
-    {id:'3', name:"Individual"},
-  ];
- 
-  parking: IdName[]=[
-    {id:'1', name:"Designated Onstreet"},
-    {id:'2', name:"Un-designated Onstreet"},
-    {id:'3', name:"Offstreet"},
-    {id:'4', name:"Private Parking"}
-  ];
-  numberOfFloors: IdName[]=[
-    {id:'1', name:"G"},
-    {id:'2', name:"G+1"},
-    {id:'3', name:"G+2"},
-    {id:'4', name:"G+3"},
-    {id:'5', name:"G+4"},
-    {id:'6', name:"G+5"},
-    {id:'7', name:"G+6"},
-    {id:'8', name:"G+7"},
-
-  ];
   setViewValue: boolean;
 
   constructor(
@@ -478,7 +354,7 @@ export class AdminComponent implements OnInit {
           minZoom: 9,
         });
         this.map = L.map('map',{
-          center:[27.4712,89.64191],
+          center:[26.864894, 89.38203],
           zoom: 13,
           maxZoom: 20,
           minZoom: 9,
@@ -550,7 +426,6 @@ export class AdminComponent implements OnInit {
 
     var NationalCase = L.geoJSON(null,  {
       pointToLayer:  (feature, latlng) => { 
-        console.log(feature)
         return L.circleMarker(latlng,{
           radius: 5,
           fillColor: markerColor(feature.properties.status),
@@ -559,7 +434,57 @@ export class AdminComponent implements OnInit {
           opacity: 1,
           fillOpacity: 1
         });
-    }}).addTo(this.map)
+    }, onEachFeature: (feature, layer) => {  
+      layer.on('click', e => {
+        this.buildingId= e.sourceTarget.feature.geometry.properties.structure_id;
+                      this.deleteButton = true
+                      this.unitDetailShow =true
+                      this.showBuildingInfo = true;
+
+                      this.deleteID = feature.properties.structure_id  
+                      this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                        this.bid = res.data.id
+                        this.buildingUse = res.data.buildingUse;
+                        this.cidOwner = res.data.cidOwner;
+                        this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                        this.contactOwner = res.data.contactOwner;
+                      })
+                      this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                        this.unitsData = res.data
+                        this.length = res.data.length
+                      })
+                      this.dataService.getImg(this.buildingId).subscribe(res=>{
+                        if(res.success){
+                          this.imgs = res.data
+                        }
+                      })
+
+      })
+      layer.bindPopup(
+        '<p style:"color:tomtato"> Status: ' + feature.properties.status + '</p>'+
+        '<p style:"color:tomtato"> Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'+
+        '<button class="edit">View/Edit </button>' +
+        '<button class="normalize">Normalize Building</button>'
+      ).on("popupopen", (a) => {
+              var popUp = a.target.getPopup()
+              popUp.getElement()
+            .querySelector(".edit")
+            .addEventListener("click", e => {
+              this.editRedBuilding(feature)
+            });
+        })  .on("popupopen", (a) => {
+              var popUp = a.target.getPopup()
+              popUp.getElement()
+            .querySelector(".normalize")
+            .addEventListener("click", e => {
+              this.normalizeBuilding(feature)
+            });
+          },
+        ) 
+    },
+    
+  }).addTo(this.map)
+  
     const geojsosn = this.dataService.getpositivecases().subscribe(res => {
       NationalCase.addData(res);
     })
@@ -804,6 +729,7 @@ export class AdminComponent implements OnInit {
 
   reset(){
     this.zoneForm.reset();
+    sessionStorage.removeItem('subzoneID')
     this.selectZone = false;
     this.showFamilyMembers = false;
     this.progressShow = false
@@ -811,6 +737,7 @@ export class AdminComponent implements OnInit {
     this.unitsData = null;
     this.imgs = null;
     this.resident = null;
+    this.map.removeLayer(this.buildingGeojson)
     if(this.bound !== null){
       this.map.removeLayer(this.bound)
     }
@@ -966,6 +893,42 @@ export class AdminComponent implements OnInit {
         
       }
     });
+  }
+
+  editRedBuilding(e){
+    const confirmDialog = this.dialog.open(EditPositiveDialogComponent,{
+      data:e.properties
+    });  
+  }
+
+  normalizeBuilding(e){
+    var building ={
+      structure_id: e.properties.structure_id
+    }
+
+    const confirmDialog = this.dialog.open(ConfirmDialogComponent,{
+      data:{
+        title: "Normalize Building?",
+        message: "Are you sure?"
+      }
+    });
+    confirmDialog.afterClosed().subscribe(result=>{
+      if(result == true){
+        this.dataService.normalizeBuilding(building).subscribe(res => {
+          this.snackBar.open('Notmalized Building', '', {
+            duration: 5000,
+            verticalPosition: 'bottom',
+            panelClass: ['success-snackbar']
+          });
+        })
+      }else{
+        
+      }
+    });
+  }
+
+  refreshPositiveMap(){
+ 
   }
 
 } 

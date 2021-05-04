@@ -18,7 +18,15 @@
   </div>
   <div class = "scroll" style="margin: 0;">
     <h3 style="text-align: center;">Admin Dashboard | Houshold Survey</h3>
-
+    <p >
+      To view the red buildings after all structures have been added just click on the clear Button.
+      <br>
+      After a  building has been click scroll down on the right side to view its details.
+    </p>
+    <ul>
+      <li style="color: red;font-size: xx-large;"><span style="color: black;font-size: medium;">Red Building</span></li>
+      <li style="color: #F3C13A;font-size: xx-large;"><span style="color: black;font-size: medium">Normalized Building</span></li>
+    </ul>
     <div class= "seem" style="width: 100%;display: flex; flex-direction:column;">
       <form  [formGroup]="searchForm">
         <mat-form-field style="width: 90%;">
@@ -62,7 +70,7 @@
     </form>
 
 <br>
-   <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;" *ngIf="progressShow">
+   <!-- <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;" *ngIf="progressShow">
     <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
 
       <div style="display: flex; flex-direction: column;">
@@ -86,7 +94,7 @@
       
    </div>
   
-    <br>
+    <br> -->
 <div>
   <!-- <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;padding-left: 10px;" *ngIf="showBuildingInfo">Unlock for editing</button> -->
   <!-- <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Structure</button> -->
