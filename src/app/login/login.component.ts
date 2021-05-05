@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         if(sessionStorage.getItem('isadmin') === "TRUE"){
           this.router.navigate(['admin']);
         }else{
-          this.router.navigate(['selectzone']);
+          this.router.navigate(['covidmap']);
         }
         // this.router.navigate(['selectzone']);
         

@@ -110,6 +110,6 @@ import { EditPositiveDialogComponent } from './dialog/edit-positive-dialog/edit-
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPostiiveDialogComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPostiiveDialogComponent,EditPositiveDialogComponent]
 })
 export class AppModule { }

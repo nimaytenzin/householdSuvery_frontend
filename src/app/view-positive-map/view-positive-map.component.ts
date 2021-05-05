@@ -81,7 +81,7 @@ export class ViewPositiveMapComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
@@ -494,10 +494,10 @@ export class ViewPositiveMapComponent implements OnInit {
             '<p style:"color:tomtato">Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'
           ) 
         }
-    }).addTo(this.map)
+    })
 
     const geojsosn = this.dataService.getpositivecases().subscribe(res => {
-      this.NationalCase.addData(res);
+      this.NationalCase.addData(res).addTo(this.map);
       this.responseData = res;
 
       this.value= res.length;
@@ -578,6 +578,29 @@ export class ViewPositiveMapComponent implements OnInit {
     if(this.NationalCase !== undefined){
       this.map.removeLayer(this.NationalCase)
     }
+
+
+  const zoneMap = L.geoJSON(null,{
+    style: (feature)=>{
+      return {
+        color:"red",
+        fillOpacity:0
+      }
+    }
+  })
+
+  // fetch(" https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/HH%20SURVEY.geojson")
+  // .then(res => res.json())
+  // .then( data => {
+  //   zoneMap.addData(data);
+  // })
+  // this.http.get<any>("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/HH%20SURVEY.geojson").subscribe(res=>{
+  //   zoneMap.addData(res).addTo(this.map)
+  // })
+
+    // this.dataService.getZone().subscribe(res=>{
+    //   zoneMap.addData(res.data).addTo(this.map)
+    // })
     this.NationalCase =  L.geoJSON(filteredJson,  {
       pointToLayer:  (feature, latlng) => { 
         console.log(feature)
@@ -589,7 +612,7 @@ export class ViewPositiveMapComponent implements OnInit {
           opacity: 1,
           fillOpacity: 1
         });
-      },
+    },
       onEachFeature: (feature, layer) => {  
           console.log("sdfs")
           layer.on('click', e => {
@@ -651,8 +674,7 @@ export class ViewPositiveMapComponent implements OnInit {
       }).addTo(this.map);
     })
 
-
-    
+      
 
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
       this.json = json;
@@ -808,7 +830,7 @@ export class ViewPositiveMapComponent implements OnInit {
     this.unitsData = null;
     this.imgs = null;
     this.resident = null;
-    if(this.bound !== null){
+    if(this.bound !== undefined){
       this.map.removeLayer(this.bound)
     }
     if(this.buildingGeojson !== null){
@@ -817,7 +839,7 @@ export class ViewPositiveMapComponent implements OnInit {
     if(this.searchmarker !== undefined){
       this.map.removeLayer(this.searchmarker);
     }
-    
+    sessionStorage.removeItem('subzoneID')  
   }
 
   getDzongkhagList() {

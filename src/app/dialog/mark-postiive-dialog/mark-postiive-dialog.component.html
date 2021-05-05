@@ -11,7 +11,7 @@
     
             <mat-form-field appearance="fill" class="justifier" >
                 <mat-label> Date Detected</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="date"   [readonly]="disableForm" required >
+                <input matInput [matDatepicker]="picker" formControlName="date"  required >
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
