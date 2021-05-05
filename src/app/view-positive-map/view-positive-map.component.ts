@@ -184,6 +184,8 @@ export class ViewPositiveMapComponent implements OnInit {
   sliderControl:any;
   NationalCase:any;
 
+  total_cases:Number = 0;
+  red_buildings:any = 0;
 
   map: L.Map;
   
@@ -443,8 +445,10 @@ export class ViewPositiveMapComponent implements OnInit {
     };
 
 
-    this.NationalCase = L.geoJSON(null,  {
+    this.NationalCase = L.geoJSON(null, {
       pointToLayer:  (feature, latlng) => { 
+        this.red_buildings = this.red_buildings + 1
+        this.total_cases = Number(this.total_cases) + Number(feature.properties.numCases)
         console.log(feature)
         return L.circleMarker(latlng,{
           radius: 5,
@@ -454,7 +458,43 @@ export class ViewPositiveMapComponent implements OnInit {
           opacity: 1,
           fillOpacity: 1
         });
-    }}).addTo(this.map)
+      },
+      onEachFeature: (feature, layer) => {  
+          console.log("sdfs")
+          layer.on('click', e => {
+            this.buildingId= e.sourceTarget.feature.geometry.properties.structure_id;
+                          this.deleteButton = true
+                          this.unitDetailShow =true
+                          this.showBuildingInfo = true;
+                          this.residentialUnitDetailShow =false;
+                          this.residentTableShow = false;
+    
+                          this.deleteID = feature.properties.structure_id  
+                          this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                            this.bid = res.data.id
+                            this.buildingUse = res.data.buildingUse;
+                            this.cidOwner = res.data.cidOwner;
+                            this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                            this.contactOwner = res.data.contactOwner;
+                          })
+                          this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                            this.unitsData = res.data
+                            this.length = res.data.length
+                          })
+                          this.dataService.getImg(this.buildingId).subscribe(res=>{
+                            if(res.success){
+                              this.imgs = res.data
+                            }
+                          })
+    
+          })
+          layer.bindPopup(
+            '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>'+
+            '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>'+
+            '<p style:"color:tomtato">Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'
+          ) 
+        }
+    }).addTo(this.map)
 
     const geojsosn = this.dataService.getpositivecases().subscribe(res => {
       this.NationalCase.addData(res);
@@ -549,7 +589,43 @@ export class ViewPositiveMapComponent implements OnInit {
           opacity: 1,
           fillOpacity: 1
         });
-    }}).addTo(this.map)
+      },
+      onEachFeature: (feature, layer) => {  
+          console.log("sdfs")
+          layer.on('click', e => {
+            this.buildingId= e.sourceTarget.feature.geometry.properties.structure_id;
+                          this.deleteButton = true
+                          this.unitDetailShow =true
+                          this.showBuildingInfo = true;
+                          this.residentialUnitDetailShow =false;
+                          this.residentTableShow = false;
+    
+                          this.deleteID = feature.properties.structure_id  
+                          this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                            this.bid = res.data.id
+                            this.buildingUse = res.data.buildingUse;
+                            this.cidOwner = res.data.cidOwner;
+                            this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                            this.contactOwner = res.data.contactOwner;
+                          })
+                          this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                            this.unitsData = res.data
+                            this.length = res.data.length
+                          })
+                          this.dataService.getImg(this.buildingId).subscribe(res=>{
+                            if(res.success){
+                              this.imgs = res.data
+                            }
+                          })
+    
+          })
+          layer.bindPopup(
+            '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>'+
+            '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>'+
+            '<p style:"color:tomtato">Date Detected: ' + feature.properties.date.slice(0,10) + '</p>'
+          ) 
+        }
+  }).addTo(this.map)
     console.log("conodld")
     console.log(filteredJson)
     
