@@ -3,6 +3,12 @@
     width:50%;
   }
 
+
+  ::ng-deep .leaflet-popup-content .leaflet-popup-content-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
   .mat-table{
     width: 100%;
   }

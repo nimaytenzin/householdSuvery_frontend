@@ -59,6 +59,29 @@ export class EditPositiveDialogComponent implements OnInit {
     this.dataservice.updatePositiveCase(this.redBuilding).subscribe(res => {
       if(res.success === 'true'){
         this.dialogRef.close()
+      }else{
+        alert("error updating try again la")
+      }
+    })
+  }
+
+  reactiveForm(){
+    this.registerRedBuildingForm = this.fb.group({
+      cases:[],
+      date:[new Date()],
+      remarks:[]
+    });   
+  }
+
+  submit(){
+    this.redBuilding.structure_id = this.data.structure_id;
+    this.redBuilding.numCases = this.registerRedBuildingForm.get('cases').value;
+    this.redBuilding.date = this.registerRedBuildingForm.get('date').value;
+    this.redBuilding.remarks = this.registerRedBuildingForm.get('remarks').value;
+
+    this.dataservice.updatePositiveCase(this.redBuilding).subscribe(res => {
+      if(res.success === 'true'){
+        this.dialogRef.close()
         window.location.reload()
       }else{
         alert("error updating try again la")

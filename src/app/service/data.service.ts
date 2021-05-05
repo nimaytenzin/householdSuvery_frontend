@@ -336,6 +336,7 @@ export class DataService {
       catchError(this.handleError)
     )
   }
+
   updatePositiveCase(item){
     return this.http.patch<any>(`${this.API_URL}/case/update`,item,this.httpOptions).pipe(
       catchError(this.handleError)
@@ -347,9 +348,11 @@ export class DataService {
       catchError(this.handleError)
     );
   }
+
   getZone(){
     return this.http.get<any>("https://zhichar-pling.ddnsfree.com/zone/map/getzone/getpling",this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
+
 }
