@@ -8,12 +8,20 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { environment } from '../../environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MarkPostiiveDialogComponent } from "../dialog/mark-postiive-dialog/mark-postiive-dialog.component";
+import { Options } from "@angular-slider/ngx-slider";
+import { filter } from 'rxjs/operators';
+import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
+// import '../libs/SliderControl';
+
+
+// let $: any = jquery;
 
 export class Building {
   lat: number;
   lng: number;
   sub_zone_id: number;
 }
+
 
 interface Zone {
   id: string;
@@ -70,10 +78,14 @@ interface IdName{
   styleUrls: ['./view-positive-map.component.scss']
 })
 export class ViewPositiveMapComponent implements OnInit {
+
+
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
+  slide = false;
   precentCompleted:number;
   progressShow:boolean =false;
   showFamilyMembers:boolean = false;
@@ -81,6 +93,7 @@ export class ViewPositiveMapComponent implements OnInit {
   deleteButton:boolean = false;
   deleteID:number;
   unitDetailShow:boolean;
+  responseData:any;
 
   //delete building info
   bid:number;
@@ -91,6 +104,10 @@ export class ViewPositiveMapComponent implements OnInit {
   contactOwner:string = "Not Added";
   length:number = 0;
   enumeratedBy:string = "No Info."
+  value:number = 2;
+  options:Options = {
+    showTicksValues: true
+  };
 
   unitsData:any;
   housholdsData:{
@@ -159,10 +176,13 @@ export class ViewPositiveMapComponent implements OnInit {
   resident: any;
   showattic= false;
   showCaseDetails = false;
-
+  stepvalue = []
+  monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
   //logic
   officeShopDetailShow:boolean
   residentialUnitDetailShow:boolean
+  sliderControl:any;
+  NationalCase:any;
 
 
   map: L.Map;
@@ -193,7 +213,7 @@ export class ViewPositiveMapComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private zone: NgZone,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) { 
     this.building = new Building();
     this.buildingInfo = null;
@@ -218,6 +238,7 @@ export class ViewPositiveMapComponent implements OnInit {
     }else{
 
     }
+
 
 
 
@@ -334,6 +355,13 @@ export class ViewPositiveMapComponent implements OnInit {
 
   }
 
+  markerColor(status){
+    if(status === "ACTIVE"){
+      return '#9D2933'
+    }else{
+      return '#F3C13A'
+    }
+  }
 
 
   renderMap(dataservice: DataService){  
@@ -379,6 +407,7 @@ export class ViewPositiveMapComponent implements OnInit {
             }
     });
 
+
     this.map.on('locationfound',(e)=>{
       var radius = e.accuracy;
       if(this.mylocation !== undefined){
@@ -403,13 +432,6 @@ export class ViewPositiveMapComponent implements OnInit {
       }
     });
 
-    function markerColor(status){
-      if(status === "ACTIVE"){
-        return '#9D2933'
-      }else{
-        return '#F3C13A'
-      }
-    }
 
     var nationalCovidMarker = {
       radius: 5,
@@ -421,21 +443,116 @@ export class ViewPositiveMapComponent implements OnInit {
     };
 
 
-      var NationalCase = L.geoJSON(null,  {
-        pointToLayer:  (feature, latlng) => { 
-          console.log(feature)
-          return L.circleMarker(latlng,{
-            radius: 5,
-            fillColor: markerColor(feature.properties.status),
-            color: markerColor(feature.properties.status),
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 1
-          });
-      }}).addTo(this.map)
-      const geojsosn = this.dataService.getpositivecases().subscribe(res => {
-        NationalCase.addData(res);
-      })
+    this.NationalCase = L.geoJSON(null,  {
+      pointToLayer:  (feature, latlng) => { 
+        console.log(feature)
+        return L.circleMarker(latlng,{
+          radius: 5,
+          fillColor: this.markerColor(feature.properties.status),
+          color: this.markerColor(feature.properties.status),
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 1
+        });
+    }}).addTo(this.map)
+
+    const geojsosn = this.dataService.getpositivecases().subscribe(res => {
+      this.NationalCase.addData(res);
+      this.responseData = res;
+
+      this.value= res.length;
+      var earliestDate = res[0].properties.date
+      var latestDate= res[res.length -1].properties.date
+      var days = this.getDifferenceInDays(new Date(latestDate),new Date(earliestDate))
+
+      console.log("latest" + latestDate)
+      console.log("earliest" + earliestDate)
+      console.log(this.addDate(3,new Date(latestDate)))
+
+      for(var i = 0; i <= days + 1; i++){
+        var currentElementDate:Date = this.addDate(i,new Date(latestDate))
+        this.stepvalue.push({value:i,legend:this.monthNames[currentElementDate.getMonth()] + " " + currentElementDate.getDate(),date:currentElementDate.toISOString()})
+      }
+      console.log(res)
+      console.log("step value")
+      console.log(this.stepvalue)
+      this.options= {
+        showTicksValues: true,
+        stepsArray: this.stepvalue 
+      };
+      this.slide = true;
+    })
+
+  }
+
+  compareDate(date1: string, date2: string): number
+  {
+    // With Date object we can compare dates them using the >, <, <= or >=.
+    // The ==, !=, ===, and !== operators require to use date.getTime(),
+    // so we need to create a new instance of Date with 'new Date()'
+    let d1 = new Date(date1); let d2 = new Date(date2);
+
+    console.log(d1)
+    console.log(d2)
+    // Check if the dates are equal
+    let same = d1.getTime() === d2.getTime();
+    if (same) return 0;
+
+    // Check if the first is greater than second
+    if (d1 > d2) return 1;
+  
+    // Check if the first is less than second
+    if (d1 < d2) return -1;
+  }
+
+  addDate(days:number,date:Date):Date{
+    // var futureDate : Date  = new Date(date)
+    var currentDate = new Date()
+    var orgDate = new Date(date.toISOString())
+    currentDate.setDate(orgDate.getDate()+ days)
+    // console.log(date.setUTCDate(currentDate + days))
+    // date.setDate(date.getDate() + days)
+    return currentDate
+  }
+
+  getDifferenceInDays(date1, date2) {
+    const diffInMs = Math.abs(date2 - date1);
+    return diffInMs / (1000 * 60 * 60 * 24);
+  }
+
+  onSliderChange($e){
+    var selectedDate = this.stepvalue[this.value].date
+    var filteredJson:any = []
+
+    filteredJson = this.responseData.filter((e,i,a)=>{
+      console.log("selected date" + selectedDate)
+      console.log("element date" + e.properties.date)
+      console.log(this.compareDate(selectedDate,e.properties.date))
+      return this.compareDate(selectedDate,e.properties.date) ==  1 
+    })
+
+    console.log(filteredJson)
+    console.log("filtered")
+    console.log(this.stepvalue)
+
+    if(this.NationalCase !== undefined){
+      this.map.removeLayer(this.NationalCase)
+    }
+    this.NationalCase =  L.geoJSON(filteredJson,  {
+      pointToLayer:  (feature, latlng) => { 
+        console.log(feature)
+        return L.circleMarker(latlng,{
+          radius: 5,
+          fillColor: this.markerColor(feature.properties.status),
+          color: this.markerColor(feature.properties.status),
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 1
+        });
+    }}).addTo(this.map)
+    console.log("conodld")
+    console.log(filteredJson)
+    
   }
 
 

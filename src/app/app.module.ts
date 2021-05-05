@@ -10,6 +10,7 @@ import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
 
 import { MatTableModule } from '@angular/material/table'
 import {
@@ -101,6 +102,7 @@ import { EditPositiveDialogComponent } from './dialog/edit-positive-dialog/edit-
     MatTableModule,
     MatProgressBarModule,
     MatDatepickerModule,
+    NgxSliderModule,
      MatNativeDateModule
   ],
   providers: [

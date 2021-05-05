@@ -19,6 +19,13 @@
     <div class = "scroll" style="margin: 0;">
       <h3 style="text-align: center;">Red Building Dashboard | Phuntsholing</h3>
 
+      <div *ngIf = "slide">
+        <ngx-slider [(value)]="value" [options]="options" (valueChange) = "onSliderChange($event.value)"></ngx-slider>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
       <div style="display: flex; flex-direction: row; padding: 0;" >
         <img src="../../assets/bhutan.png" alt="" width="100px" height="auto">       
       <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
