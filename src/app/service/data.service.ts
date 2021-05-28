@@ -319,4 +319,39 @@ export class DataService {
         catchError(this.handleError)
       );
   }
+
+  getpositivecases(){
+    return this.http
+    .get<any>(`${this.API_URL}/case/get`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getZone(){
+    return this.http.get<any>("https://zhichar-pling.ddnsfree.com/zone/map/getpling",this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  addRedBuilding(item){
+    return this.http
+    .post<any>(`${this.API_URL}/case/create`, item, this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  updatePositiveCase(item){
+    return this.http.patch<any>(`${this.API_URL}/case/update`,item,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  normalizeBuilding(item){
+    return this.http.patch<any>(`${this.API_URL}/case/unmark`,item,this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }

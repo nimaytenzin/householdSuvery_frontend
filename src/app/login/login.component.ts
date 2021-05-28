@@ -49,6 +49,10 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('loginId', loginId);
         if(sessionStorage.getItem('isadmin') === "TRUE"){
           this.router.navigate(['admin']);
+        }else if(sessionStorage.getItem('isadmin') === "COV_ADMIN"){
+          this.router.navigate(['cov-admin'])
+        }else if(sessionStorage.getItem('isadmin') === "COV_VIEW"){
+          this.router.navigate(['cov-map'])
         }else{
           this.router.navigate(['selectzone']);
         }

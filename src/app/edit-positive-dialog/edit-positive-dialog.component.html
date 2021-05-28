@@ -1,0 +1,43 @@
+<p>Edit Red Building | Building Status: <i> {{ data.status }}</i></p>
+
+
+<div class="form-wraper" style="text-align:center">
+        
+         <form [formGroup]="registerRedBuildingForm">
+            <mat-form-field class="justifier">
+                <mat-label> Cases</mat-label>
+                <input matInput type="number"   formControlName="cases"   required autofocus>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+                <mat-label> Case Id:</mat-label>
+                <input matInput type="text"   formControlName="case_id"  autofocus>
+            </mat-form-field>
+           
+            <mat-form-field appearance="fill" class="justifier" >
+                <mat-label> Date Detected</mat-label>
+
+                <input matInput [matDatepicker]="picker" formControlName="date"    required >
+
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+    
+            <mat-form-field class="justifier">
+                <mat-label> Day</mat-label>
+                <input matInput type="number"   formControlName="day"   required autofocus>
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+                <mat-label> remarks</mat-label>
+                <input matInput type="text"   formControlName="remarks"   required autofocus>
+            </mat-form-field>
+
+        </form>
+    
+      </div>
+      <div class="form-footer">
+        <button mat-flat-button class="btn custom-btn" (click)="submit()" color="primary" >
+          <mat-icon>note_add</mat-icon> Update Details
+        </button>
+  </div>

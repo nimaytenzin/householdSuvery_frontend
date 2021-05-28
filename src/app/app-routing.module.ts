@@ -14,6 +14,8 @@ import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import { AdminComponent } from './admin/admin.component';
 import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
+import { ViewPositiveComponent } from './view-positive/view-positive.component';
+import { CovAdminComponent } from './cov-admin/cov-admin.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -32,6 +34,8 @@ const routes: Routes = [
   {path: 'map', component: MapComponent},
   {path: 'camera',component: UploadImageComponent},
   {path: 'atm', component: RegisterAtmComponent},
+  {path: 'cov-map', component: ViewPositiveComponent},
+  {path: 'cov-admin', component: CovAdminComponent},
   {path: '**', component: ErrorComponent},
   
 ];
