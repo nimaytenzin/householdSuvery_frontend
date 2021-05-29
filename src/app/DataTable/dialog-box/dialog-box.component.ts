@@ -5,8 +5,15 @@ import { DataService } from 'src/app/service/data.service';
 export interface UsersData {
   idNumber: string;
   age: number;
+  name:string;
   gender:string;
+  contact:number;
+  occupation:string;
+  workplace:string;
   incomeEarner:string;
+  most_active:string;
+  covid_test_status:string;
+  vaccine_status:string;
   type:string;
 }
 
@@ -31,6 +38,22 @@ export class DialogBoxComponent {
     {id:2, name: "Female"}
   ]
 
+  employmentOptions:DropDownOptions[]=[
+    {id:1, name: "RBP"},
+    {id:2, name: "RBA"},
+    {id:3, name: "Farmer"},
+    {id:4, name: "Housewife/Househusband"},
+    {id:5, name: "Civil Servant"},
+    {id:6, name: "Corporate Worker"},
+    {id:7, name: "Student"},
+    {id:8, name: "Construction Worker"},
+    {id:9, name: "Private Business"},
+    {id:10, name: "Others"},
+
+
+  ]
+
+
   bools:DropDownOptions[]=[
     {id:1, name: "Yes"},
     {id:2, name: "No"}
@@ -51,13 +74,14 @@ export class DialogBoxComponent {
   }
 
   doAction(){
-    this.local_data.type = this.selectionType
-    console.log(this.local_data)
+    this.local_data.type = this.selectionType;
+    console.log("checking to see the data passed and binded", this.local_data)
     this.dialogRef.close({event:this.action,data:this.local_data});
   }
 
   closeDialog(){
     this.dialogRef.close({event:'Cancel'});
+
   }
 
   getAge(age2){
@@ -73,13 +97,16 @@ export class DialogBoxComponent {
     if(this.selectionType === "CID"){
       if(this.local_data.idNumber.length > 10){
         this.dataService.getCid(this.local_data.idNumber).subscribe(res=>{
+          console.log("pinging," ,res)
           if(res.success === "true"){
-            let data = res.data.citizendetails.citizendetail[0]
-            let name = data.firstName+" "+data.lastName
-            let age = this.getAge(data.dob)
-            let gender = data.gender === "F" ? "Female" : "Male"
-            this.local_data.age = age
-            this.local_data.gender = gender
+            console.log(res.data);
+            let data = res.data.citizendetails.citizendetail[0];
+            let name = this.processName(data.firstName, data.middleName, data.lastName);
+            let age = this.getAge(data.dob);
+            let gender = data.gender === "F" ? "Female" : "Male";
+            this.local_data.age = age;
+            this.local_data.name = name;
+            this.local_data.gender = gender;
           }
         })
       }
@@ -98,6 +125,22 @@ export class DialogBoxComponent {
       this.local_data.idNumber = 0
       this.showDetails = false
     }
+  }
+
+  processName(first,middle,last){
+    let fullName = "";
+    if(first !==null){
+      fullName += first;
+    }
+    if(middle !==null){
+      fullName += " ";
+      fullName += middle
+    }
+    if(last !==null){
+      fullName += " ";
+      fullName += last
+    }
+    return  fullName
   }
 
   

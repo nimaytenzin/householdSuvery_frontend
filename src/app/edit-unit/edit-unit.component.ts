@@ -42,6 +42,11 @@ export class Household{
     martialStatus: string;
     employment:string;
     employmentOrg: string;
+    covid_test_status: boolean;
+    vaccine_status: boolean;
+    most_active: boolean
+
+
     yearsInService: number;
     distToWork: number;
     modeTransport:string;
@@ -87,10 +92,19 @@ export class Household{
 
 export class FamilyMember{
   hhId:number;
+  type:string;
   idNumber:number;
+  name:string;
   age:number;
   gender:string;
-  type:string;
+  contact:number;
+  occupation:string;
+  workplace:string;
+  
+  covid_test_status:boolean;
+  vaccine_status:boolean;
+  most_active:boolean;
+
   incomeEarner:boolean;
 }
 
@@ -263,7 +277,9 @@ export class EditUnitComponent implements OnInit {
 
   genders:DropDownOptions[]=[
     {id:1, name: "Male"},
-    {id:2, name: "Female"}
+    {id:2, name: "Female"},
+    { id: 3, name: "Others" }
+
   ]
 
   dzongkhags:DropDownOptions[]=[
@@ -497,14 +513,24 @@ reactiveForms() {
     unitUse:[],
     numberOfRooms:[],
 
-    cidHoh:[],
-    nameHoh:[],
-    contactHoh:[],
-    genderHoh:[],
-    ageHoh:[],
-    maritalStatusHoh:[],
-    employmentStatusHoh:[],
-    workAgencyHoh:[],
+    //health
+    cidHoh: [],
+    nameHoh: [],
+    contactHoh: [],
+    genderHoh: [],
+    ageHoh: [],
+    maritalStatusHoh: [],
+    employmentStatusHoh: [],
+    workAgencyHoh: [],
+
+    
+    covid_test_status: [],
+    vaccine_status: [],
+    most_active: [],
+//health teams requirement
+
+
+
     serviceYearHoh:[],
     workPlaceDistance:[],
     modeTransport:[],

@@ -33,12 +33,16 @@
     <div style="display:flex;justify-content:center;">
       <table>
         <tr>
-          <th>Units</th>
-          <th>Actions</th>
+          <th>Unit Id</th>
+          <th>head</th>
+        <th>Actions</th>
         </tr>
         <tr *ngFor = "let unit of units">
           <td>
             {{unit.unitId}}
+          </td>
+          <td>
+            {{unit.name}}
           </td>
           <td>
             <button (click)="editUnit(unit.id)">Edit</button>
@@ -67,7 +71,7 @@
   </div>
 </div>
 
-<div class="form-wraper" *ngIf = "showBuildingEdit">
+<!-- <div class="form-wraper" *ngIf = "showBuildingEdit">
   <div class="form-container card" (click)="editBuilding()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">
       <span class="material-icons" style="padding: 6px;border: 1px solid #0000004a;border-radius: 22px; font-size: 70px;">
@@ -81,7 +85,7 @@
       Enter Bulding Information
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="form-wraper">
   <div class="form-container card" (click)="unit()" style="background-color: #f2f8f9;">
@@ -98,7 +102,7 @@
     </div>
   </div>
 </div>
-
+<!-- 
 <div class="form-wraper">
   <div class="form-container card" (click)="gotocamera()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">
@@ -113,7 +117,7 @@
       Take Picture of Building
     </div>
   </div>
-</div>
+</div> -->
 <div class="form-wraper">
   <div class="form-container card" (click)="markcomplete()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">

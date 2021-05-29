@@ -9,8 +9,15 @@
   color: black;
 }
 
+::ng-deep td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding: 0 5px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
 ::ng-deep .mat-table{
-  width: 100%;
+  width: max-content;
+  overflow-x: scroll;
 }
 
 td{

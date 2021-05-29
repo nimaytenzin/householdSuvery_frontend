@@ -11,13 +11,18 @@
 
  <div *ngIf="showDetails">
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input type="number" placeholder="{{action}} cid/workpermit" matInput (input)="pingApi()" [(ngModel)]="local_data.idNumber">
+    <input type="text" placeholder="{{action}} cid/workpermit" matInput (input)="pingApi()" [(ngModel)]="local_data.idNumber">
   </mat-form-field>
  </div>
 
  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <input type="text" placeholder="{{action}} Name" matInput [(ngModel)]="local_data.name">
+</mat-form-field>
+
+ <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <input type="number" placeholder="{{action}} age" matInput [(ngModel)]="local_data.age">
 </mat-form-field>
+
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>Gender</mat-label>
   <mat-select [(ngModel)]="local_data.gender">
@@ -26,11 +31,52 @@
     </mat-option>
   </mat-select>
 </mat-form-field> 
-
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <input type="number" placeholder="{{action}} Contact" matInput [(ngModel)]="local_data.contact">
+</mat-form-field>
 
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-  <mat-label>Income Earner?</mat-label>
-  <mat-select [(ngModel)]="local_data.incomeEarner">
+  <mat-label>Occupation</mat-label>
+  <mat-select [(ngModel)]="local_data.occupation">
+    <mat-option *ngFor="let option of employmentOptions" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <input type="string" placeholder="{{action}} WorkPlace" matInput [(ngModel)]="local_data.workplace">
+</mat-form-field>
+
+<p>
+  Did you get tested for covid in the past two weeks?
+</p>
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>Covid Test Satus?</mat-label>
+  <mat-select [(ngModel)]="local_data.covid_test_status">
+    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+
+<p>
+  Did you vaccinate against covid?
+</p>
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>vaccine Status?</mat-label>
+  <mat-select [(ngModel)]="local_data.vaccine_status">
+    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+<p>
+  Are You the Most Active Member?
+</p>
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>most Active?</mat-label>
+  <mat-select [(ngModel)]="local_data.most_active">
     <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
       {{option.name}}
     </mat-option>

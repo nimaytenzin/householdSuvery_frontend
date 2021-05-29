@@ -5,10 +5,17 @@ import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.comp
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
+  id:number;
   idNumber: string;
+  name:string;
   age: number;
   gender:string;
-  incomeEarner:string;
+  contact:number;
+  occupation:string;
+  workplace:string;
+  covid_test_status:string;
+  vaccine_status:string;
+  most_active:string;
   type:string;
 }
 
@@ -24,7 +31,7 @@ export class MemberTableComponent implements OnInit {
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   i=1;
 
-  displayedColumns: string[] = ['sid','cid', 'age', 'gender', 'IncomeEarner','action'];
+  displayedColumns: string[] = ['sid','cid', 'age', 'gender','contact','occupation','workplace','covid_test_status','vaccine_status','most_active','action'];
   dataSource = ELEMENT_DATA;
 
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
@@ -46,7 +53,7 @@ export class MemberTableComponent implements OnInit {
   openDialog(action,obj){
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
-      width: '250px',
+      width: '90vw',
       data:obj
     });
 
@@ -65,10 +72,16 @@ export class MemberTableComponent implements OnInit {
     let obj = {
       hhId: this.householdId,
       idNumber:row_obj.idNumber,
+      name:row_obj.name,
       age:row_obj.age,
+      contact:row_obj.contact,
+      occupation:row_obj.occupation,
+      workplace:row_obj.workplace,
       gender:row_obj.gender,
-      incomeEarner: row_obj.incomeEarner,
-      type: row_obj.type
+      covid_test_status:row_obj.covid_test_status,
+      vaccine_status:row_obj.vaccine_status,
+      most_active:row_obj.most_active,
+      type:row_obj.type
     }
     this.dataservice.createMember(obj).subscribe(res=>{
       if(res.success === "true"){
