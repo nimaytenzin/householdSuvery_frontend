@@ -54,7 +54,7 @@
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>Covid Test Satus?</mat-label>
   <mat-select [(ngModel)]="local_data.covid_test_status">
-    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+    <mat-option *ngFor="let option of bools" [value]="option.value" matInput >
       {{option.name}}
     </mat-option>
   </mat-select>
@@ -66,7 +66,7 @@
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>vaccine Status?</mat-label>
   <mat-select [(ngModel)]="local_data.vaccine_status">
-    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+    <mat-option *ngFor="let option of bools" [value]="option.value" matInput >
       {{option.name}}
     </mat-option>
   </mat-select>
@@ -77,7 +77,7 @@
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>most Active?</mat-label>
   <mat-select [(ngModel)]="local_data.most_active">
-    <mat-option *ngFor="let option of bools" [value]="option.name" matInput >
+    <mat-option *ngFor="let option of bools" [value]="option.value" matInput >
       {{option.name}}
     </mat-option>
   </mat-select>

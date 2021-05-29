@@ -11,14 +11,19 @@ export interface UsersData {
   occupation:string;
   workplace:string;
   incomeEarner:string;
-  most_active:string;
-  covid_test_status:string;
-  vaccine_status:string;
+  most_active:boolean;
+  covid_test_status:boolean;
+  vaccine_status:boolean;
   type:string;
 }
 
 export interface DropDownOptions{
   id:number,
+  name:string
+}
+
+export interface BoolDropDownOptions{
+  value:boolean,
   name:string
 }
 
@@ -54,9 +59,9 @@ export class DialogBoxComponent {
   ]
 
 
-  bools:DropDownOptions[]=[
-    {id:1, name: "Yes"},
-    {id:2, name: "No"}
+  bools:BoolDropDownOptions[]=[
+    {value:true, name: "Yes"},
+    {value:false, name: "No"}
   ]
   identifications:DropDownOptions[]=[
     {id:1, name: "CID"},

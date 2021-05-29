@@ -13,9 +13,9 @@ export interface UsersData {
   contact:number;
   occupation:string;
   workplace:string;
-  covid_test_status:string;
-  vaccine_status:string;
-  most_active:string;
+  covid_test_status:boolean;
+  vaccine_status:boolean;
+  most_active:boolean;
   type:string;
 }
 
