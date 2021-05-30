@@ -13,6 +13,7 @@ export interface UsersData {
   contact:number;
   occupation:string;
   workplace:string;
+  workzone:string;
   covid_test_status:boolean;
   vaccine_status:boolean;
   most_active:boolean;
@@ -31,7 +32,7 @@ export class DataTableComponent  implements OnInit{
   @ViewChild(MatTable,{static:true}) table: MatTable<any>;
   i=1;
 
-  displayedColumns: string[] = ['id','action','cid', 'age', 'gender','contact','occupation','workplace','covid_test_status','vaccine_status','most_active'];
+  displayedColumns: string[] = ['id','action','cid', 'age', 'gender','contact','occupation','workplace','workzone','covid_test_status','vaccine_status','most_active'];
   dataSource = ELEMENT_DATA;
 
   constructor(public dialog: MatDialog, private dataservice:DataService) {}
@@ -76,6 +77,7 @@ export class DataTableComponent  implements OnInit{
       contact:row_obj.contact,
       occupation:row_obj.occupation,
       workplace:row_obj.workplace,
+      workzone:row_obj.workzone,
       gender:row_obj.gender,
       covid_test_status:row_obj.covid_test_status,
       vaccine_status:row_obj.vaccine_status,

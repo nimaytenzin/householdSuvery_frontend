@@ -33,19 +33,23 @@ export class Household{
     unitUse:string;
     numberOfRooms:number;
 
-
+  //health
+    unitStatus:string;  //occupied or vacant
     cid: string;
     name: string;
     contact:number;
     gender:string;
     age:number;
     martialStatus: string;
-    employment:string;
-    employmentOrg: string;
+    employment:string;  //occupation
+    employmentOrg: string; //wokring agency
+    workzone:string; //wokring zone
+
     covid_test_status: boolean;
     vaccine_status: boolean;
     most_active: boolean
 
+//end health
 
     yearsInService: number;
     distToWork: number;
@@ -100,7 +104,8 @@ export class FamilyMember{
   contact:number;
   occupation:string;
   workplace:string;
-  
+  workzone:string; //recent addition
+
   covid_test_status:boolean;
   vaccine_status:boolean;
   most_active:boolean;
@@ -237,6 +242,19 @@ export class EditUnitComponent implements OnInit {
     { id: 11, name: "Others" }
   ]
 
+  workzones:DropDownOptions[]=[
+    { id: 1, name: "Amochhu Chamkuna" },
+    { id: 2, name: "Dhamdara Kabraytar" },
+    { id: 3, name: "Rinchending" },
+    { id: 4, name: "Ahlay Pekarshing" },
+    { id: 5, name: "Pasakha" },
+    { id: 6, name: "Core Area I" },
+    { id: 7, name: "Core Area II" },
+    { id: 8, name: "Core Area III" },
+    { id: 9, name: "Core Area IV" },
+    { id: 10, name: "Others" }
+  ]
+
   numbers:Counts[]=[
     {count:1},
     {count:2},
@@ -307,10 +325,17 @@ export class EditUnitComponent implements OnInit {
     {id:20, name: "Zhemgang"},
   ]
 
-  unitOccupationOptions:DropDownOptions[]=[
-    {id:1, name: "Owned"},
-    {id:2, name: "Rented"},
-    {id:2, name: "Vacant"}
+  // unitOccupationOptions:DropDownOptions[]=[
+  //   {id:1, name: "Owned"},
+  //   {id:2, name: "Rented"},
+  //   {id:2, name: "Vacant"}
+  // ]
+
+  unitOccupationOptions: DropDownOptions[] = [
+    { id: 1, name: "Occupied" },
+    { id: 2, name: "Locked" },
+    { id: 3, name: "Vacant" }
+
   ]
   // NHDCL quarters /Employer provided housing / Private rented housing/others
   livingYears:DropDownOptions[]=[
@@ -433,11 +458,15 @@ ngOnInit() {
     if(res.success==="true"){
       this.household.id = res.data.id
       this.householdForm.patchValue({
-        unidID:res.data.unitId,
+       
         familySharing:data.familiesSharing,
         unitOwnership:data.unitOwnership,
         unitUse:data.unitUse,
         numberOfRooms:data.numberOfRooms,
+       
+        //health requirements
+        unidID:res.data.unitId,
+        unitStatus:res.data.unitStatus,
         cidHoh:data.cid,
         nameHoh:data.name,
         contactHoh:data.contact,
@@ -446,6 +475,12 @@ ngOnInit() {
         maritalStatusHoh:data.martialStatus,
         employmentStatusHoh: data.employment,
         workAgencyHoh:data.employmentOrg,
+        workzone:data.workzone,
+        covid_test_status: data.covid_test_status,
+        vaccine_status: data.vaccine_status,
+        most_active:data.most_active,
+        //health requirments end
+
         serviceYearHoh:data.yearsInService,
         workPlaceDistance:data.distToWork,
         modeTransport:data.modeTransport,
@@ -519,23 +554,24 @@ changeDiff($event){
 reactiveForms() {
 
   this.householdForm = this.fb.group({
-    unidID:[],
     familySharing:[],
     unitOwnership:[],
     unitUse:[],
     numberOfRooms:[],
 
     //health
+    unidID:[],
+    unitStatus:[],
     cidHoh: [],
     nameHoh: [],
     contactHoh: [],
     genderHoh: [],
     ageHoh: [],
     maritalStatusHoh: [],
-    employmentStatusHoh: [],
+    employmentStatusHoh: [], //occupation
     employmentStatusHohOthers:[],
-    workAgencyHoh: [],
-
+    workAgencyHoh: [], //workplace
+    workzone:[], //workzone
     
     covid_test_status: [],
     vaccine_status: [],
@@ -620,27 +656,29 @@ reactiveForms() {
 
   submit(){
     // this.household.structure_id = this.buildingId;
-    this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
     this.household.unitUse = this.householdForm.get('unitUse').value;
     this.household.numberOfRooms = this.householdForm.get('numberOfRooms').value
 
-    this.household.cid = this.householdForm.get('cidHoh').value
+    //health
+    this.household.unitId = this.householdForm.get('unidID').value;
+    this.household.unitStatus = this.householdForm.get('unitStatus').value;
+    
+    this.household.cid = this.householdForm.get('cidHoh').value;
     this.household.name = this.householdForm.get('nameHoh').value;
-    this.household.contact = this.householdForm.get('contactHoh').value
     this.household.gender = this.householdForm.get('genderHoh').value;
     this.household.age = this.householdForm.get('ageHoh').value;
+    this.household.contact = this.householdForm.get('contactHoh').value;
     this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
-
-   if (this.householdForm.get('employmentStatusHoh').value === "Others") {
-      this.household.employment = this.householdForm.get('employmentStatusHohOthers').value
-    } else {
-      this.household.employment = this.householdForm.get('employmentStatusHoh').value
-    }
-
-
+    this.household.employment = this.householdForm.get('employmentStatusHoh').value
     this.household.employmentOrg = this.householdForm.get('workAgencyHoh').value;
+    this.household.workzone = this.householdForm.get('workzone').value;
+    this.household.covid_test_status =this.householdForm.get('covid_test_status').value;
+    this.household.vaccine_status = this.householdForm.get('vaccine_status').value;
+    this.household.most_active = this.householdForm.get('most_active').value;
+
+    //health
     this.household.yearsInService = this.householdForm.get('serviceYearHoh').value;
     this.household.distToWork = this.householdForm.get('workPlaceDistance').value;
     this.household.modeTransport = this.householdForm.get('modeTransport').value;

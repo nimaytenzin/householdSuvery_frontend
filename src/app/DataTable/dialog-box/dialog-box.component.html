@@ -2,8 +2,8 @@
 <div mat-dialog-content>
   <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
     <mat-label>Select Identification Type</mat-label>
-    <mat-select  (selectionChange) = "showDetail($event)">
-      <mat-option *ngFor="let option of identifications" [value]="option.name" matInput >
+    <mat-select  (selectionChange) = "showDetail($event)" matInput [(ngModel)]="local_data.type">
+      <mat-option *ngFor="let option of identifications" [value]="option.name" >
         {{option.name}}
       </mat-option>
     </mat-select>
@@ -49,12 +49,19 @@
 
 
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-  <input type="string" placeholder="{{action}} WorkPlace" matInput [(ngModel)]="local_data.workplace">
+  <input type="string" placeholder="{{action}} Working Agency" matInput [(ngModel)]="local_data.workplace">
 </mat-form-field>
 
-<p>
-  Did you get tested for covid in the past two weeks?
-</p>
+<mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
+  <mat-label>Working Zone</mat-label>
+  <mat-select   [(ngModel)]="local_data.workzone">
+    <mat-option *ngFor="let option of workzones" [value]="option.name" matInput >
+      {{option.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> 
+
+
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>Covid Test Satus?</mat-label>
   <mat-select [(ngModel)]="local_data.covid_test_status">
@@ -64,9 +71,7 @@
   </mat-select>
 </mat-form-field> 
 
-<p>
-  Did you vaccinate against covid?
-</p>
+
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>vaccine Status?</mat-label>
   <mat-select [(ngModel)]="local_data.vaccine_status">
@@ -75,9 +80,7 @@
     </mat-option>
   </mat-select>
 </mat-form-field> 
-<p>
-  Are You the Most Active Member?
-</p>
+
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <mat-label>most Active?</mat-label>
   <mat-select [(ngModel)]="local_data.most_active">

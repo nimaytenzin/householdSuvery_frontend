@@ -18,6 +18,21 @@
     <div class="form-body" style="letter-spacing: 2px;margin-top: 12px;text-align: center;">
     Building ID: {{buildingId}}
     </div>
+
+    <table style="text-align: center; width:100%">
+       <tr>
+         <td>Owner Name:</td>
+         <td>{{ buildingOwnerName ? buildingOwnerName : "Not Collected"}}</td>
+       </tr>
+      <tr>
+        <td>Owner Contact:</td>
+        <td>{{ buildingOwnerContact ? buildingOwnerContact : "Not Collected" }}</td>
+      </tr>
+      <tr>
+        <td>Edit Detaials</td>
+        <td><button mat-raised-button color="primary" (click)="editBuilding()">Edit Building Details</button></td>
+      </tr>
+    </table>
   </div>
 </div>
 
@@ -35,7 +50,7 @@
         <tr>
           <th>Unit Id</th>
           <th>head</th>
-        <th>Actions</th>
+          <th>Actions</th>
         </tr>
         <tr *ngFor = "let unit of units">
           <td>
@@ -45,7 +60,7 @@
             {{unit.name}}
           </td>
           <td>
-            <button (click)="editUnit(unit.id)">Edit</button>
+            <button mat-raised-button color="primary" (click)="editUnit(unit.id)">Edit</button>
           </td>
         </tr>
       </table>

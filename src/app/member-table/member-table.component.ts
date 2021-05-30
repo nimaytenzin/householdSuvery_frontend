@@ -31,7 +31,7 @@ export class MemberTableComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   i = 1;
 
-  displayedColumns: string[] = ['sid', 'action', 'cid', 'age', 'gender', 'contact', 'occupation', 'workplace', 'covid_test_status', 'vaccine_status', 'most_active'];
+  displayedColumns: string[] = ['sid', 'action', 'cid','name', 'age', 'gender', 'contact', 'occupation', 'workplace', 'covid_test_status', 'vaccine_status', 'most_active'];
   dataSource = ELEMENT_DATA;
 
   constructor(public dialog: MatDialog, private dataservice: DataService) { }

@@ -30,6 +30,9 @@ export class DashboardComponent implements OnInit {
   units = [];
   buildingId:number;
 
+  buildingOwnerName:string;
+  buildingOwnerContact:number;
+
   showBuildingEdit: boolean = false;
 
   constructor(
@@ -50,6 +53,8 @@ export class DashboardComponent implements OnInit {
     this.dataService.getBuildingInfo(this.buildingId).subscribe(res=>{
       if(res.success === "true"){
         this.showBuildingEdit = true;
+        this.buildingOwnerContact = res.data.contactOwner;
+        this.buildingOwnerName = res.data.nameOfBuildingOwner;
       }
     })
   }

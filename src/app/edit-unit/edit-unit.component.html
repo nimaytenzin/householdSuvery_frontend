@@ -8,9 +8,20 @@
       <!-- Hoh = Head of household-->
 
       <form [formGroup]="householdForm">
+        <h4>Unit Details</h4>
         <mat-form-field class="justifier">
           <mat-label>Unit ID</mat-label>
           <input matInput type="text" formControlName="unidID" [readonly]="disableForm">
+        </mat-form-field>
+
+
+        <mat-form-field class="justifier">
+          <mat-label>Unit Occupancy</mat-label>
+          <mat-select    formControlName="unitStatus" [readonly]="disableForm" >
+            <mat-option *ngFor="let option of unitOccupationOptions" [value]="option.name">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <!-- <h4>Unit Details</h4>
@@ -96,21 +107,26 @@
     
             <mat-form-field class="justifier">
               <mat-label>Occupation</mat-label>
-              <mat-select (selectionChange)="showOccupationOtherEvent($event)" formControlName="employmentStatusHoh" [readonly]="disableForm">
+              <mat-select  formControlName="employmentStatusHoh" [readonly]="disableForm">
                 <mat-option *ngFor="let option of employmentOptions" [value]="option.name">
                   {{option.name}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-    
-            <mat-form-field class="justifier" *ngIf="showOccupationOthers">
-              <mat-label>others..please specify</mat-label>
-              <input matInput type="text" formControlName="employmentStatusHohOthers" [readonly]="disableForm">
-            </mat-form-field>
+
     
             <mat-form-field class="justifier">
-              <mat-label>Workplace</mat-label>
+              <mat-label>Working Agency</mat-label>
               <input matInput type="text" formControlName="workAgencyHoh" [readonly]="disableForm">
+            </mat-form-field>
+
+            <mat-form-field class="justifier">
+              <mat-label>Work Zone?</mat-label>
+              <mat-select formControlName="workzone" [readonly]="disableForm">
+                <mat-option *ngFor="let option of workzones" [value]="option.name">
+                  {{option.name}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
     
             <h4>Health Teams Questions</h4>

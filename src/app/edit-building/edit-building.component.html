@@ -8,14 +8,14 @@
   
          <!-- Start of Building Form-->
          <form [formGroup]="buildingForm">
-          <mat-form-field class="justifier">
+          <!-- <mat-form-field class="justifier">
             <mat-label>Building Ownership</mat-label>
             <mat-select  formControlName="buildingOwnership" [readonly]="disableForm" >
               <mat-option *ngFor="let option of ownership" [value]="option.name">
                 {{option.name}}
               </mat-option>
             </mat-select>
-          </mat-form-field>  
+          </mat-form-field>   -->
   
           <h4>Building Owner Details</h4>
           
@@ -34,7 +34,7 @@
             <input matInput type="number" name="contactOwner" formControlName="contactOwner" >
           </mat-form-field>
   
-          <h4>Building Details</h4>
+          <!-- <h4>Building Details</h4>
   
           <mat-form-field class="justifier">
             <mat-label>Existancy Status</mat-label>
@@ -195,7 +195,7 @@
                 {{option.name}}
               </mat-option>
             </mat-select>
-          </mat-form-field>                     
+          </mat-form-field>                      -->
       </form>
   
       <!-- End of Building Form-->

@@ -26,25 +26,30 @@ interface DropDownNumber {
 
 export class Household {
   structure_id: number;
-  unitId: string;
+  
   familiesSharing: number;
   unitOwnership: string;
   unitUse: string;
   numberOfRooms: number;
 
-
+  //health
+  unitId: string; //unit name
+  unitStatus:string; //vacant or occupied
   cid: string;
   name: string;
   contact: number;
   gender: string;
   age: number;
   martialStatus: string;
-  employment: string;
-  employmentOrg: string;
-  covid_test_status: boolean;
-  vaccine_status: boolean;
-  most_active: boolean
 
+  employment: string;  //occupation
+  employmentOrg: string;  //working agency
+  workzone:string;  ///working zone 
+  
+  covid_test_status: boolean; //test past two week
+  vaccine_status: boolean; // vaccinated?
+  most_active: boolean //are you the most active?
+  //health
 
   yearsInService: number;
   distToWork: number;
@@ -238,9 +243,11 @@ export class RegisterUnitComponent implements OnInit {
     { id: 7, name: "Student" },
     { id: 8, name: "Construction Worker" },
     { id: 9, name: "Private Business" },
-    { id: 10, name: "Unemployed" },
-    { id: 11, name: "Others" },
-
+    { id: 10, name: "Foreign Expatriate Worker" },
+    { id: 11, name: "Project Employee" },
+    { id: 12, name: "Unemployed" },
+    { id: 13, name: "Self Employed" },
+    { id: 14, name: "Others" }
   ]
 
   numbers: Counts[] = [
@@ -311,10 +318,17 @@ export class RegisterUnitComponent implements OnInit {
     { id: 20, name: "Zhemgang" },
   ]
 
+  // unitOccupationOptions: DropDownOptions[] = [
+  //   { id: 1, name: "Owned" },
+  //   { id: 2, name: "Rented" },
+  //   { id: 2, name: "Vacant" }
+
+  // ]
+
   unitOccupationOptions: DropDownOptions[] = [
-    { id: 1, name: "Owned" },
-    { id: 2, name: "Rented" },
-    { id: 2, name: "Vacant" }
+    { id: 1, name: "Occupied" },
+    { id: 2, name: "Locked" },
+    { id: 3, name: "Vacant" }
 
   ]
 
@@ -337,6 +351,19 @@ export class RegisterUnitComponent implements OnInit {
     { id: 1, name: "Building Owner" },
     { id: 2, name: "Apartment Owner" }
 
+  ]
+
+  workzones:DropDownOptions[]=[
+    { id: 1, name: "Amochhu Chamkuna" },
+    { id: 2, name: "Dhamdara Kabraytar" },
+    { id: 3, name: "Rinchending" },
+    { id: 4, name: "Ahlay Pekarshing" },
+    { id: 5, name: "Pasakha" },
+    { id: 6, name: "Core Area I" },
+    { id: 7, name: "Core Area II" },
+    { id: 8, name: "Core Area III" },
+    { id: 9, name: "Core Area IV" },
+    { id: 10, name: "Others" }
   ]
 
   //Purchased/gifted/inherited/constructed on my own
@@ -419,6 +446,7 @@ export class RegisterUnitComponent implements OnInit {
       unitUse: [],
       numberOfRooms: [],
       //health Team requirement
+      unitStatus:[],
       cidHoh: [],
       nameHoh: [],
       contactHoh: [],
@@ -426,9 +454,8 @@ export class RegisterUnitComponent implements OnInit {
       ageHoh: [],
       maritalStatusHoh: [],
       employmentStatusHoh: [],
-      employmentStatusHohOthers:[],
       workAgencyHoh: [],
-
+      workzone:[], //workzone
       
       covid_test_status: [],
       vaccine_status: [],
@@ -523,22 +550,17 @@ export class RegisterUnitComponent implements OnInit {
     this.household.numberOfRooms = this.householdForm.get('numberOfRooms').value
 
     //health requirement for the head of the houshold
+    this.household.unitStatus = this.householdForm.get('unitStatus').value;
     this.household.cid = this.householdForm.get('cidHoh').value
     this.household.name = this.householdForm.get('nameHoh').value;
     this.household.gender = this.householdForm.get('genderHoh').value;
     this.household.age = this.householdForm.get('ageHoh').value;
     this.household.contact = this.householdForm.get('contactHoh').value
-    this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
+    this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value; //occupation
+    this.household.employment = this.householdForm.get('employmentStatusHoh').value //working agency
+    this.household.employmentOrg = this.householdForm.get('workAgencyHoh').value; //working agency
+    this.household.workzone = this.householdForm.get('workzone').value;
 
-    //occupation logic
-    if (this.householdForm.get('employmentStatusHoh').value === "Others") {
-      this.household.employment = this.householdForm.get('employmentStatusHohOthers').value
-    } else {
-      this.household.employment = this.householdForm.get('employmentStatusHoh').value
-    }
-
-    this.household.employmentOrg = this.householdForm.get('workAgencyHoh').value; //workplace
-    
     this.household.covid_test_status = this.householdForm.get('covid_test_status').value;
     this.household.vaccine_status = this.householdForm.get('vaccine_status').value;
     this.household.most_active = this.householdForm.get('most_active').value;
@@ -700,5 +722,13 @@ export class RegisterUnitComponent implements OnInit {
       fullName += last
     }
     return fullName
+  }
+
+  back(){
+    if(sessionStorage.getItem('isadmin') === "TRUE"){
+      this.router.navigate(['admin'])
+    }else{
+      this.router.navigate(['dashboard',this.buildingId]);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DataService } from 'src/app/service/data.service';
 
@@ -10,6 +10,7 @@ export interface UsersData {
   contact:number;
   occupation:string;
   workplace:string;
+  workzone:string;
   incomeEarner:string;
   most_active:boolean;
   covid_test_status:boolean;
@@ -32,7 +33,7 @@ export interface BoolDropDownOptions{
   templateUrl: './dialog-box.component.html',
   styleUrls: ['./dialog-box.component.scss']
 })
-export class DialogBoxComponent {
+export class DialogBoxComponent implements OnInit{
   showDetails:boolean=false;
   action:string;
   local_data:any;
@@ -58,6 +59,19 @@ export class DialogBoxComponent {
     {id:11, name: "Others"}
   ]
 
+  workzones:DropDownOptions[]=[
+    { id: 1, name: "Amochhu Chamkuna" },
+    { id: 2, name: "Dhamdara Kabraytar" },
+    { id: 3, name: "Rinchending" },
+    { id: 4, name: "Ahlay Pekarshing" },
+    { id: 5, name: "Pasakha" },
+    { id: 6, name: "Core Area I" },
+    { id: 7, name: "Core Area II" },
+    { id: 8, name: "Core Area III" },
+    { id: 9, name: "Core Area IV" },
+    { id: 10, name: "Others" }
+  ]
+
 
   bools:BoolDropDownOptions[]=[
     {value:true, name: "Yes"},
@@ -77,10 +91,21 @@ export class DialogBoxComponent {
     this.local_data = {...data};
     this.action = this.local_data.action;
   }
+  ngOnInit(): void {
+    console.log("Data passed from the table", this.data)
+    if(this.local_data.type !== "Minor"){
+      this.selectionType =this.local_data.type
+      this.showDetails = true
+    }else{
+      this.selectionType = this.local_data.type
+      this.local_data.idNumber = 0
+      this.showDetails = false
+    }
+    this.pingApi()
+  }
 
   doAction(){
     this.local_data.type = this.selectionType;
-    console.log("checking to see the data passed and binded", this.local_data)
     this.dialogRef.close({event:this.action,data:this.local_data});
   }
 
