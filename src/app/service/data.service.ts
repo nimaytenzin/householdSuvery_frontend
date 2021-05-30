@@ -354,4 +354,29 @@ export class DataService {
     );
   }
 
+  //statistics for health
+  getTotalPopulationbySubzone(id){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/members-zone/${id}`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getTotalVacinnatedBySubzone(id){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/vaccinated-zone/${id}`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getTestedBySubzone(id){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/tested-zone/${id}`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 }

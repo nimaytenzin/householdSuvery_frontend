@@ -239,7 +239,8 @@ export class EditUnitComponent implements OnInit {
     { id: 8, name: "Construction Worker" },
     { id: 9, name: "Private Business" },
     { id: 10, name: "Unemployed" },
-    { id: 11, name: "Others" }
+    { id: 11, name: "Minor/Child" },
+    { id: 12, name: "Others" }
   ]
 
   workzones:DropDownOptions[]=[
