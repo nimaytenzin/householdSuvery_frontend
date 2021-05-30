@@ -238,8 +238,8 @@ export class RegisterUnitComponent implements OnInit {
     { id: 7, name: "Student" },
     { id: 8, name: "Construction Worker" },
     { id: 9, name: "Private Business" },
-    { id: 10, name: "Others" },
-
+    { id: 10, name: "Unemployed" },
+    { id: 11, name: "Others" },
 
   ]
 

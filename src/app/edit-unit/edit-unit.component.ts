@@ -223,17 +223,18 @@ export class EditUnitComponent implements OnInit {
   ]
 
   // / civil servants /corporate employee / private employee /Self employee 
-  employmentOptions:DropDownOptions[]=[
-    {id:1, name: "Civil Servant"},
-    {id:2, name: "Corporate Employee"},
-    {id:3, name: "Private Employee"},
-    {id:4, name: "Self Employee"},
-    {id:5, name: "Unemployed"},
-    {id:6, name: "Project Employee"},
-    {id:6, name: "Farmer"},
-    {id:6, name: "Others"}
-
-
+  employmentOptions: DropDownOptions[] = [
+    { id: 1, name: "RBP" },
+    { id: 2, name: "RBA" },
+    { id: 3, name: "Farmer" },
+    { id: 4, name: "Housewife/Househusband" },
+    { id: 5, name: "Civil Servant" },
+    { id: 6, name: "Corporate Worker" },
+    { id: 7, name: "Student" },
+    { id: 8, name: "Construction Worker" },
+    { id: 9, name: "Private Business" },
+    { id: 10, name: "Unemployed" },
+    { id: 11, name: "Others" }
   ]
 
   numbers:Counts[]=[
