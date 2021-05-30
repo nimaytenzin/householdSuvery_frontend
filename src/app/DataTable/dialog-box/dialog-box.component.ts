@@ -37,6 +37,7 @@ export class DialogBoxComponent {
   action:string;
   local_data:any;
   selectionType: any;
+  showOccupationOthersField:boolean = false;
 
   genders:DropDownOptions[]=[
     {id:1, name: "Male"},
@@ -53,9 +54,7 @@ export class DialogBoxComponent {
     {id:7, name: "Student"},
     {id:8, name: "Construction Worker"},
     {id:9, name: "Private Business"},
-    {id:10, name: "Others"},
-
-
+    {id:10, name: "Others"}
   ]
 
 

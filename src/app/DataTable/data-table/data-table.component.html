@@ -10,9 +10,16 @@
       <th mat-header-cell *matHeaderCellDef> Sl.no</th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef> Action </th>
+      <td mat-cell *matCellDef="let element" class="action-link"> 
+        <a (click)="openDialog('Update',element)">Edit</a> | 
+        <a (click)="openDialog('Delete',element)">Delete</a>  
+      </td>
+    </ng-container>
     <ng-container matColumnDef="cid">
       <th mat-header-cell *matHeaderCellDef> CID/WorkPermit </th>
-      <td mat-cell *matCellDef="let element"> {{element.idNumber}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.idNumber ? element.idNumber : "Minor"}} </td>
     </ng-container>
 
     <ng-container matColumnDef="age">
@@ -40,25 +47,19 @@
     
     <ng-container matColumnDef="covid_test_status">
       <th mat-header-cell *matHeaderCellDef> Covid Test Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.covid_test_status? 'Tested' : 'No'}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.covid_test_status? 'Tested' : 'No' }} </td>
     </ng-container>
 
     <ng-container matColumnDef="vaccine_status">
       <th mat-header-cell *matHeaderCellDef> Vacine Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.vaccine_status? "vacinnated" : "No"}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.vaccine_status? "vacinnated" : "No" }} </td>
     </ng-container>
     <ng-container matColumnDef="most_active">
       <th mat-header-cell *matHeaderCellDef> Most Active </th>
-      <td mat-cell *matCellDef="let element"> {{element.most_active ? "Yes" : "No"}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.most_active ? "Yes" : "No" }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="action">
-      <th mat-header-cell *matHeaderCellDef> Action </th>
-      <td mat-cell *matCellDef="let element" class="action-link"> 
-        <a (click)="openDialog('Update',element)">Edit</a> | 
-        <a (click)="openDialog('Delete',element)">Delete</a>  
-      </td>
-    </ng-container>
+   
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

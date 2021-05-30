@@ -48,7 +48,6 @@ export class DashboardComponent implements OnInit {
     sessionStorage.setItem('buildingId',this.buildingId.toString());
     this.getUnits(this.buildingId);
     this.dataService.getBuildingInfo(this.buildingId).subscribe(res=>{
-      console.log(res)
       if(res.success === "true"){
         this.showBuildingEdit = true;
       }
@@ -80,7 +79,6 @@ export class DashboardComponent implements OnInit {
 
   editUnit(id){
     this.router.navigate(['edit-unit',id]);
-    console.log(id)
   }
 
   gotocamera(){

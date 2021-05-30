@@ -1,22 +1,22 @@
-import { Component,  Input,  OnInit,  ViewChild , OnChanges, SimpleChanges, SimpleChange} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from 'src/app/DataTable/dialog-box/dialog-box.component';
 import { DataService } from 'src/app/service/data.service';
 
 export interface UsersData {
-  id:number;
+  id: number;
   idNumber: string;
-  name:string;
+  name: string;
   age: number;
-  gender:string;
-  contact:number;
-  occupation:string;
-  workplace:string;
-  covid_test_status:boolean;
-  vaccine_status:boolean;
-  most_active:boolean;
-  type:string;
+  gender: string;
+  contact: number;
+  occupation: string;
+  workplace: string;
+  covid_test_status: boolean;
+  vaccine_status: boolean;
+  most_active: boolean;
+  type: string;
 }
 
 const ELEMENT_DATA = [];
@@ -28,68 +28,74 @@ const ELEMENT_DATA = [];
 })
 export class MemberTableComponent implements OnInit {
 
-  @ViewChild(MatTable,{static:true}) table: MatTable<any>;
-  i=1;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  i = 1;
 
-  displayedColumns: string[] = ['sid','cid', 'age', 'gender','contact','occupation','workplace','covid_test_status','vaccine_status','most_active','action'];
+  displayedColumns: string[] = ['sid', 'action', 'cid', 'age', 'gender', 'contact', 'occupation', 'workplace', 'covid_test_status', 'vaccine_status', 'most_active'];
   dataSource = ELEMENT_DATA;
 
-  constructor(public dialog: MatDialog, private dataservice:DataService) {}
+  constructor(public dialog: MatDialog, private dataservice: DataService) { }
 
   @Input() members;
   @Input() householdId;
 
-  ngOnInit(){
+  ngOnInit() {
     this.dataservice.familyMember = null
     this.dataSource = [];
   }
 
-  ngOnChanges(changes: SimpleChanges){
-    if(changes['members']){
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['members']) {
       this.dataSource = this.members
     }
   }
 
-  openDialog(action,obj){
+  openDialog(action, obj) {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '90vw',
-      data:obj
+      data: obj
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.event == 'Add'){
+      if (result.event == 'Add') {
         this.addRowData(result.data);
-      }else if(result.event == 'Update'){
+      } else if (result.event == 'Update') {
         this.updateRowData(result.data);
-      }else if(result.event == 'Delete'){
+      } else if (result.event == 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
 
-  addRowData(row_obj){
+  addRowData(row_obj) {
     let obj = {
       hhId: this.householdId,
-      idNumber:row_obj.idNumber,
-      name:row_obj.name,
-      age:row_obj.age,
-      contact:row_obj.contact,
-      occupation:row_obj.occupation,
-      workplace:row_obj.workplace,
-      gender:row_obj.gender,
-      covid_test_status:row_obj.covid_test_status,
-      vaccine_status:row_obj.vaccine_status,
-      most_active:row_obj.most_active,
-      type:row_obj.type
+      idNumber: row_obj.idNumber,
+      name: row_obj.name,
+      age: row_obj.age,
+      contact: row_obj.contact,
+      occupation: row_obj.occupation,
+      workplace: row_obj.workplace,
+      gender: row_obj.gender,
+      covid_test_status: row_obj.covid_test_status,
+      vaccine_status: row_obj.vaccine_status,
+      most_active: row_obj.most_active,
+      type: row_obj.type
     }
-    this.dataservice.createMember(obj).subscribe(res=>{
-      if(res.success === "true"){
+    this.dataservice.createMember(obj).subscribe(res => {
+      if (res.success === "true") {
         this.dataSource.push({
-          idNumber:row_obj.idNumber,
-          age:row_obj.age,
-          gender:row_obj.gender,
-          incomeEarner: row_obj.incomeEarner,
+          idNumber: row_obj.idNumber,
+          name: row_obj.name,
+          age: row_obj.age,
+          contact: row_obj.contact,
+          occupation: row_obj.occupation,
+          workplace: row_obj.workplace,
+          gender: row_obj.gender,
+          covid_test_status: row_obj.covid_test_status,
+          vaccine_status: row_obj.vaccine_status,
+          most_active: row_obj.most_active,
           type: row_obj.type
         });
         this.table.renderRows();
@@ -98,24 +104,22 @@ export class MemberTableComponent implements OnInit {
     })
   }
 
-  updateRowData(row_obj){
+  updateRowData(row_obj) {
     let obj = {
       hhId: this.householdId,
       id: row_obj.id,
-      idNumber:row_obj.idNumber,
-      age:row_obj.age,
-      gender:row_obj.gender,
+      idNumber: row_obj.idNumber,
+      age: row_obj.age,
+      gender: row_obj.gender,
       incomeEarner: row_obj.incomeEarner,
       type: row_obj.type
     }
-    console.log(obj)
-
-    this.dataservice.updateMember(obj).subscribe(res=>{
-      if(res.success === "true"){
-        this.dataSource = this.dataSource.filter((value,key)=>{
-          if(value.id === row_obj.id){
+    this.dataservice.updateMember(obj).subscribe(res => {
+      if (res.success === "true") {
+        this.dataSource = this.dataSource.filter((value, key) => {
+          if (value.id === row_obj.id) {
             value.id = row_obj.id;
-            value.idNumber= row_obj.idNumber;
+            value.idNumber = row_obj.idNumber;
             value.age = row_obj.age;
             value.gender = row_obj.gender;
             value.type = row_obj.type;
@@ -127,10 +131,10 @@ export class MemberTableComponent implements OnInit {
       }
     })
   }
-  deleteRowData(row_obj){
-    this.dataservice.deleteMember(row_obj.id).subscribe(res=>{
-      if(res.success === "true"){
-        this.dataSource = this.dataSource.filter((value,key)=>{
+  deleteRowData(row_obj) {
+    this.dataservice.deleteMember(row_obj.id).subscribe(res => {
+      if (res.success === "true") {
+        this.dataSource = this.dataSource.filter((value, key) => {
           return value.id != row_obj.id;
         });
         this.dataservice.familyMember = this.dataSource
@@ -138,7 +142,7 @@ export class MemberTableComponent implements OnInit {
     })
   }
 
-  logData(){
+  logData() {
     console.log(this.dataSource)
   }
 }

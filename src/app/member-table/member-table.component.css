@@ -10,7 +10,7 @@
   }
   
   ::ng-deep td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
-    padding: 0 5px;
+    padding: 0 30px;
     border-bottom-width: 1px;
     border-bottom-style: solid;
   }

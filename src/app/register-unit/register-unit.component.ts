@@ -125,6 +125,7 @@ export class RegisterUnitComponent implements OnInit {
   showHindranceRemarks: boolean
   showAllfields: boolean = true;
   householdForm: FormGroup;
+  showOccupationOthers:boolean =false;
 
   multiUnitForm: FormGroup;
   residentForm: FormGroup;
@@ -425,6 +426,7 @@ export class RegisterUnitComponent implements OnInit {
       ageHoh: [],
       maritalStatusHoh: [],
       employmentStatusHoh: [],
+      employmentStatusHohOthers:[],
       workAgencyHoh: [],
 
       
@@ -432,6 +434,7 @@ export class RegisterUnitComponent implements OnInit {
       vaccine_status: [],
       most_active: [],
 //health teams requirement
+
       serviceYearHoh: [],
       workPlaceDistance: [],
       modeTransport: [],
@@ -505,6 +508,12 @@ export class RegisterUnitComponent implements OnInit {
     }
   }
 
+  showOccupationOtherEvent(e){
+    if(e.value === "Others"){
+      this.showOccupationOthers = true
+    }
+  }
+
   submit() {
     this.household.structure_id = this.buildingId;
     this.household.unitId = this.householdForm.get('unidID').value;
@@ -521,7 +530,13 @@ export class RegisterUnitComponent implements OnInit {
     this.household.contact = this.householdForm.get('contactHoh').value
     this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
 
-    this.household.employment = this.householdForm.get('employmentStatusHoh').value; //occupation
+    //occupation logic
+    if (this.householdForm.get('employmentStatusHoh').value === "Others") {
+      this.household.employment = this.householdForm.get('employmentStatusHohOthers').value
+    } else {
+      this.household.employment = this.householdForm.get('employmentStatusHoh').value
+    }
+
     this.household.employmentOrg = this.householdForm.get('workAgencyHoh').value; //workplace
     
     this.household.covid_test_status = this.householdForm.get('covid_test_status').value;
@@ -586,19 +601,19 @@ export class RegisterUnitComponent implements OnInit {
       });
     }
     console.log(this.household)
-    this.dataService.postHousehold(this.household).subscribe(res => {
-      console.log(res)
-      if (res.success === "true") {
-        this.router.navigate(['dashboard', this.buildingId]);
-      } else {
-        this.snackBar.open('Registration error', '', {
-          duration: 5000,
-          verticalPosition: 'bottom',
-          panelClass: ['error-snackbar']
-        });
-      }
-    })
-    this.dataService.familyMember = null;
+    // this.dataService.postHousehold(this.household).subscribe(res => {
+    //   console.log(res)
+    //   if (res.success === "true") {
+    //     this.router.navigate(['dashboard', this.buildingId]);
+    //   } else {
+    //     this.snackBar.open('Registration error', '', {
+    //       duration: 5000,
+    //       verticalPosition: 'bottom',
+    //       panelClass: ['error-snackbar']
+    //     });
+    //   }
+    // })
+    // this.dataService.familyMember = null;
 
     // this.router.navigate(['dashboard', this.buildingId]);
 

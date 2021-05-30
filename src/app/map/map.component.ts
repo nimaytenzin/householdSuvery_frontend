@@ -183,7 +183,6 @@ export class MapComponent implements OnInit {
 
     this.dataService.getStructure(zoneID).subscribe((json: any) => {
       this.json = json;
-      console.log(json);
       const geoJson = L.geoJSON(this.json, {
         onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {

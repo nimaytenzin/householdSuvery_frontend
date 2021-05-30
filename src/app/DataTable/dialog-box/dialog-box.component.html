@@ -44,6 +44,7 @@
   </mat-select>
 </mat-form-field> 
 
+
 <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
   <input type="string" placeholder="{{action}} WorkPlace" matInput [(ngModel)]="local_data.workplace">
 </mat-form-field>
