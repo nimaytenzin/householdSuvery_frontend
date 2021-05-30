@@ -727,6 +727,7 @@ reactiveForms() {
 
     this.dataService.updateHousehold(this.household).subscribe(res=>{
       if(res.success === "true"){
+        console.log(res, "updated pauload")
         if(sessionStorage.getItem('isadmin') === "TRUE"){
           this.router.navigate(['admin'])
         }else{

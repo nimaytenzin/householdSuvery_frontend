@@ -175,6 +175,5 @@ export class DialogBoxComponent implements OnInit{
     return  fullName
   }
 
-  
 
 }
