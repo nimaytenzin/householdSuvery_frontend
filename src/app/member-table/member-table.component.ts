@@ -74,10 +74,13 @@ export class MemberTableComponent implements OnInit {
       idNumber: row_obj.idNumber,
       name: row_obj.name,
       age: row_obj.age,
+      gender: row_obj.gender,
       contact: row_obj.contact,
+
       occupation: row_obj.occupation,
       workplace: row_obj.workplace,
-      gender: row_obj.gender,
+      workzone:row_obj.workzone,
+      
       covid_test_status: row_obj.covid_test_status,
       vaccine_status: row_obj.vaccine_status,
       most_active: row_obj.most_active,
@@ -89,10 +92,12 @@ export class MemberTableComponent implements OnInit {
           idNumber: row_obj.idNumber,
           name: row_obj.name,
           age: row_obj.age,
+          gender: row_obj.gender,
           contact: row_obj.contact,
+
           occupation: row_obj.occupation,
           workplace: row_obj.workplace,
-          gender: row_obj.gender,
+          workzone:row_obj.workzone,
           covid_test_status: row_obj.covid_test_status,
           vaccine_status: row_obj.vaccine_status,
           most_active: row_obj.most_active,
@@ -108,22 +113,40 @@ export class MemberTableComponent implements OnInit {
     let obj = {
       hhId: this.householdId,
       id: row_obj.id,
+      
       idNumber: row_obj.idNumber,
+      name:row_obj.name,
       age: row_obj.age,
       gender: row_obj.gender,
-      incomeEarner: row_obj.incomeEarner,
+      contact:row_obj.contact,
+      
+      occupation: row_obj.occupation,
+      workplace: row_obj.workplace,
+      workzone:row_obj.workzone,
+      covid_test_status: row_obj.covid_test_status,
+      vaccine_status: row_obj.vaccine_status,
+      most_active: row_obj.most_active,
       type: row_obj.type
     }
     this.dataservice.updateMember(obj).subscribe(res => {
       if (res.success === "true") {
         this.dataSource = this.dataSource.filter((value, key) => {
           if (value.id === row_obj.id) {
-            value.id = row_obj.id;
-            value.idNumber = row_obj.idNumber;
+            value.idNumber= row_obj.idNumber;
             value.age = row_obj.age;
             value.gender = row_obj.gender;
-            value.type = row_obj.type;
-            value.incomeEarner = row_obj.incomeEarner;
+            value.name =row_obj.name;
+            value.contact =row_obj.contact;
+
+            value.occupation=row_obj.occupation;
+            value.workplace = row_obj.workplace;
+            value.workzone =row_obj.workzone;
+
+            value.covid_test_status =row_obj.covid_test_status;
+            value.vaccine_status =row_obj.vaccine_status;
+            value.most_active = row_obj.most_active;
+
+            value.type= row_obj.type;
           }
           return true;
         });

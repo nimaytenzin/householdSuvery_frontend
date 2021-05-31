@@ -55,8 +55,9 @@ export class DialogBoxComponent implements OnInit{
     {id:7, name: "Student"},
     {id:8, name: "Construction Worker"},
     {id:9, name: "Private Business"},
-    {id:10, name: "Unemployed"},
-    {id:11, name: "Others"}
+    {id:10, name: "Minor/Child"},
+    {id:11, name: "Unemployed"},
+    {id:12, name: "Others"}
   ]
 
   workzones:DropDownOptions[]=[
@@ -175,6 +176,5 @@ export class DialogBoxComponent implements OnInit{
     return  fullName
   }
 
-  
 
 }

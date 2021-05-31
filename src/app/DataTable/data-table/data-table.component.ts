@@ -94,6 +94,16 @@ export class DataTableComponent  implements OnInit{
         value.idNumber= row_obj.idNumber;
         value.age = row_obj.age;
         value.gender = row_obj.gender;
+        
+        value.name =row_obj.name;
+        value.contact =row_obj.contact;
+        value.occupation=row_obj.occupation;
+        value.workplace = row_obj.workplace;
+        value.workzone =row_obj.workzone;
+        value.covid_test_status =row_obj.covid_test_status;
+        value.vaccine_status =row_obj.vaccine_status;
+        value.most_active = row_obj.most_active;
+        value.type= row_obj.type;
       }
       return true;
     });

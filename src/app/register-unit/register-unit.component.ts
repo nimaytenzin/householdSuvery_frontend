@@ -623,19 +623,18 @@ export class RegisterUnitComponent implements OnInit {
       });
     }
     console.log(this.household)
-    // this.dataService.postHousehold(this.household).subscribe(res => {
-    //   console.log(res)
-    //   if (res.success === "true") {
-    //     this.router.navigate(['dashboard', this.buildingId]);
-    //   } else {
-    //     this.snackBar.open('Registration error', '', {
-    //       duration: 5000,
-    //       verticalPosition: 'bottom',
-    //       panelClass: ['error-snackbar']
-    //     });
-    //   }
-    // })
-    // this.dataService.familyMember = null;
+    this.dataService.postHousehold(this.household).subscribe(res => {
+      if (res.success === "true") {
+        this.router.navigate(['dashboard', this.buildingId]);
+      } else {
+        this.snackBar.open('Registration error', '', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          panelClass: ['error-snackbar']
+        });
+      }
+    })
+    this.dataService.familyMember = null;
 
     // this.router.navigate(['dashboard', this.buildingId]);
 

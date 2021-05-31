@@ -81,7 +81,7 @@ interface IdName {
   styleUrls: ['./cov-admin.component.scss']
 })
 export class CovAdminComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'view'];
+  displayedColumns: string[] = ['position', 'name', 'view'];
   totalBuilding: number;
   totalCompleted: number;
   showBuildingInfo: boolean = false;

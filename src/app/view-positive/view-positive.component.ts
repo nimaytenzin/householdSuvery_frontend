@@ -81,7 +81,7 @@ export class ViewPositiveComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view'];
+  displayedColumns: string[] = ['position', 'name', 'view'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
