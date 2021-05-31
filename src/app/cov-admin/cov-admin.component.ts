@@ -104,31 +104,47 @@ export class CovAdminComponent implements OnInit {
   enumeratedBy: string = "No Info."
 
   unitsData: any;
-  housholdsData: {
-    unitId: number,
-    enumeratedBy: string,
-    unitOwnership: string,
-    name: string,
-    cid: number,
-    numberHousehold: number,
-    incomeEarner: number,
-    householdIncome: number,
-    shopOfficeName: string,
-    shopOfficeContact: number,
-    shopOfficeRent: number
+  housholdsData:{
+    unitId:number,
+    enumeratedBy:string,
+    unitOwnership:string,
+    name:string,
+    cid:number,
+    age:number,
+    gender:string,
+    employment:string,
+    employmentOrg:string,
+    workzone:string,
+    numberHousehold:number,
+    incomeEarner:number,
+    householdIncome:number,
+    shopOfficeName:string,
+    covid_test_status:boolean,
+    vaccine_status:boolean,
+    most_active:boolean,
+    shopOfficeContact:number,
+    shopOfficeRent:number
   } = {
-      unitId: 0,
-      enumeratedBy: 'No info',
-      unitOwnership: "Not added",
-      name: "Not added",
-      cid: 0,
-      numberHousehold: 0,
-      incomeEarner: 0,
-      householdIncome: 0,
-      shopOfficeName: "NA",
-      shopOfficeContact: 0,
-      shopOfficeRent: 0
-    };
+    unitId: 0,
+    enumeratedBy: 'No info',
+    unitOwnership:"Not added",
+    name:"Not added",
+    cid:0,
+    age:0,
+    gender:"",
+    employment:"",
+    employmentOrg:"",
+    workzone:"",
+    covid_test_status:false,
+    vaccine_status:false,
+    most_active:false,
+    numberHousehold:0,
+    incomeEarner:0,
+    householdIncome:0,
+    shopOfficeName :"NA",
+    shopOfficeContact: 0,
+    shopOfficeRent: 0
+  };
   familyMembers: any;
 
   //chart js
