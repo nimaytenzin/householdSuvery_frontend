@@ -130,6 +130,9 @@ export class MemberTableComponent implements OnInit {
     }
     this.dataservice.updateMember(obj).subscribe(res => {
       if (res.success === "true") {
+        this.dataservice.postProgress(Number(sessionStorage.getItem('buildingId'))).subscribe(res=>{
+          console.log("in progress");
+        });
         this.dataSource = this.dataSource.filter((value, key) => {
           if (value.id === row_obj.id) {
             value.idNumber= row_obj.idNumber;

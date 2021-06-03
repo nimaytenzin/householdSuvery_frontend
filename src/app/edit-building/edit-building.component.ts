@@ -341,6 +341,9 @@ export class EditBuildingComponent implements OnInit {
     if(sessionStorage.getItem('isadmin') === "TRUE"){
       this.dataService.updateBuilding(this.building).subscribe(res=>{
         if(res.success === "true"){
+          this.dataService.postProgress(this.building.id).subscribe(res=>{
+            console.log("in progress");
+          });
           this.snackBar.open('Edited the building information', '', {
             duration: 5000,
             verticalPosition: 'bottom',
@@ -357,8 +360,11 @@ export class EditBuildingComponent implements OnInit {
         }
       })
     }else{
-       this.dataService.updateBuilding(this.building).subscribe(res=>{
+      this.dataService.updateBuilding(this.building).subscribe(res=>{
       if(res.success === "true"){
+        this.dataService.postProgress(this.building.id).subscribe(res=>{
+          console.log("in progress");
+        });
         this.snackBar.open('Edited the building information', '', {
           duration: 5000,
           verticalPosition: 'bottom',
