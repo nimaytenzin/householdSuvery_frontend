@@ -497,8 +497,10 @@ export class ViewPositiveComponent implements OnInit {
     this.total_cases = 0
     this.NationalCase = L.geoJSON(data, {
       pointToLayer:  (feature, latlng) => { 
-        this.red_buildings = this.red_buildings + 1
-        this.total_cases = Number(this.total_cases) + Number(feature.properties.numCases)
+        if(feature.properties.status ==="ACTIVE"){
+          this.red_buildings = this.red_buildings + 1
+          this.total_cases = Number(this.total_cases) + Number(feature.properties.numCases)
+        }
         return L.circleMarker(latlng,{
           radius: 5,
           fillColor: this.markerColor(feature.properties.status),
