@@ -105,7 +105,7 @@
         <h3>Building Details</h3>  
         <!-- <button  mat-flat-button color="primary" (click)=deleteBuildingInfo();>Delete Building Information</button> -->
         <br>
-        <table style = "width:100%;">
+        <table style="width:100%;">
           <tr>
             <th>Building ID</th>
             <td>{{buildingId}}</td>
@@ -117,15 +117,15 @@
           Owner Details
           <tr>
             <th>CID</th>
-            <td>{{cidOwner!== undefined ? cidOwner:''}}</td>
+            <td>{{cidOwner}}</td>
           </tr>
           <tr>
             <th>Name</th>
-            <td>{{nameOfBuildingOwner!== undefined ? nameOfBuildingOwner:''}}</td>
+            <td>{{nameOfBuildingOwner}}</td>
           </tr>
           <tr>
             <th>Contact</th>
-            <td>{{contactOwner!== undefined ?contactOwner:''}}</td>
+            <td>{{contactOwner}}</td>
           </tr>
           <tr>
             <th>Total Units</th>
@@ -142,41 +142,41 @@
        <table mat-table [dataSource]="unitsData" class="mat-elevation-z8">
         <ng-container matColumnDef="position">
           <th mat-header-cell *matHeaderCellDef> Unit ID </th>
-          <td mat-cell *matCellDef="let element"> {{element.unitId!== undefined ? element.unitId: ' '}} </td>
-        </ng-container>   
+          <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
+        </ng-container>
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Unit Ownership </th>
-          <td mat-cell *matCellDef="let element"> {{element.unitOwnership!== undefined ? element.unitOwnership: ' '}} </td>
+          <th mat-header-cell *matHeaderCellDef> Occupancy Status </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitStatus}} </td>
         </ng-container>
-      
-      <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef> Unit Use </th>
-          <td mat-cell *matCellDef="let element"> {{element.unitUse!== undefined ? element.unitUse: ''}} </td>
+
+        <!-- <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Head of the Household </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitUse}} </td>
         </ng-container>
-  
+
         <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef>  Families Sharing</th>
-          <td mat-cell *matCellDef="let element"> {{element.familiesSharing!== undefined ? element.familiesSharing: ' '}} </td>
-        </ng-container>
-  
+          <th mat-header-cell *matHeaderCellDef> Families Sharing</th>
+          <td mat-cell *matCellDef="let element"> {{element.familiesSharing}} </td>
+        </ng-container> -->
+
         <ng-container matColumnDef="view">
           <th mat-header-cell *matHeaderCellDef> View Details </th>
-          <td mat-cell *matCellDef="let element"  (click)=showResident(element.id)> view </td>
+          <td mat-cell *matCellDef="let element" (click)=showResident(element.id)> view </td>
         </ng-container>
-  
-        <!-- <ng-container matColumnDef="update">
+
+        <ng-container matColumnDef="update">
           <th mat-header-cell *matHeaderCellDef> Update </th>
-          <td mat-cell *matCellDef="let element"  (click)=updateUnit(element.id)> Update </td>
+          <!-- <td mat-cell *matCellDef="let element" (click)=updateUnit(element.id)> Update </td> -->
         </ng-container>
+
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef> Delete </th>
-          <td mat-cell *matCellDef="let element"  (click)=deleteUnit(element.id)> Delete </td>
-        </ng-container> -->
-      
+          <!-- <td mat-cell *matCellDef="let element" (click)=deleteUnit(element.id)> Delete </td> -->
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"  
-        [ngClass]="{'highlight': selectedRowIndex == row.id}"
-        (click)="highlight(row)"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="highlight(row)"></tr>
       </table>
         
         
@@ -186,21 +186,62 @@
       <div *ngIf="residentTableShow">
        <h3> Household Details</h3>
        
-        <p>Enumerated By: <strong>{{enumeratedBy}}</strong></p>
+        <!-- <p>Enumerated By: <strong>{{enumeratedBy}}</strong></p> -->
   
-        <table style = "width:100%;">
+        <p>Details of the Head of the Household</p>
+
+        <table style="width:100%;">
+  
           <tr>
             <th>Unit ID</th>
-            <td>{{housholdsData.unitId!== undefined ? housholdsData.unitId: ''}}</td>
+            <td>{{housholdsData.unitId}}</td>
           </tr>
           <tr>
-            <th>Unit Ownership</th>
-            <td>{{housholdsData.unitOwnership!== undefined ? housholdsData.unitOwnership: ''}}</td>
+            <th>Name</th>
+            <td>{{housholdsData.name}}</td>
           </tr>
-             
+          <tr>
+            <th>CID</th>
+            <td>{{housholdsData.cid}}</td>
+          </tr>
+          <tr>
+            <th>Age</th>
+            <td>{{housholdsData.age}}</td>
+          </tr>
+          <tr>
+            <th>Gender</th>
+            <td>{{housholdsData.gender}}</td>
+          </tr>
+          <tr>
+            <th>Occupation</th>
+            <td>{{housholdsData.employment}}</td>
+          </tr>
+          <tr>
+            <th>Working Agency</th>
+            <td>{{housholdsData.employmentOrg}}</td>
+          </tr>
+          <tr>
+            <th>Working Zone</th>
+            <td>{{housholdsData.workzone}}</td>
+          </tr>
+  
+          <br>
+          <tr>
+            <th>Tested in past 2 weeks?</th>
+            <td>{{housholdsData.covid_test_status? 'Tested': 'No'}}</td>
+          </tr>
+          <tr>
+            <th>Vacinnated? </th>
+            <td>{{housholdsData.vaccine_status? 'Vacinnated' : 'No'}}</td>
+          </tr>
+          <tr>
+            <th>Most Active?</th>
+            <td>{{housholdsData.most_active? "Yes" : "No"}}</td>
+          </tr>
+  
         </table>
               
-        <table *ngIf="residentialUnitDetailShow">
+        <!-- <table *ngIf="residentialUnitDetailShow">
           <tr>
             <th>Head of household</th>
             <td>{{housholdsData.name!== undefined ? housholdsData.name: ''}}</td>
@@ -237,27 +278,31 @@
             <th>Rent</th>
             <td>{{housholdsData.shopOfficeRent!== undefined ?housholdsData.shopOfficeRent:''}}</td>
           </tr>
-        </table>
+        </table> -->
       </div>
       <br>
   
       <div *ngIf="residentTableShow">
         Family Member Details
        
-        <table style = "width:100%;">
+        <table style="width:100%;">
           <tr>
-            <th>Identification Type</th>
-            <th>Identification Number</th>
-            <th>Gender</th>
-            <th>Age</th>
-            <th>Income Earner</th>
+            <th>CID/Work Permit</th>
+            <th>Name</th>
+            <th>Age/Gender</th>
+            <th>Occupation</th>
+            <th>Tested in past two weeks?</th>
+            <th>Vaccinated?</th>
+            <th>Most Active?</th>
           </tr>
-          <tr *ngFor = "let member of familyMembers">
-            <td>{{member.type}}</td>
+          <tr *ngFor="let member of familyMembers">
             <td>{{member.idNumber}}</td>
-            <td>{{member.gender}}</td>
-            <td>{{member.age}}</td>
-            <td>{{member.incomeEarner}}</td>
+            <td>{{member.name}}</td>
+            <td>{{ member.age}} {{member.gender}}</td>
+            <td>{{member.occupation }} {{ member.workplace? "at " + member.workplace : "" }}</td>
+            <td>{{member.covid_test_status ? "Tested": "No"}}</td>
+            <td>{{member.vaccine_status ? "Vaccinated " : "No"}}</td>
+            <td>{{member.most_active ? "Yes" : "No"}}</td>
           </tr>
         </table>
       </div>

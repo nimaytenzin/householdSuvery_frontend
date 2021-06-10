@@ -18,6 +18,21 @@
     <div class="form-body" style="letter-spacing: 2px;margin-top: 12px;text-align: center;">
     Building ID: {{buildingId}}
     </div>
+
+    <table style="text-align: center; width:100%">
+       <tr>
+         <td>Owner Name:</td>
+         <td>{{ buildingOwnerName ? buildingOwnerName : "Not Collected"}}</td>
+       </tr>
+      <tr>
+        <td>Owner Contact:</td>
+        <td>{{ buildingOwnerContact ? buildingOwnerContact : "Not Collected" }}</td>
+      </tr>
+      <tr>
+        <td>Edit Details</td>
+        <td><button mat-raised-button color="primary" (click)="editBuilding()">Edit Building Details</button></td>
+      </tr>
+    </table>
   </div>
 </div>
 
@@ -33,7 +48,8 @@
     <div style="display:flex;justify-content:center;">
       <table>
         <tr>
-          <th>Units</th>
+          <th>Unit Id</th>
+          <th>head</th>
           <th>Actions</th>
         </tr>
         <tr *ngFor = "let unit of units">
@@ -41,7 +57,10 @@
             {{unit.unitId}}
           </td>
           <td>
-            <button (click)="editUnit(unit.id)">Edit</button>
+            {{unit.name}}
+          </td>
+          <td>
+            <button mat-raised-button color="primary" (click)="editUnit(unit.id)">Edit</button>
           </td>
         </tr>
       </table>
@@ -67,7 +86,7 @@
   </div>
 </div>
 
-<div class="form-wraper" *ngIf = "showBuildingEdit">
+<!-- <div class="form-wraper" *ngIf = "showBuildingEdit">
   <div class="form-container card" (click)="editBuilding()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">
       <span class="material-icons" style="padding: 6px;border: 1px solid #0000004a;border-radius: 22px; font-size: 70px;">
@@ -81,7 +100,7 @@
       Enter Bulding Information
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="form-wraper">
   <div class="form-container card" (click)="unit()" style="background-color: #f2f8f9;">
@@ -98,7 +117,7 @@
     </div>
   </div>
 </div>
-
+<!-- 
 <div class="form-wraper">
   <div class="form-container card" (click)="gotocamera()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">
@@ -113,7 +132,7 @@
       Take Picture of Building
     </div>
   </div>
-</div>
+</div> -->
 <div class="form-wraper">
   <div class="form-container card" (click)="markcomplete()" style="background-color: #f2f8f9;">
     <div class="form-header" style="text-align: center;">

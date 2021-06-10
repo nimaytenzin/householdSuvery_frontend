@@ -107,6 +107,7 @@ export class SelectZoneComponent implements OnInit {
   getSubzoneList(zoneId) {
     this.dataService.getSubZones(zoneId).subscribe(response => {
       this.subZones = response.data;
+      console.log(this.subZones);
     });
   }
 

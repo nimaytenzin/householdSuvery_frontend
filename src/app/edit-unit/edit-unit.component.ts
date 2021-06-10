@@ -33,15 +33,24 @@ export class Household{
     unitUse:string;
     numberOfRooms:number;
 
-
+  //health
+    unitStatus:string;  //occupied or vacant
     cid: string;
     name: string;
     contact:number;
     gender:string;
     age:number;
     martialStatus: string;
-    employment:string;
-    employmentOrg: string;
+    employment:string;  //occupation
+    employmentOrg: string; //wokring agency
+    workzone:string; //wokring zone
+
+    covid_test_status: boolean;
+    vaccine_status: boolean;
+    most_active: boolean
+
+//end health
+
     yearsInService: number;
     distToWork: number;
     modeTransport:string;
@@ -87,10 +96,20 @@ export class Household{
 
 export class FamilyMember{
   hhId:number;
+  type:string;
   idNumber:number;
+  name:string;
   age:number;
   gender:string;
-  type:string;
+  contact:number;
+  occupation:string;
+  workplace:string;
+  workzone:string; //recent addition
+
+  covid_test_status:boolean;
+  vaccine_status:boolean;
+  most_active:boolean;
+
   incomeEarner:boolean;
 }
 
@@ -144,7 +163,8 @@ export class EditUnitComponent implements OnInit {
   showConstructedUnitDetails:boolean = false;
   showHindranceRemarks:boolean
   unitUseShow:boolean;
-  
+  showOccupationOthers:boolean = false;
+
   members:[];
 
   numberOfRooms:DropDownNumber[]=[
@@ -208,17 +228,32 @@ export class EditUnitComponent implements OnInit {
   ]
 
   // / civil servants /corporate employee / private employee /Self employee 
-  employmentOptions:DropDownOptions[]=[
-    {id:1, name: "Civil Servant"},
-    {id:2, name: "Corporate Employee"},
-    {id:3, name: "Private Employee"},
-    {id:4, name: "Self Employee"},
-    {id:5, name: "Unemployed"},
-    {id:6, name: "Project Employee"},
-    {id:6, name: "Farmer"},
-    {id:6, name: "Others"}
+  employmentOptions: DropDownOptions[] = [
+    { id: 1, name: "RBP" },
+    { id: 2, name: "RBA" },
+    { id: 3, name: "Farmer" },
+    { id: 4, name: "Housewife/Househusband" },
+    { id: 5, name: "Civil Servant" },
+    { id: 6, name: "Corporate Worker" },
+    { id: 7, name: "Student" },
+    { id: 8, name: "Construction Worker" },
+    { id: 9, name: "Private Business" },
+    { id: 10, name: "Unemployed" },
+    { id: 11, name: "Minor/Child" },
+    { id: 12, name: "Others" }
+  ]
 
-
+  workzones:DropDownOptions[]=[
+    { id: 1, name: "Amochhu Chamkuna" },
+    { id: 2, name: "Dhamdara Kabraytar" },
+    { id: 3, name: "Rinchending" },
+    { id: 4, name: "Ahlay Pekarshing" },
+    { id: 5, name: "Pasakha" },
+    { id: 6, name: "Core Area I" },
+    { id: 7, name: "Core Area II" },
+    { id: 8, name: "Core Area III" },
+    { id: 9, name: "Core Area IV" },
+    { id: 10, name: "Others" }
   ]
 
   numbers:Counts[]=[
@@ -263,7 +298,9 @@ export class EditUnitComponent implements OnInit {
 
   genders:DropDownOptions[]=[
     {id:1, name: "Male"},
-    {id:2, name: "Female"}
+    {id:2, name: "Female"},
+    { id: 3, name: "Others" }
+
   ]
 
   dzongkhags:DropDownOptions[]=[
@@ -289,10 +326,17 @@ export class EditUnitComponent implements OnInit {
     {id:20, name: "Zhemgang"},
   ]
 
-  unitOccupationOptions:DropDownOptions[]=[
-    {id:1, name: "Owned"},
-    {id:2, name: "Rented"},
-    {id:2, name: "Vacant"}
+  // unitOccupationOptions:DropDownOptions[]=[
+  //   {id:1, name: "Owned"},
+  //   {id:2, name: "Rented"},
+  //   {id:2, name: "Vacant"}
+  // ]
+
+  unitOccupationOptions: DropDownOptions[] = [
+    { id: 1, name: "Occupied" },
+    { id: 2, name: "Locked" },
+    { id: 3, name: "Vacant" }
+
   ]
   // NHDCL quarters /Employer provided housing / Private rented housing/others
   livingYears:DropDownOptions[]=[
@@ -370,52 +414,60 @@ ngOnInit() {
   this.reactiveForms();
   this.dataService.getAHousehold(this.hhId).subscribe(res=>{
     let data:Household = res.data;
-    if(res.data.unitOwnership === "Vacant"){
-      this.showAllfields =false;
-      this.displayShopsOffice = false;
-        if(res.data.unitUse !== "Residential"){
-          this.displayShopsOffice = true;
-        }
-    }else if(res.data.unitOwnership === "Owned"){
-      this.showAllfields = true;
-      this.unitUseShow = true;
-      this.showOwnedUnitDetails = true;
-      this.showRentalUnitDetails = false;
-        if(res.data.unitUse === "Residential"){
-          this.showAllfields = true;
-          this.displayShopsOffice = false;
-        }else if(res.data.unitUse !== "Residential"){
-          this.showAllfields = false;
-          this.displayShopsOffice = true;
-        }
-        if(res.data.meansOwning === "Purchased"){
-          this.showPurchasedUnitDetails = true;
-        }else if(res.data.meansOwning === "Constructed on my Own"){
-          this.showPurchasedUnitDetails = true;
-          this.showConst = false
-        }
-    }else if(res.data.unitOwnership === "Rented"){
-      this.showOwnedUnitDetails = false;
-      this.unitUseShow = true;
-      this.showAllfields = true
-      this.showRentalUnitDetails = true;
-        if(res.data.unitUse === "Residential"){
-          this.showAllfields = true;
-          this.displayShopsOffice = false;
-        }else if(res.data.unitUse !== "Residential"){
-          this.showAllfields = false;
-          this.displayShopsOffice = true;
-        }
+    // if(res.data.unitOwnership === "Vacant"){
+    //   this.showAllfields =false;
+    //   this.displayShopsOffice = false;
+    //     if(res.data.unitUse !== "Residential"){
+    //       this.displayShopsOffice = true;
+    //     }
+    // }else if(res.data.unitOwnership === "Owned"){
+    //   this.showAllfields = true;
+    //   this.unitUseShow = true;
+    //   this.showOwnedUnitDetails = true;
+    //   this.showRentalUnitDetails = false;
+    //     if(res.data.unitUse === "Residential"){
+    //       this.showAllfields = true;
+    //       this.displayShopsOffice = false;
+    //     }else if(res.data.unitUse !== "Residential"){
+    //       this.showAllfields = false;
+    //       this.displayShopsOffice = true;
+    //     }
+    //     if(res.data.meansOwning === "Purchased"){
+    //       this.showPurchasedUnitDetails = true;
+    //     }else if(res.data.meansOwning === "Constructed on my Own"){
+    //       this.showPurchasedUnitDetails = true;
+    //       this.showConst = false
+    //     }
+    // }else if(res.data.unitOwnership === "Rented"){
+    //   this.showOwnedUnitDetails = false;
+    //   this.unitUseShow = true;
+    //   this.showAllfields = true
+    //   this.showRentalUnitDetails = true;
+    //     if(res.data.unitUse === "Residential"){
+    //       this.showAllfields = true;
+    //       this.displayShopsOffice = false;
+    //     }else if(res.data.unitUse !== "Residential"){
+    //       this.showAllfields = false;
+    //       this.displayShopsOffice = true;
+    //     }
+    // }
+
+    if(res.data.employment === "Others"){
+      this.showOccupationOthers = true
     }
 
     if(res.success==="true"){
       this.household.id = res.data.id
       this.householdForm.patchValue({
-        unidID:res.data.unitId,
+       
         familySharing:data.familiesSharing,
         unitOwnership:data.unitOwnership,
         unitUse:data.unitUse,
         numberOfRooms:data.numberOfRooms,
+       
+        //health requirements
+        unidID:res.data.unitId,
+        unitStatus:res.data.unitStatus,
         cidHoh:data.cid,
         nameHoh:data.name,
         contactHoh:data.contact,
@@ -424,6 +476,12 @@ ngOnInit() {
         maritalStatusHoh:data.martialStatus,
         employmentStatusHoh: data.employment,
         workAgencyHoh:data.employmentOrg,
+        workzone:data.workzone,
+        covid_test_status: data.covid_test_status,
+        vaccine_status: data.vaccine_status,
+        most_active:data.most_active,
+        //health requirments end
+
         serviceYearHoh:data.yearsInService,
         workPlaceDistance:data.distToWork,
         modeTransport:data.modeTransport,
@@ -472,6 +530,12 @@ ngOnInit() {
   })
 }
 
+showOccupationOtherEvent(e){
+  if(e.value === "Others"){
+    this.showOccupationOthers = true
+  }
+}
+
 changeDiff($event){
   this.displayResidentForm = false;
   this.displayShopForm = false;
@@ -491,20 +555,32 @@ changeDiff($event){
 reactiveForms() {
 
   this.householdForm = this.fb.group({
-    unidID:[],
     familySharing:[],
     unitOwnership:[],
     unitUse:[],
     numberOfRooms:[],
 
-    cidHoh:[],
-    nameHoh:[],
-    contactHoh:[],
-    genderHoh:[],
-    ageHoh:[],
-    maritalStatusHoh:[],
-    employmentStatusHoh:[],
-    workAgencyHoh:[],
+    //health
+    unidID:[],
+    unitStatus:[],
+    cidHoh: [],
+    nameHoh: [],
+    contactHoh: [],
+    genderHoh: [],
+    ageHoh: [],
+    maritalStatusHoh: [],
+    employmentStatusHoh: [], //occupation
+    employmentStatusHohOthers:[],
+    workAgencyHoh: [], //workplace
+    workzone:[], //workzone
+    
+    covid_test_status: [],
+    vaccine_status: [],
+    most_active: [],
+//health teams requirement
+
+
+
     serviceYearHoh:[],
     workPlaceDistance:[],
     modeTransport:[],
@@ -581,20 +657,29 @@ reactiveForms() {
 
   submit(){
     // this.household.structure_id = this.buildingId;
-    this.household.unitId = this.householdForm.get('unidID').value;
     this.household.familiesSharing = this.householdForm.get('familySharing').value;
     this.household.unitOwnership = this.householdForm.get('unitOwnership').value;
     this.household.unitUse = this.householdForm.get('unitUse').value;
     this.household.numberOfRooms = this.householdForm.get('numberOfRooms').value
 
-    this.household.cid = this.householdForm.get('cidHoh').value
+    //health
+    this.household.unitId = this.householdForm.get('unidID').value;
+    this.household.unitStatus = this.householdForm.get('unitStatus').value;
+    
+    this.household.cid = this.householdForm.get('cidHoh').value;
     this.household.name = this.householdForm.get('nameHoh').value;
-    this.household.contact = this.householdForm.get('contactHoh').value
     this.household.gender = this.householdForm.get('genderHoh').value;
     this.household.age = this.householdForm.get('ageHoh').value;
+    this.household.contact = this.householdForm.get('contactHoh').value;
     this.household.martialStatus = this.householdForm.get('maritalStatusHoh').value;
-    this.household.employment = this.householdForm.get('employmentStatusHoh').value;
+    this.household.employment = this.householdForm.get('employmentStatusHoh').value
     this.household.employmentOrg = this.householdForm.get('workAgencyHoh').value;
+    this.household.workzone = this.householdForm.get('workzone').value;
+    this.household.covid_test_status =this.householdForm.get('covid_test_status').value;
+    this.household.vaccine_status = this.householdForm.get('vaccine_status').value;
+    this.household.most_active = this.householdForm.get('most_active').value;
+
+    //health
     this.household.yearsInService = this.householdForm.get('serviceYearHoh').value;
     this.household.distToWork = this.householdForm.get('workPlaceDistance').value;
     this.household.modeTransport = this.householdForm.get('modeTransport').value;
@@ -641,10 +726,12 @@ reactiveForms() {
     this.household.shopOfficeRent = this.householdForm.get('shopOfficeRent').value;
     this.household.remarks = this.householdForm.get('remarks').value;
 
-    console.log(this.household)
     this.dataService.updateHousehold(this.household).subscribe(res=>{
-      console.log(res)
       if(res.success === "true"){
+        console.log(res, "updated pauload")
+        this.dataService.postProgress(this.buildingId).subscribe(res=>{
+          console.log("in progress");
+        });
         if(sessionStorage.getItem('isadmin') === "TRUE"){
           this.router.navigate(['admin'])
         }else{

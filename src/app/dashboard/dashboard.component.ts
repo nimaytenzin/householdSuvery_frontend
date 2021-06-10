@@ -30,6 +30,9 @@ export class DashboardComponent implements OnInit {
   units = [];
   buildingId:number;
 
+  buildingOwnerName:string;
+  buildingOwnerContact:number;
+
   showBuildingEdit: boolean = false;
 
   constructor(
@@ -48,9 +51,10 @@ export class DashboardComponent implements OnInit {
     sessionStorage.setItem('buildingId',this.buildingId.toString());
     this.getUnits(this.buildingId);
     this.dataService.getBuildingInfo(this.buildingId).subscribe(res=>{
-      console.log(res)
       if(res.success === "true"){
         this.showBuildingEdit = true;
+        this.buildingOwnerContact = res.data.contactOwner;
+        this.buildingOwnerName = res.data.nameOfBuildingOwner;
       }
     })
   }
@@ -80,7 +84,6 @@ export class DashboardComponent implements OnInit {
 
   editUnit(id){
     this.router.navigate(['edit-unit',id]);
-    console.log(id)
   }
 
   gotocamera(){

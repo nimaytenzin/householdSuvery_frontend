@@ -81,7 +81,7 @@ export class ViewPositiveComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view'];
+  displayedColumns: string[] = ['position', 'name', 'view'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
@@ -116,10 +116,18 @@ export class ViewPositiveComponent implements OnInit {
     unitOwnership:string,
     name:string,
     cid:number,
+    age:number,
+    gender:string,
+    employment:string,
+    employmentOrg:string,
+    workzone:string,
     numberHousehold:number,
     incomeEarner:number,
     householdIncome:number,
     shopOfficeName:string,
+    covid_test_status:boolean,
+    vaccine_status:boolean,
+    most_active:boolean,
     shopOfficeContact:number,
     shopOfficeRent:number
   } = {
@@ -128,6 +136,14 @@ export class ViewPositiveComponent implements OnInit {
     unitOwnership:"Not added",
     name:"Not added",
     cid:0,
+    age:0,
+    gender:"",
+    employment:"",
+    employmentOrg:"",
+    workzone:"",
+    covid_test_status:false,
+    vaccine_status:false,
+    most_active:false,
     numberHousehold:0,
     incomeEarner:0,
     householdIncome:0,
@@ -481,8 +497,10 @@ export class ViewPositiveComponent implements OnInit {
     this.total_cases = 0
     this.NationalCase = L.geoJSON(data, {
       pointToLayer:  (feature, latlng) => { 
-        this.red_buildings = this.red_buildings + 1
-        this.total_cases = Number(this.total_cases) + Number(feature.properties.numCases)
+        if(feature.properties.status ==="ACTIVE"){
+          this.red_buildings = this.red_buildings + 1
+          this.total_cases = Number(this.total_cases) + Number(feature.properties.numCases)
+        }
         return L.circleMarker(latlng,{
           radius: 5,
           fillColor: this.markerColor(feature.properties.status),

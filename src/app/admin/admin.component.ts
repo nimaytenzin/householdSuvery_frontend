@@ -68,7 +68,7 @@ interface IdName{
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol','view', 'update','delete'];
+  displayedColumns: string[] = ['position', 'name',  'view', 'update','delete'];
   totalBuilding:number;
   totalCompleted:number;
   showBuildingInfo:boolean=false;
@@ -97,10 +97,18 @@ export class AdminComponent implements OnInit {
     unitOwnership:string,
     name:string,
     cid:number,
+    age:number,
+    gender:string,
+    employment:string,
+    employmentOrg:string,
+    workzone:string,
     numberHousehold:number,
     incomeEarner:number,
     householdIncome:number,
     shopOfficeName:string,
+    covid_test_status:boolean,
+    vaccine_status:boolean,
+    most_active:boolean,
     shopOfficeContact:number,
     shopOfficeRent:number
   } = {
@@ -109,6 +117,14 @@ export class AdminComponent implements OnInit {
     unitOwnership:"Not added",
     name:"Not added",
     cid:0,
+    age:0,
+    gender:"",
+    employment:"",
+    employmentOrg:"",
+    workzone:"",
+    covid_test_status:false,
+    vaccine_status:false,
+    most_active:false,
     numberHousehold:0,
     incomeEarner:0,
     householdIncome:0,
@@ -162,7 +178,12 @@ export class AdminComponent implements OnInit {
   officeShopDetailShow:boolean
   residentialUnitDetailShow:boolean
 
+  //health Statistics
+  totalPopulation:any;
+  percentVacinnated:any;
+  percentTested:any;
 
+  zoneName:string = "Zone Stats"
   map: L.Map;
   
   greenMarker = L.icon({
@@ -337,7 +358,24 @@ export class AdminComponent implements OnInit {
     this.renderMap(this.dataService);
     
     if (sessionStorage.getItem("subzoneID") !== null) {
-      this.renderBuildings(sessionStorage.getItem("subzoneID"))
+      this.renderBuildings(sessionStorage.getItem("subzoneID"));
+      this.dataService.getTotalPopulationbySubzone(zoneId).subscribe(res => {
+        this.totalPopulation = res.data;
+      })
+      this.dataService.getTotalVacinnatedBySubzone(zoneId).subscribe(res => {
+        if(res.success === "false"){
+          this.percentVacinnated =0;
+        }else{
+            this.percentVacinnated =( (res.data/this.totalPopulation) *100).toFixed(2);
+        }
+      })
+      this.dataService.getTestedBySubzone(zoneId).subscribe(res => {
+        if(res.success === "false"){
+          this.percentTested =0;
+        }else{
+            this.percentTested = ((res.data/this.totalPopulation) *100).toFixed(2);
+        }
+      })
     }else{
 
     }
@@ -419,6 +457,7 @@ export class AdminComponent implements OnInit {
                   })
                   this.dataService.getHouseholds(this.buildingId).subscribe(res => {
                     this.unitsData = res.data
+                    console.log(res.data, "UNits datat")
                     this.length = res.data.length
                     console.log('fdd',res)
 
@@ -544,7 +583,27 @@ export class AdminComponent implements OnInit {
 
   zoneSearch() {
       const zoneId = this.zoneForm.get('subZoneControl').value;
-      this.renderBuildings(zoneId)
+      this.renderBuildings(zoneId);
+      this.dataService.getTotalPopulationbySubzone(zoneId).subscribe(res => {
+        console.log("getting total population", res);
+        this.totalPopulation = res.data;
+      })
+      this.dataService.getTotalVacinnatedBySubzone(zoneId).subscribe(res => {
+        console.log("getting total vaccinated", res)
+        if(res.success === "false"){
+          this.percentVacinnated =0;
+        }else{
+            this.percentVacinnated =( (res.data/this.totalPopulation) *100).toFixed(2);
+        }
+      })
+      this.dataService.getTestedBySubzone(zoneId).subscribe(res => {
+        console.log("getting total tested", res);
+        if(res.success === "false"){
+          this.percentTested =0;
+        }else{
+            this.percentTested = ((res.data/this.totalPopulation) *100).toFixed(2);
+        }
+      })
       sessionStorage.setItem('subzoneID', zoneId)
   }
 
@@ -612,7 +671,6 @@ export class AdminComponent implements OnInit {
 
                       this.deleteID = feature.properties.structure_id  
                       this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                      console.log(res)
                         this.bid = res.data.id
                         this.buildingUse = res.data.buildingUse;
                         this.cidOwner = res.data.cidOwner;
@@ -620,6 +678,7 @@ export class AdminComponent implements OnInit {
                         this.contactOwner = res.data.contactOwner;
                       })
                       this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                        console.log("Residntial details", res.data)
                         this.unitsData = res.data
                         this.length = res.data.length
             
@@ -677,7 +736,7 @@ export class AdminComponent implements OnInit {
     });
     this.dataService.getAHousehold(unitid).subscribe(resp=>{
    
-
+      console.log(resp.data)
       if(resp.data.unitUse !== "Residential"){
         this.residentialUnitDetailShow = false
         this.officeShopDetailShow = true
@@ -689,6 +748,7 @@ export class AdminComponent implements OnInit {
      
       this.dataService.getFamilyMembers(unitid).subscribe(resp => {
        this.familyMembers = resp.data
+       console.log("Family memebers", this.familyMembers)
       })
       this.dataService.getUserInfo(resp.data.userId).subscribe(res => {
         console.log(res)
