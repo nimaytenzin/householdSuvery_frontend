@@ -50,6 +50,7 @@ import {  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
 import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positive-dialog.component';
+import { ServiceDashboardComponent } from './service-dashboard/service-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positiv
     ViewPositiveComponent,
     MarkPositiveDialogComponent,
     CovAdminComponent,
-    EditPositiveDialogComponent
+    EditPositiveDialogComponent,
+    ServiceDashboardComponent
   ],
   imports: [
     BrowserModule,

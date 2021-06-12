@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone} from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
-import {  Router } from '@angular/router';
+import {  Router,ActivatedRoute } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -224,6 +224,7 @@ export class ViewPositiveComponent implements OnInit {
   });
 
   setViewValue: boolean;
+  dzo_id: number;
 
   constructor(
     private http: HttpClient,
@@ -232,6 +233,7 @@ export class ViewPositiveComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private zone: NgZone,
+    private route: ActivatedRoute,
     private fb: FormBuilder
   ) { 
     this.building = new Building();
@@ -244,6 +246,8 @@ export class ViewPositiveComponent implements OnInit {
   ngOnInit() {   
     this.getDzongkhagList();
     this.reactiveForm();
+    this.dzo_id= this.route.snapshot.params['id'];
+
     const zoneId = sessionStorage.getItem('zoneId');
     const subZoneId = sessionStorage.getItem('subZoneId');
     const dzongkhagId = sessionStorage.getItem('dzongkhagId')
@@ -253,7 +257,7 @@ export class ViewPositiveComponent implements OnInit {
     this.renderMap(this.dataService) 
 
     this.addOverallbound().then(()=>{ 
-      this.getPositiveCase()
+      this.getPositiveCase(this.dzo_id)
     })
 
     if (sessionStorage.getItem("subzoneID") !== null) {
@@ -457,8 +461,8 @@ export class ViewPositiveComponent implements OnInit {
     };
   }
 
-  getPositiveCase(){
-    this.dataService.getpositivecases().subscribe(res => {
+  getPositiveCase(dzoid){
+    this.dataService.getpositivecases(dzoid).subscribe(res => {
       console.log("positive added")
       this.addPositiveCases(res)
       

@@ -16,6 +16,7 @@ import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 import { ViewPositiveComponent } from './view-positive/view-positive.component';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
+import { ServiceDashboardComponent } from './service-dashboard/service-dashboard.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -34,8 +35,9 @@ const routes: Routes = [
   {path: 'map', component: MapComponent, canActivate: [RouteGuard]},
   {path: 'camera',component: UploadImageComponent, canActivate: [RouteGuard]},
   {path: 'atm', component: RegisterAtmComponent, canActivate: [RouteGuard]},
-  {path: 'cov-map', component: ViewPositiveComponent, canActivate: [RouteGuard]},
-  {path: 'cov-admin', component: CovAdminComponent, canActivate: [RouteGuard]},
+  {path: 'service-dashboard', component: ServiceDashboardComponent, canActivate: [RouteGuard]},
+  {path: 'cov-map/:id', component: ViewPositiveComponent, canActivate: [RouteGuard]},
+  {path: 'cov-admin/:id', component: CovAdminComponent, canActivate: [RouteGuard]},
   {path: '**', component: ErrorComponent},
   
 ];

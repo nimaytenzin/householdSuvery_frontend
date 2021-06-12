@@ -44,8 +44,11 @@
         <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
           <mat-label>Dzongkhag</mat-label>
           <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" required>
-            <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">
+            <!-- <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">
               {{dzongkhag.name}}
+            </mat-option> -->
+            <mat-option [value]="dzongkhags.id">
+              {{dzongkhags.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>

@@ -76,6 +76,14 @@ export class DataService {
       );
   }
 
+  getADzongkhags(id) {
+    return this.http
+      .get<any>(`${this.API_URL}/dzongkhag/get/${id}`, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   getZones(dzongkhagId) {
     return this.http
       .get<any>(`${this.API_URL}/zone/get-zone/${dzongkhagId}`, this.httpOptions)
@@ -320,9 +328,9 @@ export class DataService {
       );
   }
 
-  getpositivecases(){
+  getpositivecases(dzoid){
     return this.http
-    .get<any>(`${this.API_URL}/case/get`,this.httpOptions)
+    .get<any>(`${this.API_URL}/case/get/${dzoid}`,this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )

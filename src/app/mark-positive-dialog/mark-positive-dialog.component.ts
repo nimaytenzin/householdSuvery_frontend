@@ -12,6 +12,7 @@ export class RedBuilding{
   lng:number;
   date: Date;
   day:number;
+  dzo_id:number;
   remarks: string;
   status:string;
 }
@@ -53,11 +54,13 @@ export class MarkPositiveDialogComponent implements OnInit {
 
   submit(){
     var structure_id = this.data.object.properties.structure_id;
+    var dzo_id = Number(sessionStorage.getItem('dzo_id'));
     var lng =this.data.object.coordinates[0];
     var lat =this.data.object.coordinates[1];
 
     console.log('adsd', this.data)
     this.redBuilding.structure_id = structure_id;
+    this.redBuilding.dzo_id = dzo_id; 
 
     console.log(this.registerRedBuildingForm.get('cases').value);
     this.redBuilding.numCases = this.registerRedBuildingForm.get('cases').value;
@@ -67,6 +70,7 @@ export class MarkPositiveDialogComponent implements OnInit {
     this.redBuilding.day = this.registerRedBuildingForm.get('day').value;
     this.redBuilding.lat = lat;
     this.redBuilding.lng = lng;
+    console.log(this.redBuilding)
     this.dataservice.addRedBuilding(this.redBuilding).subscribe(res => {
       this.dialogRef.close()
     })

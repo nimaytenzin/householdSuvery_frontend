@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -193,6 +193,7 @@ export class CovAdminComponent implements OnInit {
 
   redbuilding: RedBuilding;
   NationalCase: any;
+  dzo_id: Number;
 
   map: L.Map;
 
@@ -222,6 +223,7 @@ export class CovAdminComponent implements OnInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private zone: NgZone,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
   ) {
     this.building = new Building();
@@ -232,6 +234,9 @@ export class CovAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dzo_id= this.route.snapshot.params['id'];
+    sessionStorage.setItem('dzo_id',String(this.dzo_id));
+
     this.getDzongkhagList();
     this.reactiveForm();
     const zoneId = sessionStorage.getItem('zoneId');
@@ -241,6 +246,7 @@ export class CovAdminComponent implements OnInit {
     this.getZoneList(dzongkhagId);
     this.getSubzoneList(zoneId);
     this.renderMap(this.dataService);
+    this.zoomToDzo(this.dzo_id)
 
     if (sessionStorage.getItem("subzoneID") !== null) {
       this.renderBuildings(sessionStorage.getItem("subzoneID"))
@@ -248,6 +254,14 @@ export class CovAdminComponent implements OnInit {
 
     }
 
+  }
+
+  zoomToDzo(id){
+    this.dataService.getADzongkhags(id).subscribe(res=>{
+      var lat = res.data.lat;
+      var lng = res.data.lng;
+      this.map.setView([lat,lng],12)
+    })
   }
 
   submit() {
@@ -469,7 +483,7 @@ export class CovAdminComponent implements OnInit {
       }
     });
 
-    this.getPositiveCases();
+    this.getPositiveCases(this.dzo_id);
   }
 
   markerColor(status) {
@@ -480,8 +494,8 @@ export class CovAdminComponent implements OnInit {
     }
   }
 
-  getPositiveCases(){
-    this.dataService.getpositivecases().subscribe(res => {
+  getPositiveCases(dzoid){
+    this.dataService.getpositivecases(dzoid).subscribe(res => {
       this.addPositiveCase(res);
     })
   }
@@ -552,6 +566,8 @@ export class CovAdminComponent implements OnInit {
         )
       },
     }).addTo(this.map);
+    this.map.fitBounds(this.NationalCase.getBounds())
+
   }
 
 
@@ -793,7 +809,7 @@ export class CovAdminComponent implements OnInit {
   }
 
   getDzongkhagList() {
-    this.dataService.getDzongkhags().subscribe(response => {
+    this.dataService.getADzongkhags(this.dzo_id).subscribe(response => {
       this.dzongkhags = response.data;
     });
   }
@@ -920,7 +936,7 @@ export class CovAdminComponent implements OnInit {
       }
     });
     confirmDialog.afterClosed().subscribe(e => {
-      this.getPositiveCases()
+      this.getPositiveCases(this.dzo_id)
     })
   }
 
