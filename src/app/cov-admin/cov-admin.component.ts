@@ -160,7 +160,7 @@ export class CovAdminComponent implements OnInit {
   residentialUnits = [];
 
   zoneForm: FormGroup;
-  dzongkhags: Dzongkhag[] = [];
+  dzongkhags: Dzongkhag;
   zones: Zone[] = [];
   subZones: Subzone[] = [];
   isUserLoggedIn: boolean;
