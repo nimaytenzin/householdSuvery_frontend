@@ -1,0 +1,35 @@
+
+<div class="form-wraper" style="text-align:center">
+
+        <h3>Mark Selected Building as Red building?</h3>
+
+        <h1>
+            Latitude: {{ data.lat }}
+        </h1>
+        <h1>
+            Longitude: {{ data.lng }}
+        </h1>
+        <h1>
+            Structure ID: {{ data.structure_id }}
+        </h1>
+         <!-- Start of Building Form-->
+         <form [formGroup]="createRedBuildingForm">
+            <mat-form-field class="justifier">
+                <mat-label>Remarks If Any</mat-label>
+                <input matInput type="text"   formControlName="remarks"   required autofocus>
+            </mat-form-field>
+            <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
+                <mat-label>Status</mat-label>
+                <select matNativeControl required formControlName="status">
+                  <option value="ACTIVE" selected>Active</option>
+                  <option value="INACTIVE">Inactive</option>
+                </select>
+              </mat-form-field>
+        </form>
+    
+      </div>
+      <div class="form-footer">
+        <button mat-flat-button class="btn custom-btn" (click)="submit()" color="primary" >
+          <mat-icon>note_add</mat-icon> Mark Red Building
+        </button>
+  </div>

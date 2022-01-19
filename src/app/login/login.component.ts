@@ -3,6 +3,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../service/authentication.service';
 import { MatSnackBar } from '@angular/material';
+import jwt_decode from 'jwt-decode';
 
 @Component({
   selector: 'app-login',
@@ -38,20 +39,31 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-
     this.submitted = true;
     if (this.loginForm.valid) {
       const loginId = this.loginForm.get('cid').value;
       const password = this.loginForm.get('password').value;
       this.authService.validateLogin(loginId, password).subscribe(response => {
+        let token = response.data.token
+        // let token = jwt_decode(response.data.token)
+        token = token.slice(7, token.length);
+
+        
+
+        let user:any = jwt_decode(token);
+        console.log("DECODED", user)
+  
         sessionStorage.setItem('userId', response.data.id);
         sessionStorage.setItem('isadmin',response.data.isadmin);
         localStorage.setItem('loginId', loginId);
-        if(sessionStorage.getItem('isadmin') === "TRUE"){
+
+        console.log(response)
+        
+        if(user.isadmin === "TRUE"){
           this.router.navigate(['admin']);
-        }else if(sessionStorage.getItem('isadmin') === "COV_ADMIN"){
+        }else if(user.isadmin === "COV_ADMIN"){
           this.router.navigate(['cov-admin'])
-        }else if(sessionStorage.getItem('isadmin') === "COV_VIEW"){
+        }else if(user.isadmin === "COV_VIEW"){
           this.router.navigate(['cov-map'])
         }else{
           this.router.navigate(['selectzone']);

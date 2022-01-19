@@ -4,16 +4,15 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DataService } from 'src/app/service/data.service';
 
 
-export class RedBuilding{
+export class Case{
   structure_id:number;
   numCases:number;
-  case_id:string;
   lat:number;
   lng:number;
   date: Date;
-  day:number;
   remarks: string;
   status:string;
+  dzongkhag_id:number;
 }
 
 @Component({
@@ -25,8 +24,10 @@ export class RedBuilding{
 
 export class MarkPositiveDialogComponent implements OnInit {
   registerRedBuildingForm:FormGroup;
-  redBuilding = new RedBuilding;
+  newCase = new Case;
   today:Date;
+
+  ok;
 
   constructor(
     private fb:FormBuilder,
@@ -39,6 +40,7 @@ export class MarkPositiveDialogComponent implements OnInit {
   ngOnInit() {
     this.today = new Date();
     this.reactiveForm();
+    this.ok = this.data
   }
 
   reactiveForm(){
@@ -46,29 +48,25 @@ export class MarkPositiveDialogComponent implements OnInit {
       cases:[],
       case_id:[],
       date:[new Date()],
-      day:[],
+      status:[],
       remarks:[]
     });   
   }
 
   submit(){
-    var structure_id = this.data.object.properties.structure_id;
-    var lng =this.data.object.coordinates[0];
-    var lat =this.data.object.coordinates[1];
-
-    console.log('adsd', this.data)
-    this.redBuilding.structure_id = structure_id;
-
-    console.log(this.registerRedBuildingForm.get('cases').value);
-    this.redBuilding.numCases = this.registerRedBuildingForm.get('cases').value;
-    this.redBuilding.case_id = this.registerRedBuildingForm.get('case_id').value;
-    this.redBuilding.date = this.registerRedBuildingForm.get('date').value;
-    this.redBuilding.remarks = this.registerRedBuildingForm.get('remarks').value;
-    this.redBuilding.day = this.registerRedBuildingForm.get('day').value;
-    this.redBuilding.lat = lat;
-    this.redBuilding.lng = lng;
-    this.dataservice.addRedBuilding(this.redBuilding).subscribe(res => {
-      this.dialogRef.close()
+    
+    this.newCase.lat = this.data.object.coordinates[1];
+    this.newCase.lng = this.data.object.coordinates[0];
+    this.newCase.structure_id = this.data.object.properties.structure_id;
+    this.newCase.numCases = this.registerRedBuildingForm.get('cases').value;
+    this.newCase.date = this.registerRedBuildingForm.get('date').value;
+    this.newCase.remarks = this.registerRedBuildingForm.get('remarks').value;
+    this.newCase.dzongkhag_id = Number(sessionStorage.getItem('dzongkhag_id'));
+    
+    console.log(this.newCase)
+    this.dataservice.addRedBuilding(this.newCase).subscribe(res => {
+      // this.dialogRef.close()
+      console.log(res)
     })
 
   }

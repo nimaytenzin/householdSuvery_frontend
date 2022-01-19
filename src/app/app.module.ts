@@ -50,6 +50,8 @@ import {  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
 import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positive-dialog.component';
+import { CreateRedBuildingDialogComponent } from './red-buildings/create-red-building-dialog/create-red-building-dialog.component';
+import { AddCasesDialogComponent } from './red-buildings/add-cases-dialog/add-cases-dialog.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positiv
     ViewPositiveComponent,
     MarkPositiveDialogComponent,
     CovAdminComponent,
-    EditPositiveDialogComponent
+    EditPositiveDialogComponent,
+    CreateRedBuildingDialogComponent,
+    AddCasesDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +116,6 @@ import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positiv
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent]
 })
 export class AppModule { }

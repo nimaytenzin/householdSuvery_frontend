@@ -4,6 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,13 @@ export class DataService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'
+    })
+  };
+
+  AuthenticatedHttpOtions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization':sessionStorage.getItem('token')
     })
   };
 
@@ -70,7 +78,7 @@ export class DataService {
 
   getDzongkhags() {
     return this.http
-      .get<any>(`${this.API_URL}/dzongkhag/get-all`, this.httpOptions)
+      .get<any>(`${this.API_URL}/dzongkhag/get-all`, this.AuthenticatedHttpOtions)
       .pipe(
         catchError(this.handleError)
       );
@@ -378,5 +386,41 @@ export class DataService {
       catchError(this.handleError)
     )
   }
+
+  //Redbuilding Routes
+  createRedBuilding(data){
+    return this.http
+    .post<any>(`${this.API_URL}/red-building/create`, data, this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  createNewCase(data){
+    return this.http
+    .post<any>(`${this.API_URL}/case/create`, data, this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    );
+  }
+
+
+  getCasesByRedbuilingId(id){
+    return this.http
+    .get<any>(`${this.API_URL}/case/get-all/${id}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getRedBuildingsByDzongkhag(dzoId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get/${dzoId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+
 
 }

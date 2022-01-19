@@ -9,17 +9,17 @@ import { environment } from '../../environments/environment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MarkPositiveDialogComponent } from '../mark-positive-dialog/mark-positive-dialog.component';
 import { EditPositiveDialogComponent } from '../edit-positive-dialog/edit-positive-dialog.component';
-
+import { CreateRedBuildingDialogComponent } from '../red-buildings/create-red-building-dialog/create-red-building-dialog.component';
+import { AddCasesDialogComponent } from '../red-buildings/add-cases-dialog/add-cases-dialog.component';
 export class RedBuilding {
   structure_id: number;
-  numCases: number;
   lat: number;
   lng: number;
-  date: Date;
-  day: number;
   remarks: string;
   status: string;
+  dzo_id: number;
 }
+
 
 export class Building {
   lat: number;
@@ -104,47 +104,47 @@ export class CovAdminComponent implements OnInit {
   enumeratedBy: string = "No Info."
 
   unitsData: any;
-  housholdsData:{
-    unitId:number,
-    enumeratedBy:string,
-    unitOwnership:string,
-    name:string,
-    cid:number,
-    age:number,
-    gender:string,
-    employment:string,
-    employmentOrg:string,
-    workzone:string,
-    numberHousehold:number,
-    incomeEarner:number,
-    householdIncome:number,
-    shopOfficeName:string,
-    covid_test_status:boolean,
-    vaccine_status:boolean,
-    most_active:boolean,
-    shopOfficeContact:number,
-    shopOfficeRent:number
+  housholdsData: {
+    unitId: number,
+    enumeratedBy: string,
+    unitOwnership: string,
+    name: string,
+    cid: number,
+    age: number,
+    gender: string,
+    employment: string,
+    employmentOrg: string,
+    workzone: string,
+    numberHousehold: number,
+    incomeEarner: number,
+    householdIncome: number,
+    shopOfficeName: string,
+    covid_test_status: boolean,
+    vaccine_status: boolean,
+    most_active: boolean,
+    shopOfficeContact: number,
+    shopOfficeRent: number
   } = {
-    unitId: 0,
-    enumeratedBy: 'No info',
-    unitOwnership:"Not added",
-    name:"Not added",
-    cid:0,
-    age:0,
-    gender:"",
-    employment:"",
-    employmentOrg:"",
-    workzone:"",
-    covid_test_status:false,
-    vaccine_status:false,
-    most_active:false,
-    numberHousehold:0,
-    incomeEarner:0,
-    householdIncome:0,
-    shopOfficeName :"NA",
-    shopOfficeContact: 0,
-    shopOfficeRent: 0
-  };
+      unitId: 0,
+      enumeratedBy: 'No info',
+      unitOwnership: "Not added",
+      name: "Not added",
+      cid: 0,
+      age: 0,
+      gender: "",
+      employment: "",
+      employmentOrg: "",
+      workzone: "",
+      covid_test_status: false,
+      vaccine_status: false,
+      most_active: false,
+      numberHousehold: 0,
+      incomeEarner: 0,
+      householdIncome: 0,
+      shopOfficeName: "NA",
+      shopOfficeContact: 0,
+      shopOfficeRent: 0
+    };
   familyMembers: any;
 
   //chart js
@@ -186,6 +186,7 @@ export class CovAdminComponent implements OnInit {
   resident: any;
   showattic = false;
   showCaseDetails = false;
+  selectedStructure = null;
 
   //logic
   officeShopDetailShow: boolean
@@ -210,10 +211,16 @@ export class CovAdminComponent implements OnInit {
   })
   myMarker = L.icon({
     iconUrl: 'assets/mymarker.png',
-    iconSize: [12, 12]
+    iconSize: [8, 8]
   });
 
   setViewValue: boolean;
+
+  //redBuildings
+  redBuildingGeojson: any;
+  redBuildingCases: any;
+  selectedRedBuilding:any;
+  selectedDzongkhagId:number;
 
   constructor(
     private http: HttpClient,
@@ -229,24 +236,25 @@ export class CovAdminComponent implements OnInit {
     this.selectZone = false;
     this.clearData = false;
     this.setViewValue = true;
+
   }
 
   ngOnInit() {
     this.getDzongkhagList();
     this.reactiveForm();
-    const zoneId = sessionStorage.getItem('zoneId');
-    const subZoneId = sessionStorage.getItem('subZoneId');
-    const dzongkhagId = sessionStorage.getItem('dzongkhagId')
+    // const zoneId = sessionStorage.getItem('zoneId');
+    // const subZoneId = sessionStorage.getItem('subZoneId');
+    // const dzongkhagId = sessionStorage.getItem('dzongkhagId')
 
-    this.getZoneList(dzongkhagId);
-    this.getSubzoneList(zoneId);
-    this.renderMap(this.dataService);
+    // this.getZoneList(dzongkhagId);
+    // this.getSubzoneList(zoneId);
+    this.renderMap();
 
-    if (sessionStorage.getItem("subzoneID") !== null) {
-      this.renderBuildings(sessionStorage.getItem("subzoneID"))
-    } else {
+    // if (sessionStorage.getItem("subzoneID") !== null) {
+    //   this.renderBuildings(sessionStorage.getItem("subzoneID"))
+    // } else {
 
-    }
+    // }
 
   }
 
@@ -386,7 +394,7 @@ export class CovAdminComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
           this.isAddAllowed = false;
-          this.renderBuildings(this.building.sub_zone_id);
+          // this.renderBuildings(this.building.sub_zone_id);
         });
       } else {
         this.isAddAllowed = false;
@@ -396,7 +404,7 @@ export class CovAdminComponent implements OnInit {
 
 
 
-  renderMap(dataservice: DataService) {
+  renderMap() {
     var sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       minZoom: 9,
@@ -406,8 +414,8 @@ export class CovAdminComponent implements OnInit {
       minZoom: 9,
     });
     this.map = L.map('map', {
-      center: [26.864894, 89.38203],
-      zoom: 13,
+      center: [27.574368, 90.206081],
+      zoom: 10,
       maxZoom: 20,
       minZoom: 9,
       layers: [sat]
@@ -469,7 +477,7 @@ export class CovAdminComponent implements OnInit {
       }
     });
 
-    this.getPositiveCases();
+    // this.getPositiveCases();
   }
 
   markerColor(status) {
@@ -480,14 +488,17 @@ export class CovAdminComponent implements OnInit {
     }
   }
 
-  getPositiveCases(){
+  //Get Positive Cases by Dzongkhag Selected
+
+  getPositiveCases() {
     this.dataService.getpositivecases().subscribe(res => {
       this.addPositiveCase(res);
+      console.log(res)
     })
   }
 
-  addPositiveCase(data){
-    if(this.NationalCase !== undefined){
+  addPositiveCase(data) {
+    if (this.NationalCase !== undefined) {
       console.log("removing old layer");
       this.map.removeLayer(this.NationalCase);
     }
@@ -528,28 +539,28 @@ export class CovAdminComponent implements OnInit {
             }
           })
         })
-        layer.bindPopup(
-          '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
-          '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>' +
-          '<p style:"color:tomtato">Date Detected: ' + new Date(feature.properties.date).toLocaleDateString() + '</p>' +
-          '<button class="edit">View/Edit </button>' +
-          '<button class="normalize">Normalize Building</button>'
-        ).on("popupopen", (a) => {
-          var popUp = a.target.getPopup()
-          popUp.getElement()
-            .querySelector(".edit")
-            .addEventListener("click", e => {
-              this.editRedBuilding(feature)
-            });
-        }).on("popupopen", (a) => {
-          var popUp = a.target.getPopup()
-          popUp.getElement()
-            .querySelector(".normalize")
-            .addEventListener("click", e => {
-              this.normalizeBuilding(feature)
-            });
-        },
-        )
+        // layer.bindPopup(
+        //   '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
+        //   '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>' +
+        //   '<p style:"color:tomtato">Date Detected: ' + new Date(feature.properties.date).toLocaleDateString() + '</p>' +
+        //   '<button class="edit">View/Edit </button>' +
+        //   '<button class="normalize">Normalize Building</button>'
+        // ).on("popupopen", (a) => {
+        //   var popUp = a.target.getPopup()
+        //   popUp.getElement()
+        //     .querySelector(".edit")
+        //     .addEventListener("click", e => {
+        //       this.editRedBuilding(feature)
+        //     });
+        // }).on("popupopen", (a) => {
+        //   var popUp = a.target.getPopup()
+        //   popUp.getElement()
+        //     .querySelector(".normalize")
+        //     .addEventListener("click", e => {
+        //       this.normalizeBuilding(feature)
+        //     });
+        // },
+        // )
       },
     }).addTo(this.map);
   }
@@ -557,22 +568,42 @@ export class CovAdminComponent implements OnInit {
 
 
   zoneSearch() {
+    console.log()
     const zoneId = this.zoneForm.get('subZoneControl').value;
     this.renderBuildings(zoneId)
     sessionStorage.setItem('subzoneID', zoneId)
+    this.selectedDzongkhagId = this.zoneForm.get('dzongkhagControl').value.id;
+    this.map.setView([this.zoneForm.get('dzongkhagControl').value.lat, this.zoneForm.get('dzongkhagControl').value.lng], 14);
+
   }
 
   //zone Search End
 
+
+
   renderBuildings(zoneId) {
+    // const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
+    //   if(this.bound !== undefined){
+    //     this.map.removeLayer(this.bound);
+    //   }
+    //   this.bound = L.geoJSON(json.data, {
+    //     style: (feature) => {
+    //       return {
+    //         color: "red",
+    //         fillOpacity: 0
+    //       }
+    //     }
+    //   }).addTo(this.map);
+    // })
+
     const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
-      if(this.bound !== undefined){
+      if (this.bound !== undefined) {
         this.map.removeLayer(this.bound);
       }
       this.bound = L.geoJSON(json.data, {
         style: (feature) => {
           return {
-            color: "red",
+            color: "gray",
             fillOpacity: 0
           }
         }
@@ -581,8 +612,77 @@ export class CovAdminComponent implements OnInit {
     this.addStructures(zoneId);
   }
 
+
+  addNewCase(){
+    console.log(this.selectedRedBuilding)
+    this.dialog.open(AddCasesDialogComponent, {
+      data:{
+        red_building_id:this.selectedRedBuilding.properties.id,
+        dzo_id:this.selectedDzongkhagId
+      }
+    })
+  }
+
+
+  renderRedBuildings(dzongkhagId: number) {
+    this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
+      this.redBuildingGeojson = L.geoJSON(res, {
+        onEachFeature: (feature, layer) => {
+          layer.on('click', (e) => {
+            this.selectedRedBuilding = feature
+            this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
+            this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
+              this.redBuildingCases = res.data;
+              let totalCases=0;
+              res.data.forEach(element => {
+                totalCases+= element.numCases;
+              });
+              layer.bindPopup(
+                '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
+                '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
+                '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
+              )
+              this.buildingId = feature.properties.structure_id;
+              this.deleteButton = true
+              this.unitDetailShow = true
+              this.showBuildingInfo = true;
+              this.deleteID = feature.properties.structure_id
+              this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                this.bid = res.data.id
+                this.buildingUse = res.data.buildingUse;
+                this.cidOwner = res.data.cidOwner;
+                this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                this.contactOwner = res.data.contactOwner;
+              })
+              this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                this.unitsData = res.data
+                this.length = res.data.length
+              })
+              this.dataService.getImg(this.buildingId).subscribe(res => {
+                if (res.success) {
+                  this.imgs = res.data
+                }
+              })
+              this.addDeleteButtons = true;
+              this.showBuildingInfo = true;
+              this.showBuilding(this.buildingId);
+              this.clearData = true;
+              this.resident = null;
+            })
+          });
+        },
+        pointToLayer: (feature, latLng) => {
+          return L.marker(latLng, { icon: this.redMarker });
+        }
+      });
+      this.map.addLayer(this.redBuildingGeojson)
+      this.map.fitBounds(this.redBuildingGeojson.getBounds());
+    })
+  }
+
   addStructures(zoneId) {
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
+      console.log("SCTRUECURS", json)
       this.json = json;
       if (this.buildingGeojson !== undefined) {
         this.map.removeLayer(this.buildingGeojson)
@@ -593,12 +693,11 @@ export class CovAdminComponent implements OnInit {
 
       this.buildingGeojson = L.geoJSON(this.json, {
         onEachFeature: (feature, layer) => {
-          if (feature.properties.status == "COMPLETE") {
-            this.totalCompleted++
-          }
           layer.on('click', (e) => {
             this.residentTableShow = false;
-            this.addPositiveDialog(feature);
+            this.selectedStructure = feature;
+            this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
+            console.log(this.selectedStructure)
             if (feature.properties.status == 'INCOMPLETE') {
               this.deleteButton = true
               this.deleteID = feature.properties.structure_id
@@ -615,7 +714,6 @@ export class CovAdminComponent implements OnInit {
               this.deleteButton = true
               this.unitDetailShow = true
               this.showBuildingInfo = true;
-
               this.deleteID = feature.properties.structure_id
               this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                 this.bid = res.data.id
@@ -639,30 +737,17 @@ export class CovAdminComponent implements OnInit {
               this.clearData = true;
               this.resident = null;
             }
-
           });
         },
         pointToLayer: (feature, latLng) => {
-          if (feature.properties.status == 'INCOMPLETE') {
-            return L.marker(latLng, { icon: this.redMarker });
-          } else if (feature.properties.status == "PROGRESS") {
-            return L.marker(latLng, { icon: this.yellowMarker });
-          } else if (this.showattic) {
-            return L.marker(latLng, { icon: this.myMarker });
-          } else {
-            this.precentCompleted++
-            return L.marker(latLng, { icon: this.greenMarker });
-          }
+          return L.marker(latLng, { icon: this.myMarker });
         }
       });
       this.map.addLayer(this.buildingGeojson)
-      this.map.fitBounds(this.buildingGeojson.getBounds());
-      this.precentCompleted = (this.totalCompleted / this.totalBuilding) * 100;
-      this.progressShow = true;
+      this.renderRedBuildings(this.selectedDzongkhagId);
     });
+
   }
-
-
   showResident(unitid) {
     this.resident = null;
     this.residentTableShow = true
@@ -705,8 +790,6 @@ export class CovAdminComponent implements OnInit {
   highlight(row) {
     this.selectedRowIndex = row.id;
   }
-
-
   toggleAdd() {
     console.log("sdfs")
     if (sessionStorage.getItem('subzoneID') === null) {
@@ -767,6 +850,32 @@ export class CovAdminComponent implements OnInit {
   showBuilding(unitid) {
     this.buildingInfo = null;
     this.buildingInfo = new BuildingInfo()
+  }
+
+  markStructureAsRedBuilding() {
+    console.log(this.selectedStructure);
+
+    this.selectedStructure.properties.dzongkhag_id = 1;
+
+    let data = {
+      dzo_id: this.selectedDzongkhagId,
+      lat: this.selectedStructure.coordinates[1],
+      lng: this.selectedStructure.coordinates[0],
+      structure_id: this.selectedStructure.properties.structure_id
+    }
+
+    const createRedBuilingDialog = this.dialog.open(CreateRedBuildingDialogComponent, {
+      data: data
+    });
+
+    // const confirmDialog = this.dialog.open(MarkPositiveDialogComponent, {
+    //   data: {
+    //     object: this.selectedStructure
+    //   }
+    // });
+    // confirmDialog.afterClosed().subscribe(e => {
+    //   this.getPositiveCases()
+    // })
   }
 
 
@@ -927,7 +1036,7 @@ export class CovAdminComponent implements OnInit {
   addPositiveDialog(e) {
     const confirmDialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: "Mark structure with ID: "+e.properties.structure_id+" as Red Building?",
+        title: "Mark structure with ID: " + e.properties.structure_id + " as Red Building?",
         message: "Are you sure?"
       }
     });
@@ -973,6 +1082,14 @@ export class CovAdminComponent implements OnInit {
 
       }
     });
+  }
+
+  editCase() {
+    console.log()
+  }
+
+  parseDate(date){
+    return new Date(date).toLocaleDateString()
   }
 
 }
