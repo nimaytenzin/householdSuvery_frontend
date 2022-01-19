@@ -245,6 +245,8 @@ export class ViewPositiveComponent implements OnInit {
   selectedRedBuilding:any;
   redBuildingCases:any;
   dzongkhag:any;
+  totalCases:number;
+  totalRedBuildings:number;
 
 
 
@@ -262,12 +264,11 @@ export class ViewPositiveComponent implements OnInit {
     this.selectZone = false;
     this.clearData = false;
     this.setViewValue = true;
+    this.totalCases= 2;
+    this.totalRedBuildings=0
   }
 
   ngOnInit() {
-    
-  
-  
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhag = response.data[0];
       console.log(this.dzongkhag)
@@ -351,6 +352,7 @@ export class ViewPositiveComponent implements OnInit {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       this.redBuildingGeojson = L.geoJSON(res, {
         onEachFeature: (feature, layer) => {
+          this.totalRedBuildings ++;
           layer.on('click', (e) => {
             this.selectedRedBuilding = feature
             this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);

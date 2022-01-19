@@ -298,24 +298,7 @@ export class CovAdminComponent implements OnInit {
             this.showBuilding(this.buildingId);
             this.addPositiveDialog(feature);
             // this.resident = null;
-            if (response.data.status == 'INCOMPLETE') {
-              // this.buildingData= null
-              // this.familyMembers = null;
-              // this.unitsData =null
-              // this.housholdsData =null
-              this.residentTableShow = false;
-              this.deleteButton = true
-              this.deleteID = feature.properties.structure_id
-              this.showBuildingInfo = false;
-              this.residentTableShow = false;
-              this.unitDetailShow = false
-              this.snackBar.open(`buildingID: ${this.buildingId} No Data`, '', {
-                duration: 3000,
-                verticalPosition: 'top',
-                panelClass: ['error-snackbar']
-              });
-            } else {
-              // this.buildingData= null
+            // this.buildingData= null
               // this.familyMembers = null;
               // this.housholdsData =null
               // this.unitsData =null
@@ -353,7 +336,6 @@ export class CovAdminComponent implements OnInit {
               // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
               //   this.imgs= json.data;
               // });
-            }
           });
         }, pointToLayer: (feature, latLng) => {
           return L.marker(latLng, { icon: this.myMarker });
@@ -698,45 +680,32 @@ export class CovAdminComponent implements OnInit {
             this.selectedStructure = feature;
             this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
             console.log(this.selectedStructure)
-            if (feature.properties.status == 'INCOMPLETE') {
-              this.deleteButton = true
-              this.deleteID = feature.properties.structure_id
-              this.showBuildingInfo = false;
-              this.residentTableShow = false
-              this.unitDetailShow = false
-              this.snackBar.open(`buildingID: ${this.deleteID} No Data`, '', {
-                duration: 4000,
-                verticalPosition: 'top',
-                panelClass: ['error-snackbar']
-              });
-            } else {
-              this.buildingId = feature.properties.structure_id;
-              this.deleteButton = true
-              this.unitDetailShow = true
-              this.showBuildingInfo = true;
-              this.deleteID = feature.properties.structure_id
-              this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                this.bid = res.data.id
-                this.buildingUse = res.data.buildingUse;
-                this.cidOwner = res.data.cidOwner;
-                this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
-                this.contactOwner = res.data.contactOwner;
-              })
-              this.dataService.getHouseholds(this.buildingId).subscribe(res => {
-                this.unitsData = res.data
-                this.length = res.data.length
-              })
-              this.dataService.getImg(this.buildingId).subscribe(res => {
-                if (res.success) {
-                  this.imgs = res.data
-                }
-              })
-              this.addDeleteButtons = true;
-              this.showBuildingInfo = true;
-              this.showBuilding(this.buildingId);
-              this.clearData = true;
-              this.resident = null;
-            }
+            this.buildingId = feature.properties.structure_id;
+            this.deleteButton = true
+            this.unitDetailShow = true
+            this.showBuildingInfo = true;
+            this.deleteID = feature.properties.structure_id
+            this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+              this.bid = res.data.id
+              this.buildingUse = res.data.buildingUse;
+              this.cidOwner = res.data.cidOwner;
+              this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+              this.contactOwner = res.data.contactOwner;
+            })
+            this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+              this.unitsData = res.data
+              this.length = res.data.length
+            })
+            this.dataService.getImg(this.buildingId).subscribe(res => {
+              if (res.success) {
+                this.imgs = res.data
+              }
+            })
+            this.addDeleteButtons = true;
+            this.showBuildingInfo = true;
+            this.showBuilding(this.buildingId);
+            this.clearData = true;
+            this.resident = null;
           });
         },
         pointToLayer: (feature, latLng) => {
