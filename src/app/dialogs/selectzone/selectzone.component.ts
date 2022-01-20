@@ -44,5 +44,6 @@ export class SelectzoneComponent implements OnInit {
   // getZoneList(ok){
   //   console.log(ok)
   // }
+  }
 
 }
