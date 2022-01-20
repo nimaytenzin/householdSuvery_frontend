@@ -370,15 +370,20 @@ export class ViewPositiveComponent implements OnInit {
       this.redBuildingGeojson = L.geoJSON(res, {
         onEachFeature: (feature, layer) => {
           this.totalRedBuildings ++;
-          let totalCases=0;
           layer.on('click', (e) => {
             this.selectedRedBuilding = feature
             this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
             this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
               this.redBuildingCases = res.data;
+              let totalCases=0;
               res.data.forEach(element => {
                 totalCases+= element.numCases;
               });
+              layer.bindPopup(
+                '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
+                '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
+                '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
+              )
               this.buildingId = feature.properties.structure_id;
               this.showBuildingInfo = true;
               this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
@@ -393,12 +398,6 @@ export class ViewPositiveComponent implements OnInit {
               this.showBuildingInfo = true;
             })
           });
-
-          layer.bindPopup(
-            '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
-            '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' 
-            // '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
-          )
         },
         pointToLayer: (feature, latLng) => {
           return L.marker(latLng, { icon: this.redMarker });
