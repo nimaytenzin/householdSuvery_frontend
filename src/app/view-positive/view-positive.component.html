@@ -10,18 +10,17 @@
             padding: 5px;
             color: rgb(226 232 240);
             background-color: rgb(51 65 85);
-            margin-right: 50px;">Click on a point to view Details</mat-label>
+            margin-right: 50px;">Click on a point to view Details, doubleclick to view Summary</mat-label>
         </div>
       </div>
     </div>
 
   </div>
   <div class="scroll" style="margin: 0;">
-
-    <p style="text-align: center;font-weight: 100;font-size: large;line-height: 0%;margin-top: 5%;">
+    <p style="text-align: center;font-weight: 100;font-size: large;margin-top: 5%;">
       འབྱོན་པ ལེགས་སོ།།
     </p>
-    <h3 style="text-align: center; font-weight: 100;line-height: 0; ">Red Building Dashboard | {{ dzongkhag.name }} </h3>
+    <h3 style="text-align: center; font-weight: 100; ">Red Building Dashboard | {{ dzongkhag.name }} </h3>
 
     <div style="display: flex; flex-direction: row; padding: 0;justify-content: center;">
       <mat-card style="
@@ -51,6 +50,19 @@
         <h1 style="color: #DE3163; font-weight: bolder;">{{totalRedBuildings}}</h1>
       </mat-card>
     </div>
+
+    <div class="search-dzongkhag-container">
+      <div class="select-dropdown">
+          <select class="custom-select" [(ngModel)]="searchDzongkhagId">
+              <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }} </option>
+            </select>
+        </div>
+
+        <div class="search-container" (click)="renderCasebyDzongkhag()" >
+          <img src="../../assets/search.png" alt="" style="height: 30px;">
+        </div>
+
+     </div>
     <!-- <form [formGroup]="zoneForm" class="zoneform">
       <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
         <mat-label>Dzongkhag</mat-label>
@@ -123,13 +135,13 @@
               width: 95%;
         ">
           <div class="caseCard" *ngFor="let case of redBuildingCases">
-            <p style="line-height: 0%;">
+            <p >
               Date Recorded: <span>{{ parseDate(case.date) }}</span>
             </p>
             <p>
               Cases: <span style="font-size: x-large; margin:0;">{{ case.numCases }}</span>
             </p>
-            <p style="word-break: break-all;line-height: 0%;">
+            <p style="word-break: break-all;">
               Remarks:{{ case.remarks }}
             </p>
             <h4 *ngIf="case.status === 'ACTIVE'" style="color: #DE3262;">

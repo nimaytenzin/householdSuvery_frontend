@@ -247,7 +247,8 @@ export class ViewPositiveComponent implements OnInit {
   dzongkhag:any;
   totalCases:number;
   totalRedBuildings:number;
-
+  selectedDzongkhagId:number;
+  searchDzongkhagId:number;
 
 
   constructor(
@@ -269,12 +270,28 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.selectedDzongkhagId = Number(sessionStorage.getItem("selectedDzongkhagId"));
+    this.searchDzongkhagId = this.selectedDzongkhagId;
+
     this.dataService.getDzongkhags().subscribe(response => {
-      this.dzongkhag = response.data[0];
-      console.log(this.dzongkhag)
+      this.dzongkhags = response.data
+      response.data.forEach(element => {
+        if(this.selectedDzongkhagId === element.id){
+          this.dzongkhag = element
+        }
+      });
       this.renderMap();
-      this.renderRedBuildings(this.dzongkhag.id)
+      this.renderRedBuildings(this.selectedDzongkhagId)
     }); 
+    
+  }
+
+
+  renderCasebyDzongkhag(){
+    console.log(this.searchDzongkhagId)
+    this.totalCases=0;
+    this.totalRedBuildings =0;
+    this.renderRedBuildings(this.searchDzongkhagId)
   }
 
  
@@ -344,7 +361,7 @@ export class ViewPositiveComponent implements OnInit {
     });
   }
 
-  getDzongkhagList() {
+  getMatchedDzongkhag(id) {
     
   }
 

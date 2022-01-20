@@ -52,6 +52,9 @@ import { CovAdminComponent } from './cov-admin/cov-admin.component';
 import { EditPositiveDialogComponent } from './edit-positive-dialog/edit-positive-dialog.component';
 import { CreateRedBuildingDialogComponent } from './red-buildings/create-red-building-dialog/create-red-building-dialog.component';
 import { AddCasesDialogComponent } from './red-buildings/add-cases-dialog/add-cases-dialog.component';
+import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
+import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
+import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongkhag.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +83,10 @@ import { AddCasesDialogComponent } from './red-buildings/add-cases-dialog/add-ca
     CovAdminComponent,
     EditPositiveDialogComponent,
     CreateRedBuildingDialogComponent,
-    AddCasesDialogComponent
+    AddCasesDialogComponent,
+    AppsDrawerComponent,
+    SelectzoneComponent,
+    SelectdzongkhagComponent
   ],
   imports: [
     BrowserModule,
@@ -116,6 +122,6 @@ import { AddCasesDialogComponent } from './red-buildings/add-cases-dialog/add-ca
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent]
 })
 export class AppModule { }

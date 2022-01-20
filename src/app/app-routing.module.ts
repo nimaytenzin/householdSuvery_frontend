@@ -16,11 +16,12 @@ import { EditUnitComponent } from './edit-unit/edit-unit.component';
 import { EditBuildingComponent } from './edit-building/edit-building.component';
 import { ViewPositiveComponent } from './view-positive/view-positive.component';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
+import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
-
+  {path: 'app-drawer', component: AppsDrawerComponent},
   {path: 'selectzone', component: SelectZoneComponent , canActivate: [RouteGuard]},
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},
   {path: 'dashboard/:id', component: DashboardComponent , canActivate: [RouteGuard]},

@@ -1,0 +1,23 @@
+<div class="main-container">
+    <div class="selectDzongkhag-container">
+      <div class="selectDzongkhag-form">
+
+        <p style="text-align: center;"> 
+            Please Select a Dzongkhag to Proceed
+        </p>
+      
+       <div class="dropdown-container">
+        <div class="select-dropdown">
+            <select class="custom-select" [(ngModel)]="dzongkhagId">
+                <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }} </option>
+              </select>
+          </div>
+       </div>
+    </div>
+      <div class="button-container" >
+        <button  (click)="submit()" class="submit-button" >
+            <span>Proceed</span>
+        </button>
+      </div>
+    </div>
+  </div>

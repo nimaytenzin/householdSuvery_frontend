@@ -72,7 +72,7 @@ export class AddCasesDialogComponent implements OnInit {
 
       this.dataservice.createNewCase(this.newCase).subscribe(res =>{
         if(res.status=== "success"){
-          this.fetchCaseData()
+          this.fetchCaseData();
         }
       })
 
