@@ -421,6 +421,25 @@ export class DataService {
     )
   }
 
+  getThromdeyBoundsByDzongkahgId(dzoId){
+    return this.http
+    .get<any>(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzoId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  
+
+
+  getCovidStatsByDzongkhag(dzoId){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/case/${dzoId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
 
 
 }

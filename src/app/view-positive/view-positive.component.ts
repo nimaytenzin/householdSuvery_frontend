@@ -241,14 +241,15 @@ export class ViewPositiveComponent implements OnInit {
 
   //New
   dzongkhagId: number
-  redBuildingGeojson:any;
-  selectedRedBuilding:any;
-  redBuildingCases:any;
-  dzongkhag:any;
-  totalCases:number;
-  totalRedBuildings:number;
-  selectedDzongkhagId:number;
-  searchDzongkhagId:number;
+  redBuildingGeojson: any;
+  selectedRedBuilding: any;
+  redBuildingCases: any;
+  dzongkhag: any;
+  totalCases: number;
+  totalRedBuildings: number;
+  selectedDzongkhagId: number;
+  searchDzongkhagId: number;
+
 
 
   constructor(
@@ -265,8 +266,8 @@ export class ViewPositiveComponent implements OnInit {
     this.selectZone = false;
     this.clearData = false;
     this.setViewValue = true;
-    this.totalCases= 2;
-    this.totalRedBuildings=0
+    this.totalCases = 2;
+    this.totalRedBuildings = 0
   }
 
   ngOnInit() {
@@ -276,25 +277,33 @@ export class ViewPositiveComponent implements OnInit {
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
-        if(this.selectedDzongkhagId === element.id){
-          this.dzongkhag = element
+        if (this.selectedDzongkhagId === element.id) {
+          this.dzongkhag = element.name
         }
       });
+      this.fetchAndSetCovidStats(this.selectedDzongkhagId)
       this.renderMap();
       this.renderRedBuildings(this.selectedDzongkhagId)
-    }); 
-    
+    });
+
+  }
+
+  fetchAndSetCovidStats(dzoId){
+    this.dataService.getCovidStatsByDzongkhag(dzoId).subscribe(res =>{
+      this.totalCases = res.data.numCases;
+      this.totalRedBuildings = res.data.totalBuilding
+    })
   }
 
 
-  renderCasebyDzongkhag(){
-    console.log(this.searchDzongkhagId)
-    this.totalCases=0;
-    this.totalRedBuildings =0;
+  renderCasebyDzongkhag() {
+    this.totalCases = 0;
+    this.totalRedBuildings = 0;
+    this.fetchAndSetCovidStats(this.searchDzongkhagId)
     this.renderRedBuildings(this.searchDzongkhagId)
   }
 
- 
+
 
   renderMap() {
     var sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
@@ -361,54 +370,92 @@ export class ViewPositiveComponent implements OnInit {
     });
   }
 
-  getMatchedDzongkhag(id) {
-    
-  }
 
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
-      this.redBuildingGeojson = L.geoJSON(res, {
-        onEachFeature: (feature, layer) => {
-          this.totalRedBuildings ++;
-          layer.on('click', (e) => {
-            this.selectedRedBuilding = feature
-            this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
-            this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
-              this.redBuildingCases = res.data;
-              let totalCases=0;
-              res.data.forEach(element => {
-                totalCases+= element.numCases;
-              });
-              layer.bindPopup(
-                '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
-                '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
-                '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
-              )
-              this.buildingId = feature.properties.structure_id;
-              this.showBuildingInfo = true;
-              this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                if(res.success === "true"){
-                  this.bid = res.data.id
-                  this.buildingUse = res.data.buildingUse;
-                  this.cidOwner = res.data.cidOwner;
-                  this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
-                  this.contactOwner = res.data.contactOwner;
-                }
+      if (res.length !== 0) {
+        this.redBuildingGeojson = L.geoJSON(res, {
+          onEachFeature: (feature, layer) => {
+            this.totalRedBuildings++;
+            layer.on('click', (e) => {
+              this.selectedRedBuilding = feature
+              this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);
+              this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
+                this.redBuildingCases = res.data;
+                let totalCases = 0;
+                res.data.forEach(element => {
+                  totalCases += element.numCases;
+                });
+                layer.bindPopup(
+                  '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
+                  '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
+                  '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
+                )
+                this.buildingId = feature.properties.structure_id;
+                this.showBuildingInfo = true;
+                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                  if (res.success === "true") {
+                    this.bid = res.data.id
+                    this.buildingUse = res.data.buildingUse;
+                    this.cidOwner = res.data.cidOwner;
+                    this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                    this.contactOwner = res.data.contactOwner;
+                  }
+                })
+                this.showBuildingInfo = true;
               })
-              this.showBuildingInfo = true;
+            });
+          },
+          pointToLayer: (feature, latLng) => {
+            return L.marker(latLng, { icon: this.redMarker });
+          }
+        });
+        this.map.addLayer(this.redBuildingGeojson)
+
+        const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
+          if (this.bound !== undefined) {
+            this.map.removeLayer(this.bound);
+          }
+          this.bound = L.geoJSON(json.data, {
+            style: (feature) => {
+              return {
+                color: "#f8fafc",
+                fillOpacity: 0,
+                weight: 1
+              }
+            }
+          }).addTo(this.map);
+        })
+        this.map.fitBounds(this.redBuildingGeojson.getBounds());
+      }else{
+        // this.map.removeLayer(this.bound);
+        // this.map.removeLayer(this.redBuildingGeojson);
+        if (this.bound !== undefined) {
+          this.map.removeLayer(this.bound);
+          if(this.redBuildingGeojson!== undefined){
+            this.map.removeLayer(this.redBuildingGeojson);
+            const geojson =  this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
+              this.bound = L.geoJSON(json.data, {
+                style: (feature) => {
+                  return {
+                    color: "#f8fafc",
+                    fillOpacity: 0,
+                    weight: 1
+                  }
+                }
+              }).addTo(this.map);
             })
-          });
-        },
-        pointToLayer: (feature, latLng) => {
-          return L.marker(latLng, { icon: this.redMarker });
+    
+            this.map.fitBounds(this.bound.getBounds());
+          }
         }
-      });
-      this.map.addLayer(this.redBuildingGeojson)
-      this.map.fitBounds(this.redBuildingGeojson.getBounds());
+       
+      }
+
     })
   }
 
-  parseDate(date){
+  parseDate(date) {
     return new Date(date).toLocaleDateString()
   }
 }

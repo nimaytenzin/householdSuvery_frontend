@@ -1,0 +1,73 @@
+::ng-deep 
+.mat-dialog-container{
+    background-color: #F7FFD7;
+}
+.main-container{
+    display: flex;
+    padding: 5%;
+    background-color: #F7FFD7;
+    color: gray;
+    border-radius: 0.2rem ;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selectDzongkhag-container{
+
+}
+
+.selectDzongkhagForm{
+
+}
+
+.dropdown-container{
+    margin-top: 5%;
+}
+
+.button-container{
+    display: flex;
+    justify-content: center;
+    padding: 3%
+}
+
+.submit-button{
+    background-color: gray;
+    border: none;
+    font-size: large;
+    font-weight: light;
+    color: honeydew;
+    border-radius: 4%;
+    cursor: pointer;
+    padding: 4%;
+}
+
+
+.custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 50px;
+    border: none;
+    padding: 10px 38px 10px 16px;
+    background-size: 10px;
+    background-color: white;
+    width: 100%;
+    /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
+    border-radius: 3px;
+}
+
+.custom-select:focus {
+
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.2);
+    outline: none;
+}
+/* remove default arrow in IE */
+select::-ms-expand {
+    display:none;
+}
+
+.custom-select {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1.4rem;
+    color: gray;
+}

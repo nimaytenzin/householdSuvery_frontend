@@ -122,6 +122,6 @@ import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongk
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent]
 })
 export class AppModule { }

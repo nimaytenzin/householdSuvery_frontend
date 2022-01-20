@@ -1,3 +1,47 @@
-<p>
-    NA
-</p>
+<div class="main-container">
+    <div class="selectDzongkhag-container">
+        <div class="selectDzongkhag-form">
+
+            <p style="text-align: center;">
+                Select Dzongkhag
+            </p>
+
+            <div class="dropdown-container">
+                <div class="select-dropdown">
+                    <select class="custom-select" [(ngModel)]="dzongkhagId">
+                        <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <p style="text-align: center;">
+                Select Zone
+            </p>
+            <div class="dropdown-container">
+                <div class="select-dropdown">
+                    <select class="custom-select" [(ngModel)]="dzongkhagId" (selectionChange)="getZoneList(dzongkhag.value)">
+                        <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <p style="text-align: center;">
+                Select SubZone
+            </p>
+            <div class="dropdown-container">
+                <div class="select-dropdown">
+                    <select class="custom-select" [(ngModel)]="zoneId">
+                        <option *ngFor="let zone of zones" [value]="zone.id"> {{ zone.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <button (click)="submit()" class="submit-button">
+                <span>Proceed</span>
+            </button>
+        </div>
+    </div>
+</div>

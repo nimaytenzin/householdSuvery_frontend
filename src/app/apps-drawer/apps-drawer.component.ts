@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { SelectdzongkhagComponent } from '../dialogs/selectdzongkhag/selectdzongkhag.component';
+import { SelectzoneComponent } from '../dialogs/selectzone/selectzone.component';
 
 @Component({
   selector: 'app-apps-drawer',
@@ -24,6 +25,10 @@ export class AppsDrawerComponent implements OnInit {
 
     this.dialog.open(SelectdzongkhagComponent)
     
+  }
+
+  goToHHSurveyDashboard(){
+    this.dialog.open(SelectzoneComponent)
   }
 
 }
