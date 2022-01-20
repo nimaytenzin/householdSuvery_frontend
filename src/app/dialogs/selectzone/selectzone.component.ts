@@ -24,25 +24,25 @@ export class SelectzoneComponent implements OnInit {
             ) { }
 
   ngOnInit() {
-    this.dataService.getDzongkhags().subscribe(response => {
-      this.dzongkhags = response.data;
-    });
-    this.reactiveForm()
+    // this.dataService.getDzongkhags().subscribe(response => {
+    //   this.dzongkhags = response.data;
+    // });
+    // this.reactiveForm()
   }
 
   reactiveForm() {
-    this.selectDzongkhagForm = this.fb.group({
-      dzongkhag: ['', Validators.compose([Validators.required])]
-    });
-  }
-  submit(){
-    sessionStorage.setItem("selectedDzongkhagId", String(this.dzongkhagId));
-    this.dialogRef.close();
-    this.router.navigate(['cov-map'])
-  }
+  //   this.selectDzongkhagForm = this.fb.group({
+  //     dzongkhag: ['', Validators.compose([Validators.required])]
+  //   });
+  // }
+  // submit(){
+  //   sessionStorage.setItem("selectedDzongkhagId", String(this.dzongkhagId));
+  //   this.dialogRef.close();
+  //   this.router.navigate(['cov-map'])
+  // }
 
-  getZoneList(ok){
-    console.log(ok)
-  }
+  // getZoneList(ok){
+  //   console.log(ok)
+  // }
 
 }
