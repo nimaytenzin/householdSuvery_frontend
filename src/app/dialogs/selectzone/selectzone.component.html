@@ -1,4 +1,4 @@
-<!-- <div class="main-container">
+<div class="main-container">
     <div class="selectDzongkhag-container">
         <div class="selectDzongkhag-form">
 
@@ -8,7 +8,7 @@
 
             <div class="dropdown-container">
                 <div class="select-dropdown">
-                    <select class="custom-select" [(ngModel)]="dzongkhagId">
+                    <select class="custom-select" [(ngModel)]="dzongkhagId" (change)="getZoneList(dzongkhagId)">
                         <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }}
                         </option>
                     </select>
@@ -19,8 +19,8 @@
             </p>
             <div class="dropdown-container">
                 <div class="select-dropdown">
-                    <select class="custom-select" [(ngModel)]="dzongkhagId" (selectionChange)="getZoneList(dzongkhag.value)">
-                        <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }}
+                    <select class="custom-select" [(ngModel)]="zoneId" (change)="getSubZoneList(zoneId)" >
+                        <option *ngFor="let zone of zones" [value]="zone.id"> {{ zone.name }}
                         </option>
                     </select>
                 </div>
@@ -31,8 +31,8 @@
             </p>
             <div class="dropdown-container">
                 <div class="select-dropdown">
-                    <select class="custom-select" [(ngModel)]="zoneId">
-                        <option *ngFor="let zone of zones" [value]="zone.id"> {{ zone.name }}
+                    <select class="custom-select" [(ngModel)]="subzoneId" >
+                        <option *ngFor="let subzone of subzones" [value]="subzone.id"> {{ subzone.name }}
                         </option>
                     </select>
                 </div>
@@ -44,4 +44,4 @@
             </button>
         </div>
     </div>
-</div> -->
+</div>

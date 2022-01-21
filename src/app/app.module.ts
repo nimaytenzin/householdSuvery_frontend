@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorComponent } from './error/error.component';
-import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RegisterAtmComponent } from './register-atm/register-atm.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -55,6 +54,7 @@ import { AddCasesDialogComponent } from './red-buildings/add-cases-dialog/add-ca
 import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
 import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
 import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongkhag.component';
+import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +63,6 @@ import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongk
     RegisterComponent,
     RegisterAtmComponent,
     ErrorComponent,
-    SelectZoneComponent,
     DashboardComponent,
     ChangePasswordComponent,
     MapComponent,
@@ -86,7 +85,8 @@ import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongk
     AddCasesDialogComponent,
     AppsDrawerComponent,
     SelectzoneComponent,
-    SelectdzongkhagComponent
+    SelectdzongkhagComponent,
+    HhDashboardComponent
   ],
   imports: [
     BrowserModule,

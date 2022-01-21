@@ -12,9 +12,13 @@ import { DataService } from 'src/app/service/data.service';
 export class SelectzoneComponent implements OnInit {
   dzongkhags= [];
   zones=[];
+  subzones=[];
   selectDzongkhagForm:FormGroup;
-  dzongkhagId:number=Number(sessionStorage.getItem("selectedDzongkhagId"))
-  zoneId:any;
+  dzongkhagId:number=Number(sessionStorage.getItem("selectedDzongkhagId"))?Number(sessionStorage.getItem("selectedDzongkhagId")):null;
+  zoneId:number;
+  subzoneId:number;
+
+
 
   constructor( 
             private dataService: DataService,
@@ -24,26 +28,44 @@ export class SelectzoneComponent implements OnInit {
             ) { }
 
   ngOnInit() {
-    // this.dataService.getDzongkhags().subscribe(response => {
-    //   this.dzongkhags = response.data;
-    // });
-    // this.reactiveForm()
+    this.dataService.getDzongkhags().subscribe(response => {
+      this.dzongkhags = response.data;
+    });
+    if(this.dzongkhagId){
+      this.dataService.getZones(this.dzongkhagId).subscribe(res =>{
+        this.zones = res.data
+        this.zoneId = res.data[0].id
+      })
+    }
+    this.reactiveForm()
   }
 
   reactiveForm() {
-  //   this.selectDzongkhagForm = this.fb.group({
-  //     dzongkhag: ['', Validators.compose([Validators.required])]
-  //   });
-  // }
-  // submit(){
-  //   sessionStorage.setItem("selectedDzongkhagId", String(this.dzongkhagId));
-  //   this.dialogRef.close();
-  //   this.router.navigate(['cov-map'])
-  // }
+    this.selectDzongkhagForm = this.fb.group({
+      dzongkhag: ['', Validators.compose([Validators.required])]
+    });
+  }
+  submit(){
+    sessionStorage.setItem("dzongkhagID", String(this.dzongkhagId));
+    sessionStorage.setItem("zoneID",String(this.zoneId));
+    sessionStorage.setItem("subzoneID",String(this.subzoneId))
+    this.dialogRef.close();
+    this.router.navigate(['hh-map'])
 
-  // getZoneList(ok){
-  //   console.log(ok)
-  // }
+    console.log(this.dzongkhagId, this.zoneId , this.subzoneId)
+  }
+
+  getZoneList(dzo_id){
+    this.dataService.getZones(dzo_id).subscribe(res =>{
+      this.zones = res.data
+    })
+  }
+
+  getSubZoneList(zoneId){
+    console.log(zoneId)
+    this.dataService.getSubZones(zoneId).subscribe(res =>{
+      this.subzones = res.data
+    })
   }
 
 }

@@ -1,0 +1,123 @@
+.map-container {
+    height:100vh;
+    width:60%;
+  }
+
+
+  ::ng-deep .leaflet-popup-content .leaflet-popup-content-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+  .mat-table{
+    width: 100%;
+  }
+
+  .highlight{
+    background: rgb(208,208,208); /* green */
+  }
+
+  .mat-row:hover {
+    background-color: #E4E6EB;
+  }
+  .topnav input[type=text] {
+    float: right;
+    padding: 6px;
+    border: none;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+  }
+ .unitDetails{
+    :hover {
+      background-color: #EBECCD;
+  }
+  }
+  .scroll{
+    height: 90vh; 
+    overflow-x: hidden; 
+    overflow-y: auto; 
+    text-align:justify; 
+    float:right;
+    width:50%;
+    padding:10px;
+  }
+  .main{
+    display: flex;
+    flex-direction: row;
+  }
+  .map-frame {
+    height: 100%;
+  }
+  
+  #map {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .menu-spacer {
+    flex: 1 1 auto;
+  }
+  .lol { writing-mode: tb-rl; 
+        color:rgb(63,81,181) ;
+        text-align: center ;
+    }
+
+  th{
+    background-color:rgb(63,81,181) ;
+    color:white;
+    font-weight: 200;
+  }
+
+  .covidCases{
+    width: 100%;
+  }
+
+
+
+.searchIcon{
+  outline-style: none;
+}
+
+.caseDetails{
+  width: 100%;
+  padding: 10px;
+}
+.caseCardContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.caseCard{
+  width: 80%;
+  border: 1px dashed;
+  padding: 5px;
+}
+
+
+@media (max-width: 1000px) {
+ .main{
+   flex-direction: column;
+   margin: 6px;
+ }
+ .map-container{
+   width: 95%;
+   height:60vh
+ }
+ .nationCase{
+   flex-direction: column;
+ }
+ .scroll{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   padding: 0;
+ }
+ .seem{
+   margin-top: 3px;
+ }
+ .fg{
+   flex-direction: column;
+ }
+}

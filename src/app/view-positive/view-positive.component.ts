@@ -266,7 +266,7 @@ export class ViewPositiveComponent implements OnInit {
     this.selectZone = false;
     this.clearData = false;
     this.setViewValue = true;
-    this.totalCases = 2;
+    this.totalCases = 0;
     this.totalRedBuildings = 0
   }
 
@@ -289,7 +289,9 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   fetchAndSetCovidStats(dzoId){
+
     this.dataService.getCovidStatsByDzongkhag(dzoId).subscribe(res =>{
+      console.log(res)
       this.totalCases = res.data.numCases;
       this.totalRedBuildings = res.data.totalBuilding
     })
@@ -376,7 +378,6 @@ export class ViewPositiveComponent implements OnInit {
       if (res.length !== 0) {
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
-            this.totalRedBuildings++;
             layer.on('click', (e) => {
               this.selectedRedBuilding = feature
               this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);

@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ErrorComponent } from './error/error.component';
-import { SelectZoneComponent } from './select-zone/select-zone.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouteGuard } from './service/route.guard';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -17,12 +16,12 @@ import { EditBuildingComponent } from './edit-building/edit-building.component';
 import { ViewPositiveComponent } from './view-positive/view-positive.component';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
 import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
+import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'app-drawer', component: AppsDrawerComponent},
-  {path: 'selectzone', component: SelectZoneComponent , canActivate: [RouteGuard]},
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},
   {path: 'dashboard/:id', component: DashboardComponent , canActivate: [RouteGuard]},
   {path: 'building', component: RegisterComponent , canActivate: [RouteGuard]},
@@ -37,6 +36,7 @@ const routes: Routes = [
   {path: 'atm', component: RegisterAtmComponent, canActivate: [RouteGuard]},
   {path: 'cov-map', component: ViewPositiveComponent, canActivate: [RouteGuard]},
   {path: 'cov-admin', component: CovAdminComponent, canActivate: [RouteGuard]},
+  {path: 'hh-map', component: HhDashboardComponent, canActivate: [RouteGuard]},
   {path: '**', component: ErrorComponent},
   
 ];

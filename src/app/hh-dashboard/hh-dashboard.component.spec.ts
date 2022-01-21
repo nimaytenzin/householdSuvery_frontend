@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelectZoneComponent } from './select-zone.component';
+import { HhDashboardComponent } from './hh-dashboard.component';
 
-describe('SelectZoneComponent', () => {
-  let component: SelectZoneComponent;
-  let fixture: ComponentFixture<SelectZoneComponent>;
+describe('HhDashboardComponent', () => {
+  let component: HhDashboardComponent;
+  let fixture: ComponentFixture<HhDashboardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SelectZoneComponent ]
+      declarations: [ HhDashboardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectZoneComponent);
+    fixture = TestBed.createComponent(HhDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
