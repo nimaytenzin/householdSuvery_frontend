@@ -12,7 +12,7 @@ import { DataService } from 'src/app/service/data.service';
 export class SelectdzongkhagComponent implements OnInit {
   dzongkhags= [];
   selectDzongkhagForm:FormGroup;
-  dzongkhagId:number=Number(sessionStorage.getItem("selectedDzongkhagId"))
+  dzongkhagId:number=Number(sessionStorage.getItem("selectedDzongkhagId"))?Number(sessionStorage.getItem("selectedDzongkhagId")):1;
 
   constructor( 
             private dataService: DataService,
@@ -25,14 +25,14 @@ export class SelectdzongkhagComponent implements OnInit {
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data;
     });
-    this.reactiveForm()
+    // this.reactiveForm()
   }
 
-  reactiveForm() {
-    this.selectDzongkhagForm = this.fb.group({
-      dzongkhag: ['', Validators.compose([Validators.required])]
-    });
-  }
+  // reactiveForm() {
+  //   this.selectDzongkhagForm = this.fb.group({
+  //     dzongkhag: ['', Validators.compose([Validators.required])]
+  //   });
+  // }
   submit(){
     sessionStorage.setItem("dzongkhagId", String(this.dzongkhagId));
     this.dialogRef.close();
