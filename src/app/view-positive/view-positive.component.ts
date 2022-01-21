@@ -11,8 +11,7 @@ import { MarkPositiveDialogComponent } from '../mark-positive-dialog/mark-positi
 import { Options } from "@angular-slider/ngx-slider";
 // import '../libs/SliderControl';
 import jwt_decode from 'jwt-decode';
-
-
+import tokml from "geojson-to-kml";
 // let $: any = jquery;
 
 export class Building {
@@ -271,26 +270,24 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedDzongkhagId = Number(sessionStorage.getItem("selectedDzongkhagId"));
-    this.searchDzongkhagId = this.selectedDzongkhagId;
-
+    this.dzongkhagId = Number(sessionStorage.getItem("dzongkhagId"));
+    this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagId"))
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
-        if (this.selectedDzongkhagId === element.id) {
+        if (this.dzongkhagId === element.id) {
           this.dzongkhag = element.name
         }
       });
-      this.fetchAndSetCovidStats(this.selectedDzongkhagId)
+      this.fetchAndSetCovidStats(this.dzongkhagId)
       this.renderMap();
-      this.renderRedBuildings(this.selectedDzongkhagId)
+      this.renderRedBuildings(this.dzongkhagId)
     });
 
   }
 
-  fetchAndSetCovidStats(dzoId){
-
-    this.dataService.getCovidStatsByDzongkhag(dzoId).subscribe(res =>{
+  fetchAndSetCovidStats(dzoId) {
+    this.dataService.getCovidStatsByDzongkhag(dzoId).subscribe(res => {
       this.totalCases = res.data.numCases;
       this.totalRedBuildings = res.data.totalBuilding
     })
@@ -300,11 +297,16 @@ export class ViewPositiveComponent implements OnInit {
   renderCasebyDzongkhag() {
     this.totalCases = 0;
     this.totalRedBuildings = 0;
+    sessionStorage.removeItem("dzongkhagId")
+    sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
+    this.dzongkhags.forEach(dzo => {
+      if(Number(dzo.id) === Number(sessionStorage.getItem("dzongkhagId"))){
+        this.dzongkhag = dzo.name
+      }
+    })
     this.fetchAndSetCovidStats(this.searchDzongkhagId)
     this.renderRedBuildings(this.searchDzongkhagId)
   }
-
-
 
   renderMap() {
     var sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
@@ -312,7 +314,6 @@ export class ViewPositiveComponent implements OnInit {
       minZoom: 9,
     });
     this.map = L.map('map', {
-      //Set(Lat and Long center based on the dzongkhag of the user)
       center: [26.864894, 89.38203],
       zoom: 13,
       maxZoom: 20,
@@ -371,10 +372,35 @@ export class ViewPositiveComponent implements OnInit {
     });
   }
 
+  downloadKml(){
+
+    this.dataService.getRedBuildingKmlByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res =>{
+      let filename: string =`${this.dzongkhag}_redbuilding.kml`
+      let binaryData = [];
+      binaryData.push(res);
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'blob' }));
+      downloadLink.setAttribute('download', filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+    })
+  }
+
 
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {
+        let ok = L.geoJSON(res).toGeoJSON();
+        // let f = this.http.get('https://zhichar.ddnsfree.com/hpi/kml/get/10').subscribe(res =>{
+        //   console.log(res)
+        // })
+
+    
+
+        // window.location.href='https://zhichar.ddnsfree.com/hpi/kml/get/10';
+
+
+
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
@@ -427,14 +453,14 @@ export class ViewPositiveComponent implements OnInit {
           }).addTo(this.map);
         })
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
-      }else{
+      } else {
         // this.map.removeLayer(this.bound);
         // this.map.removeLayer(this.redBuildingGeojson);
         if (this.bound !== undefined) {
           this.map.removeLayer(this.bound);
-          if(this.redBuildingGeojson!== undefined){
+          if (this.redBuildingGeojson !== undefined) {
             this.map.removeLayer(this.redBuildingGeojson);
-            const geojson =  this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
+            const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
               this.bound = L.geoJSON(json.data, {
                 style: (feature) => {
                   return {
@@ -445,11 +471,11 @@ export class ViewPositiveComponent implements OnInit {
                 }
               }).addTo(this.map);
             })
-    
+
             this.map.fitBounds(this.bound.getBounds());
           }
         }
-       
+
       }
 
     })

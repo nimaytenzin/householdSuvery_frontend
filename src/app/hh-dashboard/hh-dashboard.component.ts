@@ -7,6 +7,7 @@ import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { saveAs } from 'file-saver';
 
 
 export class RedBuilding {

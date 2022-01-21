@@ -34,7 +34,7 @@ export class SelectdzongkhagComponent implements OnInit {
     });
   }
   submit(){
-    sessionStorage.setItem("selectedDzongkhagId", String(this.dzongkhagId));
+    sessionStorage.setItem("dzongkhagId", String(this.dzongkhagId));
     this.dialogRef.close();
     this.router.navigate(['cov-map'])
   }

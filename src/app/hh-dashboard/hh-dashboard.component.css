@@ -28,11 +28,7 @@
     margin-right: 16px;
     font-size: 17px;
   }
- .unitDetails{
-    :hover {
-      background-color: #EBECCD;
-  }
-  }
+ 
   .scroll{
     height: 90vh; 
     overflow-x: hidden; 
@@ -49,6 +45,51 @@
   .map-frame {
     height: 100%;
   }
+
+
+.search-dzongkhag-container{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .search-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 50px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    padding-right: 4px ;
+    padding-left: 4px ;
+    cursor: pointer;
+  }
+
+  .search-sub-container{
+      display: flex;
+      align-items:center;
+  }
+  
+  .search-sub-container input{
+      height: 30px;
+      border:none;
+      appearance: none;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      padding: 2px;
+      outline: none;
+  }
+
+ ::placeholder{
+      color: gray;
+      font-size: large;
+      font-weight: lighter;
+      letter-spacing: 1px;
+  }
+  
+
   
   #map {
     height: 100%;

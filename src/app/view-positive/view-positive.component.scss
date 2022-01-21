@@ -193,7 +193,15 @@ select::-ms-expand {
   font-size: 1.4rem;
   color: gray;
 }
- 
+ .download-kml{
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1rem;
+  display:flex;
+  max-width: 50%;
+  color: gray;
+  padding: 1%;
+  cursor: pointer;
+ }
 
 @media (max-width: 1000px) {
  .main{

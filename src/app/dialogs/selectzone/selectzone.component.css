@@ -22,6 +22,7 @@
 
 .dropdown-container{
     margin-top: 5%;
+    min-width: 250px;
 }
 
 .button-container{

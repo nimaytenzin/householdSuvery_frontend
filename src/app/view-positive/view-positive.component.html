@@ -51,6 +51,13 @@
       </mat-card>
     </div>
 
+
+   <div style="display: flex; justify-content: center; margin-top: 10%; cursor: pointer;">
+    <button class="download-kml" (click)="downloadKml()" >
+      Download Red Buildings as KML
+    </button>
+
+   </div>
     <div class="search-dzongkhag-container">
       <div class="select-dropdown">
           <select class="custom-select" [(ngModel)]="searchDzongkhagId">

@@ -26,9 +26,17 @@ export class DataService {
   AuthenticatedHttpOtions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization':sessionStorage.getItem('token')
+      'Authorization':sessionStorage.getItem('token'),
+      
     })
   };
+
+  kmlOptions={
+    headers: new HttpHeaders({
+      'Authorization':sessionStorage.getItem('token'),
+    }),
+    responseType:'text' as 'json'
+  }
 
   // Handle API errors
   handleError(error: HttpErrorResponse) {
@@ -435,6 +443,14 @@ export class DataService {
   getCovidStatsByDzongkhag(dzoId){
     return this.http
     .get<any>(`${this.API_URL}/stat/case/${dzoId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  getRedBuildingKmlByDzongkhag(dzoId){
+    return this.http
+    .get<any>(`${this.API_URL}/kml/get/${dzoId}`,this.kmlOptions)
     .pipe(
       catchError(this.handleError)
     )

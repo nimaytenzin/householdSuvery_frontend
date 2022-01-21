@@ -10,19 +10,6 @@
     </div>
     <div class="scroll" style="margin: 0;">
       <h3 style="text-align: center;">Household Data Dashboard</h3>
-          <form  [formGroup]="searchForm">
-            <mat-form-field style="width: 90%;">
-              <input matInput type="number" placeholder="Search by building number" name="search" formControlName="searchBuilding"  >
-            </mat-form-field>
-    
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
-              <button mat-flat-button color="primary" (click)="submit()" style="width : 10%;"><mat-icon appearance="none">search</mat-icon></button>
-              <button  mat-flat-button color="primary" style="width:fit-content;" (click) = "reset()" >Clear  | <mat-icon appearance="none">cached</mat-icon></button>
-            </div>
-            
-          </form>
-
-      <br>
       <form [formGroup]="zoneForm" style="padding: 0%;margin: 0%;display: flex;flex-direction: row;">
         <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
           <mat-label>Dzongkhag</mat-label>
@@ -49,9 +36,46 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-flat-button (click)="zoneSearch()" style="width : 100%;">Load Data</button>
+        <button mat-flat-button (click)="zoneSearch()" style="width : 100%;">Load Data by SubZone</button>
       </form>
+
+
+      Search Building
   
+          <form  [formGroup]="searchForm">
+            <mat-form-field style="width: 90%;">
+              <input matInput type="number" placeholder="Search by building number" name="search" formControlName="searchBuilding"  >
+            </mat-form-field>
+    
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+              <button mat-flat-button color="primary" (click)="submit()" style="width : 10%;"><mat-icon appearance="none">search</mat-icon></button>
+              <button  mat-flat-button color="primary" style="width:fit-content;" (click) = "reset()" >Clear  | <mat-icon appearance="none">cached</mat-icon></button>
+            </div>
+            
+          </form>
+
+
+          <div class="search-container">
+            <p>
+                Search Building by Contact
+            </p>
+             <div class="search-sub-container" >
+                <div>
+                    <input type="number" placeholder="Contact Number" >
+                    <input type="text" placeholder="CID">
+
+                </div>
+                <div>
+                    <div class="search-container"  >
+                        <img src="../../assets/search.png" alt="" style="height: 30px;">
+                      </div>
+                </div>
+              </div> 
+              
+           </div>
+
+      <br>
+     
       
   
   
