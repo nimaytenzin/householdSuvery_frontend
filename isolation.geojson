@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "isolation",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "Daga Hospital", "dzongkhag": "Dagana" }, "geometry": { "type": "Point", "coordinates": [ 89.875372689319803, 27.075267950607 ] } },
+{ "type": "Feature", "properties": { "Name": "Dagapela Hospital", "dzongkhag": "Dagana" }, "geometry": { "type": "Point", "coordinates": [ 89.955162749433399, 26.9339081886374 ] } },
+{ "type": "Feature", "properties": { "Name": "Bajo BHU Isolation Center", "dzongkhag": "Wangdi" }, "geometry": { "type": "Point", "coordinates": [ 89.896385269386499, 27.495821886295101 ] } },
+{ "type": "Feature", "properties": { "Name": "RIGSS Isolation", "dzongkhag": "Phuntsholing" }, "geometry": { "type": "Point", "coordinates": [ 89.392871950667995, 26.853307310753099 ] } },
+{ "type": "Feature", "properties": { "Name": "Terma Linca Resort", "dzongkhag": "Thimphu" }, "geometry": { "type": "Point", "coordinates": [ 89.639210377544302, 27.425583161260199 ] } },
+{ "type": "Feature", "properties": { "Name": "Lhaki yangchak", "dzongkhag": "Thimphu" }, "geometry": { "type": "Point", "coordinates": [ 89.629698695291594, 27.503181138794101 ] } },
+{ "type": "Feature", "properties": { "Name": "DGPC", "dzongkhag": "Phuntsholing" }, "geometry": { "type": "Point", "coordinates": [ 89.380306369641005, 26.8689113978626 ] } }
+]
+}

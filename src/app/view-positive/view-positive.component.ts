@@ -310,16 +310,6 @@ export class ViewPositiveComponent implements OnInit {
     this.renderRedBuildings(this.searchDzongkhagId)
   }
 
-  reset() {
-   
-    if (this.bound !== undefined) {
-      this.map.removeLayer(this.bound)
-    }
-    if (this.redBuildingCases !== undefined) {
-      this.map.removeLayer(this.buildingGeojson);
-    }
-  }
-
   renderMap() {
     var sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
       maxZoom: 20,
@@ -373,15 +363,7 @@ export class ViewPositiveComponent implements OnInit {
         this.mycircle = L.circle(e.latlng, radius).addTo(this.map);
       }
     });
-    let newMarker: any;
-    this.map.on('click', <LeafletMouseEvent>($e) => {
-      if (this.isAddAllowed) {
-        if (newMarker !== undefined) {
-          this.map.removeLayer(newMarker);
-        }
-        newMarker = L.marker($e.latlng, { icon: this.myMarker }).addTo(this.map);
-      }
-    });
+
   }
 
   downloadKml(){
