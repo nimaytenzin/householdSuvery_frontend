@@ -79,7 +79,7 @@ export class ViewPositiveComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['position', 'name', 'view'];
+  displayedColumns: string[] = ['position', 'view'];
   totalBuilding: number;
   totalCompleted: number;
   showBuildingInfo: boolean = false;
@@ -96,10 +96,10 @@ export class ViewPositiveComponent implements OnInit {
   //delete building info
   bid: number;
 
-  buildingUse: string = "NA";
-  cidOwner: string = "NA";
-  nameOfBuildingOwner: string = "NA";
-  contactOwner: string = "NA";
+  buildingUse: string = "Not in database";
+  cidOwner: string = "Not in database";
+  nameOfBuildingOwner: string = "Not in database";
+  contactOwner: string = "Not in database";
   length: number = 0;
   enumeratedBy: string = "No Info."
   value: number = 2;
@@ -295,7 +295,9 @@ export class ViewPositiveComponent implements OnInit {
 
 
   renderCasebyDzongkhag() {
+    this.showBuildingInfo = false;
     this.totalCases = 0;
+    this.resident = null;
     this.totalRedBuildings = 0;
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
@@ -306,6 +308,16 @@ export class ViewPositiveComponent implements OnInit {
     })
     this.fetchAndSetCovidStats(this.searchDzongkhagId)
     this.renderRedBuildings(this.searchDzongkhagId)
+  }
+
+  reset() {
+   
+    if (this.bound !== undefined) {
+      this.map.removeLayer(this.bound)
+    }
+    if (this.redBuildingCases !== undefined) {
+      this.map.removeLayer(this.buildingGeojson);
+    }
   }
 
   renderMap() {
@@ -390,17 +402,6 @@ export class ViewPositiveComponent implements OnInit {
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {
-        let ok = L.geoJSON(res).toGeoJSON();
-        // let f = this.http.get('https://zhichar.ddnsfree.com/hpi/kml/get/10').subscribe(res =>{
-        //   console.log(res)
-        // })
-
-    
-
-        // window.location.href='https://zhichar.ddnsfree.com/hpi/kml/get/10';
-
-
-
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
@@ -409,6 +410,7 @@ export class ViewPositiveComponent implements OnInit {
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
                 this.redBuildingCases = res.data;
                 let totalCases = 0;
+                this.unitDetailShow = true
                 res.data.forEach(element => {
                   totalCases += element.numCases;
                 });
@@ -426,9 +428,25 @@ export class ViewPositiveComponent implements OnInit {
                     this.cidOwner = res.data.cidOwner;
                     this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
                     this.contactOwner = res.data.contactOwner;
+                  }else{
+                    this.buildingUse = "No Record";
+                    this.cidOwner = "No Record";
+                    this.nameOfBuildingOwner = "No Record";
+                    this.contactOwner = "No Record";
                   }
                 })
                 this.showBuildingInfo = true;
+
+                this.dataService.getImg(this.buildingId).subscribe(res => {
+                  if (res.success) {
+                    this.imgs = res.data
+                  }
+                })
+
+                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                  this.unitsData = res.data
+                  this.length = res.data.length
+                })
               })
             });
           },
@@ -483,5 +501,38 @@ export class ViewPositiveComponent implements OnInit {
 
   parseDate(date) {
     return new Date(date).toLocaleDateString()
+  }
+
+  showResident(unitid) {
+    this.resident = null;
+    this.residentTableShow = true
+
+    this.snackBar.open('Scroll down', '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+    this.dataService.getAHousehold(unitid).subscribe(resp => {
+
+
+      if (resp.data.unitUse !== "Residential") {
+        this.residentialUnitDetailShow = false
+        this.officeShopDetailShow = true
+      } else {
+        this.residentialUnitDetailShow = true
+        this.officeShopDetailShow = false
+      }
+      this.housholdsData = resp.data
+
+      this.dataService.getFamilyMembers(unitid).subscribe(resp => {
+        this.familyMembers = resp.data
+      })
+    });
+  }
+
+  selectedRowIndex = -1;
+
+  highlight(row) {
+    this.selectedRowIndex = row.id;
   }
 }
