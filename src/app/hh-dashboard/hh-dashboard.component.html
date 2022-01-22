@@ -61,21 +61,21 @@
       Search Building by..
     </p>
     <div class="search-container">
-      <div class="search-sub-container">
+      <div class="search-sub-container" >
         <div>
-          <input type="number" placeholder="Building ID">
+          <input type="number" placeholder="Building ID" [(ngModel)]="searchBuildingId">
         </div>
-        <div class="search-icon">
+        <div class="search-icon" (click)="searchBuildingByBuildingNumber()" >
           <img src="../../assets/search-gray.png" alt="">
         </div>
       </div>
 
       <div class="search-sub-container">
         <div>
-          <input type="number" placeholder="Contact">
+          <input type="number" placeholder="Contact" [(ngModel)]="searchContact" >
         </div>
         <div>
-          <div class="search-icon">
+          <div class="search-icon" (click)="searchBuildingByContact()" >
             <div>
               <img src="../../assets/search-gray.png" alt="">
             </div>
@@ -85,10 +85,10 @@
 
       <div class="search-sub-container">
         <div style="display: flex;gap:10%">
-          <input type="text" placeholder="CID">
+          <input type="text" placeholder="CID" [(ngModel)]="searchCid">
         </div>
         <div>
-          <div class="search-icon">
+          <div class="search-icon" (click)="searchBuildingByCid()">
             <img src="../../assets/search-gray.png">
           </div>
         </div>

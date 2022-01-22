@@ -165,7 +165,7 @@ export class DataService {
   }
   getAStructure(structure_id){
     return this.http
-      .get(`${this.API_URL}/structure/get/${structure_id}`,this.httpOptions)
+      .get(`${this.API_URL}/structure/get/${structure_id}`,this.AuthenticatedHttpOtions)
       .pipe(
         catchError(this.handleError)
       )
@@ -456,6 +456,19 @@ export class DataService {
     )
   }
 
+  searchBuildingByContact(data){
+    return this.http
+    .post<any>(`${this.API_URL}/search/search-contact`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
 
-
+  searchBuildingByCid(data){
+    return this.http
+    .post<any>(`${this.API_URL}/search/search-cid`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
 }

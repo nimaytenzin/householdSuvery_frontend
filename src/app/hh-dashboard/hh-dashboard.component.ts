@@ -223,6 +223,10 @@ export class HhDashboardComponent implements OnInit {
   searchZoneId:number;
   searchSubZoneId:number;
 
+  searchContact:number;
+  searchCid:string;
+  searchBuildingId:number;
+
 
   constructor(
     private http: HttpClient,
@@ -578,6 +582,267 @@ export class HhDashboardComponent implements OnInit {
         this.familyMembers = resp.data
       })
     });
+  }
+
+  searchBuildingByContact() {
+    if(this.searchContact){
+      this.dataService.searchBuildingByContact({
+        contact:this.searchContact
+      }).subscribe(res =>{
+        let lat, lng, id = 0
+        if (res.success === "false") {
+          this.snackBar.open('Building Not Found', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
+        } else {
+          if (this.searchmarker !== undefined) {
+            this.map.removeLayer(this.searchmarker);
+            this.searchmarker = null;
+          }
+          this.addStructures(res.data.structure.sub_zone_id)
+          lat = res.data.structure.lat
+          lng = res.data.structure.lng
+    
+          this.map.flyTo([lat, lng], 18)
+          var responseJson = {
+            "type": "Point",
+            "coordinates": [lng, lat],
+            "properties": {
+              "structure_id": res.data.structure.id
+            }
+          };
+          this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
+            onEachFeature: (feature, layer) => {
+              layer.on('click', (e) => {
+                this.residentTableShow = false;
+                this.selectedStructure = feature;
+                this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
+                this.buildingId = feature.properties.structure_id;
+                this.deleteButton = true
+                this.unitDetailShow = true
+                this.showBuildingInfo = true;
+                this.deleteID = feature.properties.structure_id
+                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                  this.bid = res.data.id
+                  this.buildingUse = res.data.buildingUse;
+                  this.cidOwner = res.data.cidOwner;
+                  this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                  this.contactOwner = res.data.contactOwner;
+                })
+                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                  this.unitsData = res.data
+                  this.length = res.data.length
+                })
+                this.dataService.getImg(this.buildingId).subscribe(res => {
+                  if (res.success) {
+                    this.imgs = res.data
+                  }
+                })
+                this.addDeleteButtons = true;
+                this.showBuildingInfo = true;
+                this.showBuilding(this.buildingId);
+                this.clearData = true;
+                this.resident = null;
+              });
+            }, pointToLayer: (feature, latLng) => {
+              return  new L.CircleMarker(latLng, {
+                radius: 7, 
+                color:"tomato",
+                fillOpacity: 0.85
+              });
+            }
+          }).addTo(this.map);
+        }
+  
+      })
+    }else{
+      this.snackBar.open(`Please Enter a Phone Number`, '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
+    }
+
+   
+
+    
+  }
+
+
+
+  searchBuildingByBuildingNumber() {
+
+    
+    if(this.searchBuildingId){
+      this.dataService.getAStructure(this.searchBuildingId).subscribe((res : any) =>{
+        console.log(this.searchCid)
+        console.log(res)
+        let lat, lng, id = 0
+        if (res.success === "false") {
+          this.snackBar.open('Building Not Found', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
+        } else {
+          if (this.searchmarker !== undefined) {
+            this.map.removeLayer(this.searchmarker);
+            this.searchmarker = null;
+          }
+          this.addStructures(res.data.sub_zone_id)
+          lat = res.data.lat
+          lng = res.data.lng
+    
+          this.map.flyTo([lat, lng], 18)
+          var responseJson = {
+            "type": "Point",
+            "coordinates": [lng, lat],
+            "properties": {
+              "structure_id": res.data.id
+            }
+          };
+          this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
+            onEachFeature: (feature, layer) => {
+              layer.on('click', (e) => {
+                this.residentTableShow = false;
+                this.selectedStructure = feature;
+                this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
+                this.buildingId = feature.properties.structure_id;
+                this.deleteButton = true
+                this.unitDetailShow = true
+                this.showBuildingInfo = true;
+                this.deleteID = feature.properties.structure_id
+                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                  this.bid = res.data.id
+                  this.buildingUse = res.data.buildingUse;
+                  this.cidOwner = res.data.cidOwner;
+                  this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                  this.contactOwner = res.data.contactOwner;
+                })
+                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                  this.unitsData = res.data
+                  this.length = res.data.length
+                })
+                this.dataService.getImg(this.buildingId).subscribe(res => {
+                  if (res.success) {
+                    this.imgs = res.data
+                  }
+                })
+                this.addDeleteButtons = true;
+                this.showBuildingInfo = true;
+                this.showBuilding(this.buildingId);
+                this.clearData = true;
+                this.resident = null;
+              });
+            }, pointToLayer: (feature, latLng) => {
+              return  new L.CircleMarker(latLng, {
+                radius: 7, 
+                color:"tomato",
+                fillOpacity: 0.85
+              });
+            }
+          }).addTo(this.map);
+        }
+  
+      })
+    }else{
+      this.snackBar.open(`Please Enter a Building Number`, '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
+    }
+  }
+
+
+  searchBuildingByCid() {
+    if(this.searchCid){
+      this.dataService.searchBuildingByCid({
+        cid:this.searchCid
+      }).subscribe(res =>{
+        console.log(this.searchCid)
+        console.log(res)
+        let lat, lng, id = 0
+        if (res.success === "false") {
+          this.snackBar.open('Building Not Found', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
+        } else {
+          if (this.searchmarker !== undefined) {
+            this.map.removeLayer(this.searchmarker);
+            this.searchmarker = null;
+          }
+          this.addStructures(res.data.structure.sub_zone_id)
+          lat = res.data.structure.lat
+          lng = res.data.structure.lng
+    
+          this.map.flyTo([lat, lng], 18)
+          var responseJson = {
+            "type": "Point",
+            "coordinates": [lng, lat],
+            "properties": {
+              "structure_id": res.data.structure.id
+            }
+          };
+          this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
+            onEachFeature: (feature, layer) => {
+              layer.on('click', (e) => {
+                this.residentTableShow = false;
+                this.selectedStructure = feature;
+                this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
+                this.buildingId = feature.properties.structure_id;
+                this.deleteButton = true
+                this.unitDetailShow = true
+                this.showBuildingInfo = true;
+                this.deleteID = feature.properties.structure_id
+                this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+                  this.bid = res.data.id
+                  this.buildingUse = res.data.buildingUse;
+                  this.cidOwner = res.data.cidOwner;
+                  this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+                  this.contactOwner = res.data.contactOwner;
+                })
+                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+                  this.unitsData = res.data
+                  this.length = res.data.length
+                })
+                this.dataService.getImg(this.buildingId).subscribe(res => {
+                  if (res.success) {
+                    this.imgs = res.data
+                  }
+                })
+                this.addDeleteButtons = true;
+                this.showBuildingInfo = true;
+                this.showBuilding(this.buildingId);
+                this.clearData = true;
+                this.resident = null;
+              });
+            }, pointToLayer: (feature, latLng) => {
+              return  new L.CircleMarker(latLng, {
+                radius: 7, 
+                color:"tomato",
+                fillOpacity: 0.85
+              });
+            }
+          }).addTo(this.map);
+        }
+  
+      })
+    }else{
+      this.snackBar.open(`Please Enter a Phone Number`, '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
+    }
+
+   
+
+    
   }
 
   selectedRowIndex = -1;
