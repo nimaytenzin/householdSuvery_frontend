@@ -447,7 +447,7 @@ export class ViewPositiveComponent implements OnInit {
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
                 this.redBuildingCases = res.data;
                 let totalCases = 0;
-                this.unitDetailShow = true
+                this.unitDetailShow = true;
                 res.data.forEach(element => {
                   totalCases += element.numCases;
                 });
@@ -456,6 +456,7 @@ export class ViewPositiveComponent implements OnInit {
                   '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
                   '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
                 )
+                
                 this.buildingId = feature.properties.structure_id;
                 this.showBuildingInfo = true;
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
@@ -486,6 +487,7 @@ export class ViewPositiveComponent implements OnInit {
                 })
               })
             });
+            
           },
           pointToLayer: (feature, latLng) => {
             return L.marker(latLng, { icon: this.redMarker });
