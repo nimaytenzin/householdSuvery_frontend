@@ -33,6 +33,7 @@
     overflow-y: scroll; 
     text-align:justify; 
     float:right;
+    height: 100vh;
     width:50%;
     padding:10px;
     background-color: #e6e6e6;
