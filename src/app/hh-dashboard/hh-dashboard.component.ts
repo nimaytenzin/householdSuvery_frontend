@@ -7,7 +7,6 @@ import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { saveAs } from 'file-saver';
 
 
 export class RedBuilding {
@@ -218,6 +217,12 @@ export class HhDashboardComponent implements OnInit {
   redBuildingCases: any;
   selectedRedBuilding:any;
   selectedDzongkhagId:number;
+
+
+  searchDzongkhagId:number;
+  searchZoneId:number;
+  searchSubZoneId:number;
+
 
   constructor(
     private http: HttpClient,
@@ -463,9 +468,17 @@ export class HhDashboardComponent implements OnInit {
   }
 
   zoneSearch() {
-    this.selectedDzongkhagId = this.zoneForm.get('dzongkhagControl').value.id;
-    const zoneId = this.zoneForm.get('subZoneControl').value;
-    this.renderBuildings(zoneId)
+
+    if(this.searchSubZoneId){
+        this.renderBuildings(this.searchSubZoneId)
+    }else{
+      this.snackBar.open('Please select a subzone', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: ['info-snackbar']
+      });
+    }
+
   }
 
   renderBuildings(zoneId) {
@@ -634,6 +647,7 @@ export class HhDashboardComponent implements OnInit {
   }
 
   getZoneList(dzongkhagId) {
+    console.log(dzongkhagId)
     this.dataService.getZones(dzongkhagId).subscribe(response => {
       this.zones = response.data;
     });

@@ -1,224 +1,245 @@
-<div class="main" sty>
-    <div class="map-container">
-      <div class="map-frame">
-        <div id="map">
-          <div class="leaflet-top leaflet-right">
+<div class="main" >
+  <div class="map-container">
+    <div class="map-frame">
+      <div id="map">
+        <div class="leaflet-top leaflet-right">
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="scroll" style="margin: 0;">
+
+    <div>
+      <p style="text-align: center;font-weight: 100;font-size: x-large;margin-top: 5%;">
+        འབྱོན་པ ལེགས་སོ།།
+      </p>
+      <h3 style="text-align: center; font-weight: 100; ">Household Survey Dashboard </h3>
+    </div>
+
+    <div class="search-dzongkhag-container">
+      <div class="select-dropdown">
+        <span>
+          Dzongkhag
+        </span>
+        <select class="custom-select" (change)="getZoneList(searchDzongkhagId)" [(ngModel)]="searchDzongkhagId">
+          <option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id"> {{ dzongkhag.name }} </option>
+        </select>
+      </div>
+      <div class="select-dropdown">
+        <span>
+          Zone
+        </span>
+        <select class="custom-select" (change)="getSubzoneList(searchZoneId)" [(ngModel)]="searchZoneId">
+          <option *ngFor="let zone of zones" [value]="zone.id"> {{ zone.name }} </option>
+        </select>
+      </div>
+      <div class="select-dropdown">
+        <span>
+          Subzone
+        </span>
+        <select class="custom-select" [(ngModel)]="searchSubZoneId">
+          <option *ngFor="let subzone of subZones" [value]="subzone.id"> {{ subzone.name }} </option>
+        </select>
+      </div>
+    </div>
+    <div class="load-subzonedata" (click)="zoneSearch()">
+      <div style="display: flex; align-items: center;justify-content: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" style="color:gray;height:30px;width:30px"
+          viewBox="0 0 20 20" fill="currentColor">
+          <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z" />
+          <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z" />
+          <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z" />
+        </svg>
+        <button mat-flat-button style="color: gray;">Load Data</button>
+      </div>
+    </div>
+    <div>
+    </div>
+    <p style="font-size: large; font-weight: 400;color: gray; text-align: center;">
+      Search Building by..
+    </p>
+    <div class="search-container">
+      <div class="search-sub-container">
+        <div>
+          <input type="number" placeholder="Building ID">
+        </div>
+        <div class="search-icon">
+          <img src="../../assets/search-gray.png" alt="">
+        </div>
+
+      </div>
+
+      <div class="search-sub-container">
+        <div>
+          <input type="number" placeholder="Contact">
+        </div>
+        <div>
+          <div class="search-icon">
+            <div>
+              <img src="../../assets/search-gray.png" alt="">
+            </div>
           </div>
         </div>
       </div>
-  
+
+      <div class="search-sub-container">
+        <div style="display: flex;gap:10%">
+          <input type="text" placeholder="CID">
+        </div>
+        <div>
+          <div class="search-icon">
+            <img src="../../assets/search-gray.png">
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="scroll" style="margin: 0;">
-      <h3 style="text-align: center;">Household Data Dashboard</h3>
-      <form [formGroup]="zoneForm" style="padding: 0%;margin: 0%;display: flex;flex-direction: row;">
-        <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
-          <mat-label>Dzongkhag</mat-label>
-          <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag"
-            (selectionChange)="getZoneList(dzongkhag.value.id)" required>
-            <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag">
-              {{dzongkhag.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
-          <mat-label>Thromdes</mat-label>
-          <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)">
-            <mat-option *ngFor="let zone of zones" [value]="zone.id">
-              {{zone.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="justifier " style="padding: 0%;margin: 0%;">
-          <mat-label>Zones</mat-label>
-          <mat-select formControlName="subZoneControl" name="subZone">
-            <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
-              {{subZone.name}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-flat-button (click)="zoneSearch()" style="width : 100%;">Load Data by SubZone</button>
-      </form>
+
+    <br>
 
 
-      Search Building
-  
-          <form  [formGroup]="searchForm">
-            <mat-form-field style="width: 90%;">
-              <input matInput type="number" placeholder="Search by building number" name="search" formControlName="searchBuilding"  >
-            </mat-form-field>
-    
-            <div style="display: flex; flex-direction: row; justify-content: space-between;">
-              <button mat-flat-button color="primary" (click)="submit()" style="width : 10%;"><mat-icon appearance="none">search</mat-icon></button>
-              <button  mat-flat-button color="primary" style="width:fit-content;" (click) = "reset()" >Clear  | <mat-icon appearance="none">cached</mat-icon></button>
-            </div>
-            
-          </form>
 
 
-          <div class="search-container">
-            <p>
-                Search Building by Contact
-            </p>
-             <div class="search-sub-container" >
-                <div>
-                    <input type="number" placeholder="Contact Number" >
-                    <input type="text" placeholder="CID">
-
-                </div>
-                <div>
-                    <div class="search-container"  >
-                        <img src="../../assets/search.png" alt="" style="height: 30px;">
-                      </div>
-                </div>
-              </div> 
-              
-           </div>
-
+    <div *ngIf="showBuildingInfo">
+      <h3>Building Details</h3>
       <br>
-     
-      
-  
-  
-      <div *ngIf="showBuildingInfo">
-        <h3>Building Details</h3>
+      <table style="width:100%;">
+        <tr>
+          <th>Building ID</th>
+          <td>{{buildingId}}</td>
+        </tr>
+        <tr>
+          <th>Building Use</th>
+          <td>{{buildingUse}}</td>
+        </tr>
+        Owner Details
+        <tr>
+          <th>CID</th>
+          <td>{{cidOwner}}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{nameOfBuildingOwner}}</td>
+        </tr>
+        <tr>
+          <th>Contact</th>
+          <td>{{contactOwner}}</td>
+        </tr>
+        <tr>
+          <th>Total Units</th>
+          <td>{{length}}</td>
+        </tr>
+      </table>
+
+    </div>
+    <br>
+    <br>
+
+    <div *ngIf="unitDetailShow" class="unitDIV">
+      <h3> Unit Details</h3>
+      <table mat-table [dataSource]="unitsData" class="mat-elevation-z8">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef> Unit ID </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Occupancy Status </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitStatus}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="weight">
+          <th mat-header-cell *matHeaderCellDef> Head of the Household </th>
+          <td mat-cell *matCellDef="let element"> {{element.unitUse}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="symbol">
+          <th mat-header-cell *matHeaderCellDef> Families Sharing</th>
+          <td mat-cell *matCellDef="let element"> {{element.familiesSharing}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="view">
+          <th mat-header-cell *matHeaderCellDef> View Details </th>
+          <td mat-cell *matCellDef="let element" (click)=showResident(element.id)> view </td>
+        </ng-container>
+
+        <ng-container matColumnDef="update">
+          <th mat-header-cell *matHeaderCellDef> Update </th>
+          <!-- <td mat-cell *matCellDef="let element" (click)=updateUnit(element.id)> Update </td> -->
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef> Delete </th>
+          <!-- <td mat-cell *matCellDef="let element" (click)=deleteUnit(element.id)> Delete </td> -->
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="highlight(row)"></tr>
+      </table>
+
+
+    </div>
+
+    <br><br>
+    <div *ngIf="residentTableShow">
+      <h3> Household Details</h3>
+
+
+      <p>Details of the Head of the Household</p>
+
+      <table style="width:100%;">
+
+        <tr>
+          <th>Unit ID</th>
+          <td>{{housholdsData.unitId}}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{housholdsData.name}}</td>
+        </tr>
+        <tr>
+          <th>CID</th>
+          <td>{{housholdsData.cid}}</td>
+        </tr>
+        <tr>
+          <th>Age</th>
+          <td>{{housholdsData.age}}</td>
+        </tr>
+        <tr>
+          <th>Gender</th>
+          <td>{{housholdsData.gender}}</td>
+        </tr>
+        <tr>
+          <th>Occupation</th>
+          <td>{{housholdsData.employment}}</td>
+        </tr>
+        <tr>
+          <th>Working Agency</th>
+          <td>{{housholdsData.employmentOrg}}</td>
+        </tr>
+        <tr>
+          <th>Working Zone</th>
+          <td>{{housholdsData.workzone}}</td>
+        </tr>
+
         <br>
-        <table style="width:100%;">
-          <tr>
-            <th>Building ID</th>
-            <td>{{buildingId}}</td>
-          </tr>
-          <tr>
-            <th>Building Use</th>
-            <td>{{buildingUse}}</td>
-          </tr>
-          Owner Details
-          <tr>
-            <th>CID</th>
-            <td>{{cidOwner}}</td>
-          </tr>
-          <tr>
-            <th>Name</th>
-            <td>{{nameOfBuildingOwner}}</td>
-          </tr>
-          <tr>
-            <th>Contact</th>
-            <td>{{contactOwner}}</td>
-          </tr>
-          <tr>
-            <th>Total Units</th>
-            <td>{{length}}</td>
-          </tr>
-        </table>
+        <tr>
+          <th>Tested in past 2 weeks?</th>
+          <td>{{housholdsData.covid_test_status? 'Tested': 'No'}}</td>
+        </tr>
+        <tr>
+          <th>Vacinnated? </th>
+          <td>{{housholdsData.vaccine_status? 'Vacinnated' : 'No'}}</td>
+        </tr>
+        <tr>
+          <th>Most Active?</th>
+          <td>{{housholdsData.most_active? "Yes" : "No"}}</td>
+        </tr>
 
-      </div>
-      <br>
-      <br>
-  
-  
-      <div *ngIf="unitDetailShow" class="unitDIV">
-        <h3> Unit Details</h3>
-        <table mat-table [dataSource]="unitsData" class="mat-elevation-z8">
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> Unit ID </th>
-            <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
-          </ng-container>
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Occupancy Status </th>
-            <td mat-cell *matCellDef="let element"> {{element.unitStatus}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef> Head of the Household </th>
-            <td mat-cell *matCellDef="let element"> {{element.unitUse}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef> Families Sharing</th>
-            <td mat-cell *matCellDef="let element"> {{element.familiesSharing}} </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="view">
-            <th mat-header-cell *matHeaderCellDef> View Details </th>
-            <td mat-cell *matCellDef="let element" (click)=showResident(element.id)> view </td>
-          </ng-container>
-  
-          <ng-container matColumnDef="update">
-            <th mat-header-cell *matHeaderCellDef> Update </th>
-            <!-- <td mat-cell *matCellDef="let element" (click)=updateUnit(element.id)> Update </td> -->
-          </ng-container>
-  
-          <ng-container matColumnDef="delete">
-            <th mat-header-cell *matHeaderCellDef> Delete </th>
-            <!-- <td mat-cell *matCellDef="let element" (click)=deleteUnit(element.id)> Delete </td> -->
-          </ng-container>
-  
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-            [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="highlight(row)"></tr>
-        </table>
-  
-  
-      </div>
-  
-      <br><br>
-      <div *ngIf="residentTableShow">
-        <h3> Household Details</h3>
-  
-    
-        <p>Details of the Head of the Household</p>
-  
-        <table style="width:100%;">
-  
-          <tr>
-            <th>Unit ID</th>
-            <td>{{housholdsData.unitId}}</td>
-          </tr>
-          <tr>
-            <th>Name</th>
-            <td>{{housholdsData.name}}</td>
-          </tr>
-          <tr>
-            <th>CID</th>
-            <td>{{housholdsData.cid}}</td>
-          </tr>
-          <tr>
-            <th>Age</th>
-            <td>{{housholdsData.age}}</td>
-          </tr>
-          <tr>
-            <th>Gender</th>
-            <td>{{housholdsData.gender}}</td>
-          </tr>
-          <tr>
-            <th>Occupation</th>
-            <td>{{housholdsData.employment}}</td>
-          </tr>
-          <tr>
-            <th>Working Agency</th>
-            <td>{{housholdsData.employmentOrg}}</td>
-          </tr>
-          <tr>
-            <th>Working Zone</th>
-            <td>{{housholdsData.workzone}}</td>
-          </tr>
-  
-          <br>
-          <tr>
-            <th>Tested in past 2 weeks?</th>
-            <td>{{housholdsData.covid_test_status? 'Tested': 'No'}}</td>
-          </tr>
-          <tr>
-            <th>Vacinnated? </th>
-            <td>{{housholdsData.vaccine_status? 'Vacinnated' : 'No'}}</td>
-          </tr>
-          <tr>
-            <th>Most Active?</th>
-            <td>{{housholdsData.most_active? "Yes" : "No"}}</td>
-          </tr>
-  
-        </table>
-  
-        <!-- <table *ngIf="residentialUnitDetailShow">
+      </table>
+
+      <!-- <table *ngIf="residentialUnitDetailShow">
             <tr>
               <th>Head of household</th>
               <td>{{housholdsData.name!== undefined ? housholdsData.name: ''}}</td>
@@ -256,45 +277,46 @@
               <td>{{housholdsData.shopOfficeRent!== undefined ?housholdsData.shopOfficeRent:''}}</td>
             </tr>
           </table> -->
-      </div>
-      <br>
-  
-      <div *ngIf="residentTableShow">
-        Family Member Details
-  
-        <table style="width:100%;">
-          <tr>
-            <th>CID/Work Permit</th>
-            <th>Name</th>
-            <th>Age/Gender</th>
-            <th>Occupation</th>
-            <th>Tested in past two weeks?</th>
-            <th>Vaccinated?</th>
-            <th>Most Active?</th>
-          </tr>
-          <tr *ngFor="let member of familyMembers">
-            <td>{{member.idNumber}}</td>
-            <td>{{member.name}}</td>
-            <td>{{ member.age}} {{member.gender}}</td>
-            <td>{{member.occupation }} {{ member.workplace? "at " + member.workplace : "" }}</td>
-            <td>{{member.covid_test_status ? "Tested": "No"}}</td>
-            <td>{{member.vaccine_status ? "Vaccinated " : "No"}}</td>
-            <td>{{member.most_active ? "Yes" : "No"}}</td>
-          </tr>
-        </table>
-      </div>
-      <br>
-  
-      <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
-        <mat-list-item *ngFor="let image of imgs">
-          <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;">
-        </mat-list-item>
-        <!-- <mat-grid-list cols="2" rowHeight="2:1" *ngFor="let image of imgs">
+    </div>
+    <br>
+
+    <div *ngIf="residentTableShow">
+      Family Member Details
+
+      <table style="width:100%;">
+        <tr>
+          <th>CID/Work Permit</th>
+          <th>Name</th>
+          <th>Age/Gender</th>
+          <th>Occupation</th>
+          <th>Tested in past two weeks?</th>
+          <th>Vaccinated?</th>
+          <th>Most Active?</th>
+        </tr>
+        <tr *ngFor="let member of familyMembers">
+          <td>{{member.idNumber}}</td>
+          <td>{{member.name}}</td>
+          <td>{{ member.age}} {{member.gender}}</td>
+          <td>{{member.occupation }} {{ member.workplace? "at " + member.workplace : "" }}</td>
+          <td>{{member.covid_test_status ? "Tested": "No"}}</td>
+          <td>{{member.vaccine_status ? "Vaccinated " : "No"}}</td>
+          <td>{{member.most_active ? "Yes" : "No"}}</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <div style="display: flex; flex-direction: row;flex-wrap: wrap;">
+      <mat-list-item *ngFor="let image of imgs">
+
+        <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;">
+      </mat-list-item>
+      <!-- <mat-grid-list cols="2" rowHeight="2:1" *ngFor="let image of imgs">
             <mat-grid-tile> <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;"></mat-grid-tile>
            
           </mat-grid-list> -->
-  
-      </div>
+
     </div>
-  
   </div>
+
+</div>
