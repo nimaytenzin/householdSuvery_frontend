@@ -143,7 +143,7 @@
         <p style="font-weight: 400; font-size: large;">
           Building Images
         </p>
-        <div style="display: flex; flex-direction: row;flex-wrap: wrap;" *ngIf="imgs.length" >
+        <div style="display: flex; flex-direction: row;justify-content: center; flex-wrap: wrap;" *ngIf="imgs.length" >
           <mat-list-item *ngFor="let image of imgs">
             <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;">
           </mat-list-item>

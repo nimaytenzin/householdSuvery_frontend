@@ -249,6 +249,10 @@ export class ViewPositiveComponent implements OnInit {
   selectedDzongkhagId: number;
   searchDzongkhagId: number;
 
+  quarantineFacilityGeojsonUrl = "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/quarantine.geojson";
+  isolationFacilityGeojsonUrl = "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/isolation.geojson"
+  quarantineFacilities: L.GeoJSON;
+  isolationFacilities: L.GeoJSON;
 
 
   constructor(
@@ -272,6 +276,46 @@ export class ViewPositiveComponent implements OnInit {
   ngOnInit() {
     this.dzongkhagId = Number(sessionStorage.getItem("dzongkhagId"));
     this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagId"))
+    
+    fetch(this.quarantineFacilityGeojsonUrl).then(data=>data.json()).then(res =>{
+      this.quarantineFacilities = L.geoJSON(res, {
+        onEachFeature: (feature, layer) => {
+              layer.bindPopup(
+                '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
+                '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>' 
+              )
+        },
+        pointToLayer: (feature, latLng) => {
+          return new L.CircleMarker(latLng, {
+            radius: 4, 
+            color:"yellow",
+            fillOpacity: 0.85
+          });
+        }
+      });
+
+      fetch(this.isolationFacilityGeojsonUrl).then(res => res.json()).then(data=>{
+        this.isolationFacilities = L.geoJSON(data, {
+          onEachFeature: (feature, layer) => {
+                layer.bindPopup(
+                  '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
+                  '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>' 
+                )
+          },
+          pointToLayer: (feature, latLng) => {
+            return new L.CircleMarker(latLng, {
+              radius: 4, 
+              color:"blue",
+              fillOpacity: 0.85
+            });
+          }
+        });
+        this.fetchAndSetCovidStats(this.dzongkhagId)
+      this.renderMap();
+      this.renderRedBuildings(this.dzongkhagId)
+      })
+    })
+
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
@@ -279,9 +323,6 @@ export class ViewPositiveComponent implements OnInit {
           this.dzongkhag = element.name
         }
       });
-      this.fetchAndSetCovidStats(this.dzongkhagId)
-      this.renderMap();
-      this.renderRedBuildings(this.dzongkhagId)
     });
 
   }
@@ -302,7 +343,7 @@ export class ViewPositiveComponent implements OnInit {
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
     this.dzongkhags.forEach(dzo => {
-      if(Number(dzo.id) === Number(sessionStorage.getItem("dzongkhagId"))){
+      if (Number(dzo.id) === Number(sessionStorage.getItem("dzongkhagId"))) {
         this.dzongkhag = dzo.name
       }
     })
@@ -315,14 +356,29 @@ export class ViewPositiveComponent implements OnInit {
       maxZoom: 20,
       minZoom: 9,
     });
+    var carto = L.tileLayer("https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png");
+
+    var overlayMaps = {
+      "Quarantine Facilities": this.quarantineFacilities,
+      "Isolation Facilities":this.isolationFacilities
+    };
+
     this.map = L.map('map', {
       center: [26.864894, 89.38203],
       zoom: 13,
       maxZoom: 20,
       minZoom: 9,
       layers: [sat],
-      zoomControl: false
+      zoomControl: true
     });
+
+    var baseMaps = {
+      "Satellite": sat,
+      "CartoMap": carto
+    };
+    
+    L.control.layers(baseMaps,overlayMaps).addTo(this.map);
+
     this.map.on('locationerror', (err) => {
       if (err.code === 0) {
         this.snackBar.open('Couldnot pull your location, please try again later', '', {
@@ -363,13 +419,12 @@ export class ViewPositiveComponent implements OnInit {
         this.mycircle = L.circle(e.latlng, radius).addTo(this.map);
       }
     });
-
   }
 
-  downloadKml(){
+  downloadKml() {
 
-    this.dataService.getRedBuildingKmlByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res =>{
-      let filename: string =`${this.dzongkhag}_redbuilding.kml`
+    this.dataService.getRedBuildingKmlByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
+      let filename: string = `${this.dzongkhag}_redbuilding.kml`
       let binaryData = [];
       binaryData.push(res);
       let downloadLink = document.createElement('a');
@@ -410,7 +465,7 @@ export class ViewPositiveComponent implements OnInit {
                     this.cidOwner = res.data.cidOwner;
                     this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
                     this.contactOwner = res.data.contactOwner;
-                  }else{
+                  } else {
                     this.buildingUse = "No Record";
                     this.cidOwner = "No Record";
                     this.nameOfBuildingOwner = "No Record";
@@ -454,8 +509,6 @@ export class ViewPositiveComponent implements OnInit {
         })
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
       } else {
-        // this.map.removeLayer(this.bound);
-        // this.map.removeLayer(this.redBuildingGeojson);
         if (this.bound !== undefined) {
           this.map.removeLayer(this.bound);
           if (this.redBuildingGeojson !== undefined) {
