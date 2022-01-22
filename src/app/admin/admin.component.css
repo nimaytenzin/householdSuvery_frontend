@@ -1,0 +1,124 @@
+.map-container {
+  height: 93vh;
+  width: 50%;
+}
+
+.mat-table {
+  width: 100%;
+}
+
+.highlight {
+  background: #d0d0d0;
+  /* green */
+}
+
+.mat-row:hover {
+  background-color: #E4E6EB;
+}
+
+.topnav input[type=text] {
+  float: right;
+  padding: 6px;
+  border: none;
+  margin-top: 8px;
+  margin-right: 16px;
+  font-size: 17px;
+}
+
+.unitDetails :hover {
+  background-color: #EBECCD;
+}
+
+.scroll {
+  height: 90vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: justify;
+  float: right;
+  width: 50%;
+  padding: 10px;
+}
+
+.main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.map-frame {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.menu-spacer {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+
+.lol {
+  -webkit-writing-mode: tb-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: tb-rl;
+  color: #3f51b5;
+  text-align: center;
+}
+
+th {
+  background-color: #3f51b5;
+  color: white;
+  font-weight: 200;
+}
+
+.searchIcon {
+  outline-style: none;
+}
+
+@media (max-width: 1000px) {
+  .main {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    margin: 6px;
+  }
+  .map-container {
+    width: 95%;
+    height: 60vh;
+  }
+  .nationCase {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .scroll {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    padding: 0;
+  }
+  .seem {
+    margin-top: 3px;
+  }
+  .fg {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+/*# sourceMappingURL=admin.component.css.map */

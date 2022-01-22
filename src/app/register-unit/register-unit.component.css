@@ -1,0 +1,13 @@
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+  -webkit-padding-start: 10px;
+          padding-inline-start: 10px;
+}
+
+.mat-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/*# sourceMappingURL=register-unit.component.css.map */

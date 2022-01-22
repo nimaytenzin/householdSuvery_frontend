@@ -1,0 +1,17 @@
+.snapshot {
+  text-align: center;
+}
+
+.snapshot img {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.mat-icon {
+  font-size: 40px;
+}
+
+.actionBtn {
+  cursor: pointer;
+}
+/*# sourceMappingURL=upload-image.component.css.map */

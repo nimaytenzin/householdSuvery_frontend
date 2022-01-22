@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,UAAU,CAAC;EACT,MAAM,EAAE,OAAO;CAChB;;AAQD,AAAA,SAAS,CAAA;EACP,SAAS,EAAE,IAAI;CAChB;;AACD,AAAA,EAAE,AAAA,MAAM,CAAC;EACP,cAAc,EAAE,IAAI;CACrB",
+    "sources": [
+        "camera.component.scss"
+    ],
+    "names": [],
+    "file": "camera.component.css"
+}

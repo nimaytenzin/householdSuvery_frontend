@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AACA,AAAA,EAAE,CAAC;EACC,eAAe,EAAE,IAAI;EACrB,UAAU,EAAE,GAAG;EACf,oBAAoB,EAAE,IAAI;CAC7B;;AAED,AAAA,qBAAqB,CAAC;EAClB,UAAU,EAAE,KAAK;CACpB",
+    "sources": [
+        "register-atm.component.scss"
+    ],
+    "names": [],
+    "file": "register-atm.component.css"
+}

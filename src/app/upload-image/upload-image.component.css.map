@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,SAAS,CAAA;EACL,UAAU,EAAE,MAAM;CAKrB;;AAND,AAEI,SAFK,CAEL,GAAG,CAAA;EACC,SAAS,EAAE,KAAK;EAChB,UAAU,EAAE,KAAK;CACpB;;AAEL,AAAA,SAAS,CAAA;EACL,SAAS,EAAE,IAAI;CAClB;;AACD,AAAA,UAAU,CAAC;EACT,MAAM,EAAE,OAAO;CAChB",
+    "sources": [
+        "upload-image.component.scss"
+    ],
+    "names": [],
+    "file": "upload-image.component.css"
+}

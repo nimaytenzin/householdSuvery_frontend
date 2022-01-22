@@ -1,0 +1,27 @@
+::ng-deep th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  font-size: 1 rem;
+}
+
+::ng-deep th.mat-header-cell {
+  font-weight: bold;
+  text-transform: capitalize;
+  color: black;
+}
+
+::ng-deep td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+  padding: 0 5px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+::ng-deep .mat-table {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  overflow-x: scroll;
+}
+
+td {
+  text-align: left;
+}
+/*# sourceMappingURL=data-table.component.css.map */

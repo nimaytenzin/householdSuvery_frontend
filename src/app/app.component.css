@@ -1,0 +1,19 @@
+.menu-spacer {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav, mat-sidenav-content {
+  padding: 16px;
+}
+
+mat-sidenav {
+  background-color: lightcoral;
+  width: 200px;
+}
+/*# sourceMappingURL=app.component.css.map */

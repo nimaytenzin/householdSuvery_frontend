@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,mBAAmB,CAAA;EACf,KAAK,EAAE,IAAI;CACd;;AAED,AAAA,eAAe,CAAA;EACX,KAAK,EAAE,IAAI;CACd",
+    "sources": [
+        "dialog-box.component.scss"
+    ],
+    "names": [],
+    "file": "dialog-box.component.css"
+}
