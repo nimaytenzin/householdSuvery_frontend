@@ -54,6 +54,25 @@
         </svg>
         <button mat-flat-button style="color: gray;">Load Data</button>
       </div>
+
+      
+    </div>
+    <div style="display: flex;flex-wrap: wrap;gap: 2%;justify-content: center;">
+      <button (click)="downloadStructureData()"  class="download-btn" >
+        Download Structues Data
+      </button>
+
+      <button (click)="downloadBuildingData()" class="download-btn" >
+        Download Building Data
+      </button>
+
+      <button (click)="downloadHouseholdData()" class="download-btn">
+        Download Households Data
+      </button>
+
+      <button (click)="downloadMembersData()" class="download-btn">
+        Download HouseholdMembers Data
+      </button>
     </div>
     <div>
     </div>
@@ -96,14 +115,18 @@
 
     </div>
 
-    <br>
-
-
-
+   
 
     <div *ngIf="showBuildingInfo">
       <h3>Building Details</h3>
       <br>
+     <p style="font-size:larger; font-weight:800">
+      Coordinates: {{ lat }}, {{ lng }}
+      <span style="cursor: pointer;" (click)="copyCoordinates()">
+        Copy Coordinates
+      </span>
+     </p>
+
       <table style="width:100%;">
         <tr>
           <th>Building ID</th>

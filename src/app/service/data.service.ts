@@ -38,6 +38,13 @@ export class DataService {
     responseType:'text' as 'json'
   }
 
+  attachmentOptions={
+    headers: new HttpHeaders({
+      'Authorization':sessionStorage.getItem('token'),
+    }),
+    responseType:'text' as 'json'
+  }
+
   // Handle API errors
   handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -467,6 +474,36 @@ export class DataService {
   searchBuildingByCid(data){
     return this.http
     .post<any>(`${this.API_URL}/search/search-cid`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  downloadStructureDataByZone(subzoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/data/str/csv/${subzoneId}`,this.attachmentOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
+  downloadBuildingDatabyZone(subzoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/data/building/csv/${subzoneId}`,this.attachmentOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+  downloadMemberDataByZone(subzoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/data/member/csv/${subzoneId}`,this.attachmentOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+  downloadHouseholdDatabyZone(subzoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/data/household/csv/${subzoneId}`,this.attachmentOptions)
     .pipe(
       catchError(this.handleError)
     )

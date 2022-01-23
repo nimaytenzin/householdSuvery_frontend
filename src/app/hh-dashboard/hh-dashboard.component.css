@@ -217,7 +217,27 @@ select::-ms-expand {
   display: flex;
   cursor: pointer;
   justify-content: center;
+
+
 }
+
+.download-btn{
+  border: .5px solid gray;
+  padding: 4px;
+  cursor: pointer;
+  margin-top: 5px;
+  border-radius: .35rem;
+  background-color: white;
+  color: gray;
+}
+
+.download-btn:hover{
+  background-color: gray;
+  color: white;
+  /* box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); */
+}
+
+
 
 
 @media (max-width: 1000px) {

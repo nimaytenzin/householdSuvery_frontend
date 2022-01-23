@@ -215,17 +215,20 @@ export class HhDashboardComponent implements OnInit {
   //redBuildings
   redBuildingGeojson: any;
   redBuildingCases: any;
-  selectedRedBuilding:any;
-  selectedDzongkhagId:number;
+  selectedRedBuilding: any;
+  selectedDzongkhagId: number;
 
 
-  searchDzongkhagId:number;
-  searchZoneId:number;
-  searchSubZoneId:number;
+  searchDzongkhagId: number;
+  searchZoneId: number;
+  searchSubZoneId: number;
 
-  searchContact:number;
-  searchCid:string;
-  searchBuildingId:number;
+  searchContact: number;
+  searchCid: string;
+  searchBuildingId: number;
+
+  lat: number;
+  lng: number;
 
 
   constructor(
@@ -254,11 +257,10 @@ export class HhDashboardComponent implements OnInit {
     this.renderMap();
     this.renderBuildings(Number(sessionStorage.getItem('subzoneID')))
 
-    this.zoneForm.patchValue({
-      dzongkhagControl: Number(sessionStorage.getItem('dzongkhagID')),
-      zoneControl: Number(sessionStorage.getItem("zoneID")),
-      subZoneControl: Number(sessionStorage.getItem('subzoneID'))
-    })
+    this.searchSubZoneId =Number(sessionStorage.getItem('subzoneID'));
+    this.searchZoneId = Number(sessionStorage.getItem("zoneID"));
+    this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagID"))
+   
   }
 
   submit() {
@@ -301,42 +303,42 @@ export class HhDashboardComponent implements OnInit {
             this.showBuilding(this.buildingId);
             // this.resident = null;
             // this.buildingData= null
-              // this.familyMembers = null;
-              // this.housholdsData =null
-              // this.unitsData =null
-              this.residentTableShow = false;
-              this.buildingId = feature.properties.structure_id;
-              this.deleteButton = true
-              this.unitDetailShow = true
-              this.showBuildingInfo = true;
-              this.deleteID = feature.properties.structure_id
-              this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
-                this.bid = res.data.id
-                this.buildingUse = res.data.buildingUse;
-                this.cidOwner = res.data.cidOwner;
-                this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
-                this.contactOwner = res.data.contactOwner;
-              })
-              this.dataService.getHouseholds(this.buildingId).subscribe(res => {
-                this.unitsData = res.data
-                this.length = res.data.length
-              })
-              this.dataService.getImg(this.buildingId).subscribe(res => {
-                if (res.success) {
-                  this.imgs = res.data
-                }
-              })
-              this.addDeleteButtons = true;
-              this.showBuildingInfo = true;
-              this.showBuilding(this.buildingId);
-              this.clearData = true;
-              this.resident = null;
-              // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
-              //   this.unitsData = json.data;
-              // });
-              // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
-              //   this.imgs= json.data;
-              // });
+            // this.familyMembers = null;
+            // this.housholdsData =null
+            // this.unitsData =null
+            this.residentTableShow = false;
+            this.buildingId = feature.properties.structure_id;
+            this.deleteButton = true
+            this.unitDetailShow = true
+            this.showBuildingInfo = true;
+            this.deleteID = feature.properties.structure_id
+            this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
+              this.bid = res.data.id
+              this.buildingUse = res.data.buildingUse;
+              this.cidOwner = res.data.cidOwner;
+              this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+              this.contactOwner = res.data.contactOwner;
+            })
+            this.dataService.getHouseholds(this.buildingId).subscribe(res => {
+              this.unitsData = res.data
+              this.length = res.data.length
+            })
+            this.dataService.getImg(this.buildingId).subscribe(res => {
+              if (res.success) {
+                this.imgs = res.data
+              }
+            })
+            this.addDeleteButtons = true;
+            this.showBuildingInfo = true;
+            this.showBuilding(this.buildingId);
+            this.clearData = true;
+            this.resident = null;
+            // this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+            //   this.unitsData = json.data;
+            // });
+            // this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+            //   this.imgs= json.data;
+            // });
           });
         }, pointToLayer: (feature, latLng) => {
           return L.marker(latLng, { icon: this.myMarker });
@@ -473,9 +475,9 @@ export class HhDashboardComponent implements OnInit {
 
   zoneSearch() {
 
-    if(this.searchSubZoneId){
-        this.renderBuildings(this.searchSubZoneId)
-    }else{
+    if (this.searchSubZoneId) {
+      this.renderBuildings(this.searchSubZoneId)
+    } else {
       this.snackBar.open('Please select a subzone', '', {
         duration: 5000,
         verticalPosition: 'top',
@@ -484,6 +486,112 @@ export class HhDashboardComponent implements OnInit {
     }
 
   }
+
+
+  downloadStructureData(){
+   if(this.searchSubZoneId){
+    this.dataService.downloadStructureDataByZone(this.searchSubZoneId).subscribe(res =>{
+      let filename: string = `structures.csv`
+      let binaryData = [];
+      binaryData.push(res);
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'blob' }));
+      downloadLink.setAttribute('download', filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      this.snackBar.open('Downloaded', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: ['success-snackbar']
+      });
+    })
+   }else{
+    this.snackBar.open('please select a subzone', '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+   }
+  }
+
+  downloadBuildingData(){
+    if(this.searchSubZoneId){
+     this.dataService.downloadBuildingDatabyZone(this.searchSubZoneId).subscribe(res =>{
+       let filename: string = `Buildings.csv`
+       let binaryData = [];
+       binaryData.push(res);
+       let downloadLink = document.createElement('a');
+       downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'blob' }));
+       downloadLink.setAttribute('download', filename);
+       document.body.appendChild(downloadLink);
+       downloadLink.click();
+       this.snackBar.open('Downloaded', '', {
+         duration: 3000,
+         verticalPosition: 'top',
+         panelClass: ['success-snackbar']
+       });
+     })
+    }else{
+     this.snackBar.open('please select a subzone', '', {
+       duration: 3000,
+       verticalPosition: 'top',
+       panelClass: ['success-snackbar']
+     });
+    }
+   }
+
+   downloadHouseholdData(){
+    if(this.searchSubZoneId){
+     this.dataService.downloadHouseholdDatabyZone(this.searchSubZoneId).subscribe(res =>{
+       let filename: string = `households.csv`
+       let binaryData = [];
+       binaryData.push(res);
+       let downloadLink = document.createElement('a');
+       downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'blob' }));
+       downloadLink.setAttribute('download', filename);
+       document.body.appendChild(downloadLink);
+       downloadLink.click();
+       this.snackBar.open('Downloaded', '', {
+         duration: 3000,
+         verticalPosition: 'top',
+         panelClass: ['success-snackbar']
+       });
+     })
+    }else{
+     this.snackBar.open('please select a subzone', '', {
+       duration: 3000,
+       verticalPosition: 'top',
+       panelClass: ['success-snackbar']
+     });
+    }
+   }
+
+   downloadMembersData(){
+    if(this.searchSubZoneId){
+     this.dataService.downloadMemberDataByZone(this.searchSubZoneId).subscribe(res =>{
+       let filename: string = `members.csv`
+       let binaryData = [];
+       binaryData.push(res);
+       let downloadLink = document.createElement('a');
+       downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'blob' }));
+       downloadLink.setAttribute('download', filename);
+       document.body.appendChild(downloadLink);
+       downloadLink.click();
+       this.snackBar.open('Downloaded', '', {
+         duration: 3000,
+         verticalPosition: 'top',
+         panelClass: ['success-snackbar']
+       });
+     })
+    }else{
+     this.snackBar.open('please select a subzone', '', {
+       duration: 3000,
+       verticalPosition: 'top',
+       panelClass: ['success-snackbar']
+     });
+    }
+   }
+
 
   renderBuildings(zoneId) {
     const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
@@ -494,8 +602,8 @@ export class HhDashboardComponent implements OnInit {
         style: (feature) => {
           return {
             color: "#f8fafc",
-                    fillOpacity: 0,
-                    weight: 1
+            fillOpacity: 0,
+            weight: 1
           }
         }
       }).addTo(this.map);
@@ -503,6 +611,15 @@ export class HhDashboardComponent implements OnInit {
     this.addStructures(zoneId);
   }
 
+
+  copyCoordinates() {
+    var text = `${this.lat}, ${this.lng}`;
+    navigator.clipboard.writeText(text).then(function () {
+      alert(`${text} Copied`)
+    }, function (err) {
+      console.error('Async: Could not copy text: ', err);
+    });
+  }
 
   addStructures(zoneId) {
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
@@ -515,8 +632,12 @@ export class HhDashboardComponent implements OnInit {
       this.totalCompleted = 0
 
       this.buildingGeojson = L.geoJSON(this.json, {
-        onEachFeature: (feature, layer) => {
+        onEachFeature: (feature: any, layer) => {
           layer.on('click', (e) => {
+            console.log(feature)
+            this.lat = feature.coordinates[1];
+            this.lng = feature.coordinates[0]
+
             this.residentTableShow = false;
             this.selectedStructure = feature;
             this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
@@ -585,10 +706,10 @@ export class HhDashboardComponent implements OnInit {
   }
 
   searchBuildingByContact() {
-    if(this.searchContact){
+    if (this.searchContact) {
       this.dataService.searchBuildingByContact({
-        contact:this.searchContact
-      }).subscribe(res =>{
+        contact: this.searchContact
+      }).subscribe(res => {
         let lat, lng, id = 0
         if (res.success === "false") {
           this.snackBar.open('Building Not Found', '', {
@@ -604,7 +725,7 @@ export class HhDashboardComponent implements OnInit {
           this.addStructures(res.data.structure.sub_zone_id)
           lat = res.data.structure.lat
           lng = res.data.structure.lng
-    
+
           this.map.flyTo([lat, lng], 18)
           var responseJson = {
             "type": "Point",
@@ -647,17 +768,17 @@ export class HhDashboardComponent implements OnInit {
                 this.resident = null;
               });
             }, pointToLayer: (feature, latLng) => {
-              return  new L.CircleMarker(latLng, {
-                radius: 7, 
-                color:"tomato",
+              return new L.CircleMarker(latLng, {
+                radius: 10,
+                color: "red",
                 fillOpacity: 0.85
               });
             }
           }).addTo(this.map);
         }
-  
+
       })
-    }else{
+    } else {
       this.snackBar.open(`Please Enter a Phone Number`, '', {
         duration: 4000,
         verticalPosition: 'top',
@@ -665,18 +786,14 @@ export class HhDashboardComponent implements OnInit {
       });
     }
 
-   
 
-    
+
+
   }
 
-
-
   searchBuildingByBuildingNumber() {
-
-    
-    if(this.searchBuildingId){
-      this.dataService.getAStructure(this.searchBuildingId).subscribe((res : any) =>{
+    if (this.searchBuildingId) {
+      this.dataService.getAStructure(this.searchBuildingId).subscribe((res: any) => {
         console.log(this.searchCid)
         console.log(res)
         let lat, lng, id = 0
@@ -694,7 +811,7 @@ export class HhDashboardComponent implements OnInit {
           this.addStructures(res.data.sub_zone_id)
           lat = res.data.lat
           lng = res.data.lng
-    
+
           this.map.flyTo([lat, lng], 18)
           var responseJson = {
             "type": "Point",
@@ -737,17 +854,17 @@ export class HhDashboardComponent implements OnInit {
                 this.resident = null;
               });
             }, pointToLayer: (feature, latLng) => {
-              return  new L.CircleMarker(latLng, {
-                radius: 7, 
-                color:"tomato",
+              return new L.CircleMarker(latLng, {
+                radius: 10,
+                color: "red",
                 fillOpacity: 0.85
               });
             }
           }).addTo(this.map);
         }
-  
+
       })
-    }else{
+    } else {
       this.snackBar.open(`Please Enter a Building Number`, '', {
         duration: 4000,
         verticalPosition: 'top',
@@ -758,10 +875,10 @@ export class HhDashboardComponent implements OnInit {
 
 
   searchBuildingByCid() {
-    if(this.searchCid){
+    if (this.searchCid) {
       this.dataService.searchBuildingByCid({
-        cid:this.searchCid
-      }).subscribe(res =>{
+        cid: this.searchCid
+      }).subscribe(res => {
         console.log(this.searchCid)
         console.log(res)
         let lat, lng, id = 0
@@ -779,7 +896,7 @@ export class HhDashboardComponent implements OnInit {
           this.addStructures(res.data.structure.sub_zone_id)
           lat = res.data.structure.lat
           lng = res.data.structure.lng
-    
+
           this.map.flyTo([lat, lng], 18)
           var responseJson = {
             "type": "Point",
@@ -822,17 +939,17 @@ export class HhDashboardComponent implements OnInit {
                 this.resident = null;
               });
             }, pointToLayer: (feature, latLng) => {
-              return  new L.CircleMarker(latLng, {
-                radius: 7, 
-                color:"tomato",
+              return new L.CircleMarker(latLng, {
+                radius: 10,
+                color: "red",
                 fillOpacity: 0.85
               });
             }
           }).addTo(this.map);
         }
-  
+
       })
-    }else{
+    } else {
       this.snackBar.open(`Please Enter a Phone Number`, '', {
         duration: 4000,
         verticalPosition: 'top',
@@ -840,9 +957,9 @@ export class HhDashboardComponent implements OnInit {
       });
     }
 
-   
 
-    
+
+
   }
 
   selectedRowIndex = -1;
@@ -851,7 +968,7 @@ export class HhDashboardComponent implements OnInit {
     this.selectedRowIndex = row.id;
   }
   toggleAdd() {
-    
+
     if (sessionStorage.getItem('subzoneID') === null) {
       this.snackBar.open(`Please select a zone to add structure`, '', {
         duration: 4000,
@@ -912,13 +1029,15 @@ export class HhDashboardComponent implements OnInit {
   }
 
   getZoneList(dzongkhagId) {
-    console.log(dzongkhagId)
+
+    this.zones=[];
     this.dataService.getZones(dzongkhagId).subscribe(response => {
       this.zones = response.data;
     });
   }
 
   getSubzoneList(zoneId) {
+    this.subZones=[]
     this.dataService.getSubZones(zoneId).subscribe(response => {
       this.subZones = response.data;
     });
@@ -959,7 +1078,7 @@ export class HhDashboardComponent implements OnInit {
     });
   }
 
-  parseDate(date){
+  parseDate(date) {
     return new Date(date).toLocaleDateString()
   }
 
