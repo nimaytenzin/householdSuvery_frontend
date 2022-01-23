@@ -120,12 +120,12 @@
     <div *ngIf="showBuildingInfo">
       <h3>Building Details</h3>
       <br>
-     <p style="font-size:larger; font-weight:800">
+     <div style="font-size:larger; font-weight:lighter">
       Coordinates: {{ lat }}, {{ lng }}
-      <span style="cursor: pointer;" (click)="copyCoordinates()">
+      <button style="cursor: pointer; padding: 5px; color: white;border-radius: .125rem; font-size: small; border: black;background-color: gray;" (click)="copyCoordinates()">
         Copy Coordinates
-      </span>
-     </p>
+      </button>
+     </div>
 
       <table style="width:100%;">
         <tr>
