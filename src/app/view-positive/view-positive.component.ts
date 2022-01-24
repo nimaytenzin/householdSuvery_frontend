@@ -12,6 +12,7 @@ import { Options } from "@angular-slider/ngx-slider";
 // import '../libs/SliderControl';
 import jwt_decode from 'jwt-decode';
 import tokml from "geojson-to-kml";
+import { ifStmt } from '@angular/compiler/src/output/output_ast';
 // let $: any = jquery;
 
 export class Building {
@@ -251,8 +252,10 @@ export class ViewPositiveComponent implements OnInit {
 
   quarantineFacilityGeojsonUrl = "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/quarantine.geojson";
   isolationFacilityGeojsonUrl = "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/isolation.geojson"
+  zoneMapUrl;
   quarantineFacilities: L.GeoJSON;
   isolationFacilities: L.GeoJSON;
+  zoneMap: L.GeoJSON;
 
 
   constructor(
@@ -276,46 +279,109 @@ export class ViewPositiveComponent implements OnInit {
   ngOnInit() {
     this.dzongkhagId = Number(sessionStorage.getItem("dzongkhagId"));
     this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagId"))
-    
-    fetch(this.quarantineFacilityGeojsonUrl).then(data=>data.json()).then(res =>{
-      this.quarantineFacilities = L.geoJSON(res, {
-        onEachFeature: (feature, layer) => {
+
+
+    function getAreaColor(status) {
+      switch (status) {
+        case 'Green': return { fillColor: 'green' };
+        case 'Red': return { fillColor: 'red' };
+        case 'Yellow': return { fillColor: 'yellow' };
+          break;
+      }
+    };
+    this.zoneMapUrl = this.getZoneMapUrl(this.dzongkhagId);
+    if (this.zoneMapUrl) {
+      fetch(this.zoneMapUrl).then(res => res.json()).then(res => {
+        this.zoneMap = L.geoJSON(res, {
+          onEachFeature: function (feature, featureLayer) {
+            featureLayer.bindPopup("Chiwog: " + feature.properties.CHIWOG + "<br>" + "Gewog: " + feature.properties.GEWOG + "<br>" + "Dzongkhag: " + feature.properties.DZONGKHAG);
+          },
+          style: function (feature) {
+            switch (feature.properties.status) {
+              case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.2 };
+              case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.2 };
+              case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.2 };
+            }
+          }
+        })
+        fetch(this.quarantineFacilityGeojsonUrl).then(data => data.json()).then(res => {
+          this.quarantineFacilities = L.geoJSON(res, {
+            onEachFeature: (feature, layer) => {
               layer.bindPopup(
                 '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
-                '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>' 
+                '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
               )
-        },
-        pointToLayer: (feature, latLng) => {
-          return new L.CircleMarker(latLng, {
-            radius: 4, 
-            color:"yellow",
-            fillOpacity: 0.85
+            },
+            pointToLayer: (feature, latLng) => {
+              return new L.CircleMarker(latLng, {
+                radius: 4,
+                color: "yellow",
+                fillOpacity: 0.85
+              });
+            }
           });
-        }
-      });
 
-      fetch(this.isolationFacilityGeojsonUrl).then(res => res.json()).then(data=>{
-        this.isolationFacilities = L.geoJSON(data, {
-          onEachFeature: (feature, layer) => {
+          fetch(this.isolationFacilityGeojsonUrl).then(res => res.json()).then(data => {
+            this.isolationFacilities = L.geoJSON(data, {
+              onEachFeature: (feature, layer) => {
                 layer.bindPopup(
                   '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
-                  '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>' 
+                  '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
                 )
+              },
+              pointToLayer: (feature, latLng) => {
+                return new L.CircleMarker(latLng, {
+                  radius: 4,
+                  color: "blue",
+                  fillOpacity: 0.85
+                });
+              }
+            });
+            this.fetchAndSetCovidStats(this.dzongkhagId)
+            this.renderMap();
+            this.renderRedBuildings(this.dzongkhagId)
+          })
+        })
+      })
+    } else {
+      fetch(this.quarantineFacilityGeojsonUrl).then(data => data.json()).then(res => {
+        this.quarantineFacilities = L.geoJSON(res, {
+          onEachFeature: (feature, layer) => {
+            layer.bindPopup(
+              '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
+              '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
+            )
           },
           pointToLayer: (feature, latLng) => {
             return new L.CircleMarker(latLng, {
-              radius: 4, 
-              color:"blue",
+              radius: 4,
+              color: "yellow",
               fillOpacity: 0.85
             });
           }
         });
-        this.fetchAndSetCovidStats(this.dzongkhagId)
-      this.renderMap();
-      this.renderRedBuildings(this.dzongkhagId)
+        fetch(this.isolationFacilityGeojsonUrl).then(res => res.json()).then(data => {
+          this.isolationFacilities = L.geoJSON(data, {
+            onEachFeature: (feature, layer) => {
+              layer.bindPopup(
+                '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
+                '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
+              )
+            },
+            pointToLayer: (feature, latLng) => {
+              return new L.CircleMarker(latLng, {
+                radius: 4,
+                color: "blue",
+                fillOpacity: 0.85
+              });
+            }
+          });
+          this.fetchAndSetCovidStats(this.dzongkhagId)
+          this.renderMap();
+          this.renderRedBuildings(this.dzongkhagId)
+        })
       })
-    })
-
+    }
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
@@ -324,7 +390,6 @@ export class ViewPositiveComponent implements OnInit {
         }
       });
     });
-
   }
 
   fetchAndSetCovidStats(dzoId) {
@@ -334,6 +399,30 @@ export class ViewPositiveComponent implements OnInit {
     })
   }
 
+  getZoneMapUrl(dzongkhagId) {
+    switch (dzongkhagId) {
+      case 1:
+        //thimphu
+        return null;
+      case 2:
+        //chukha
+        return  "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/chhukha.geojson";
+      case 18:
+        //wangdue
+        return "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/wangdue.geojson"
+      case 10:
+        //punakha;
+        return "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/punakha.geojson"
+      case 11:
+      //Samdrup Jongkhar;
+        return "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/samdrup.geojson";
+      case 13:
+        //sarpang
+        return "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/sarpang.geojson";
+      default:
+        return null;
+    }
+  }
 
   renderCasebyDzongkhag() {
     this.showBuildingInfo = false;
@@ -342,13 +431,14 @@ export class ViewPositiveComponent implements OnInit {
     this.totalRedBuildings = 0;
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
+    window.location.reload()
     this.dzongkhags.forEach(dzo => {
       if (Number(dzo.id) === Number(sessionStorage.getItem("dzongkhagId"))) {
         this.dzongkhag = dzo.name
       }
     })
-    this.fetchAndSetCovidStats(this.searchDzongkhagId)
-    this.renderRedBuildings(this.searchDzongkhagId)
+    this.fetchAndSetCovidStats(this.searchDzongkhagId);
+    this.renderRedBuildings(this.searchDzongkhagId);
   }
 
   renderMap() {
@@ -358,10 +448,21 @@ export class ViewPositiveComponent implements OnInit {
     });
     var carto = L.tileLayer("https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png");
 
-    var overlayMaps = {
+    let overlayMaps;
+
+   if(this.zoneMapUrl){
+    overlayMaps = {
       "Quarantine Facilities": this.quarantineFacilities,
-      "Isolation Facilities":this.isolationFacilities
+      "Isolation Facilities": this.isolationFacilities,
+      "Zone Map": this.zoneMap
     };
+   }else{
+       overlayMaps = {
+      "Quarantine Facilities": this.quarantineFacilities,
+      "Isolation Facilities": this.isolationFacilities,
+    };
+   }
+
 
     this.map = L.map('map', {
       center: [26.864894, 89.38203],
@@ -372,12 +473,13 @@ export class ViewPositiveComponent implements OnInit {
       zoomControl: true
     });
 
+
     var baseMaps = {
       "Satellite": sat,
       "CartoMap": carto
     };
-    
-    L.control.layers(baseMaps,overlayMaps).addTo(this.map);
+
+    L.control.layers(baseMaps, overlayMaps).addTo(this.map);
 
     this.map.on('locationerror', (err) => {
       if (err.code === 0) {
@@ -434,8 +536,6 @@ export class ViewPositiveComponent implements OnInit {
       downloadLink.click();
     })
   }
-
-
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {
@@ -456,7 +556,6 @@ export class ViewPositiveComponent implements OnInit {
                   '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
                   '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
                 )
-                
                 this.buildingId = feature.properties.structure_id;
                 this.showBuildingInfo = true;
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
@@ -487,28 +586,36 @@ export class ViewPositiveComponent implements OnInit {
                 })
               })
             });
-            
+
           },
           pointToLayer: (feature, latLng) => {
             return L.marker(latLng, { icon: this.redMarker });
           }
         });
-        this.map.addLayer(this.redBuildingGeojson)
 
         const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
           if (this.bound !== undefined) {
             this.map.removeLayer(this.bound);
           }
           this.bound = L.geoJSON(json.data, {
+            onEachFeature: (feature, layer) => {
+             
+            },
             style: (feature) => {
               return {
                 color: "yellow",
                 fillOpacity: 0,
-                weight:2
+                weight: 2
               }
             }
           }).addTo(this.map);
+          if (this.zoneMapUrl) {
+            this.map.addLayer(this.zoneMap)
+          }
+          this.map.addLayer(this.redBuildingGeojson)
         })
+
+
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
       } else {
         if (this.bound !== undefined) {
