@@ -601,9 +601,9 @@ export class HhDashboardComponent implements OnInit {
       this.bound = L.geoJSON(json.data, {
         style: (feature) => {
           return {
-            color: "#f8fafc",
+            color: "yellow",
             fillOpacity: 0,
-            weight: 1
+            weight: 2
           }
         }
       }).addTo(this.map);
