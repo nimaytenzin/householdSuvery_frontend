@@ -298,7 +298,7 @@ export class ViewPositiveComponent implements OnInit {
       zoom: 13,
       maxZoom: 20,
       minZoom: 9,
-      layers: [this.carto],
+      layers: [this.sat],
       zoomControl: false
     });
    this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
@@ -313,9 +313,9 @@ export class ViewPositiveComponent implements OnInit {
         },
         style: function (feature) {
           switch (feature.properties.status) {
-            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.2 };
-            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.2 };
-            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.2 };
+            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.5 };
+            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.5 };
+            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.5 };
           }
         }
       })
