@@ -52,9 +52,13 @@
     </div>
 
 
-    <div style="display: flex; justify-content: center; margin-top: 10%; cursor: pointer;">
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; margin-top: 10%; cursor: pointer;">
       <button class="download-kml" (click)="downloadKml()">
         Download Red Buildings as KML
+      </button>
+
+      <button class="download-kml" (click)="downloadZoneKml()">
+        Download Zones as Geojson   
       </button>
 
     </div>

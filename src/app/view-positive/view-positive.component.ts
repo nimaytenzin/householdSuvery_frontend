@@ -419,6 +419,20 @@ export class ViewPositiveComponent implements OnInit {
       downloadLink.click();
     })
   }
+
+  downloadZoneKml() {
+    this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
+      let filename: string = `${this.dzongkhag}_zone.geojson`
+      let binaryData = [];
+      binaryData.push(res);
+      console.log(binaryData)
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'text' }));
+      downloadLink.setAttribute('download', filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+    })
+  }
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {

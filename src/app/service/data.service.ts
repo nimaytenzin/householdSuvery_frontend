@@ -516,4 +516,12 @@ export class DataService {
       catchError(this.handleError)
     )
   }
+
+  DownloadChiwogGeojsonByDzongkhag(dzo_id){
+    return this.http
+    .get<any>(`https://zhichar-pling.ddnsfree.com/cdrs/api/shapefile/get-chiwogs/${dzo_id}`,this.kmlOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
 }
