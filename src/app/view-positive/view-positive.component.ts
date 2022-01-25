@@ -269,6 +269,9 @@ export class ViewPositiveComponent implements OnInit {
     "Carto":this.carto
   }
 
+  yellowChiwogs;
+  redChiwogs;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -301,9 +304,19 @@ export class ViewPositiveComponent implements OnInit {
       layers: [this.sat],
       zoomControl: false
     });
+   
    this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
+let yellowChiwogs =[];
+    let redChiwogs=[];
       this.zoneMap = L.geoJSON(res, {
         onEachFeature: function (feature, featureLayer) {
+          // if(feature.properties.status === "Red"){
+          //   redChiwogs.push(feature.properties.chiwog)
+          // }else if(feature.properties.status === "Yellow"){
+          //   yellowChiwogs.push(feature.properties.chiwog)
+          // }
+
+
 
           featureLayer.bindPopup("Chiwog: " + feature.properties.chiwog + "<br>" +
                                  "Gewog: " + feature.properties.gewog + "<br>" + 
@@ -358,11 +371,16 @@ export class ViewPositiveComponent implements OnInit {
             "Isolation Facilities": this.isolationFacilities,
             "Zone Map":this.zoneMap
           };
+
+
       
           this.mapLayerControl= L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
           this.fetchAndSetCovidStats(this.dzongkhagId)
           // this.renderMap();
           this.renderRedBuildings(this.dzongkhagId)
+          this.yellowChiwogs = yellowChiwogs;
+          this.redChiwogs = redChiwogs;
+          console.log(this.yellowChiwogs,this.redChiwogs)
         })
       })
     }) 
@@ -383,6 +401,9 @@ export class ViewPositiveComponent implements OnInit {
     })
   }
 
+  transformChiwogName(name){
+      return name.replace(/_/g,' ');
+  }
   
 
   renderCasebyDzongkhag() {
