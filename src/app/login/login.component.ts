@@ -54,18 +54,10 @@ export class LoginComponent implements OnInit {
         
 
         let user:any = jwt_decode(token);
-        console.log("DECODED", user)
-  
         sessionStorage.setItem('userId', response.data.id);
         sessionStorage.setItem('isadmin',user.isadmin);
         localStorage.setItem('loginId', loginId);
 
-        console.log(response)
-        
-        if(user.isadmin == "ENUM"){
-          this.router.navigate(['select-zone']);
-        }
-        console.log(this.routerService.getRoleRoute(user.isadmin))
         // if(user.isadmin === "TRUE"){
         //   this.router.navigate(['admin']);
         // }else if(user.isadmin === "COV_ADMIN"){
@@ -75,7 +67,8 @@ export class LoginComponent implements OnInit {
         // }else{
         //   this.router.navigate(['selectzone']);
         // }
-        this.router.navigate(['app-drawer']);
+        let navRoute = this.routerService.getRoleRoute(user.isadmin)
+        this.router.navigate([navRoute]);
         
         this.snackBar.open('Welcome ' + response.data.username, '', {
           duration: 5000,

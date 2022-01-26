@@ -1,0 +1,42 @@
+<mat-toolbar>
+    <span>Select Zone</span>
+  </mat-toolbar>
+  <div class="form-wraper">
+    <div class="form-container card">
+      <div class="form-header">
+      </div>
+      <div class="form-body">
+        <form [formGroup]="zoneForm">
+          <mat-form-field class="justifier">
+            <mat-label>Dzongkhag</mat-label>
+            <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag" (selectionChange)="getZoneList(dzongkhag.value)" required>
+              <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">
+                {{dzongkhag.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="justifier">
+            <mat-label>Super Zone</mat-label>
+            <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)" required>
+              <mat-option *ngFor="let zone of zones" [value]="zone.id">
+                {{zone.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="justifier">
+            <mat-label>Zone</mat-label>
+            <mat-select formControlName="subZoneControl" name="subZone" required>
+              <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
+                {{subZone.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </form>
+      </div>
+      <div class="form-footer">
+        <button mat-raised-button class="btn custom-btn" (click)="redirectToDashboard()" color="primary" [disabled]="!zoneForm.valid">
+          <mat-icon>arrow_forward</mat-icon> Proceed
+        </button>
+      </div>
+    </div>
+  </div>

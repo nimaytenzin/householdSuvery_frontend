@@ -55,6 +55,7 @@ import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
 import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
 import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongkhag.component';
 import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
+import { SelectComponent } from './select/select.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,8 @@ import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
     AppsDrawerComponent,
     SelectzoneComponent,
     SelectdzongkhagComponent,
-    HhDashboardComponent
+    HhDashboardComponent,
+    SelectComponent
   ],
   imports: [
     BrowserModule,
