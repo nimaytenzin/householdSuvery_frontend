@@ -308,6 +308,10 @@ export class ViewPositiveComponent implements OnInit {
    this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
 let yellowChiwogs =[];
     let redChiwogs=[];
+
+
+
+
       this.zoneMap = L.geoJSON(res, {
         onEachFeature: function (feature, featureLayer) {
           // if(feature.properties.status === "Red"){
@@ -529,6 +533,29 @@ let yellowChiwogs =[];
           }).addTo(this.map);
             this.map.addLayer(this.zoneMap)
             this.map.addLayer(this.redBuildingGeojson)
+            // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/theirs.geojson").then(res=>res.json()).then(
+            //   res => {
+            //     let ok = L.geoJSON(res,{
+            //       onEachFeature: (feature, layer) => {
+            //         layer.on("click",(e)=>{
+            //           console.log(feature.properties)
+            //           layer.bindPopup(
+            //             '<p style:"color:tomtato">Status: ' + feature.properties.CaseCode + '</p>' +
+            //             '<p style:"color:tomtato">Number of Cases: ' + 1 + '</p>' +
+            //             '<p style:"color:tomtato">First Detection: ' + 2 + '</p>'
+            //           )
+            //         })
+            //       },
+            //       pointToLayer: (feature, latLng) => {
+            //         return new L.CircleMarker(latLng, {
+            //           radius: 10,
+            //           color: "blue",
+            //           fillOpacity: 0.85
+            //         });
+            //       }
+            //     }).addTo(this.map)
+            //   }
+            // )
         })
 
 
