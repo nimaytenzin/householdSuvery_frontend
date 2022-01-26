@@ -17,12 +17,14 @@ import { ViewPositiveComponent } from './view-positive/view-positive.component';
 import { CovAdminComponent } from './cov-admin/cov-admin.component';
 import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
 import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
+import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'app-drawer', component: AppsDrawerComponent},
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},
+  {path: 'select-zone', component: SelectzoneComponent, },
   {path: 'dashboard/:id', component: DashboardComponent , canActivate: [RouteGuard]},
   {path: 'building', component: RegisterComponent , canActivate: [RouteGuard]},
   {path: 'unit', component: RegisterUnitComponent, canActivate: [RouteGuard]},
@@ -41,8 +43,13 @@ const routes: Routes = [
   
 ];
 
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule { 
+  get getRoutes(){
+    return routes;
+  }
+}

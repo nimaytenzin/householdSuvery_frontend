@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../service/authentication.service';
 import { MatSnackBar } from '@angular/material';
 import jwt_decode from 'jwt-decode';
+import { AppRoutingModule } from '../app-routing.module';
+import { RouterService } from '../service/router.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private routerService: RouterService,
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private snackBar: MatSnackBar
@@ -59,6 +62,10 @@ export class LoginComponent implements OnInit {
 
         console.log(response)
         
+        if(user.isadmin == "ENUM"){
+          this.router.navigate(['select-zone']);
+        }
+        console.log(this.routerService.getRoleRoute(user.isadmin))
         // if(user.isadmin === "TRUE"){
         //   this.router.navigate(['admin']);
         // }else if(user.isadmin === "COV_ADMIN"){
