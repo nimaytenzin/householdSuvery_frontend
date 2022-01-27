@@ -255,7 +255,7 @@ export class ViewPositiveComponent implements OnInit {
   quarantineFacilities: L.GeoJSON;
   isolationFacilities: L.GeoJSON;
   zoneMap: L.GeoJSON;
-  mapLayerControl:L.Control;
+  mapLayerControl: L.Control;
 
   map: L.Map;
   sat = L.tileLayer('http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', {
@@ -263,10 +263,10 @@ export class ViewPositiveComponent implements OnInit {
     minZoom: 9,
   });
   carto = L.tileLayer("https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png");
-  overlayMaps ={}
+  overlayMaps = {}
   baseMaps = {
-    "Satellite":this.sat,
-    "Carto":this.carto
+    "Satellite": this.sat,
+    "Carto": this.carto
   }
 
   yellowChiwogs;
@@ -294,7 +294,7 @@ export class ViewPositiveComponent implements OnInit {
     this.dzongkhagId = Number(sessionStorage.getItem("dzongkhagId"));
     this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagId"))
 
-    console.log("Load zone map of dzo_id",this.searchDzongkhagId);
+    console.log("Load zone map of dzo_id", this.searchDzongkhagId);
 
     this.map = L.map('map', {
       center: [26.864894, 89.38203],
@@ -304,13 +304,10 @@ export class ViewPositiveComponent implements OnInit {
       layers: [this.sat],
       zoomControl: false
     });
-   
-   this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
-let yellowChiwogs =[];
-    let redChiwogs=[];
 
-
-
+    this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
+      let yellowChiwogs = [];
+      let redChiwogs = [];
 
       this.zoneMap = L.geoJSON(res, {
         onEachFeature: function (feature, featureLayer) {
@@ -319,18 +316,15 @@ let yellowChiwogs =[];
           // }else if(feature.properties.status === "Yellow"){
           //   yellowChiwogs.push(feature.properties.chiwog)
           // }
-
-
-
           featureLayer.bindPopup("Chiwog: " + feature.properties.chiwog + "<br>" +
-                                 "Gewog: " + feature.properties.gewog + "<br>" + 
-                                 "Dzongkhag: " + feature.properties.dzongkhag +"<br>"+
-                                 "Population: " + feature.properties.population
-                                 ) ;
+            "Gewog: " + feature.properties.gewog + "<br>" +
+            "Dzongkhag: " + feature.properties.dzongkhag + "<br>" +
+            "Population: " + feature.properties.population
+          );
         },
         style: function (feature) {
           switch (feature.properties.status) {
-            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.5 };
+            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.51 };
             case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.5 };
             case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.5 };
           }
@@ -343,6 +337,10 @@ let yellowChiwogs =[];
               '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
               '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
             )
+            layer.on('click', (e) => {
+              console.log(feature)
+            });
+
           },
           pointToLayer: (feature, latLng) => {
             return new L.CircleMarker(latLng, {
@@ -370,24 +368,22 @@ let yellowChiwogs =[];
             }
           });
 
-          this.overlayMaps=    {
+          this.overlayMaps = {
             "Quarantine Facilities": this.quarantineFacilities,
             "Isolation Facilities": this.isolationFacilities,
-            "Zone Map":this.zoneMap
+            "Zone Map": this.zoneMap
           };
 
-
-      
-          this.mapLayerControl= L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+          this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
           this.fetchAndSetCovidStats(this.dzongkhagId)
           // this.renderMap();
           this.renderRedBuildings(this.dzongkhagId)
           this.yellowChiwogs = yellowChiwogs;
           this.redChiwogs = redChiwogs;
-          console.log(this.yellowChiwogs,this.redChiwogs)
+          console.log(this.yellowChiwogs, this.redChiwogs)
         })
       })
-    }) 
+    })
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
@@ -405,10 +401,10 @@ let yellowChiwogs =[];
     })
   }
 
-  transformChiwogName(name){
-      return name.replace(/_/g,' ');
+  transformChiwogName(name) {
+    return name.replace(/_/g, ' ');
   }
-  
+
 
   renderCasebyDzongkhag() {
     this.showBuildingInfo = false;
@@ -418,7 +414,7 @@ let yellowChiwogs =[];
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
 
-    console.log("Load zone map of dzo_id",this.searchDzongkhagId)
+    console.log("Load zone map of dzo_id", this.searchDzongkhagId)
     window.location.reload();
 
     // this.dzongkhags.forEach(dzo => {
@@ -521,7 +517,7 @@ let yellowChiwogs =[];
           }
           this.bound = L.geoJSON(json.data, {
             onEachFeature: (feature, layer) => {
-             
+
             },
             style: (feature) => {
               return {
@@ -531,31 +527,31 @@ let yellowChiwogs =[];
               }
             }
           }).addTo(this.map);
-            this.map.addLayer(this.zoneMap)
-            this.map.addLayer(this.redBuildingGeojson)
-            // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/theirs.geojson").then(res=>res.json()).then(
-            //   res => {
-            //     let ok = L.geoJSON(res,{
-            //       onEachFeature: (feature, layer) => {
-            //         layer.on("click",(e)=>{
-            //           console.log(feature.properties)
-            //           layer.bindPopup(
-            //             '<p style:"color:tomtato">Status: ' + feature.properties.CaseCode + '</p>' +
-            //             '<p style:"color:tomtato">Number of Cases: ' + 1 + '</p>' +
-            //             '<p style:"color:tomtato">First Detection: ' + 2 + '</p>'
-            //           )
-            //         })
-            //       },
-            //       pointToLayer: (feature, latLng) => {
-            //         return new L.CircleMarker(latLng, {
-            //           radius: 10,
-            //           color: "blue",
-            //           fillOpacity: 0.85
-            //         });
-            //       }
-            //     }).addTo(this.map)
-            //   }
-            // )
+          this.map.addLayer(this.zoneMap)
+          this.map.addLayer(this.redBuildingGeojson)
+          // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/theirs.geojson").then(res=>res.json()).then(
+          //   res => {
+          //     let ok = L.geoJSON(res,{
+          //       onEachFeature: (feature, layer) => {
+          //         layer.on("click",(e)=>{
+          //           console.log(feature.properties)
+          //           layer.bindPopup(
+          //             '<p style:"color:tomtato">Status: ' + feature.properties.CaseCode + '</p>' +
+          //             '<p style:"color:tomtato">Number of Cases: ' + 1 + '</p>' +
+          //             '<p style:"color:tomtato">First Detection: ' + 2 + '</p>'
+          //           )
+          //         })
+          //       },
+          //       pointToLayer: (feature, latLng) => {
+          //         return new L.CircleMarker(latLng, {
+          //           radius: 10,
+          //           color: "blue",
+          //           fillOpacity: 0.85
+          //         });
+          //       }
+          //     }).addTo(this.map)
+          //   }
+          // )
         })
 
 

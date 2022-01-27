@@ -10,29 +10,29 @@ import { DataService } from 'src/app/service/data.service';
   styleUrls: ['./selectzone.component.css']
 })
 export class SelectzoneComponent implements OnInit {
-  dzongkhags= [];
-  zones=[];
-  subzones=[];
-  selectDzongkhagForm:FormGroup;
-  dzongkhagId:number=Number(sessionStorage.getItem("selectedDzongkhagId"))?Number(sessionStorage.getItem("selectedDzongkhagId")):null;
-  zoneId:number;
-  subzoneId:number;
+  dzongkhags = [];
+  zones = [];
+  subzones = [];
+  selectDzongkhagForm: FormGroup;
+  dzongkhagId: number = Number(sessionStorage.getItem("selectedDzongkhagId")) ? Number(sessionStorage.getItem("selectedDzongkhagId")) : null;
+  zoneId: number;
+  subzoneId: number;
 
 
 
-  constructor( 
-            private dataService: DataService,
-            private fb: FormBuilder,
-            public dialogRef: MatDialogRef<SelectzoneComponent>,
-            private router: Router,
-            ) { }
+  constructor(
+    private dataService: DataService,
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<SelectzoneComponent>,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data;
     });
-    if(this.dzongkhagId){
-      this.dataService.getZones(this.dzongkhagId).subscribe(res =>{
+    if (this.dzongkhagId) {
+      this.dataService.getZones(this.dzongkhagId).subscribe(res => {
         this.zones = res.data
         this.zoneId = res.data[0].id
       })
@@ -45,26 +45,28 @@ export class SelectzoneComponent implements OnInit {
       dzongkhag: ['', Validators.compose([Validators.required])]
     });
   }
-  submit(){
+  submit() {
     sessionStorage.setItem("dzongkhagID", String(this.dzongkhagId));
-    sessionStorage.setItem("zoneID",String(this.zoneId));
-    sessionStorage.setItem("subzoneID",String(this.subzoneId))
+    sessionStorage.setItem("zoneID", String(this.zoneId));
+    sessionStorage.setItem("subzoneID", String(this.subzoneId))
     this.dialogRef.close();
     this.router.navigate(['hh-map'])
-
-    console.log(this.dzongkhagId, this.zoneId , this.subzoneId)
   }
 
-  getZoneList(dzo_id){
-    this.dataService.getZones(dzo_id).subscribe(res =>{
+  getZoneList(dzo_id) {
+    this.dataService.getZones(dzo_id).subscribe(res => {
       this.zones = res.data
     })
   }
 
-  getSubZoneList(zoneId){
-    console.log(zoneId)
-    this.dataService.getSubZones(zoneId).subscribe(res =>{
+  getSubZoneList(zoneId) {
+
+    this.dataService.getSubZones(zoneId).subscribe(res => {
       this.subzones = res.data
+      this.subzones.sort(function (a, b) {
+        if (a.name < b.name) { return -1; }
+        return 0;
+      })
     })
   }
 

@@ -248,58 +248,13 @@
 
         <br>
         <tr>
-          <th>Tested in past 2 weeks?</th>
-          <td>{{housholdsData.covid_test_status? 'Tested': 'No'}}</td>
-        </tr>
-        <tr>
-          <th>Vacinnated? </th>
-          <td>{{housholdsData.vaccine_status? 'Vacinnated' : 'No'}}</td>
-        </tr>
-        <tr>
           <th>Most Active?</th>
           <td>{{housholdsData.most_active? "Yes" : "No"}}</td>
         </tr>
 
       </table>
 
-      <!-- <table *ngIf="residentialUnitDetailShow">
-            <tr>
-              <th>Head of household</th>
-              <td>{{housholdsData.name!== undefined ? housholdsData.name: ''}}</td>
-            </tr>
-            <tr>
-              <th>CID of household</th>
-              <td>{{housholdsData.cid!== undefined ? housholdsData.cid: ''}}</td>
-            </tr>
-            <tr>
-              <th>Number of Family Members</th>
-              <td>{{housholdsData.numberHousehold !== undefined ? housholdsData.numberHousehold: ''}}</td>
-            </tr>
-            <tr>
-              <th>Number of Income Earner</th>
-              <td>{{housholdsData.incomeEarner!== undefined ? housholdsData.incomeEarner: ''}}</td>
-            </tr>
-            <tr>
-              <th>Household Income</th>
-              <td>{{housholdsData.householdIncome!== undefined ? housholdsData.householdIncome: ''}}</td>
-            </tr>
-          </table>
-    
-            
-          <table *ngIf="officeShopDetailShow">
-            <tr>
-              <th>Unit Name</th>
-              <td>{{housholdsData.shopOfficeName !== undefined ?housholdsData.shopOfficeName:''}}</td>
-            </tr>
-            <tr>
-              <th>Contact</th>
-              <td>{{housholdsData.shopOfficeContact!== undefined ? housholdsData.shopOfficeContact: ''}}</td>
-            </tr>
-            <tr>
-              <th>Rent</th>
-              <td>{{housholdsData.shopOfficeRent!== undefined ?housholdsData.shopOfficeRent:''}}</td>
-            </tr>
-          </table> -->
+      
     </div>
     <br>
 
@@ -312,8 +267,6 @@
           <th>Name</th>
           <th>Age/Gender</th>
           <th>Occupation</th>
-          <th>Tested in past two weeks?</th>
-          <th>Vaccinated?</th>
           <th>Most Active?</th>
         </tr>
         <tr *ngFor="let member of familyMembers">
@@ -321,8 +274,6 @@
           <td>{{member.name}}</td>
           <td>{{ member.age}} {{member.gender}}</td>
           <td>{{member.occupation }} {{ member.workplace? "at " + member.workplace : "" }}</td>
-          <td>{{member.covid_test_status ? "Tested": "No"}}</td>
-          <td>{{member.vaccine_status ? "Vaccinated " : "No"}}</td>
           <td>{{member.most_active ? "Yes" : "No"}}</td>
         </tr>
       </table>

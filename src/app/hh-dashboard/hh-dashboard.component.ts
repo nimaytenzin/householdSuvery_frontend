@@ -230,6 +230,8 @@ export class HhDashboardComponent implements OnInit {
   lat: number;
   lng: number;
 
+  selectedBuilding:L.Circle= undefined;
+
 
   constructor(
     private http: HttpClient,
@@ -299,13 +301,10 @@ export class HhDashboardComponent implements OnInit {
           layer.on('click', (e) => {
             this.residentTableShow = false;
             this.clearData = true;
+            this.resetBuildingInfo()
+
             this.buildingId = feature.properties.structure_id;
             this.showBuilding(this.buildingId);
-            // this.resident = null;
-            // this.buildingData= null
-            // this.familyMembers = null;
-            // this.housholdsData =null
-            // this.unitsData =null
             this.residentTableShow = false;
             this.buildingId = feature.properties.structure_id;
             this.deleteButton = true
@@ -633,11 +632,17 @@ export class HhDashboardComponent implements OnInit {
 
       this.buildingGeojson = L.geoJSON(this.json, {
         onEachFeature: (feature: any, layer) => {
-          layer.on('click', (e) => {
-            console.log(feature)
+          layer.on('click', (e) => {  
+            if(this.selectedBuilding !== undefined){
+              this.map.removeLayer(this.selectedBuilding)
+            }
+              this.selectedBuilding = new L.Circle(new L.LatLng(feature.coordinates[1],feature.coordinates[0]),{
+                radius:10,
+                color:"red"
+             }).addTo(this.map)           
+
             this.lat = feature.coordinates[1];
             this.lng = feature.coordinates[0]
-
             this.residentTableShow = false;
             this.selectedStructure = feature;
             this.selectedStructure.properties.dzongkhag_id = this.zoneForm.get('dzongkhagControl').value;
@@ -646,6 +651,10 @@ export class HhDashboardComponent implements OnInit {
             this.unitDetailShow = true
             this.showBuildingInfo = true;
             this.deleteID = feature.properties.structure_id
+
+            this.resetBuildingInfo()
+
+      
             this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
               this.bid = res.data.id
               this.buildingUse = res.data.buildingUse;
@@ -688,8 +697,6 @@ export class HhDashboardComponent implements OnInit {
       panelClass: ['success-snackbar']
     });
     this.dataService.getAHousehold(unitid).subscribe(resp => {
-
-
       if (resp.data.unitUse !== "Residential") {
         this.residentialUnitDetailShow = false
         this.officeShopDetailShow = true
@@ -704,7 +711,6 @@ export class HhDashboardComponent implements OnInit {
       })
     });
   }
-
   searchBuildingByContact() {
     if (this.searchContact) {
       this.dataService.searchBuildingByContact({
@@ -744,7 +750,9 @@ export class HhDashboardComponent implements OnInit {
                 this.deleteButton = true
                 this.unitDetailShow = true
                 this.showBuildingInfo = true;
-                this.deleteID = feature.properties.structure_id
+                this.deleteID = feature.properties.structure_id;
+               this.resetBuildingInfo()
+
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.bid = res.data.id
                   this.buildingUse = res.data.buildingUse;
@@ -794,8 +802,6 @@ export class HhDashboardComponent implements OnInit {
   searchBuildingByBuildingNumber() {
     if (this.searchBuildingId) {
       this.dataService.getAStructure(this.searchBuildingId).subscribe((res: any) => {
-        console.log(this.searchCid)
-        console.log(res)
         let lat, lng, id = 0
         if (res.success === "false") {
           this.snackBar.open('Building Not Found', '', {
@@ -830,7 +836,9 @@ export class HhDashboardComponent implements OnInit {
                 this.deleteButton = true
                 this.unitDetailShow = true
                 this.showBuildingInfo = true;
-                this.deleteID = feature.properties.structure_id
+                this.deleteID = feature.properties.structure_id;
+            this.resetBuildingInfo()
+
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.bid = res.data.id
                   this.buildingUse = res.data.buildingUse;
@@ -879,8 +887,6 @@ export class HhDashboardComponent implements OnInit {
       this.dataService.searchBuildingByCid({
         cid: this.searchCid
       }).subscribe(res => {
-        console.log(this.searchCid)
-        console.log(res)
         let lat, lng, id = 0
         if (res.success === "false") {
           this.snackBar.open('Building Not Found', '', {
@@ -915,7 +921,10 @@ export class HhDashboardComponent implements OnInit {
                 this.deleteButton = true
                 this.unitDetailShow = true
                 this.showBuildingInfo = true;
-                this.deleteID = feature.properties.structure_id
+            this.resetBuildingInfo()
+                this.deleteID = feature.properties.structure_id;
+                this.resetBuildingInfo()
+
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.bid = res.data.id
                   this.buildingUse = res.data.buildingUse;
@@ -1000,9 +1009,19 @@ export class HhDashboardComponent implements OnInit {
     this.buildingInfo = new BuildingInfo()
   }
 
+
+  resetBuildingInfo(){
+    this.buildingUse = "Not Added";
+            this.cidOwner = "Not Added";
+            this.nameOfBuildingOwner = "Not Added";
+            this.contactOwner = "Not Added";
+            this.unitsData=[];
+            this.imgs=[];
+            this.length=0;
+  }
+
   reset() {
     this.zoneForm.reset();
-    sessionStorage.removeItem('subzoneID')
     this.selectZone = false;
     this.showFamilyMembers = false;
     this.progressShow = false
@@ -1040,6 +1059,10 @@ export class HhDashboardComponent implements OnInit {
     this.subZones=[]
     this.dataService.getSubZones(zoneId).subscribe(response => {
       this.subZones = response.data;
+      this.subZones.sort(function (a, b) {
+        if (a.name < b.name) { return -1; }
+        return 0;
+      })
     });
   }
 
