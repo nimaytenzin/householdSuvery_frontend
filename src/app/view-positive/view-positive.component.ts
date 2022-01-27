@@ -186,7 +186,7 @@ export class ViewPositiveComponent implements OnInit {
   building: any;
   buildingInfo: BuildingInfo;
   watchId;
-  mylocation: L.Marker;
+  mylocation: L.Circle;
   mycircle: L.Circle;
   resident: any;
   showattic = false;
@@ -403,6 +403,24 @@ export class ViewPositiveComponent implements OnInit {
 
   transformChiwogName(name) {
     return name.replace(/_/g, ' ');
+  }
+
+  getMyLocation(){
+    this.map.locate({watch:true,enableHighAccuracy:true});
+    this.map.on('locationfound',(e)=>{
+      var radius = e.accuracy;
+      if(this.mylocation !== undefined){
+        this.map.removeLayer(this.mylocation);
+      }
+      this.mylocation =  new L.Circle(e.latlng,{ radius:5, color:"green", fillColor:"green", weight:0, fillOpacity:1}).addTo(this.map);
+      this.mylocation.bindPopup("You are here").openPopup()
+      if(radius<100){
+        if(this.mycircle !== undefined){
+          this.map.removeLayer(this.mycircle);
+        }
+        this.mycircle = L.circle(e.latlng,radius).addTo(this.map);
+      }
+    });
   }
 
 
