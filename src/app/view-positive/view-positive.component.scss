@@ -156,7 +156,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 50px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  padding-right: 4px ;
+  padding-left: 4px ;
+  cursor: pointer;
+}
 
+.search-container-2{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  align-items: center;
   height: 50px;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
