@@ -61,9 +61,21 @@
         <h1 style="color: #DE3163; font-weight: bolder;">{{totalRedBuildings}}</h1>
       </mat-card>
 
+
+
       
     </div>
 
+   <div class="search-container">
+    <div class="search-sub-container" >
+      <div>
+        <input type="number" placeholder="Building ID" [(ngModel)]="searchBuildingId">
+      </div>
+      <div class="search-icon" (click)="searchBuildingByBuildingNumber()" >
+        <img src="../../assets/search-gray.png" alt="">
+      </div>
+    </div>
+   </div>
 
     <!-- <div style="display:flex; gap:2%; padding-left:5%; padding-right:5%;justify-items:center;width: 100%;">
       <div>

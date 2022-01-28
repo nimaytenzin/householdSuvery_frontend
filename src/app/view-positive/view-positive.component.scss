@@ -156,13 +156,51 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+
   height: 50px;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   padding-right: 4px ;
   padding-left: 4px ;
   cursor: pointer;
+}
+
+.search-sub-container{
+  display: flex;
+  align-items:center;
+  background-color: rgb(179, 176, 176);;
+  border-radius: 0.35rem;
+  color: honeydew;
+}
+
+.search-sub-container input{
+  border:solid 0.5px rgb(179, 176, 176);
+  border-top-left-radius: .35rem;
+  border-bottom-left-radius: .35rem;
+  appearance: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.3rem;
+}
+
+::placeholder{
+  color: gray;
+  font-size: large;
+  font-weight: lighter;
+  letter-spacing: 1px;
+  padding-left: 4px;
+}
+
+.search-icon{
+padding: 4px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.search-icon img{
+height: 20px;
+cursor: pointer;
 }
 
 

@@ -594,7 +594,9 @@ export class HhDashboardComponent implements OnInit {
 
   renderBuildings(zoneId) {
     const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
-      if (this.bound !== undefined) {
+      
+    
+    if (this.bound !== undefined) {
         this.map.removeLayer(this.bound);
       }
       this.bound = L.geoJSON(json.data, {

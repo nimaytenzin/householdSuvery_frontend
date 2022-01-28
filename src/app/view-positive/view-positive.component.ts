@@ -238,6 +238,7 @@ export class ViewPositiveComponent implements OnInit {
   setViewValue: boolean;
 
 
+
   //New
   dzongkhagId: number
   redBuildingGeojson: any;
@@ -271,6 +272,12 @@ export class ViewPositiveComponent implements OnInit {
 
   yellowChiwogs;
   redChiwogs;
+
+  searchBuildingId:number;
+  redbuildings;
+  serachCircleMarker:L.Circle;
+
+
 
   constructor(
     private http: HttpClient,
@@ -459,6 +466,39 @@ export class ViewPositiveComponent implements OnInit {
     })
   }
 
+  searchBuildingByBuildingNumber() {
+   if(this.searchBuildingId){
+    console.log(this.searchBuildingId)
+
+    for(let i =0; i<this.redbuildings.length;i++){
+      if(this.searchBuildingId === this.redbuildings[i].properties.structure_id){
+        let lat = this.redbuildings[i].coordinates[1];
+        let lng = this.redbuildings[i].coordinates[0];
+        this.map.flyTo([lat, lng], 18);
+        if(this.serachCircleMarker!==undefined){
+          this.map.removeLayer(this.serachCircleMarker)
+        }
+        this.serachCircleMarker =  new L.Circle([lat,lng],{
+          radius:20,
+          fillColor:"white"
+        }).addTo(this.map)
+      }else{
+        this.snackBar.open('No Matching Red Building', '', {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        });
+      }
+    }
+   }else{
+    this.snackBar.open('Enter a Building Number', '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['error-snackbar']
+    });
+   }
+  }
+
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
       let filename: string = `${this.dzongkhag}_zone.geojson`
@@ -475,6 +515,7 @@ export class ViewPositiveComponent implements OnInit {
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {
+        this.redbuildings = res;
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
