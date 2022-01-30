@@ -331,9 +331,9 @@ export class ViewPositiveComponent implements OnInit {
         },
         style: function (feature) {
           switch (feature.properties.status) {
-            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.2 };
-            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.2 };
-            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.2 };
+            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.4 };
+            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.4 };
+            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.4 };
           }
         }
       })
