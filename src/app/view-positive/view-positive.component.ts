@@ -438,7 +438,6 @@ export class ViewPositiveComponent implements OnInit {
     this.totalRedBuildings = 0;
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
-
     console.log("Load zone map of dzo_id", this.searchDzongkhagId)
     window.location.reload();
 
