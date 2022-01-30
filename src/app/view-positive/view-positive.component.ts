@@ -331,9 +331,9 @@ export class ViewPositiveComponent implements OnInit {
         },
         style: function (feature) {
           switch (feature.properties.status) {
-            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.51 };
-            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.5 };
-            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.5 };
+            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.2 };
+            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.2 };
+            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.2 };
           }
         }
       })
@@ -519,6 +519,7 @@ export class ViewPositiveComponent implements OnInit {
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
+              console.log(feature)
               this.selectedRedBuilding = feature
               this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
@@ -586,7 +587,7 @@ export class ViewPositiveComponent implements OnInit {
               }
             }
           }).addTo(this.map);
-          this.map.addLayer(this.zoneMap)
+          // this.map.addLayer(this.zoneMap)
           this.map.addLayer(this.redBuildingGeojson)
           // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/theirs.geojson").then(res=>res.json()).then(
           //   res => {
