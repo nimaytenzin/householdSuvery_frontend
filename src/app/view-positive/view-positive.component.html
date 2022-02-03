@@ -13,6 +13,26 @@
             margin-right: 50px;">Click on a point to view Details, doubleclick to view Summary</mat-label>
         </div>
 
+
+
+        <div class="leaflet-top leaflet-left" *ngIf="dzongkhagId === 1" style=" color: rgb(226 232 240); padding: 0%;">
+            <div style="background-color: #1E2A3B; color: rgb(226 232 240); display: flex; width: 300px; border: 5%;padding: 0;">
+                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+                    <span style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: blue; margin-right: 4px;"></span>POE
+                  </p>
+      
+                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+                    <span style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: red;margin-right: 4px;"></span>Red Buildings
+                  </p>
+
+                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+                    <span style="display: inline-block; height: 13px;width: 13px;background-color: none; border:1px solid red;margin-right: 4px;"></span>Red Clusters
+                  </p>
+            </div>
+        </div>
+
+        
+
         <div class="leaflet-bottom leaflet-right">
           <button style="
           width: 42px;
@@ -24,11 +44,31 @@
             <mat-icon style="color: blue;">location_searching</mat-icon>
           </button>
       </div>
+
+      
       </div>
     </div>
 
   </div>
   <div class="scroll" style="margin: 0;">
+    <div style="display: flex; margin-top: 2%; flex-wrap: wrap; justify-content: center; align-items: center;font-size: larger; ">
+      <div style="padding:1px">
+        <button (click)="toggleThimphuZone()">Toggle <span style="font-weight: bold;cursor: pointer;">ZONE</span></button>  <br>
+      </div>
+
+      <div style="padding:1px">
+        <button (click)="togglePoes()">Toggle<span style="font-weight: bold;cursor: pointer;">POE</span></button>  <br>
+      </div>
+
+      <div style="padding:1px">
+        <button (click)="toggleThimphuMegaZone()">Toggle <span style="font-weight: bold;cursor: pointer;">MegaZone</span></button> <br>
+      </div>
+
+      <div style="padding:1px">
+        <button (click)="toggleRedClusters()">Toggle <span style="font-weight: bold;cursor: pointer;">Red Clusters</span></button> <br>
+      </div>
+      
+     </div>
     <p style="text-align: center;font-weight: 100;font-size: x-large;margin-top: 5%;">
       འབྱོན་པ ལེགས་སོ།།
     </p>
@@ -69,16 +109,14 @@
       
     </div>
 
-    <div *ngIf="dzongkhagId === 1" style="width: 100%;display: flex;gap:2%; justify-content: center;margin-top: 5%;">
+    <div *ngIf="dzongkhagId === 1" style="width: 100%;display: flex;gap:2%; flex-direction: column; justify-content: center;align-items: center; margin-top: 5%;">
 
-      <div style="width: 40%;">
-        <button (click)="toggleThimphuZone()">Toggle Zone Layer ON/OFF</button>  <br>
+      <div>
+
+        
       </div>
 
-      <div style="width: 40%;">
-        <button (click)="toggleThimphuMegaZone()">Toggle Mega Zone ON/OFF</button> <br>
-      </div>
-      
+  
 
     </div>
 

@@ -224,7 +224,7 @@ export class ViewPositiveComponent implements OnInit {
   });
   redMarker = L.icon({
     iconUrl: 'assets/marker-red.png',
-    iconSize: [12, 12]
+    iconSize: [8, 8]
   });
   yellowMarker = L.icon({
     iconUrl: 'assets/marker-yellow.png',
@@ -280,8 +280,11 @@ export class ViewPositiveComponent implements OnInit {
   zonesUrl: "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/thimphuZones.geojson";
   MegaZonesUrl: "";
 
-  thimphuZones:L.GeoJSON;
-  thimphuMegaZones:L.GeoJSON;
+  thimphuZones: L.GeoJSON;
+  thimphuMegaZones: L.GeoJSON;
+  thimphuPoe: L.GeoJSON;
+  thimphuRedClusters: L.GeoJSON;
+
 
 
 
@@ -349,7 +352,7 @@ export class ViewPositiveComponent implements OnInit {
           .then(res => res.json())
           .then(data => {
             console.log(data)
-           this.thimphuZones = L.geoJSON(data, {
+            this.thimphuZones = L.geoJSON(data, {
               onEachFeature: function (feature, featureLayer) {
                 featureLayer.bindPopup(
                   '<p style:"color:tomtato">Zone Name: ' + feature.properties.Zone + '</p>'
@@ -360,24 +363,55 @@ export class ViewPositiveComponent implements OnInit {
               }
             })
 
+
+
             fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
-                .then(res =>res.json())
-                .then(dat =>{
-                 this.thimphuMegaZones = L.geoJSON(dat, {
-                    onEachFeature: function (feature, featureLayer) {
-                      featureLayer.bindPopup(
-                        '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
-                      )
-                    },
-                    style: {
-                      color: "#D2FF0CCE", weight: 2, fillOpacity: 0.1
-                    }
-                  }).addTo(this.map).openPopup()
-                })
+              .then(res => res.json())
+              .then(dat => {
+                this.thimphuMegaZones = L.geoJSON(dat, {
+                  onEachFeature: function (feature, featureLayer) {
+                    featureLayer.bindPopup(
+                      '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
+                    )
+                  },
+                  style: {
+                    color: "#D2FF0CCE", weight: 2, fillOpacity: 0.1
+                  }
+                }).addTo(this.map)
 
+                fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
+                  .then(res => res.json())
+                  .then(dat => {
+                    this.thimphuPoe = L.geoJSON(dat, {
+                      pointToLayer: (feature, latLng) => {
+                        return new L.CircleMarker(latLng, {
+                          radius: 4,
+                          color: "blue",
+                          fillOpacity: 1,
+                          weight: 2
+                        });
+                      }
+                    }).addTo(this.map);
+                  })
 
+                fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
+                  .then(res => res.json())
+                  .then(ok => {
+                    console.log(ok)
+                    this.thimphuRedClusters = L.geoJSON(ok, {
+                      onEachFeature: function (feature, featureLayer) {
+                        featureLayer.bindPopup(
+                          '<p style:"color:tomtato">Cluster: ' + feature.properties.Name + '</p>'
+                        )
+                      },
+                      style: {
+                        color: "#E72424CE", weight: 3, fillOpacity: 0.2
+                      }
+                    }).addTo(this.map)
+                  })
+              })
           })
-      }else{
+      } else {
         this.thimphuMegaZones.removeFrom(this.map);
         this.thimphuZones.removeFrom(this.map);
 
@@ -560,22 +594,38 @@ export class ViewPositiveComponent implements OnInit {
     }
   }
 
-  toggleThimphuZone(){
-   if(this.map.hasLayer(this.thimphuZones)){
-     this.map.removeLayer(this.thimphuZones);
-   }else{
-     this.map.addLayer(this.thimphuZones);
-   }
+  toggleThimphuZone() {
+    if (this.map.hasLayer(this.thimphuZones)) {
+      this.map.removeLayer(this.thimphuZones);
+    } else {
+      this.map.addLayer(this.thimphuZones);
+    }
   }
 
-  toggleThimphuMegaZone(){
-    if(this.map.hasLayer(this.thimphuMegaZones)){
+  togglePoes() {
+    if (this.map.hasLayer(this.thimphuPoe)) {
+      this.map.removeLayer(this.thimphuPoe);
+    } else {
+      this.map.addLayer(this.thimphuPoe);
+    }
+  }
+
+  toggleThimphuMegaZone() {
+    if (this.map.hasLayer(this.thimphuMegaZones)) {
       this.map.removeLayer(this.thimphuMegaZones);
-    }else{
+    } else {
       this.map.addLayer(this.thimphuMegaZones);
     }
-     // this.map.removeLayer(this.thimphuMegaZones);
-   }
+    // this.map.removeLayer(this.thimphuMegaZones);
+  }
+
+  toggleRedClusters() {
+    if (this.map.hasLayer(this.thimphuRedClusters)) {
+      this.map.removeLayer(this.thimphuRedClusters);
+    } else {
+      this.map.addLayer(this.thimphuRedClusters);
+    }
+  }
 
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
