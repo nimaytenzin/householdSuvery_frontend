@@ -62,8 +62,24 @@
       </mat-card>
 
 
+     
+
+
 
       
+    </div>
+
+    <div *ngIf="dzongkhagId === 1" style="width: 100%;display: flex;gap:2%; justify-content: center;margin-top: 5%;">
+
+      <div style="width: 40%;">
+        <button (click)="toggleThimphuZone()">Toggle Zone Layer ON/OFF</button>  <br>
+      </div>
+
+      <div style="width: 40%;">
+        <button (click)="toggleThimphuMegaZone()">Toggle Mega Zone ON/OFF</button> <br>
+      </div>
+      
+
     </div>
 
    <div class="search-container" >

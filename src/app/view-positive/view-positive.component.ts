@@ -273,9 +273,15 @@ export class ViewPositiveComponent implements OnInit {
   yellowChiwogs;
   redChiwogs;
 
-  searchBuildingId:number;
+  searchBuildingId: number;
   redbuildings;
-  serachCircleMarker:L.Circle;
+  serachCircleMarker: L.Circle;
+
+  zonesUrl: "https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/thimphuZones.geojson";
+  MegaZonesUrl: "";
+
+  thimphuZones:L.GeoJSON;
+  thimphuMegaZones:L.GeoJSON;
 
 
 
@@ -337,6 +343,62 @@ export class ViewPositiveComponent implements OnInit {
           }
         }
       })
+
+      if (this.dzongkhagId === 1) {
+        fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/thimphuZones.geojson")
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+           this.thimphuZones = L.geoJSON(data, {
+              onEachFeature: function (feature, featureLayer) {
+                featureLayer.bindPopup(
+                  '<p style:"color:tomtato">Zone Name: ' + feature.properties.Zone + '</p>'
+                ).openPopup()
+              },
+              style: {
+                color: "#29DCFB", weight: 1.5, fillOpacity: 0.1
+              }
+            })
+
+            fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
+                .then(res =>res.json())
+                .then(dat =>{
+                 this.thimphuMegaZones = L.geoJSON(dat, {
+                    onEachFeature: function (feature, featureLayer) {
+                      featureLayer.bindPopup(
+                        '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
+                      )
+                    },
+                    style: {
+                      color: "#D2FF0CCE", weight: 2, fillOpacity: 0.1
+                    }
+                  }).addTo(this.map).openPopup()
+                })
+
+
+          })
+      }else{
+        this.thimphuMegaZones.removeFrom(this.map);
+        this.thimphuZones.removeFrom(this.map);
+
+      }
+
+      // if (this.dzongkhagId === 1) {
+      //   fetch(this.zonesUrl).then(res => res.json()).then(data => {
+      //     console.log(data)
+      //     let ok = L.geoJSON(data, {
+      //       // onEachFeature: function (feature, featureLayer) {
+      //       //  console.log(feature);
+      //       // },
+      //       style: {
+      //         color: "#10A335", weight: 0.4, fillOpacity: 0.4
+      //       }}
+      //     )
+      //   })
+      // }
+
+
+
       fetch(this.quarantineFacilityGeojsonUrl).then(data => data.json()).then(res => {
         this.quarantineFacilities = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
@@ -412,20 +474,20 @@ export class ViewPositiveComponent implements OnInit {
     return name.replace(/_/g, ' ');
   }
 
-  getMyLocation(){
-    this.map.locate({watch:true,enableHighAccuracy:true});
-    this.map.on('locationfound',(e)=>{
+  getMyLocation() {
+    this.map.locate({ watch: true, enableHighAccuracy: true });
+    this.map.on('locationfound', (e) => {
       var radius = e.accuracy;
-      if(this.mylocation !== undefined){
+      if (this.mylocation !== undefined) {
         this.map.removeLayer(this.mylocation);
       }
-      this.mylocation =  new L.Circle(e.latlng,{ radius:5, color:"green", fillColor:"green", weight:0, fillOpacity:1}).addTo(this.map);
+      this.mylocation = new L.Circle(e.latlng, { radius: 5, color: "green", fillColor: "green", weight: 0, fillOpacity: 1 }).addTo(this.map);
       this.mylocation.bindPopup("You are here").openPopup()
-      if(radius<100){
-        if(this.mycircle !== undefined){
+      if (radius < 100) {
+        if (this.mycircle !== undefined) {
           this.map.removeLayer(this.mycircle);
         }
-        this.mycircle = L.circle(e.latlng,radius).addTo(this.map);
+        this.mycircle = L.circle(e.latlng, radius).addTo(this.map);
       }
     });
   }
@@ -466,37 +528,54 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   searchBuildingByBuildingNumber() {
-   if(this.searchBuildingId){
-    console.log(this.searchBuildingId)
+    if (this.searchBuildingId) {
+      console.log(this.searchBuildingId)
 
-    for(let i =0; i<this.redbuildings.length;i++){
-      if(this.searchBuildingId === this.redbuildings[i].properties.structure_id){
-        let lat = this.redbuildings[i].coordinates[1];
-        let lng = this.redbuildings[i].coordinates[0];
-        this.map.flyTo([lat, lng], 18);
-        if(this.serachCircleMarker!==undefined){
-          this.map.removeLayer(this.serachCircleMarker)
+      for (let i = 0; i < this.redbuildings.length; i++) {
+        if (this.searchBuildingId === this.redbuildings[i].properties.structure_id) {
+          let lat = this.redbuildings[i].coordinates[1];
+          let lng = this.redbuildings[i].coordinates[0];
+          this.map.flyTo([lat, lng], 18);
+          if (this.serachCircleMarker !== undefined) {
+            this.map.removeLayer(this.serachCircleMarker)
+          }
+          this.serachCircleMarker = new L.Circle([lat, lng], {
+            radius: 20,
+            fillColor: "white"
+          }).addTo(this.map)
+        } else {
+          this.snackBar.open('No Matching Red Building', '', {
+            duration: 3000,
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar']
+          });
         }
-        this.serachCircleMarker =  new L.Circle([lat,lng],{
-          radius:20,
-          fillColor:"white"
-        }).addTo(this.map)
-      }else{
-        this.snackBar.open('No Matching Red Building', '', {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
-        });
       }
+    } else {
+      this.snackBar.open('Enter a Building Number', '', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar']
+      });
     }
+  }
+
+  toggleThimphuZone(){
+   if(this.map.hasLayer(this.thimphuZones)){
+     this.map.removeLayer(this.thimphuZones);
    }else{
-    this.snackBar.open('Enter a Building Number', '', {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: ['error-snackbar']
-    });
+     this.map.addLayer(this.thimphuZones);
    }
   }
+
+  toggleThimphuMegaZone(){
+    if(this.map.hasLayer(this.thimphuMegaZones)){
+      this.map.removeLayer(this.thimphuMegaZones);
+    }else{
+      this.map.addLayer(this.thimphuMegaZones);
+    }
+     // this.map.removeLayer(this.thimphuMegaZones);
+   }
 
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
