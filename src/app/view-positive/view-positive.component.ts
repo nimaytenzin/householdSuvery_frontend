@@ -411,11 +411,7 @@ export class ViewPositiveComponent implements OnInit {
                   })
               })
           })
-      } else {
-        this.thimphuMegaZones.removeFrom(this.map);
-        this.thimphuZones.removeFrom(this.map);
-
-      }
+      } 
 
       // if (this.dzongkhagId === 1) {
       //   fetch(this.zonesUrl).then(res => res.json()).then(data => {
