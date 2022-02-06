@@ -151,6 +151,7 @@ export class CovAdminComponent implements OnInit {
   API_URL = environment.API_URL;
   BASE_URL = environment.BASE_URL;
   searchForm: FormGroup;
+  xyForm: FormGroup;
   searchmarker: L.GeoJSON;
   searchedId: any;
   selectZone: boolean;
@@ -183,6 +184,7 @@ export class CovAdminComponent implements OnInit {
   watchId;
   mylocation: L.Marker;
   mycircle: L.Circle;
+  xyCircle: L.Circle;
   resident: any;
   showattic = false;
   showCaseDetails = false;
@@ -353,6 +355,10 @@ export class CovAdminComponent implements OnInit {
     });
     this.searchForm = this.fb.group({
       searchBuilding: []
+    });
+    this.xyForm = this.fb.group({
+      lat: [''],
+      lng: ['']
     });
   }
 
@@ -548,6 +554,29 @@ export class CovAdminComponent implements OnInit {
   }
 
 
+  goToXY(){
+    const lat = this.xyForm.get('lat').value;
+    const lng = this.xyForm.get('lng').value;
+    if(lat != 0 && lng != 0){
+      if (this.xyCircle !== undefined) {
+        this.map.removeLayer(this.xyCircle);
+      }
+      this.xyCircle = L.circle([lat,lng],{
+        color:'red',
+        fillColor:'#f03',
+        fillOpacity:0,
+        radius:10
+      }).addTo(this.map);
+
+      this.map.flyTo([lat, lng], 18)
+    }
+  }
+  clearXY(){
+      if (this.xyCircle !== undefined) {
+        this.map.removeLayer(this.xyCircle);
+      }
+
+  }
 
   zoneSearch() {
     console.log()

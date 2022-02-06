@@ -61,6 +61,18 @@
       <button mat-flat-button (click)="zoneSearch()" style="width : 100%;">Load Data</button>
     </form>
 
+    <!-- lat lng field -->
+    <form [formGroup]="xyForm" style="margin: 0px;display: flex;flex-direction: row;">
+        <mat-form-field class="justifier" style="margin-left:5px;flex: 1 1 0%;">
+          <input matInput type="number" placeholder="Latitude" class="form-input" name="lat" formControlName="lat" >
+        </mat-form-field>
+        <mat-form-field class="justifier" style="margin-left:5px;flex: 1 1 0%;">
+          <input matInput type="number" placeholder="Longitude" class="form-input" name="lng" formControlName="lng" >
+        </mat-form-field>
+        <button mat-flat-button (click)="goToXY()" style="background-color:aqua;padding:0px;margin-left: 5px;">Go to XY</button>
+        <button mat-flat-button (click)="clearXY()" style="background-color:red;padding:0px; margin-left: 5px;">Clear</button>
+    </form>
+
     <br>
 
     <button mat-raised-button (click)="toggleAdd()" color="primary">
