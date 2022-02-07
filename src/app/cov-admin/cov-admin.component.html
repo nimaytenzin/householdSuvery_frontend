@@ -33,7 +33,7 @@
       </div> -->
     <br>
     <form [formGroup]="zoneForm" style="padding: 0%;margin: 0%;display: flex;flex-direction: row;">
-      <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
+      <mat-form-field class="justifier" style="padding: 0%;margin-left:5px;">
         <mat-label>Dzongkhag</mat-label>
         <mat-select #dzongkhag formControlName="dzongkhagControl" name="dzongkhag"
           (selectionChange)="getZoneList(dzongkhag.value.id)" required>
@@ -42,7 +42,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
+      <mat-form-field class="justifier" style="padding: 0%;margin-left: 5px;">
         <mat-label>Thromdes</mat-label>
         <mat-select #zone formControlName="zoneControl" name="zone" (selectionChange)="getSubzoneList(zone.value)">
           <mat-option *ngFor="let zone of zones" [value]="zone.id">
@@ -50,7 +50,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="justifier " style="padding: 0%;margin: 0%;">
+      <mat-form-field class="justifier " style="padding: 0%;margin-left: 5px;">
         <mat-label>Zones</mat-label>
         <mat-select formControlName="subZoneControl" name="subZone">
           <mat-option *ngFor="let subZone of subZones" [value]="subZone.id">
@@ -58,73 +58,59 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-flat-button (click)="zoneSearch()" style="width : 100%;">Load Data</button>
+      <div style="margin-left:10px;">
+        <button mat-flat-button (click)="zoneSearch()" style="padding:5px;padding-left: 10px;padding-right: 10px; background: green;color: white;">Load Data</button>
+      </div>
     </form>
 
     <!-- lat lng field -->
-    <form [formGroup]="xyForm" style="margin: 0px;display: flex;flex-direction: row;">
-        <mat-form-field class="justifier" style="margin-left:5px;flex: 1 1 0%;">
+    <h4 style="margin-bottom: 5px;">Go To Lat Lng point</h4>
+    <form [formGroup]="xyForm" style="margin: 0px; display: flex; flex-direction: row;">
+        <mat-form-field class="justifier" style="margin-left:5px;">
           <input matInput type="number" placeholder="Latitude" class="form-input" name="lat" formControlName="lat" >
         </mat-form-field>
-        <mat-form-field class="justifier" style="margin-left:5px;flex: 1 1 0%;">
+        <mat-form-field class="justifier" style="margin-left:5px;">
           <input matInput type="number" placeholder="Longitude" class="form-input" name="lng" formControlName="lng" >
         </mat-form-field>
-        <button mat-flat-button (click)="goToXY()" style="background-color:aqua;padding:0px;margin-left: 5px;">Go to XY</button>
-        <button mat-flat-button (click)="clearXY()" style="background-color:red;padding:0px; margin-left: 5px;">Clear</button>
+        <div style="margin-left: 5px;">
+          <button *ngIf="xyCircle == undefined" mat-flat-button (click)="goToXY()" style="color:white;background-color:green;padding:5px;padding-left:10px;padding-right: 10px;">Go to XY</button>
+          <button *ngIf="xyCircle !== undefined" mat-flat-button (click)="clearXY()" style="color: white; background-color:red;padding:5px;padding-left: 10px;padding-right: 10px;">Clear</button>
+
+        </div>
     </form>
+
+
+    <div style="width:100%; margin-bottom: 5px;">
+      <h4 style="margin-bottom:2px;">Structure Controls</h4>
+      <button *ngIf="!isAddAllowed" mat-raised-button (click)="toggleAdd()" color="primary">
+        <mat-icon>add</mat-icon>
+        <mat-label >Add Buildings</mat-label>
+      </button>
+
+      <button *ngIf="isAddAllowed" mat-raised-button (click)="cancelAdd()" style="background-color: red;">
+        <mat-label >Cancel Add Building</mat-label>
+      </button>
+    </div>
 
     <br>
 
-    <button mat-raised-button (click)="toggleAdd()" color="primary">
-      <mat-icon>add</mat-icon>
-      <mat-label>Add Buildings</mat-label>
-    </button>
-    <!-- <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;" *ngIf="progressShow">
-      <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
-        <div style="display: flex; flex-direction: column;">
-          <div style="display: flex; flex-direction: row; padding: 0;" >     
-            <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
-              <p style="font-size: small;">Total Buildings</p>
-               <h1 style="color: rgb(63,81,181); font-weight: bolder;">{{totalBuilding}}</h1>
-             </mat-card>
-             <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">  
-               <p style="font-size: small;">Total Completed</p>
-               <h1 style="color: red; font-weight: bolder;">{{totalCompleted}}</h1>
-             </mat-card>
-             <h3 class="lol">Progress</h3>
-          </div>
-          <hr>
-          <div style="display: flex; flex-direction: row;">
-            <mat-progress-bar mode="determinate" [value]="precentCompleted"></mat-progress-bar>
-          </div>
-        </div>
-        </div>
-        
-     </div>
-    
-      <br> -->
-
-
     <div>
-      <!-- <button mat-flat-button color="primary" (click)=unlockBuilding(); style="float: right;padding-left: 10px;" *ngIf="showBuildingInfo">Unlock for editing</button> -->
-      <!-- <button mat-flat-button color="primary" (click)=deleteBuilding(); style="float: left;"  *ngIf="deleteButton" >Delete Structure</button> -->
-      <!-- <button mat-flat-button color="primary" (click)=editBuilding(); style="float: left;" *ngIf="showBuildingInfo">Edit Building Details</button> -->
-      <!-- <button mat-flat-button color="primary" (click)=markAsPositive(); style="float: left;" *ngIf="showAddRedButton"  >Mark As Positive</button> -->
+      <h4 style="margin-bottom:2px;">Red Building Controls</h4>
+      <button style="margin-right: 10px;" mat-flat-button color="primary" (click)=markStructureAsRedBuilding() [disabled]="selectedStructure == null"> Mark as Red Building </button>
+      <button [disabled]="selectedStructure == null" style="margin-right:10px;" mat-flat-button color="primary" (click)=addNewCase()> Add New Case</button>
+
     </div>
 
-    Case History
 
-    <button mat-flat-button color="primary" (click)=markStructureAsRedBuilding()> Mark as Red Building </button>
-    <button mat-flat-button color="primary" (click)=addNewCase()> Add New Case</button>
-
-
-    <div style="
+    <div *ngIf="redBuildingCases" style="
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;
     width: 95%;
+    margin-top: 10px;
     ">
+      <h2>Case History</h2>
       <div class="caseCard" *ngFor="let case of redBuildingCases">
         <h3>
           Cases: <span style="font-size: x-large; margin:0;"> {{ case.numCases }} </span>

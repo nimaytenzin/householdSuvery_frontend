@@ -172,8 +172,6 @@ export class CovAdminComponent implements OnInit {
   longitude: number;
   accuracy: number;
   json: any;
-  bound: any;
-  buildingGeojson: any;
   buildingId: number;
   imgs: any;
   residentTableShow: boolean = false;
@@ -184,11 +182,46 @@ export class CovAdminComponent implements OnInit {
   watchId;
   mylocation: L.Marker;
   mycircle: L.Circle;
-  xyCircle: L.Circle;
   resident: any;
   showattic = false;
   showCaseDetails = false;
   selectedStructure = null;
+
+  newBuildingPoint: any;
+
+  //markers
+  xyCircle: L.Circle;
+
+  redBuildingMarkerOptions = {
+    radius: 8,
+    fillColor: "#FF0000",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
+  buildingMarkerOptions = {
+    radius: 6,
+    fillColor: "#3248a8",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 1
+  }
+
+  newBuildingMarkerOptions = {
+    radius: 6,
+    fillColor: "#008000",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 1
+  }
+
+  //geojsons
+  buildingGeojson: any;
+  bound: any;
 
   //logic
   officeShopDetailShow: boolean
@@ -382,10 +415,16 @@ export class CovAdminComponent implements OnInit {
             panelClass: ['success-snackbar']
           });
           this.isAddAllowed = false;
-          // this.renderBuildings(this.building.sub_zone_id);
+          this.addStructures(this.building.sub_zone_id,true);
+          if(this.newBuildingPoint != undefined){
+            this.map.removeLayer(this.newBuildingPoint)
+          }
         });
       } else {
         this.isAddAllowed = false;
+        if(this.newBuildingPoint != undefined){
+          this.map.removeLayer(this.newBuildingPoint)
+        }
       }
     });
   }
@@ -454,13 +493,12 @@ export class CovAdminComponent implements OnInit {
         this.mycircle = L.circle(e.latlng, radius).addTo(this.map);
       }
     });
-    let newMarker: any;
     this.map.on('click', <LeafletMouseEvent>($e) => {
       if (this.isAddAllowed) {
-        if (newMarker !== undefined) {
-          this.map.removeLayer(newMarker);
+        if (this.newBuildingPoint!== undefined) {
+          this.map.removeLayer(this.newBuildingPoint);
         }
-        newMarker = L.marker($e.latlng, { icon: this.myMarker }).addTo(this.map);
+        this.newBuildingPoint= L.circleMarker($e.latlng,this.newBuildingMarkerOptions).addTo(this.map);
         this.presentAlert($e.latlng)
       }
     });
@@ -581,46 +619,44 @@ export class CovAdminComponent implements OnInit {
   zoneSearch() {
     console.log()
     const zoneId = this.zoneForm.get('subZoneControl').value;
-    this.renderBuildings(zoneId)
     sessionStorage.setItem('subzoneID', zoneId)
     this.selectedDzongkhagId = this.zoneForm.get('dzongkhagControl').value.id;
-    this.map.setView([this.zoneForm.get('dzongkhagControl').value.lat, this.zoneForm.get('dzongkhagControl').value.lng], 14);
+    // this.map.setView([this.zoneForm.get('dzongkhagControl').value.lat, this.zoneForm.get('dzongkhagControl').value.lng], 14);
 
+    this.renderBoundary(zoneId,true)
+    this.addStructures(zoneId,true);
+    this.renderRedBuildings(this.selectedDzongkhagId,false);
   }
 
   //zone Search End
 
+  //orders red buildings and ontop and strucutres below it
+  reOrderLayer(){
+    if(this.buildingGeojson != undefined && this.redBuildingGeojson != undefined){
+      this.map.removeLayer(this.buildingGeojson)
+      this.map.removeLayer(this.redBuildingGeojson)
+      this.map.addLayer(this.buildingGeojson)
+      this.map.addLayer(this.redBuildingGeojson)
+    }
+  }
 
 
-  renderBuildings(zoneId) {
-    // const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
-    //   if(this.bound !== undefined){
-    //     this.map.removeLayer(this.bound);
-    //   }
-    //   this.bound = L.geoJSON(json.data, {
-    //     style: (feature) => {
-    //       return {
-    //         color: "red",
-    //         fillOpacity: 0
-    //       }
-    //     }
-    //   }).addTo(this.map);
-    // })
-
-    const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
+  renderBoundary(zoneId,isZoom:boolean) {
+    this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getzone/${zoneId}`).subscribe((json: any) => {
       if (this.bound !== undefined) {
         this.map.removeLayer(this.bound);
       }
       this.bound = L.geoJSON(json.data, {
+        interactive:false,
         style: (feature) => {
           return {
-            color: "gray",
+            color: "#FFFF00",
+            fillColor: "#f03",
             fillOpacity: 0
           }
         }
       }).addTo(this.map);
     })
-    this.addStructures(zoneId);
   }
 
 
@@ -635,13 +671,13 @@ export class CovAdminComponent implements OnInit {
   }
 
 
-  renderRedBuildings(dzongkhagId: number) {
+  renderRedBuildings(dzongkhagId: number,isZoom:boolean) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       this.redBuildingGeojson = L.geoJSON(res, {
         onEachFeature: (feature, layer) => {
           layer.on('click', (e) => {
             this.selectedRedBuilding = feature
-            this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
+            // this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
             this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
               this.redBuildingCases = res.data;
               let totalCases=0;
@@ -683,15 +719,22 @@ export class CovAdminComponent implements OnInit {
           });
         },
         pointToLayer: (feature, latLng) => {
-          return L.marker(latLng, { icon: this.redMarker });
+          // return L.marker(latLng, { icon: this.redMarker });
+          return L.circleMarker(latLng,this.redBuildingMarkerOptions)
         }
       });
       this.map.addLayer(this.redBuildingGeojson)
-      this.map.fitBounds(this.redBuildingGeojson.getBounds());
+
+      if(isZoom){
+        this.map.fitBounds(this.redBuildingGeojson.getBounds());
+      }
+
+      //reorder
+      this.reOrderLayer()
     })
   }
 
-  addStructures(zoneId) {
+  addStructures(zoneId,isZoom:boolean) {
     this.dataService.getStructure(zoneId).subscribe((json: any) => {
       console.log("SCTRUECURS", json)
       this.json = json;
@@ -738,14 +781,22 @@ export class CovAdminComponent implements OnInit {
           });
         },
         pointToLayer: (feature, latLng) => {
-          return L.marker(latLng, { icon: this.myMarker });
+          // return L.marker(latLng, { icon: this.myMarker });
+          return L.circleMarker(latLng,this.buildingMarkerOptions)
         }
       });
       this.map.addLayer(this.buildingGeojson)
-      this.renderRedBuildings(this.selectedDzongkhagId);
+      
+      if(isZoom){
+        this.map.fitBounds(this.buildingGeojson.getBounds())
+      }
+
+      //reorder
+      this.reOrderLayer()
     });
 
   }
+
   showResident(unitid) {
     this.resident = null;
     this.residentTableShow = true
@@ -789,7 +840,6 @@ export class CovAdminComponent implements OnInit {
     this.selectedRowIndex = row.id;
   }
   toggleAdd() {
-    console.log("sdfs")
     if (sessionStorage.getItem('subzoneID') === null) {
       this.snackBar.open(`Please select a zone to add structure`, '', {
         duration: 4000,
@@ -805,6 +855,11 @@ export class CovAdminComponent implements OnInit {
       this.isAddAllowed = true;
     }
   }
+
+  cancelAdd(){
+    this.isAddAllowed = false;
+  }
+
 
   toggleClearData() {
     if (this.clearData === false) {
@@ -851,8 +906,6 @@ export class CovAdminComponent implements OnInit {
   }
 
   markStructureAsRedBuilding() {
-    console.log(this.selectedStructure);
-
     this.selectedStructure.properties.dzongkhag_id = 1;
 
     let data = {

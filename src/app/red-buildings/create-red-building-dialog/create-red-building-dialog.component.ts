@@ -70,7 +70,6 @@ export class CreateRedBuildingDialogComponent implements OnInit {
         })
       }
       
-      
     })
 
   }
