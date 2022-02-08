@@ -235,6 +235,24 @@ export class ViewPositiveComponent implements OnInit {
     iconSize: [12, 12]
   });
 
+  redBuildingInactiveMarkerOptions = {
+    radius: 8,
+    fillColor: "#008000",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
+  redBuildingMarkerActiveOptions = {
+    radius: 8,
+    fillColor: "#FF0000",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
   setViewValue: boolean;
 
 
@@ -636,6 +654,16 @@ export class ViewPositiveComponent implements OnInit {
       downloadLink.click();
     })
   }
+
+  reOrderLayer(){
+    if(this.buildingGeojson != undefined && this.redBuildingGeojson != undefined){
+      this.map.removeLayer(this.buildingGeojson)
+      this.map.removeLayer(this.redBuildingGeojson)
+      this.map.addLayer(this.buildingGeojson)
+      this.map.addLayer(this.redBuildingGeojson)
+    }
+  }
+
   renderRedBuildings(dzongkhagId: number) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
       if (res.length !== 0) {
@@ -645,7 +673,7 @@ export class ViewPositiveComponent implements OnInit {
             layer.on('click', (e) => {
               console.log(feature)
               this.selectedRedBuilding = feature
-              this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);
+              // this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
                 this.redBuildingCases = res.data;
                 let totalCases = 0;
@@ -691,78 +719,82 @@ export class ViewPositiveComponent implements OnInit {
 
           },
           pointToLayer: (feature, latLng) => {
-            return L.marker(latLng, { icon: this.redMarker });
-          }
-        });
-
-        const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
-          if (this.bound !== undefined) {
-            this.map.removeLayer(this.bound);
-          }
-          this.bound = L.geoJSON(json.data, {
-            onEachFeature: (feature, layer) => {
-
-            },
-            style: (feature) => {
-              return {
-                color: "white",
-                fillOpacity: 0,
-                weight: 1.5
-              }
+            let bldgMarker:L.CircleMarker;
+            console.log(feature.properties.status)
+            switch(feature.properties.status){
+              case "INACTIVE":
+                bldgMarker = L.circleMarker(latLng,this.redBuildingInactiveMarkerOptions)
+                break;
+              case "ACTIVE":
+                bldgMarker = L.circleMarker(latLng,this.redBuildingMarkerActiveOptions)
+                break;
             }
-          }).addTo(this.map);
-          // this.map.addLayer(this.zoneMap)
-          this.map.addLayer(this.redBuildingGeojson)
-          // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/theirs.geojson").then(res=>res.json()).then(
-          //   res => {
-          //     let ok = L.geoJSON(res,{
-          //       onEachFeature: (feature, layer) => {
-          //         layer.on("click",(e)=>{
-          //           console.log(feature.properties)
-          //           layer.bindPopup(
-          //             '<p style:"color:tomtato">Status: ' + feature.properties.CaseCode + '</p>' +
-          //             '<p style:"color:tomtato">Number of Cases: ' + 1 + '</p>' +
-          //             '<p style:"color:tomtato">First Detection: ' + 2 + '</p>'
-          //           )
-          //         })
-          //       },
-          //       pointToLayer: (feature, latLng) => {
-          //         return new L.CircleMarker(latLng, {
-          //           radius: 10,
-          //           color: "blue",
-          //           fillOpacity: 0.85
-          //         });
-          //       }
-          //     }).addTo(this.map)
-          //   }
-          // )
-        })
+            return bldgMarker;
+          }
+        }).addTo(this.map);
+
+        // const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
+        //   if (this.bound !== undefined) {
+        //     this.map.removeLayer(this.bound);
+        //   }
+        //   this.bound = L.geoJSON(json.data, {
+        //     onEachFeature: (feature, layer) => {
+
+        //     },
+        //     style: (feature) => {
+        //       return {
+        //         color: "white",
+        //         fillOpacity: 0,
+        //         weight: 1.5
+        //       }
+        //     }
+        //   }).addTo(this.map);
+        //   this.map.addLayer(this.redBuildingGeojson)
+        // })
 
 
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
-      } else {
-        if (this.bound !== undefined) {
-          this.map.removeLayer(this.bound);
-          if (this.redBuildingGeojson !== undefined) {
-            this.map.removeLayer(this.redBuildingGeojson);
-            const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
-              this.bound = L.geoJSON(json.data, {
-                style: (feature) => {
-                  return {
-                    color: "#f8fafc",
-                    fillOpacity: 0,
-                    weight: 1
-                  }
-                }
-              }).addTo(this.map);
-            })
+      } 
+      // else {
+      //   if (this.bound !== undefined) {
+      //     this.map.removeLayer(this.bound);
+      //     if (this.redBuildingGeojson !== undefined) {
+      //       this.map.removeLayer(this.redBuildingGeojson);
+      //       const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
+      //         this.bound = L.geoJSON(json.data, {
+      //           style: (feature) => {
+      //             return {
+      //               color: "#f8fafc",
+      //               fillOpacity: 0,
+      //               weight: 1
+      //             }
+      //           }
+      //         }).addTo(this.map);
+      //       })
 
-            this.map.fitBounds(this.bound.getBounds());
+      //       this.map.fitBounds(this.bound.getBounds());
+      //     }
+      //   }
+      // }
+
+    })
+  }
+
+  renderBoundary(dzoId,isZoom:boolean) {
+    this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzoId}`).subscribe((json: any) => {
+      if (this.bound !== undefined) {
+        this.map.removeLayer(this.bound);
+      }
+      this.bound = L.geoJSON(json.data, {
+        interactive:false,
+        style: (feature) => {
+          return {
+            color: "#FFFF00",
+            fillColor: "#f03",
+            fillOpacity: 0
           }
         }
-
-      }
-
+      }).addTo(this.map);
     })
   }
 

@@ -958,30 +958,35 @@ export class CovAdminComponent implements OnInit {
   }
 
   addCaseDialog(data:caseInterface,canCancel:boolean){
-        this.dialog.open(AddCasesDialogComponent,{disableClose:!canCancel, data:data}).afterClosed().subscribe(result=>{
-          if(result.event === "success"){
-            let newCase = new Case;
-            newCase.case_id = result.data.case_id
-            newCase.date = result.data.date
-            newCase.dzo_id = result.data.dzo_id
-            newCase.numCases = result.data.numCases
-            newCase.red_building_id = result.data.red_building_id
-            newCase.remarks = result.data.remarks
-            newCase.status = result.data.status
+    
+    let cdData = {
+      canCancel:canCancel,
+      ...data
+    }
+    this.dialog.open(AddCasesDialogComponent,{disableClose:!canCancel, data:cdData }).afterClosed().subscribe(result=>{
+      if(result.event === "success"){
+        let newCase = new Case;
+        newCase.case_id = result.data.case_id
+        newCase.date = result.data.date
+        newCase.dzo_id = result.data.dzo_id
+        newCase.numCases = result.data.numCases
+        newCase.red_building_id = result.data.red_building_id
+        newCase.remarks = result.data.remarks
+        newCase.status = result.data.status
 
-            console.log(newCase)
-            this.dataService.createNewCase(newCase).subscribe(res =>{
-              if(res.status=== "success"){
-                this.renderRedBuildings(this.selectedDzongkhagId,false);
-                this.snackBar.open('Case Added', '', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: ['success-snackbar']
-                });
-              }
-            })
+        console.log(newCase)
+        this.dataService.createNewCase(newCase).subscribe(res =>{
+          if(res.status=== "success"){
+            this.renderRedBuildings(this.selectedDzongkhagId,false);
+            this.snackBar.open('Case Added', '', {
+              duration: 3000,
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar']
+            });
           }
         })
+      }
+    })
   }
 
   reset() {

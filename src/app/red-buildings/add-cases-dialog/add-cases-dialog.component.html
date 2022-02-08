@@ -43,7 +43,7 @@
   <button mat-flat-button class="btn custom-btn" (click)="submit()" color="primary">
     <mat-icon>note_add</mat-icon> Add Red Building
   </button>
-  <button mat-flat-button class="btn custom-btn" (click)="cancel()" color="primary">
+  <button *ngIf="data.canCancel" mat-flat-button class="btn custom-btn" (click)="cancel()" style="background-color: red;">
     Cancel
   </button>
 </div>
