@@ -605,7 +605,8 @@ export class CovAdminComponent implements OnInit {
         color:'red',
         fillColor:'#f03',
         fillOpacity:0,
-        radius:10
+        radius:10,
+        interactive:false
       }).addTo(this.map);
 
       this.map.flyTo([lat, lng], 18)
@@ -614,6 +615,7 @@ export class CovAdminComponent implements OnInit {
   clearXY(){
       if (this.xyCircle !== undefined) {
         this.map.removeLayer(this.xyCircle);
+        this.xyCircle = undefined;
       }
 
   }
