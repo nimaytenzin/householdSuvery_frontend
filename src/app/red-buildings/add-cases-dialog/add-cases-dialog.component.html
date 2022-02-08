@@ -1,47 +1,49 @@
-
 <div class="form-wraper" style="text-align:center">
 
-        Display Existing Case
+  Display Existing Case
 
-        {{ covidCases }}
+  {{ covidCases }}
 
-         <!-- Start of Building Form-->
-         <form [formGroup]="addCaseForm">
-            <mat-form-field appearance="fill" class="justifier" >
-                <mat-label> Date Detected</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="date" [max] = "today" required >
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-             
-            <mat-form-field class="justifier">
-                <mat-label>Number of Cases</mat-label>
-                <input matInput type="number"   formControlName="numCases"   required autofocus>
-            </mat-form-field>
+  <!-- Start of Building Form-->
+  <form [formGroup]="addCaseForm">
+    <mat-form-field appearance="fill" class="justifier">
+      <mat-label> Date Detected</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" [max]="today" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="justifier">
+      <mat-label>Number of Cases</mat-label>
+      <input matInput type="number" formControlName="numCases" required autofocus>
+    </mat-form-field>
 
 
-            <mat-form-field class="justifier">
-                <mat-label>Case Identification ID</mat-label>
-                <input matInput type="text"   formControlName="case_id"   required autofocus>
-            </mat-form-field>
-           
-            <mat-form-field class="justifier">
-                <mat-label> remarks</mat-label>
-                <input matInput type="text"   formControlName="remarks"   required autofocus>
-            </mat-form-field>
+    <mat-form-field class="justifier">
+      <mat-label>Case Identification ID</mat-label>
+      <input matInput type="text" formControlName="case_id" required autofocus>
+    </mat-form-field>
 
-            <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
-                <mat-label>Status</mat-label>
-                <select matNativeControl required formControlName="status">
-                  <option value="ACTIVE" selected>Active</option>
-                  <option value="INACTIVE">Inactive</option>
-                </select>
-              </mat-form-field>
-        </form>
-    
-      </div>
-      <div class="form-footer">
-        <button mat-flat-button class="btn custom-btn" (click)="submit()" color="primary" >
-          <mat-icon>note_add</mat-icon> Add Red Building
-        </button>
-  </div>
+    <mat-form-field class="justifier">
+      <mat-label> remarks</mat-label>
+      <input matInput type="text" formControlName="remarks" required autofocus>
+    </mat-form-field>
+
+    <mat-form-field class="justifier" style="padding: 0%;margin: 0%;">
+      <mat-label>Status</mat-label>
+      <select matNativeControl required formControlName="status">
+        <option value="ACTIVE" selected>Active</option>
+        <option value="INACTIVE">Inactive</option>
+      </select>
+    </mat-form-field>
+  </form>
+
+</div>
+<div class="form-footer">
+  <button mat-flat-button class="btn custom-btn" (click)="submit()" color="primary">
+    <mat-icon>note_add</mat-icon> Add Red Building
+  </button>
+  <button mat-flat-button class="btn custom-btn" (click)="cancel()" color="primary">
+    Cancel
+  </button>
+</div>

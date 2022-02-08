@@ -58,6 +58,10 @@ export class AddCasesDialogComponent implements OnInit {
     });   
   }
 
+  cancel(){
+    this.dialogRef.close({event:"cancel"})
+  }
+
   submit(){
 
       this.newCase.case_id = this.addCaseForm.get('case_id').value;
@@ -67,30 +71,7 @@ export class AddCasesDialogComponent implements OnInit {
       this.newCase.red_building_id = this.data.red_building_id;
       this.newCase.remarks =this.addCaseForm.get('remarks').value;
       this.newCase.status = this.addCaseForm.get("status").value;
-
-      console.log(this.newCase)
-
-      this.dataservice.createNewCase(this.newCase).subscribe(res =>{
-        if(res.status=== "success"){
-          this.fetchCaseData();
-        }
-      })
-
-
-    // this.newCase.lat = this.data.object.coordinates[1];
-    // this.newCase.lng = this.data.object.coordinates[0];
-    // this.newCase.structure_id = this.data.object.properties.structure_id;
-    // this.newCase.numCases = this.addCaseForm.get('cases').value;
-    // this.newCase.date = this.addCaseForm.get('date').value;
-    // this.newCase.remarks = this.addCaseForm.get('remarks').value;
-    // this.newCase.dzongkhag_id = Number(sessionStorage.getItem('dzongkhag_id'));
-    
-    // console.log(this.newCase)
-    // this.dataservice.addRedBuilding(this.newCase).subscribe(res => {
-    //   // this.dialogRef.close()
-    //   console.log(res)
-    // })
-
+      this.dialogRef.close({event:"success",data: this.newCase})
   }
 
 }

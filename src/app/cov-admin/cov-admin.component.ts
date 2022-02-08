@@ -11,6 +11,16 @@ import { MarkPositiveDialogComponent } from '../mark-positive-dialog/mark-positi
 import { EditPositiveDialogComponent } from '../edit-positive-dialog/edit-positive-dialog.component';
 import { CreateRedBuildingDialogComponent } from '../red-buildings/create-red-building-dialog/create-red-building-dialog.component';
 import { AddCasesDialogComponent } from '../red-buildings/add-cases-dialog/add-cases-dialog.component';
+
+export class Case{
+  red_building_id:number
+  dzo_id:number;
+  date: Date;
+  numCases:number;
+  remarks: string;
+  status:string;
+  case_id:string;
+}
 export class RedBuilding {
   structure_id: number;
   lat: number;
@@ -25,6 +35,11 @@ export class Building {
   lat: number;
   lng: number;
   sub_zone_id: number;
+}
+
+interface caseInterface{
+  red_building_id:number;
+  dzo_id:number
 }
 
 interface Zone {
@@ -192,7 +207,16 @@ export class CovAdminComponent implements OnInit {
   //markers
   xyCircle: L.Circle;
 
-  redBuildingMarkerOptions = {
+  redBuildingInactiveMarkerOptions = {
+    radius: 8,
+    fillColor: "#008000",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
+  redBuildingMarkerActiveOptions = {
     radius: 8,
     fillColor: "#FF0000",
     color: "#000",
@@ -565,28 +589,6 @@ export class CovAdminComponent implements OnInit {
             }
           })
         })
-        // layer.bindPopup(
-        //   '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
-        //   '<p style:"color:tomtato">Number of Cases: ' + feature.properties.numCases + '</p>' +
-        //   '<p style:"color:tomtato">Date Detected: ' + new Date(feature.properties.date).toLocaleDateString() + '</p>' +
-        //   '<button class="edit">View/Edit </button>' +
-        //   '<button class="normalize">Normalize Building</button>'
-        // ).on("popupopen", (a) => {
-        //   var popUp = a.target.getPopup()
-        //   popUp.getElement()
-        //     .querySelector(".edit")
-        //     .addEventListener("click", e => {
-        //       this.editRedBuilding(feature)
-        //     });
-        // }).on("popupopen", (a) => {
-        //   var popUp = a.target.getPopup()
-        //   popUp.getElement()
-        //     .querySelector(".normalize")
-        //     .addEventListener("click", e => {
-        //       this.normalizeBuilding(feature)
-        //     });
-        // },
-        // )
       },
     }).addTo(this.map);
   }
@@ -662,17 +664,19 @@ export class CovAdminComponent implements OnInit {
 
   addNewCase(){
     console.log(this.selectedRedBuilding)
-    this.dialog.open(AddCasesDialogComponent, {
-      data:{
+    let caseData:caseInterface = {
         red_building_id:this.selectedRedBuilding.properties.id,
         dzo_id:this.selectedDzongkhagId
-      }
-    })
+    }
+    this.addCaseDialog(caseData,true)
   }
 
 
   renderRedBuildings(dzongkhagId: number,isZoom:boolean) {
     this.dataService.getRedBuildingsByDzongkhag(dzongkhagId).subscribe(res => {
+      if(this.redBuildingGeojson !== undefined){
+        this.map.removeLayer(this.redBuildingGeojson)
+      }
       this.redBuildingGeojson = L.geoJSON(res, {
         onEachFeature: (feature, layer) => {
           layer.on('click', (e) => {
@@ -720,7 +724,16 @@ export class CovAdminComponent implements OnInit {
         },
         pointToLayer: (feature, latLng) => {
           // return L.marker(latLng, { icon: this.redMarker });
-          return L.circleMarker(latLng,this.redBuildingMarkerOptions)
+          let bldgMarker:L.CircleMarker;
+          switch(feature.properties.status){
+            case "INACTIVE":
+              bldgMarker = L.circleMarker(latLng,this.redBuildingInactiveMarkerOptions)
+              break;
+            case "ACTIVE":
+              bldgMarker = L.circleMarker(latLng,this.redBuildingMarkerActiveOptions)
+              break;
+          }
+          return bldgMarker;
         }
       });
       this.map.addLayer(this.redBuildingGeojson)
@@ -917,18 +930,59 @@ export class CovAdminComponent implements OnInit {
 
     const createRedBuilingDialog = this.dialog.open(CreateRedBuildingDialogComponent, {
       data: data
-    });
+    }).afterClosed().subscribe(result=>{
+      if(result.event === "success"){
+        console.log("red building created")
+        let newRedBuilding = new RedBuilding();
+        newRedBuilding.dzo_id = result.data.dzo_id
+        newRedBuilding.lat = result.data.lat
+        newRedBuilding.lng = result.data.lng
+        newRedBuilding.remarks = result.data.remarks
+        newRedBuilding.status = result.data.status
+        newRedBuilding.structure_id = result.data.structure_id
 
-    // const confirmDialog = this.dialog.open(MarkPositiveDialogComponent, {
-    //   data: {
-    //     object: this.selectedStructure
-    //   }
-    // });
-    // confirmDialog.afterClosed().subscribe(e => {
-    //   this.getPositiveCases()
-    // })
+        //create red building
+        this.dataService.createRedBuilding(newRedBuilding).subscribe(res =>{
+          console.log("red create",res)
+          if(res.success === 'true'){
+            let caseData:caseInterface = {
+              red_building_id:res.data.id,
+              dzo_id:res.data.dzo_id
+            }
+            this.addCaseDialog(caseData,false)
+            this.renderRedBuildings(this.selectedDzongkhagId,false);
+          }
+        })
+      }
+    });
   }
 
+  addCaseDialog(data:caseInterface,canCancel:boolean){
+        this.dialog.open(AddCasesDialogComponent,{disableClose:!canCancel, data:data}).afterClosed().subscribe(result=>{
+          if(result.event === "success"){
+            let newCase = new Case;
+            newCase.case_id = result.data.case_id
+            newCase.date = result.data.date
+            newCase.dzo_id = result.data.dzo_id
+            newCase.numCases = result.data.numCases
+            newCase.red_building_id = result.data.red_building_id
+            newCase.remarks = result.data.remarks
+            newCase.status = result.data.status
+
+            console.log(newCase)
+            this.dataService.createNewCase(newCase).subscribe(res =>{
+              if(res.status=== "success"){
+                this.renderRedBuildings(this.selectedDzongkhagId,false);
+                this.snackBar.open('Case Added', '', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                  panelClass: ['success-snackbar']
+                });
+              }
+            })
+          }
+        })
+  }
 
   reset() {
     this.zoneForm.reset();

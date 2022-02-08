@@ -97,7 +97,7 @@
     <div>
       <h4 style="margin-bottom:2px;">Red Building Controls</h4>
       <button style="margin-right: 10px;" mat-flat-button color="primary" (click)=markStructureAsRedBuilding() [disabled]="selectedStructure == null"> Mark as Red Building </button>
-      <button [disabled]="selectedStructure == null" style="margin-right:10px;" mat-flat-button color="primary" (click)=addNewCase()> Add New Case</button>
+      <button [disabled]="selectedRedBuilding == null" style="margin-right:10px;" mat-flat-button color="primary" (click)=addNewCase()> Add New Case</button>
 
     </div>
 
@@ -117,6 +117,9 @@
         </h3>
         <p>
           Id: {{ case.id }}
+        </p>
+        <p>
+          Status: <span> {{ case.status }}</span>
         </p>
         <p>
           Date: <span> {{ parseDate(case.date) }}</span>

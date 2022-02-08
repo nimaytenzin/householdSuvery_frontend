@@ -50,6 +50,9 @@ export class CreateRedBuildingDialogComponent implements OnInit {
     });   
   }
 
+  cancel(){
+    this.dialogRef.close({event:"cancel"})
+  }
 
   submit(){
     this.newRedBuilding.lat = this.data.lat;
@@ -58,24 +61,19 @@ export class CreateRedBuildingDialogComponent implements OnInit {
     this.newRedBuilding.remarks = this.createRedBuildingForm.get('remarks').value;
     this.newRedBuilding.status = this.createRedBuildingForm.get('status').value;
     this.newRedBuilding.dzo_id = this.data.dzo_id;
+    this.dialogRef.close({event:'success',data:this.newRedBuilding})
    
-    this.dataservice.createRedBuilding(this.newRedBuilding).subscribe(res =>{
-      if(res.success === 'true'){
-        let data:openCaseDialog = {
-          red_building_id:res.data.id,
-          dzo_id:res.data.dzo_id
-        }
-        this.dialog.open(AddCasesDialogComponent, {
-          data:data
-        })
-      }
+    // this.dataservice.createRedBuilding(this.newRedBuilding).subscribe(res =>{
+    //   if(res.success === 'true'){
+    //     let data:openCaseDialog = {
+    //       red_building_id:res.data.id,
+    //       dzo_id:res.data.dzo_id
+    //     }
+    //     this.dialog.open(AddCasesDialogComponent, {
+    //       data:data
+    //     })
+    //   }
       
-    })
-
+    // })
   }
-
-
-
-
-
 }
