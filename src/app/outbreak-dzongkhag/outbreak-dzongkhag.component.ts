@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as L from 'leaflet';
 import { DataService } from '../service/data.service';
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-outbreak-dzongkhag',
@@ -14,13 +15,14 @@ export class OutbreakDzongkhagComponent implements OnInit {
   dzongkhagMap :L.GeoJSON;
 
   dzoId;
-  excelUrl:string;
+  excelUrl;
   dzongkhagName:string;
 
 
   constructor(
     private dataservice: DataService,
-    private route : ActivatedRoute
+    private route : ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -35,7 +37,7 @@ export class OutbreakDzongkhagComponent implements OnInit {
     });
 
     this.dataservice.getExcelbyDzongkhag(this.dzoId).subscribe(res=>{
-      this.excelUrl = res.sheetslink;
+      this.excelUrl = this.sanitizer.bypassSecurityTrustResourceUrl(res.sheetslink)
       this.dzongkhagName = res.name;
     })
 
