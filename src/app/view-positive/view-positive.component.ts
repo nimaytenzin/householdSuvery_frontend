@@ -513,8 +513,9 @@ export class ViewPositiveComponent implements OnInit {
 
   fetchAndSetCovidStats(dzoId) {
     this.dataService.getCovidStatsByDzongkhag(dzoId).subscribe(res => {
-      this.totalCases = res.data.numCases;
-      this.totalRedBuildings = res.data.totalBuilding
+      console.log(res)
+      this.totalCases = res.data.activeCases;
+      this.totalRedBuildings = res.data.activeBuilding
     })
   }
 
