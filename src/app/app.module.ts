@@ -56,6 +56,8 @@ import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
 import { SelectdzongkhagComponent } from './dialogs/selectdzongkhag/selectdzongkhag.component';
 import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
 import { SelectComponent } from './select/select.component';
+import { OutbreakPhasingComponent } from './outbreak-phasing/outbreak-phasing.component';
+import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongkhag.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { SelectComponent } from './select/select.component';
     SelectzoneComponent,
     SelectdzongkhagComponent,
     HhDashboardComponent,
-    SelectComponent
+    SelectComponent,
+    OutbreakPhasingComponent,
+    OutbreakDzongkhagComponent
   ],
   imports: [
     BrowserModule,

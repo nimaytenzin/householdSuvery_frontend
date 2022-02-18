@@ -19,6 +19,8 @@ import { AppsDrawerComponent } from './apps-drawer/apps-drawer.component';
 import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
 import { SelectzoneComponent } from './dialogs/selectzone/selectzone.component';
 import { SelectComponent } from './select/select.component';
+import { OutbreakPhasingComponent } from './outbreak-phasing/outbreak-phasing.component';
+import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongkhag.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -40,7 +42,12 @@ const routes: Routes = [
   {path: 'cov-map', component: ViewPositiveComponent, canActivate: [RouteGuard]},
   {path: 'cov-admin', component: CovAdminComponent, canActivate: [RouteGuard]},
   {path: 'hh-map', component: HhDashboardComponent, canActivate: [RouteGuard]},
+  {path: 'outbreak-phasing', component: OutbreakPhasingComponent, canActivate: [RouteGuard]},
+  {path: 'outbreak-dzo/:dzoId', component: OutbreakDzongkhagComponent, canActivate: [RouteGuard]},
+ 
+  
   {path: '**', component: ErrorComponent},
+
   
 ];
 

@@ -30,5 +30,7 @@ export class AppsDrawerComponent implements OnInit {
   goToHHSurveyDashboard(){
     this.dialog.open(SelectzoneComponent)
   }
-
+  goToNationalOutbreakPhasingDashboard(){
+    
+  }
 }

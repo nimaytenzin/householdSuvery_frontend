@@ -1,0 +1,43 @@
+.main-container{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.map-container{
+    width: 60%;
+    height: 100vh;
+    position: relative
+}
+
+.map-container p{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size:1.5em;
+    color: gray;
+}
+
+.sheets-container{
+    padding:10px;
+    width: 40%;
+    height: 100vh;
+}
+
+.sheets-container .sheet-iframe{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+::ng-deep .myCSSClass {
+    background: none;
+    color: #334155;
+    border: none;
+  }
+::ng-deep .leaflet-tooltip-left.myCSSClass::before {
+    border-left-color: cyan;
+  }
+::ng-deep .leaflet-tooltip-right.myCSSClass::before {
+    border-right-color: cyan;
+  }

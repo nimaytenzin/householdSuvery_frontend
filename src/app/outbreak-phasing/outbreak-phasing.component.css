@@ -1,0 +1,41 @@
+.main-container{
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    max-height: 100vh;
+}
+
+
+.map-container{
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+.main-container p{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size:1.5em;
+    color: gray;
+}
+
+
+ .dzongkhag-labels {
+    padding: 0px;
+    background-color: none;
+    border: none;
+    color: #000;
+}
+
+::ng-deep .myCSSClass {
+    background: none;
+    color: #334155;
+    border: none;
+  }
+::ng-deep .leaflet-tooltip-left.myCSSClass::before {
+    border-left-color: cyan;
+  }
+::ng-deep .leaflet-tooltip-right.myCSSClass::before {
+    border-right-color: cyan;
+  }
