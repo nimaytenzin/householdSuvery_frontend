@@ -31,6 +31,6 @@ export class AppsDrawerComponent implements OnInit {
     this.dialog.open(SelectzoneComponent)
   }
   goToNationalOutbreakPhasingDashboard(){
-    
+    this.router.navigate(['outbreak-phasing'])
   }
 }
