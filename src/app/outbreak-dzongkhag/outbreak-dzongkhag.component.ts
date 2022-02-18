@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { DataService } from '../service/data.service';
 import { DomSanitizer } from "@angular/platform-browser";
@@ -22,6 +22,7 @@ export class OutbreakDzongkhagComponent implements OnInit {
   constructor(
     private dataservice: DataService,
     private route : ActivatedRoute,
+    private router: Router,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -68,6 +69,11 @@ export class OutbreakDzongkhagComponent implements OnInit {
 
   
 
+  }
+
+
+  goBack(){
+    this.router.navigate(['outbreak-phasing'])
   }
 
 }
