@@ -730,19 +730,32 @@ export class HhDashboardComponent implements OnInit {
             this.map.removeLayer(this.searchmarker);
             this.searchmarker = null;
           }
-          this.addStructures(res.data.structure.sub_zone_id)
-          lat = res.data.structure.lat
-          lng = res.data.structure.lng
+          // this.addStructures(res.data.structure.sub_zone_id)
+          // lat = res.data.structure.lat
+          // lng = res.data.structure.lng
 
-          this.map.flyTo([lat, lng], 18)
-          var responseJson = {
-            "type": "Point",
-            "coordinates": [lng, lat],
-            "properties": {
-              "structure_id": res.data.structure.id
-            }
-          };
-          this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
+          // this.map.flyTo([lat, lng], 18)
+          var collectionJson : GeoJSON.FeatureCollection= {
+            "type":"FeatureCollection",
+            "features":[]
+          }
+          res.data.forEach((item)=>{
+            var responseJson: GeoJSON.Feature = {
+              "type": "Feature",
+              "properties": {
+                "structure_id": item.structure.id
+              },
+              "geometry":{
+                "type":"Point",
+                "coordinates": [
+                  item.structure.lng, 
+                  item.structure.lat
+                ]
+              }
+            };
+            collectionJson.features.push(responseJson)
+          })
+          this.searchmarker = L.geoJSON(<GeoJSON.FeatureCollection>collectionJson, {
             onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
                 this.residentTableShow = false;
@@ -785,6 +798,7 @@ export class HhDashboardComponent implements OnInit {
               });
             }
           }).addTo(this.map);
+          this.map.fitBounds(this.searchmarker.getBounds())
         }
 
       })
@@ -828,6 +842,7 @@ export class HhDashboardComponent implements OnInit {
               "structure_id": res.data.id
             }
           };
+
           this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
             onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
@@ -901,19 +916,40 @@ export class HhDashboardComponent implements OnInit {
             this.map.removeLayer(this.searchmarker);
             this.searchmarker = null;
           }
-          this.addStructures(res.data.structure.sub_zone_id)
-          lat = res.data.structure.lat
-          lng = res.data.structure.lng
+          // this.addStructures(res.data.structure.sub_zone_id)
+          // lat = res.data.structure.lat
+          // lng = res.data.structure.lng
 
-          this.map.flyTo([lat, lng], 18)
-          var responseJson = {
-            "type": "Point",
-            "coordinates": [lng, lat],
-            "properties": {
-              "structure_id": res.data.structure.id
-            }
-          };
-          this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
+          // this.map.flyTo([lat, lng], 18)
+          // var responseJson = {
+          //   "type": "Point",
+          //   "coordinates": [lng, lat],
+          //   "properties": {
+          //     "structure_id": res.data.structure.id
+          //   }
+          // };
+          var collectionJson : GeoJSON.FeatureCollection= {
+            "type":"FeatureCollection",
+            "features":[]
+          }
+          res.data.forEach((item)=>{
+            var responseJson: GeoJSON.Feature = {
+              "type": "Feature",
+              "properties": {
+                "structure_id": item.structure.id
+              },
+              "geometry":{
+                "type":"Point",
+                "coordinates": [
+                  item.structure.lng, 
+                  item.structure.lat
+                ]
+              }
+            };
+            collectionJson.features.push(responseJson)
+          })
+
+          this.searchmarker = L.geoJSON(<GeoJSON.FeatureCollection>collectionJson, {
             onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
                 this.residentTableShow = false;
@@ -957,6 +993,7 @@ export class HhDashboardComponent implements OnInit {
               });
             }
           }).addTo(this.map);
+          this.map.fitBounds(this.searchmarker.getBounds())
         }
 
       })
