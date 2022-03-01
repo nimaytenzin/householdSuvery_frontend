@@ -26,6 +26,8 @@ export class OutbreakDzongkhagComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) { }
 
+  
+
   ngOnInit() {
     this.dzoId =  this.route.snapshot.params['dzoId'];
     this.map = L.map('map', {

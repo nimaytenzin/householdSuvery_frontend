@@ -226,31 +226,11 @@
           <td>{{housholdsData.cid}}</td>
         </tr>
         <tr>
-          <th>Age</th>
-          <td>{{housholdsData.age}}</td>
-        </tr>
-        <tr>
-          <th>Gender</th>
-          <td>{{housholdsData.gender}}</td>
-        </tr>
-        <tr>
-          <th>Occupation</th>
-          <td>{{housholdsData.employment}}</td>
-        </tr>
-        <tr>
-          <th>Working Agency</th>
-          <td>{{housholdsData.employmentOrg}}</td>
-        </tr>
-        <tr>
-          <th>Working Zone</th>
-          <td>{{housholdsData.workzone}}</td>
+          <th> Contact</th>
+          <td>{{housholdsData.contact}}</td>
         </tr>
 
-        <br>
-        <tr>
-          <th>Most Active?</th>
-          <td>{{housholdsData.most_active? "Yes" : "No"}}</td>
-        </tr>
+      
 
       </table>
 
@@ -267,14 +247,13 @@
           <th>Name</th>
           <th>Age/Gender</th>
           <th>Occupation</th>
-          <th>Most Active?</th>
         </tr>
         <tr *ngFor="let member of familyMembers">
           <td>{{member.idNumber}}</td>
           <td>{{member.name}}</td>
           <td>{{ member.age}} {{member.gender}}</td>
           <td>{{member.occupation }} {{ member.workplace? "at " + member.workplace : "" }}</td>
-          <td>{{member.most_active ? "Yes" : "No"}}</td>
+
         </tr>
       </table>
     </div>

@@ -374,13 +374,13 @@ export class ViewPositiveComponent implements OnInit {
               onEachFeature: function (feature, featureLayer) {
                 featureLayer.bindPopup(
                   '<p style:"color:tomtato">Zone Name: ' + feature.properties.Zone + '</p>'
-                ).openPopup()
+                )
+
               },
               style: {
                 color: "#29DCFB", weight: 1.5, fillOpacity: 0.1
               }
             })
-
 
 
             fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
@@ -391,6 +391,12 @@ export class ViewPositiveComponent implements OnInit {
                     featureLayer.bindPopup(
                       '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
                     )
+                    // let ok = new L.Marker(feature.)
+                    // console.log9
+                    if (!featureLayer.isPopupOpen()) {
+                      featureLayer.openPopup()
+                    }
+                    featureLayer.openPopup()
                   },
                   style: {
                     color: "#D2FF0CCE", weight: 2, fillOpacity: 0.1
@@ -401,15 +407,30 @@ export class ViewPositiveComponent implements OnInit {
                   .then(res => res.json())
                   .then(dat => {
                     this.thimphuPoe = L.geoJSON(dat, {
+
+                      onEachFeature:function(feature, featureLayer){
+                        featureLayer.bindTooltip(`okoko`, {
+                          permanent:true,
+                          direction:'center',
+                          opacity:0.6,
+                          className:'myCSSClass' 
+                        })
+                      },
+
                       pointToLayer: (feature, latLng) => {
+
                         return new L.CircleMarker(latLng, {
                           radius: 4,
                           color: "blue",
                           fillOpacity: 1,
                           weight: 2
-                        });
+                        }).bindPopup("ok")
+
                       }
-                    }).addTo(this.map);
+
+
+
+                    }).addTo(this.map)
                   })
 
                 fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
@@ -429,7 +450,7 @@ export class ViewPositiveComponent implements OnInit {
                   })
               })
           })
-      } 
+      }
 
       // if (this.dzongkhagId === 1) {
       //   fetch(this.zonesUrl).then(res => res.json()).then(data => {
@@ -474,7 +495,7 @@ export class ViewPositiveComponent implements OnInit {
               layer.bindPopup(
                 '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
                 '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
-              )
+              ).openPopup()
             },
             pointToLayer: (feature, latLng) => {
               return new L.CircleMarker(latLng, {
@@ -656,8 +677,8 @@ export class ViewPositiveComponent implements OnInit {
     })
   }
 
-  reOrderLayer(){
-    if(this.buildingGeojson != undefined && this.redBuildingGeojson != undefined){
+  reOrderLayer() {
+    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined) {
       this.map.removeLayer(this.buildingGeojson)
       this.map.removeLayer(this.redBuildingGeojson)
       this.map.addLayer(this.buildingGeojson)
@@ -720,14 +741,14 @@ export class ViewPositiveComponent implements OnInit {
 
           },
           pointToLayer: (feature, latLng) => {
-            let bldgMarker:L.CircleMarker;
+            let bldgMarker: L.CircleMarker;
             console.log(feature.properties.status)
-            switch(feature.properties.status){
+            switch (feature.properties.status) {
               case "INACTIVE":
-                bldgMarker = L.circleMarker(latLng,this.redBuildingInactiveMarkerOptions)
+                bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
                 break;
               case "ACTIVE":
-                bldgMarker = L.circleMarker(latLng,this.redBuildingMarkerActiveOptions)
+                bldgMarker = L.circleMarker(latLng, this.redBuildingMarkerActiveOptions)
                 break;
             }
             return bldgMarker;
@@ -755,7 +776,7 @@ export class ViewPositiveComponent implements OnInit {
 
 
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
-      } 
+      }
       // else {
       //   if (this.bound !== undefined) {
       //     this.map.removeLayer(this.bound);
@@ -781,13 +802,13 @@ export class ViewPositiveComponent implements OnInit {
     })
   }
 
-  renderBoundary(dzoId,isZoom:boolean) {
+  renderBoundary(dzoId, isZoom: boolean) {
     this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzoId}`).subscribe((json: any) => {
       if (this.bound !== undefined) {
         this.map.removeLayer(this.bound);
       }
       this.bound = L.geoJSON(json.data, {
-        interactive:false,
+        interactive: false,
         style: (feature) => {
           return {
             color: "#FFFF00",

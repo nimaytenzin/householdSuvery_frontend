@@ -321,6 +321,7 @@ export class HhDashboardComponent implements OnInit {
             this.dataService.getHouseholds(this.buildingId).subscribe(res => {
               this.unitsData = res.data
               this.length = res.data.length
+              console.log("oj", this.unitsData)
             })
             this.dataService.getImg(this.buildingId).subscribe(res => {
               if (res.success) {
@@ -666,7 +667,8 @@ export class HhDashboardComponent implements OnInit {
             })
             this.dataService.getHouseholds(this.buildingId).subscribe(res => {
               this.unitsData = res.data
-              this.length = res.data.length
+              this.length = res.data.length;
+              console.log("UNITS DATA", res.data)
             })
             this.dataService.getImg(this.buildingId).subscribe(res => {
               if (res.success) {

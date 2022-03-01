@@ -11,7 +11,7 @@ export class OutbreakPhasingComponent implements OnInit {
   map: L.Map;
   carto = L.tileLayer("https://a.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png");
   dzongkhagMap :L.GeoJSON;
-  dzongkhagName= "Tsirang"
+
 
   constructor(
     private dataservice:DataService,
