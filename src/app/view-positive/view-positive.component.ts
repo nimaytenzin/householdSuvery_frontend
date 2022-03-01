@@ -408,14 +408,6 @@ export class ViewPositiveComponent implements OnInit {
                   .then(dat => {
                     this.thimphuPoe = L.geoJSON(dat, {
 
-                      onEachFeature:function(feature, featureLayer){
-                        featureLayer.bindTooltip(`okoko`, {
-                          permanent:true,
-                          direction:'center',
-                          opacity:0.6,
-                          className:'myCSSClass' 
-                        })
-                      },
 
                       pointToLayer: (feature, latLng) => {
 
