@@ -121,7 +121,8 @@ export class HhDashboardComponent implements OnInit {
     vaccine_status: boolean,
     most_active: boolean,
     shopOfficeContact: number,
-    shopOfficeRent: number
+    shopOfficeRent: number,
+    contact:any
   } = {
       unitId: 0,
       enumeratedBy: 'No info',
@@ -141,7 +142,8 @@ export class HhDashboardComponent implements OnInit {
       householdIncome: 0,
       shopOfficeName: "NA",
       shopOfficeContact: 0,
-      shopOfficeRent: 0
+      shopOfficeRent: 0,
+      contact:"NA"
     };
   familyMembers: any;
 
