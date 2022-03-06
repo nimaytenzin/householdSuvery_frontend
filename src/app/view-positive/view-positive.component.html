@@ -100,6 +100,17 @@
         <p style="font-size: small;">Total HotSpot Building</p>
         <h1 style="color: #DE3163; font-weight: bolder;">{{totalRedBuildings}}</h1>
       </mat-card>
+      <mat-card style="
+                  border-top-left-radius: 0.125rem;
+                  border-bottom-left-radius: 0.125rem;
+                  align-items: center;
+                  justify-content: 
+                  center;padding-bottom: 0;
+                  background-color: rgb(196, 195, 190);
+                  ">
+        <p style="font-size: small;">Total Red flats</p>
+        <h1 style="color: #DE3163; font-weight: bolder;">{{totalRedFlats}}</h1>
+      </mat-card>
 
 
      
@@ -271,6 +282,10 @@
           </p>
 
           <table style="width:100%;">
+            <tr>
+              <th>Status</th>
+              <td>{{redHouseholdData.status}}</td>
+            </tr>
             <tr>
               <th>Unit Name</th>
               <td>{{redHouseholdData.unitName}}</td>

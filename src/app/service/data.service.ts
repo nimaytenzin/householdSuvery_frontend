@@ -146,6 +146,14 @@ export class DataService {
       )
   }
 
+  getRedflatStats(){
+    return this.http
+      .get<any>(`${this.API_URL}/red-flat/get-stat`,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   getHouseholds(sid){
     return this.http
       .get<any>(`${this.API_URL}/household/get-all/${sid}`,this.httpOptions)

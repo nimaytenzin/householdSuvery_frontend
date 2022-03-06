@@ -313,6 +313,7 @@ export class ViewPositiveComponent implements OnInit {
   dzongkhag: any;
   totalCases: number;
   totalRedBuildings: number;
+  totalRedFlats: number;
   selectedDzongkhagId: number;
   searchDzongkhagId: number;
 
@@ -370,6 +371,7 @@ export class ViewPositiveComponent implements OnInit {
     this.setViewValue = true;
     this.totalCases = 0;
     this.totalRedBuildings = 0
+    this.totalRedFlats= 0
   }
 
   ngOnInit() {
@@ -577,6 +579,9 @@ export class ViewPositiveComponent implements OnInit {
       console.log(res)
       this.totalCases = res.data.numCases;
       this.totalRedBuildings = res.data.activeBuilding
+    })
+    this.dataService.getRedflatStats().subscribe(res=>{
+      this.totalRedFlats = res.data.activeFlats
     })
   }
 
