@@ -129,6 +129,23 @@ export class DataService {
         catchError(this.handleError)
       )
   }
+
+  getRedflats(redBuildingId){
+    return this.http
+      .get<any>(`${this.API_URL}/red-flat/get-all/${redBuildingId}`,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getRedflatDetail(flatId){
+    return this.http
+      .get<any>(`${this.API_URL}/red-flat/get/${flatId}`,this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   getHouseholds(sid){
     return this.http
       .get<any>(`${this.API_URL}/household/get-all/${sid}`,this.httpOptions)
