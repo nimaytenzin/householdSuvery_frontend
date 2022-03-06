@@ -1,0 +1,149 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: start;
+    gap:1rem;
+    align-items: center;
+    background-color: #EFEFEF;
+    font-family: "Source Sans Pro", sans-serif;
+    color: rgb(105, 103, 103);
+    font-weight: lighter;
+    font-size: small;
+    height: 100vmax;
+}
+.welcome-container{
+    display: flex;
+    flex-direction: column;   
+}
+
+.redbuilding-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #ff6764;
+    border-radius: 10px;
+    width: 90%;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.redflats-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 0 12px 0 12px;
+    gap: 0.5rem;
+    background-color: white;
+    color: #444343;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.title{
+    position: -webkit-sticky;
+    margin: .5rem 0;
+    color: #ff6764;
+    font-size: large;
+    text-align: center;
+    font-weight: semibold;
+}
+
+.redflats-card-container{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 0 12px 0 12px;
+    gap: 0.5rem;
+    color: #444343;
+    height: 60vh;
+    overflow-y: scroll;
+}
+
+.redflats-container .redflat-card{
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    border: .1px solid gray;
+}
+
+.redflats-container .redflat-card .redbuiling-card-sealdetails{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.button-primary{
+    background-color: rgb(255, 255, 255);
+    color: hsl(0, 1%, 28%);
+    border: none;
+    border-radius: 6px;
+    font-weight: light;
+    color: #424242;
+    width: max-content;
+    border-radius: 4%;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.button-secondary{
+    background-color: rgb(255, 255, 255);
+    color: hsl(0, 1%, 28%);
+    border: 0.5px solid rgb(83, 82, 82);
+    border-radius: 10px;
+    font-weight: light;
+    color: #424242;
+    width: max-content;
+    border-radius: 4%;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+
+.pry-btn{
+    border: 0.5px solid #ff6764;
+    padding: 2px;
+    background-size: 10px;
+    background-color: rgb(255, 255, 255); 
+  
+    border-radius: 3px;
+    word-break: break-all;
+    font-family: "Source Sans Pro", sans-serif;
+    color:#ff6764;
+    font-weight: lighter;
+    font-size: small;
+    width: 100%;
+    text-align: left;
+}
+.view-btn{
+    border: 0.5px solid rgb(93, 87, 87);
+    padding: 2px;
+    background-size: 10px;
+    background-color: rgb(255, 255, 255); 
+  
+    border-radius: 3px;
+    word-break: break-all;
+    font-family: "Source Sans Pro", sans-serif;
+    color: rgb(105, 103, 103);
+    font-weight: lighter;
+    font-size: small;
+    width: 100%;
+    text-align: left;
+}
+
+.householdmember-table{
+    width: 100%;border-radius: 1px; }
+.householdmember-table .table-header{
+    background-color: #EFEFEF;;border: none;
+}
+
+.householdmember-table td{
+    padding: 1px;
+}

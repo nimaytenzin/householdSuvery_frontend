@@ -1,0 +1,23 @@
+<div class="form-container">
+    Status
+    <select [(ngModel)]="redflat.status" required class="custom-select">
+        <option value="ACTIVE">Active</option>
+        <option value="INACTIE">Inactive</option> 
+    </select>
+
+    <input type="text" placeholder="Unit Name"  [(ngModel)]="redflat.unit_name" class="custom-input">
+    <input type="text" placeholder="CID"  [(ngModel)]="redflat.cid" class="custom-input">
+    <input type="text" placeholder="Head of household Name"  [(ngModel)]="redflat.hh_name" class="custom-input">
+    <input type="text" placeholder="Contact"  [(ngModel)]="redflat.contact" class="custom-input">
+    <textarea type="text" placeholder="Remarks"  [(ngModel)]="redflat.remarks" class="custom-input"></textarea> 
+    
+    <span>Seal Time</span>
+    <input type="time"  [(ngModel)]="redflat.first_seal_time" class="custom-input" placeholder="Select Time">
+    <span>
+        Seal Date
+    </span>
+    <input type="date"  [(ngModel)]="redflat.first_seal_date" class="custom-input">
+    <button (click)="addNewRedFlat()" type="submit" class="submit-btn">
+        Submit Red Flat Data
+    </button>
+</div>

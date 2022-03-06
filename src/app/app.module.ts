@@ -58,6 +58,11 @@ import { HhDashboardComponent } from './hh-dashboard/hh-dashboard.component';
 import { SelectComponent } from './select/select.component';
 import { OutbreakPhasingComponent } from './outbreak-phasing/outbreak-phasing.component';
 import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongkhag.component';
+import { ZonegojayComponent } from './redbuilding/zonegojay/zonegojay.component';
+import { ZonegojayMapComponent } from './redbuilding/zonegojay-map/zonegojay-map.component';
+import { AddRedflatDialogComponent } from './redbuilding/add-redflat-dialog/add-redflat-dialog.component';
+import { RedflatsComponent } from './redbuilding/redflats/redflats.component';
+import { AddFlatmembersComponent } from './redbuilding/add-flatmembers/add-flatmembers.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +97,12 @@ import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongk
     HhDashboardComponent,
     SelectComponent,
     OutbreakPhasingComponent,
-    OutbreakDzongkhagComponent
+    OutbreakDzongkhagComponent,
+    ZonegojayComponent,
+    ZonegojayMapComponent,
+    AddRedflatDialogComponent,
+    RedflatsComponent,
+    AddFlatmembersComponent
   ],
   imports: [
     BrowserModule,
@@ -128,6 +138,6 @@ import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongk
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,AddFlatmembersComponent]
 })
 export class AppModule { }

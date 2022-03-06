@@ -1,0 +1,150 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    justify-content: start;
+    gap:2rem;
+    align-items: center;
+    background-color: #EFEFEF;
+}
+.welcome-container{
+    display: flex;
+    flex-direction: column;
+    padding: 0%;
+    margin: 0;
+   
+}
+.statistics-container{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 70%;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.statistics-container .statistics-card{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size:large;
+    color: #ff6764;
+    font-weight: 100;
+}
+.statistics-container .statistics-card .statistics-icon{
+    width: 30px;
+    color: #ff6764;
+}
+
+
+.newredbuilding-container{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    width: 85%;
+    
+}
+.newredbuilding-container .title{
+    position: -webkit-sticky;
+    margin: .5rem 0;
+    color: #ff6764;
+}
+
+
+.newredbuilding-cards-container{
+    height: 25vh;
+    overflow-y: scroll;
+}
+
+.newredbuilding-container .newredbuilding-card{
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 0.5px dashed rgb(49, 46, 46);
+    padding: 3px;
+    border-radius: 3px;
+    position: relative;
+    margin: 10px 0;
+    font-weight: lighter;
+    font-size: small;
+}
+
+
+/* red building CSS  */
+.redbuilding-container{
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+    width: 85%;
+    
+}
+.redbuilding-container .title{
+    position: -webkit-sticky;
+    margin: .5rem 0;
+    color: #ff6764;
+}
+
+
+.redbuilding-cards-container{
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.redbuilding-container .redbuilding-card{
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 0.5px dashed rgb(49, 46, 46);
+    padding: 3px;
+    border-radius: 3px;
+    position: relative;
+    margin: 10px 0;
+    font-weight: lighter;
+    font-size: small;
+}
+
+
+.submit-btn{
+    border: 0.5px solid rgb(238, 164, 164);
+    padding: 2px 15px 2px 15px;
+    background-size: 10px;
+    background-color: rgb(255, 255, 255); 
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1rem;
+    color: rgb(105, 103, 103);
+    height: 30px;
+    border-radius: 3px;
+}
+
+.view-btn{
+    border: 0.5px solid rgb(93, 87, 87);
+    padding: 2px;
+    background-size: 10px;
+    background-color: rgb(255, 255, 255); 
+    font-family: "Source Sans Pro", sans-serif;
+    color: rgb(105, 103, 103);
+    border-radius: 3px;
+    word-break: break-all;
+    font-weight: lighter;
+    font-size: small;
+}
+
+@media only screen and (max-width: 600px) {
+    .redbuilding-container .redbuilding-card{
+        width: 100%;
+    }
+  }
+
+

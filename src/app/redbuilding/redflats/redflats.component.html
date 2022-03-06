@@ -1,0 +1,309 @@
+<div class="main-container">
+
+    <div class="welcome-container">
+        <p style="text-align: center;font-size:large;font-weight: 100;margin-top: 10px;">
+
+            Details for Building ID : 10023
+        </p>
+    </div>
+
+
+    <div class="redbuilding-container">
+        <div style="display: flex;width: 100%;">
+            <div
+                style="margin:0.6rem;width: 40%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <p>
+                        Building ID : 10023
+                    </p>
+                    <p>
+                        Status: <span>ACTIVE</span>
+                    </p>
+                    <p>
+                        Activated on: <span> 12/03/2022</span>
+                    </p>
+                    <p>
+                        Total Red Flats: <span>1</span>
+                    </p>
+                </div>
+                <div style="display: flex;flex-direction: column;gap:2px">
+                    <button class="pry-btn" (click)="openRedFlatAddDialog()">Add RedFlat</button>
+
+                    <a href="http://www.google.com/maps/place/26.864894,89.38203" target="_blank">
+                        <button class="view-btn">View in Maps</button>
+                    </a>
+
+                    <button class="view-btn" (click)="backToDashboard()">HomePage</button>
+                </div>
+            </div>
+
+            <div style="width: 60%;height: 230px;" id="map">
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="redflats-container">
+        <p  class="title">Red Flats</p>
+        <div class="redflats-card-container">
+            <div class="redflat-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <p>
+                        Unit Name: <span>G01</span>
+                    </p>
+
+                   <div style="width:20%"> 
+                    <button class="pry-btn">
+                        Edit Flat
+                    </button>
+                   </div>
+                </div>
+                <p>
+                    Status: <span>Active</span>
+                </p>
+                <br>
+
+                <div class="redbuiling-card-sealdetails">
+                    <p style="width: 50%;">
+                        Seal DateTime: <span>09:10 AM @ 12/03/2022</span>
+                    </p>
+                    <p>
+                        Days Elapsed: <span style="font-weight: bold;">2 Days</span>
+                    </p>
+                </div>
+
+                <br>
+
+                <p>
+                    Name: <span>Nima Yoezer Tenzin</span>
+                </p>
+                <p>
+                    Contact: <span>1772874</span>
+                </p>
+                <p>
+                    CID: <span>10302000402</span>
+                </p>
+                <br>
+
+                <p style="word-break: break-all;">
+                    Remarks: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequatur voluptate maxime
+                    similique! Dolor et similique fugit placeat architecto labore culpa?
+                </p>
+                <br>
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items: flex-start;">
+                        <div>
+                            <p>Household Profile</p>
+                        </div>
+                        <div style="margin: 0;padding: 0;">
+                            <p (click)="addFamilyMember(1)" class="pry-btn">Add Member</p>
+                        </div>
+                    </div>
+                    <br>
+
+                    <table class="householdmember-table">
+                        <tr class="table-header">
+                            <td>Name</td>
+                            <td>Age</td>
+                            <td>Sex</td>
+                            <td>CoMorbid?</td>
+                        </tr>
+                        <tr>
+                            <td>Nima Yoezer Tenzin</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Kinley wangyel</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Dorji Om</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>Yes</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+            <div class="redflat-card">
+                <p>
+                    Unit Name: <span>G01</span>
+                </p>
+                <p>
+                    Status: <span>Active</span>
+                </p>
+                <br>
+
+                <div class="redbuiling-card-sealdetails">
+                    <p style="width: 50%;">
+                        Seal DateTime: <span>09:10 AM @ 12/03/2022</span>
+                    </p>
+                    <p>
+                        Days Elapsed: <span style="font-weight: bold;">2 Days</span>
+                    </p>
+                </div>
+
+                <br>
+
+                <p>
+                    Name: <span>Nima Yoezer Tenzin</span>
+                </p>
+                <p>
+                    Contact: <span>1772874</span>
+                </p>
+                <p>
+                    CID: <span>10302000402</span>
+                </p>
+                <br>
+
+                <p style="word-break: break-all;">
+                    Remarks: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequatur voluptate maxime
+                    similique! Dolor et similique fugit placeat architecto labore culpa?
+                </p>
+                <br>
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items: flex-start;">
+                        <div>
+                            <p>Household Profile</p>
+                        </div>
+                        <div style="margin: 0;padding: 0;">
+                            <p (click)="addFamilyMember(1)" class="pry-btn">Add Member</p>
+                        </div>
+                    </div>
+                    <br>
+
+                    <table class="householdmember-table">
+                        <tr class="table-header">
+                            <td>Name</td>
+                            <td>Age</td>
+                            <td>Sex</td>
+                            <td>CoMorbid?</td>
+                        </tr>
+                        <tr>
+                            <td>Nima Yoezer Tenzin</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Kinley wangyel</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Dorji Om</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>Yes</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="redflat-card">
+                <p>
+                    Unit Name: <span>G01</span>
+                </p>
+                <p>
+                    Status: <span>Active</span>
+                </p>
+                <br>
+
+                <div class="redbuiling-card-sealdetails">
+                    <p style="width: 50%;">
+                        Seal DateTime: <span>09:10 AM @ 12/03/2022</span>
+                    </p>
+                    <p>
+                        Days Elapsed: <span style="font-weight: bold;">2 Days</span>
+                    </p>
+                </div>
+
+                <br>
+
+                <p>
+                    Name: <span>Nima Yoezer Tenzin</span>
+                </p>
+                <p>
+                    Contact: <span>1772874</span>
+                </p>
+                <p>
+                    CID: <span>10302000402</span>
+                </p>
+                <br>
+
+                <p style="word-break: break-all;">
+                    Remarks: Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consequatur voluptate maxime
+                    similique! Dolor et similique fugit placeat architecto labore culpa?
+                </p>
+                <br>
+                <div>
+                    <div style="display:flex; justify-content:space-between; align-items: flex-start;">
+                        <div>
+                            <p>Household Profile</p>
+                        </div>
+                        <div style="margin: 0;padding: 0;">
+                            <p (click)="addFamilyMember(1)" class="button-secondary">Add Member</p>
+                        </div>
+                    </div>
+                    <br>
+
+                    <table class="householdmember-table">
+                        <tr class="table-header">
+                            <td>Name</td>
+                            <td>Age</td>
+                            <td>Sex</td>
+                            <td>CoMorbid?</td>
+                        </tr>
+                        <tr>
+                            <td>Nima Yoezer Tenzin</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Kinley wangyel</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>No</td>
+                        </tr>
+                        <tr>
+                            <td>Dorji Om</td>
+                            <td>
+                                25
+                            </td>
+                            <td>M</td>
+                            <td>Yes</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+.form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    height: max-content;
+    overflow-y: scroll;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1rem;
+    color: gray;
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 30px;
+    border: 0.5px solid black;
+    padding: 2px 15px 2px 15px;
+    background-size: 10px;
+    background-color: white;
+    width: 100%;
+    /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
+    border-radius: 3px;
+}
+
+.custom-select:focus {
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.2);
+    outline: none;
+}
+/* remove default arrow in IE */
+select::-ms-expand {
+    display:none;
+}
+
+
+
+
+.custom-input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 30px;
+    border: 0.5px solid black;
+    padding: 2px 15px 2px 15px;
+    background-size: 10px;
+    background-color: white;
+    /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
+    border-radius: 3px;
+}
+
+.submit-btn{
+    border: 0.5px solid black;
+    padding: 2px 15px 2px 15px;
+    background-size: 10px;
+    background-color: rgb(92, 88, 88); 
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 1rem;
+    color: rgb(218, 214, 214);
+    height: 30px;
+    border-radius: 3px;
+}
