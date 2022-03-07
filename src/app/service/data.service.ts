@@ -634,7 +634,7 @@ export class DataService {
   }
   deleteRedFlatMember(data){
     return this.http
-    .post<any>(`${this.API_URL}/red-member/delete`,data)
+    .post<any>(`${this.API_URL}/red-member/delete`,data,this.AuthenticatedHttpOtions)
     .pipe(
       catchError(this.handleError)
     ) 
@@ -666,6 +666,55 @@ export class DataService {
   getSubZOneDetails(subzoneID){
     return this.http
     .get<any>(`${this.API_URL}/zone/get-subzone-id/${subzoneID}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+
+
+  createNewSealHistory(data){
+    return this.http
+    .post<any>(`${this.API_URL}/seal/create/`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+  getSealHistoryByFlatId(flat_id){
+    return this.http
+    .get<any>(`${this.API_URL}/seal/get-all/${flat_id}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+
+  editSealHistory(data){
+    return this.http
+    .patch<any>(`${this.API_URL}/seal/update`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+  deleteSealHistory(data){
+    return this.http
+    .post<any>(`${this.API_URL}/seal/delete`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  //zonegojay View on Map
+
+  getRedBuildingGeojsonByZoneId(subzoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-zone/${subzoneId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+
+  getRedClusterGeojsonByZoneId(subzoneId){
+    return this.http
+    .get<any>(`https://zhichar-pling.ddnsfree.com/cdrs/api/shapefile/get-redcluster/zone/${subzoneId}`,this.AuthenticatedHttpOtions)
     .pipe(
       catchError(this.handleError)
     )  

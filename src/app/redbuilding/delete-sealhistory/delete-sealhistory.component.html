@@ -1,0 +1,24 @@
+<div class="form-container">
+    
+    Delete Seal History?
+
+
+    <p>
+        Unseal Date: {{sealHistory.date  }}
+    </p>
+
+    <p>
+        Time Opened: {{ sealHistory.open_time }}
+    </p>
+    <p>
+        Time Closed: {{ sealHistory.close_time  }}
+    </p>
+    <p>
+        Remarks: {{sealHistory.remarks}}
+    </p>
+   
+   
+    <button (click)="deleteSealHistory()" type="submit" class="submit-btn">
+      Confirm Delete 
+    </button>
+</div>

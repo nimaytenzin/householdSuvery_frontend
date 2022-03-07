@@ -1,0 +1,21 @@
+<div class="form-container">
+    <span>
+        Unseal Date
+    </span>
+    <input type="date"  [(ngModel)]="newSealHistory.date" class="custom-input">
+    
+    <span>
+       Time Opened
+    </span>
+    <input type="time"  [(ngModel)]="newSealHistory.open_time" class="custom-input" placeholder="Select Time"> 
+    
+    <span>Time Closed</span>
+    <input type="time"  [(ngModel)]="newSealHistory.close_time" class="custom-input" placeholder="Select Time">
+   
+    <textarea type="text" placeholder="Reason in Brief"  [(ngModel)]="newSealHistory.reason" class="custom-input"></textarea> 
+    
+   
+    <button (click)="addNewSealHistory()" type="submit" class="submit-btn">
+       Unseal Flat
+    </button>
+</div>

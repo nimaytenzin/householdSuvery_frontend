@@ -1,8 +1,29 @@
 <div class="map" id="map">
-    <div class="map-buttons" id="map-button">
+  <div class="overlay-container" id="overlay-widget">
+    <div class="map-buttons" >
         
-        <div >
-            Builing ID: 19213
+        <div style="text-align: justify;padding: 5px; font-size: .8rem;font-weight: 400;color: rgb(26, 24, 24);" >
+           
+           <p>
+               Building ID:  {{selectedRedBuilding.structure_id  }}
+           </p>
+
+           <p>
+               Remarks:  {{selectedRedBuilding.remarks  }}
+           </p>
+            <p>
+                Status: {{selectedRedBuilding.status  }}
+            </p>
+            
         </div>
+
     </div>
+
+    <div class="oks">
+        <button class="pry-btn" (click)="viewDetails()" >
+            View Details
+        </button>
+    </div>
+   
+  </div>
 </div>

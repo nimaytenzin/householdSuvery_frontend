@@ -9,6 +9,9 @@ import { EditRedmemberComponent } from '../edit-redmember/edit-redmember.compone
 import { DeleteRedmemberComponent } from '../delete-redmember/delete-redmember.component';
 import { EditRedflatComponent } from '../edit-redflat/edit-redflat.component';
 import { UnsealRedflatComponent } from '../unseal-redflat/unseal-redflat.component';
+import { AddSealhistoryComponent } from '../add-sealhistory/add-sealhistory.component';
+import { EditSealhistoryComponent } from '../edit-sealhistory/edit-sealhistory.component';
+import { DeleteSealhistoryComponent } from '../delete-sealhistory/delete-sealhistory.component';
 
 @Component({
   selector: 'app-redflats',
@@ -25,11 +28,13 @@ export class RedflatsComponent implements OnInit {
   structureId: number;
   redBuildingId: number;
 
+
   buildingData: any = {
     contactOwner: "..fetching",
     nameOfBuildingOwner: "..fetching",
     status: "..fetching",
-    cordonDate: "..fetching"
+    cordonDate: "..fetching",
+    remarks: "..fetching"
   }
   googleMapLink: string;
   redFlats = [];
@@ -59,14 +64,20 @@ export class RedflatsComponent implements OnInit {
       layers: [this.sat],
       zoomControl: false
     });
-    
-    this.dataService.getRedbuildingsDetailsById(this.redBuildingId).subscribe(res=>{
-      this.buildingData.status = res.data.status;
-      this.buildingData.cordonDate = this.getReadableDate(res.data.createdAt)
-    })
+
+
 
     this.dataService.getBuildingInfo(this.structureId).subscribe(res => {
-      this.buildingData = res.data;
+      this.buildingData.contactOwner = res.data.contactOwner;
+      this.buildingData.nameOfBuildingOwner = res.data.nameOfBuildingOwner
+      this.dataService.getRedbuildingsDetailsById(this.redBuildingId).subscribe(res => {
+        this.buildingData.status = res.data.status;
+        console.log("RED BUILGIND ETIALS", res)
+        console.log(this.buildingData)
+        this.buildingData.cordonDate = this.getReadableDate(res.data.createdAt);
+        this.buildingData.remarks = res.data.remarks
+        console.log(this.buildingData)
+      })
       this.dataService.getStructureDetailsByStructureId(this.structureId).subscribe(resp => {
         let coords = L.latLng(resp.data.lat, resp.data.lng)
         this.googleMapLink = `http://www.google.com/maps/place/${resp.data.lat},${resp.data.lng}`
@@ -78,17 +89,30 @@ export class RedflatsComponent implements OnInit {
         this.dataService.getRedflatsByRedbuildingId(this.redBuildingId).subscribe(response => {
           response.data.forEach(dat => {
             let data = dat
-            console.log(dat)
+            data.daysElapsed = this.getDaysElapsed(dat.first_seal_date);
+            data.first_seal_date = this.getReadableDate(dat.first_seal_date);
+            data.first_seal_time = this.convert24Hrsto12hrs(dat.first_seal_time);
+            data.final_unseal_date = this.getReadableDate(data.final_unseal_date);
             this.dataService.getRedFamilyMembersByFlatId(dat.id).subscribe(respo => {
               data.familyMembers = respo.data;
-             
-             
             })
+            this.dataService.getSealHistoryByFlatId(dat.id).subscribe(e => {
+              data.sealHistory = e.data;
+              data.sealHistory.forEach(hist => {
+                hist.date = this.getReadableDate(hist.date);
+                hist.open_time = this.convert24Hrsto12hrs(hist.open_time);
+                hist.close_time = this.convert24Hrsto12hrs(hist.close_time);
+              })
+
+              console.log(data.sealHistory)
+
+            })
+
             this.redFlats.push(data)
           })
         })
         this.dataLoaded = true
-        
+
       })
 
 
@@ -98,45 +122,60 @@ export class RedflatsComponent implements OnInit {
 
   }
 
- 
+
 
   openRedFlatAddDialog() {
     this.dialog.open(AddRedflatDialogComponent, {
       data: Number(this.redBuildingId)
-    }).afterClosed().subscribe(res=>{
-      if(res.success === true){
+    }).afterClosed().subscribe(res => {
+      if (res.success === true) {
         console.log("UPdate Success refresh data")
 
         this.refreshFlatsData()
-      }else{
+      } else {
         console.log("Update Failed")
       }
     })
   }
 
-  refreshFlatsData(){
-    this.redFlats=[];
+  refreshFlatsData() {
+    this.redFlats = [];
     this.dataService.getRedflatsByRedbuildingId(this.redBuildingId).subscribe(response => {
       response.data.forEach(dat => {
         let data = dat
+        data.daysElapsed = this.getDaysElapsed(dat.first_seal_date);
+        data.first_seal_date = this.getReadableDate(dat.first_seal_date);
+        data.first_seal_time = this.convert24Hrsto12hrs(dat.first_seal_time);
+        data.final_unseal_date = this.getReadableDate(data.final_unseal_date);
         this.dataService.getRedFamilyMembersByFlatId(dat.id).subscribe(respo => {
           data.familyMembers = respo.data;
-          console.log("ID", dat.id, respo)
         })
+        this.dataService.getSealHistoryByFlatId(dat.id).subscribe(e => {
+          data.sealHistory = e.data;
+          data.sealHistory.forEach(hist => {
+            hist.date = this.getReadableDate(hist.date);
+            hist.open_time = this.convert24Hrsto12hrs(hist.open_time);
+            hist.close_time = this.convert24Hrsto12hrs(hist.close_time);
+          })
+
+          console.log(data.sealHistory)
+
+        })
+
         this.redFlats.push(data)
       })
-    }) 
+    })
   }
 
   addFamilyMember(flat_id) {
     console.log(flat_id)
     this.dialog.open(AddFlatmembersComponent, {
       data: Number(flat_id)
-    }).afterClosed().subscribe(res=>{
-      if(res.success === true){
+    }).afterClosed().subscribe(res => {
+      if (res.success === true) {
         console.log("UPdate Success refresh data")
         this.refreshFlatsData()
-      }else{
+      } else {
         console.log("Update Failed")
       }
     })
@@ -147,7 +186,7 @@ export class RedflatsComponent implements OnInit {
   }
 
   getDaysElapsed(dateString) {
-
+    console.log("GEt DAYS ELAPSED CALLED")
     var dateSealed = new Date(dateString);
     var Difference_In_Time = this.today.getTime() - dateSealed.getTime();
 
@@ -156,17 +195,17 @@ export class RedflatsComponent implements OnInit {
     return Math.floor(Difference_In_Days);
   }
 
-  editRedMember(member){
-    this.dialog.open(EditRedmemberComponent,{
-      data:member
+  editRedMember(member) {
+    this.dialog.open(EditRedmemberComponent, {
+      data: member
     }).afterClosed().subscribe(
-      res =>{
-        if(res){
-          if(res.success === true){
+      res => {
+        if (res) {
+          if (res.success === true) {
             console.log("UPdate Success refresh data")
-  
+
             this.refreshFlatsData()
-          }else{
+          } else {
             console.log("Update Failed")
           }
         }
@@ -174,55 +213,56 @@ export class RedflatsComponent implements OnInit {
     )
   }
 
-  deleteRedMember(member){
-    this.dialog.open(DeleteRedmemberComponent,{
-      data:member
+  deleteRedMember(member) {
+    this.dialog.open(DeleteRedmemberComponent, {
+      data: member
     }).afterClosed().subscribe(
-      res =>{
-        if(res.success === true){
+      res => {
+        if (res.success === true) {
           console.log("UPdate Success refresh data")
 
           this.refreshFlatsData()
-        }else{
+        } else {
           console.log("Update Failed")
         }
       }
     )
   }
 
-  editRedFlat(redFlat){
-    this.dialog.open(EditRedflatComponent,{
-      data:redFlat
+  editRedFlat(redFlat) {
+    this.dialog.open(EditRedflatComponent, {
+      data: redFlat
     }).afterClosed().subscribe(
-      res =>{
-        if(res.success === true){
+      res => {
+        if (res.success === true) {
           console.log("UPdate Success refresh data")
 
           this.refreshFlatsData()
-        }else{
+        } else {
           console.log("Update Failed")
         }
       }
     )
   }
-  unsealRedFlat(redFlat){
-    this.dialog.open(UnsealRedflatComponent,{
-      data:redFlat
+  unsealRedFlat(redFlat) {
+    this.dialog.open(UnsealRedflatComponent, {
+      data: redFlat
     }).afterClosed().subscribe(
-      res =>{
-        if(res.success === true){
+      res => {
+        if (res.success === true) {
           console.log("Update Success refresh data")
 
           this.refreshFlatsData()
-        }else{
+        } else {
           console.log("Update Failed")
         }
       }
     )
-  
+
   }
 
-  getReadableDate(date){
+  getReadableDate(date) {
+    console.log("READABLE DATE CALLED")
     return new Date(date).toDateString()
   }
 
@@ -230,11 +270,56 @@ export class RedflatsComponent implements OnInit {
     let ts = time24;
     let H = +ts.substr(0, 2);
     let h = String((H % 12)) || 12;
-    h = (h < 10)?("0"+h):h;  // leading 0 at the left for 1 digit hours
+    h = (h < 10) ? ("0" + h) : h;  // leading 0 at the left for 1 digit hours
     var ampm = H < 12 ? " AM" : " PM";
     ts = h + ts.substr(2, 3) + ampm;
     return ts;
   };
 
+  addNewSealHistory(flat_id: number) {
+    this.dialog.open(AddSealhistoryComponent, {
+      data: flat_id
+    }).afterClosed().subscribe(
+      res => {
+        if (res.success === true) {
+          console.log("Update Success refresh data")
+          this.refreshFlatsData()
+        } else {
+          console.log("Update Failed")
+        }
+      }
+    )
+  }
+
+  editSealHistory(sealhistory) {
+    this.dialog.open(EditSealhistoryComponent, {
+      data: sealhistory
+    }).afterClosed().subscribe(
+      res => {
+        if (res.success === true) {
+          console.log("UPdate Success refresh data")
+
+          this.refreshFlatsData()
+        } else {
+          console.log("Update Failed")
+        }
+      }
+    )
+  }
+  deleteSealHistory(sealHistory) {
+    this.dialog.open(DeleteSealhistoryComponent, {
+      data: sealHistory
+    }).afterClosed().subscribe(
+      res => {
+        if (res.success === true) {
+          console.log("UPdate Success refresh data")
+
+          this.refreshFlatsData()
+        } else {
+          console.log("Update Failed")
+        }
+      }
+    )
+  }
 
 }

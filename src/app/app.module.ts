@@ -67,6 +67,9 @@ import { EditRedmemberComponent } from './redbuilding/edit-redmember/edit-redmem
 import { DeleteRedmemberComponent } from './redbuilding/delete-redmember/delete-redmember.component';
 import { EditRedflatComponent } from './redbuilding/edit-redflat/edit-redflat.component';
 import { UnsealRedflatComponent } from './redbuilding/unseal-redflat/unseal-redflat.component';
+import { AddSealhistoryComponent } from './redbuilding/add-sealhistory/add-sealhistory.component';
+import { EditSealhistoryComponent } from './redbuilding/edit-sealhistory/edit-sealhistory.component';
+import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/delete-sealhistory.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +113,10 @@ import { UnsealRedflatComponent } from './redbuilding/unseal-redflat/unseal-redf
     EditRedmemberComponent,
     DeleteRedmemberComponent,
     EditRedflatComponent,
-    UnsealRedflatComponent
+    UnsealRedflatComponent,
+    AddSealhistoryComponent,
+    EditSealhistoryComponent,
+    DeleteSealhistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -150,7 +156,8 @@ import { UnsealRedflatComponent } from './redbuilding/unseal-redflat/unseal-redf
     MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,
     AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,
     AddFlatmembersComponent, EditRedmemberComponent,DeleteRedmemberComponent,
-    EditRedflatComponent,UnsealRedflatComponent
+    EditRedflatComponent,UnsealRedflatComponent,AddSealhistoryComponent,
+    EditSealhistoryComponent,DeleteSealhistoryComponent
   ]
 })
 export class AppModule { }
