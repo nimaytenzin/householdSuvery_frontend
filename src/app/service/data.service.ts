@@ -662,4 +662,13 @@ export class DataService {
       catchError(this.handleError)
     )  
   }
+
+  getSubZOneDetails(subzoneID){
+    return this.http
+    .get<any>(`${this.API_URL}/zone/get-subzone-id/${subzoneID}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+  
 }

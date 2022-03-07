@@ -25,7 +25,7 @@ export class ZonegojayComponent implements OnInit {
   redBuildings =[];
   inProgressRedbuildings=[];
   redClusters=[];
-  subZoneName="Taba Lam Wog"
+  subZoneName=""
 
 
   constructor(
@@ -45,6 +45,9 @@ export class ZonegojayComponent implements OnInit {
       this.totalActiveRedFlats = res.data.activeFlats
     })
  
+    this.dataservice.getSubZOneDetails(this.subZoneId).subscribe(res=>{
+      this.subZoneName = res.data.name + " zone"
+    })
     this.dataservice.getRedbuildingsInSubZone(this.subZoneId).subscribe(res =>{
       console.log(res)
       res.data.forEach(building=>{
