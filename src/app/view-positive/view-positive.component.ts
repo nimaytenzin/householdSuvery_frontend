@@ -108,6 +108,51 @@ export class ViewPositiveComponent implements OnInit {
     showTicksValues: true
   };
 
+
+  redFlats: any;
+  redHouseholdData: {
+    "red_building_id": number,
+    "unitName": string,
+    "status": string,
+    "hh_name": string
+    "cid": string
+    "contact": string,
+    "first_seal_date": string,
+    "first_seal_time": string,
+    "final_unseal_date": string,
+    "remarks": string,
+    "sealer_id": number,
+    "createdAt": string,
+    "updatedAt": string,
+    "seals":{
+      "date": string,
+      "open_time": string,
+      "close_time": string,
+      "reason": string,
+      "operator": {
+          "username": string,
+          "cid": number
+      }
+    },
+    "members": {
+      "id": number,
+      "flat_id": number,
+      "name": string,
+      "age": string,
+      "gender": string,
+      "isComorbid": boolean,
+      "createdAt": string,
+      "updatedAt": string
+    },
+    "sealer":{
+      "id": number,
+      "username": string,
+      "cid": number
+    }
+  }
+
+
+  
   unitsData: any;
   housholdsData: {
     unitId: number,
@@ -181,6 +226,9 @@ export class ViewPositiveComponent implements OnInit {
   buildingId: number;
   imgs: any;
   residentTableShow: boolean = false;
+  redFlatDetailShow: boolean = false;
+  redFlatTableShow: boolean = false;
+
   isAddAllowed = false;
   buildings: any;
   building: any;
@@ -265,6 +313,7 @@ export class ViewPositiveComponent implements OnInit {
   dzongkhag: any;
   totalCases: number;
   totalRedBuildings: number;
+  totalRedFlats: number;
   selectedDzongkhagId: number;
   searchDzongkhagId: number;
 
@@ -322,6 +371,7 @@ export class ViewPositiveComponent implements OnInit {
     this.setViewValue = true;
     this.totalCases = 0;
     this.totalRedBuildings = 0
+    this.totalRedFlats= 0
   }
 
   ngOnInit() {
@@ -530,6 +580,9 @@ export class ViewPositiveComponent implements OnInit {
       this.totalCases = res.data.numCases;
       this.totalRedBuildings = res.data.activeBuilding
     })
+    this.dataService.getRedflatStats().subscribe(res=>{
+      this.totalRedFlats = res.data.activeFlats
+    })
   }
 
   transformChiwogName(name) {
@@ -728,6 +781,12 @@ export class ViewPositiveComponent implements OnInit {
                   this.unitsData = res.data
                   this.length = res.data.length
                 })
+
+              })
+              this.dataService.getRedflats(feature.properties.id).subscribe(res=>{
+                this.redFlatTableShow = true
+                this.redFlatDetailShow= false 
+                this.redFlats = res.data
               })
             });
 
@@ -814,6 +873,21 @@ export class ViewPositiveComponent implements OnInit {
 
   parseDate(date) {
     return new Date(date).toLocaleDateString()
+  }
+
+  showRedflatDetail(flatId){
+    this.snackBar.open('Scroll down', '', {
+      duration: 3000,
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+    this.dataService.getRedflatDetail(flatId).subscribe(res=>{
+      if(res.data){
+        this.redFlatDetailShow = true;
+        this.redHouseholdData = res.data
+      }
+    })
+
   }
 
   showResident(unitid) {
