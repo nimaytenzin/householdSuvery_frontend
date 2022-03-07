@@ -23,6 +23,7 @@ import { OutbreakPhasingComponent } from './outbreak-phasing/outbreak-phasing.co
 import { OutbreakDzongkhagComponent } from './outbreak-dzongkhag/outbreak-dzongkhag.component';
 import { ZonegojayComponent } from './redbuilding/zonegojay/zonegojay.component';
 import { RedflatsComponent } from './redbuilding/redflats/redflats.component';
+import { ZonegojayMapComponent } from './redbuilding/zonegojay-map/zonegojay-map.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -47,8 +48,8 @@ const routes: Routes = [
   {path: 'outbreak-phasing', component: OutbreakPhasingComponent, canActivate: [RouteGuard]},
   {path: 'outbreak-dzo/:dzoId', component: OutbreakDzongkhagComponent, canActivate: [RouteGuard]},
   {path: 'redbuilding/zonegojay', component: ZonegojayComponent, canActivate: [RouteGuard]},
-  {path: 'redbuilding/redflats/:buildingId', component: RedflatsComponent, canActivate: [RouteGuard]},
- 
+  {path: 'redbuilding/redflats/:structure_id/:redbuildingId', component: RedflatsComponent, canActivate: [RouteGuard]},
+  {path: 'redbuilding/map', component: ZonegojayMapComponent, canActivate: [RouteGuard]},
   {path: '**', component: ErrorComponent},
 
   

@@ -1,0 +1,22 @@
+<div class="form-container">
+   Delete Member?
+     
+   <div>
+       <p>
+           Name: {{ householdmember.name }}
+       </p>
+       <p>
+           Age: {{householdmember.age  }}
+       </p>
+       <p>
+        Age: {{householdmember.gender  }}
+    </p>
+    <p>
+        Is Co-Morbid?: {{householdmember.isComorbid? "Yes" :"No"  }}
+    </p>
+   </div>
+    
+     <button (click)="deleteMember()" type="submit" class="submit-btn">
+         Delete Member
+     </button>
+ </div>

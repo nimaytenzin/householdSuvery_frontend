@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: max-content;
+    width: 100%;
     height: max-content;
     overflow-y: scroll;
     font-family: "Source Sans Pro", sans-serif;
@@ -34,11 +34,7 @@ select::-ms-expand {
 }
 
 
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
+
 
 .custom-input{
     -webkit-appearance: none;
@@ -52,7 +48,6 @@ select::-ms-expand {
     /* transition: border-color .1s ease-in-out,box-shadow .1s ease-in-out; */
     border-radius: 3px;
 }
-
 
 .submit-btn{
     border: 0.5px solid black;

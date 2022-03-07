@@ -16,7 +16,7 @@
     color: rgb(105, 103, 103);
     font-weight: lighter;
     font-size: small;
-    height: 100vmax;
+    height: max-content
 }
 .welcome-container{
     display: flex;
@@ -60,7 +60,6 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 0 12px 0 12px;
     gap: 0.5rem;
     color: #444343;
     height: 60vh;
@@ -70,8 +69,10 @@
 .redflats-container .redflat-card{
     border-radius: 10px;
     background-color: white;
-    padding: 10px;
-    border: .1px solid gray;
+    padding: 5px;
+    border-bottom: 0.5px dashed rgb(49, 46, 46);
+    border-top: 0.5px dashed rgb(49, 46, 46);
+    margin-bottom: 2rem;
 }
 
 .redflats-container .redflat-card .redbuiling-card-sealdetails{
@@ -112,9 +113,9 @@
     padding: 2px;
     background-size: 10px;
     background-color: rgb(255, 255, 255); 
-  
+    cursor: pointer;
     border-radius: 3px;
-    word-break: break-all;
+    width: max-content;
     font-family: "Source Sans Pro", sans-serif;
     color:#ff6764;
     font-weight: lighter;
@@ -127,7 +128,7 @@
     padding: 2px;
     background-size: 10px;
     background-color: rgb(255, 255, 255); 
-  
+    cursor: pointer;
     border-radius: 3px;
     word-break: break-all;
     font-family: "Source Sans Pro", sans-serif;
@@ -136,6 +137,22 @@
     font-size: small;
     width: 100%;
     text-align: left;
+}
+
+.view-btn .pry-btn :hover{
+    background-color: #444343;
+    color: #ff6764;
+}
+
+.action-btn{
+    width: 20px;
+    height: 20px;
+    background-color: antiquewhite;
+    border-radius: 100%;
+    gap:4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .householdmember-table{

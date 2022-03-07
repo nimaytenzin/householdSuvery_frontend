@@ -542,4 +542,99 @@ export class DataService {
       catchError(this.handleError)
     ) 
   }
+  
+  //RedFlats
+  getRedbuildingsInSubZone(subZoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-zone-json/${subZoneId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  getRedbuildingsDetailsById(redBuilingId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-one/${redBuilingId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+
+  getStructureDetailsByStructureId(structure_id){
+    return this.http
+    .get<any>(`${this.API_URL}/structure/get/${structure_id}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  createNewRedFlat(data){
+    return this.http
+    .post<any>(`${this.API_URL}/red-flat/create`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  editRedFlat(data){
+    return this.http
+    .patch<any>(`${this.API_URL}/red-flat/update`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  getRedflatsByRedbuildingId(redbuildingId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-flat/get-all/${redbuildingId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  createRedFlatMember(data){
+    return this.http
+    .post<any>(`${this.API_URL}/red-member/create/`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  editRedFlatMember(data){
+    return this.http
+    .patch<any>(`${this.API_URL}/red-member/update`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+  deleteRedFlatMember(data){
+    return this.http
+    .post<any>(`${this.API_URL}/red-member/delete`,data)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  getRedFamilyMembersByFlatId(flat_id){
+    return this.http
+    .get<any>(`${this.API_URL}/red-member/get-all/${flat_id}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
+
+  getRedBuildingStatsByZone(zoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-zone-stat/${zoneId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
+  getRedFlatStatsByZone(zoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-flat/get-zone-stat/${zoneId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )  
+  }
 }

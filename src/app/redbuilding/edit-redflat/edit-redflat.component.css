@@ -1,3 +1,9 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 .form-container{
     display: flex;
     flex-direction: column;
@@ -33,12 +39,6 @@ select::-ms-expand {
     display:none;
 }
 
-
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
 
 .custom-input{
     -webkit-appearance: none;

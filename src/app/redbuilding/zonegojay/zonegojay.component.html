@@ -1,9 +1,9 @@
 <div class="main-container">
     <div class="welcome-container">
-        <p style="text-align: center;font-size:large;font-weight: 100;">
-            Welcome to Taba Lam Wog Zone
+        <p style="text-align: center;font-size:large;font-weight: 100;margin-top: 1rem;">
+            འབྱོན་པ ལེགས་སོ།། | {{ subZoneName  }}
             <br>
-            འབྱོན་པ ལེགས་སོ།།
+            
         </p>
 
     </div>
@@ -14,7 +14,7 @@
                     d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z"
                     clip-rule="evenodd" />
             </svg>
-            12 Red buildings
+            {{totalActiveRedBuildings  }} Active Red buildings
         </div>
         <div class="statistics-card">
             <svg xmlns="http://www.w3.org/2000/svg" class="statistics-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -23,7 +23,7 @@
                     d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
                     clip-rule="evenodd" />
             </svg>
-            12 Red Flats
+           {{ totalActiveRedFlats }} Active Red Flats
         </div>
         <div class="statistics-card">
             <svg xmlns="http://www.w3.org/2000/svg" class="statistics-icon" viewBox="0 0 20 20" fill="currentColor">
@@ -34,179 +34,43 @@
             12 Red Clusters
         </div>
         <div style="display: flex; justify-content: center;margin: 10px;">
-            <button class="submit-btn">View on Map</button>
+            <button class="submit-btn" (click)="viewMap()">View on Map</button>
         </div>
     </div>
-  
-    <div class="newredbuilding-container">     
-        <p  class="title">New Red Buildings</p>
-        <div class="newredbuilding-cards-container">
-            <div class="newredbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="newredbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="newredbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="newredbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-  
-        </div>
-       
-    </div>
+ 
     
     <div class="redbuilding-container">     
         <p  class="title"> Red Buildings</p>
         <div class="redbuilding-cards-container">
-            <div class="redbuilding-card">
+            <div class="redbuilding-card" *ngFor="let redBuilding of redBuildings">
                 <div style="width: 70%;">
                     <p>
-                        Building ID: 2001
+                        Building ID: {{redBuilding.structure_id  }}
                     </p>
                     <p>
-                        Building Owner Details
+                      
                         <br>
-                        Name: Nima Yoezer Tenzin 
+                       Owner Name: {{redBuilding.ownerName  }}
                         <br>
-                        Contact: 1772873
+                       Owner Contact: {{redBuilding.ownerContact  }}
                     </p>
                 </div>
+
                 <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
+                    <button (click)="viewRedBuildingDetails(redBuilding.structure_id,redBuilding.id )" class="view-btn">
                         View Details
                     </button>
-                </div>
-            </div>
-            <div class="redbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
+                  
+                    <p  style="margin-top: .5rem;">
+                        Cordoned on <br> {{redBuilding.cordonDate  }}
                     </p>
                 </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="redbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-            <div class="redbuilding-card">
-                <div style="width: 70%;">
-                    <p>
-                        Building ID: 2001
-                    </p>
-                    <p>
-                        Building Owner Details
-                        <br>
-                        Name: Nima Yoezer Tenzin 
-                        <br>
-                        Contact: 1772873
-                    </p>
-                </div>
-                <div style=" height:100%;width: 30%; height: 100%;">
-                    <button (click)="viewRedBuildingDetails(12)" class="view-btn">
-                        View Details
-                    </button>
-                </div>
-            </div>
-  
+            </div>  
         </div>
        
     </div>
     
-    <div class="newredbuilding-container">     
+    <!-- <div class="newredbuilding-container">     
         <p  class="title">New Red Buildings</p>
         <div class="newredbuilding-cards-container">
             <div class="newredbuilding-card">
@@ -288,6 +152,6 @@
   
         </div>
        
-    </div>
+    </div> -->
    
 </div>

@@ -1,12 +1,19 @@
+
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
 .form-container{
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
     width: max-content;
     height: max-content;
     overflow-y: scroll;
     font-family: "Source Sans Pro", sans-serif;
-    font-size: 1rem;
     color: gray;
 }
 
@@ -16,7 +23,7 @@
     appearance: none;
     height: 30px;
     border: 0.5px solid black;
-    padding: 2px 15px 2px 15px;
+    padding: 2px 2px 2px 2px;
     background-size: 10px;
     background-color: white;
     width: 100%;
@@ -34,17 +41,12 @@ select::-ms-expand {
 }
 
 
-*{
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
-
 .custom-input{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     height: 30px;
+    width: 100%;
     border: 0.5px solid black;
     padding: 2px 15px 2px 15px;
     background-size: 10px;
@@ -64,4 +66,5 @@ select::-ms-expand {
     color: rgb(218, 214, 214);
     height: 30px;
     border-radius: 3px;
+    cursor: pointer;
 }

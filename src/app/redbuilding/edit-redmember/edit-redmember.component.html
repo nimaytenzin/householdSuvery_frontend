@@ -1,0 +1,18 @@
+<div class="form-container">
+    Edit Family Member
+     <input type="text" placeholder="Name"  [(ngModel)]="householdmember.name" class="custom-input">
+     <select [(ngModel)]="householdmember.gender" required class="custom-select">
+         <option value="M" >Male</option>
+         <option value="F">Female</option> 
+     </select>
+     <input type="text" placeholder="Age"  [(ngModel)]="householdmember.age" class="custom-input">
+     Is Co-Morbid?
+     <select [(ngModel)]="householdmember.isComorbid" required class="custom-select">
+         <option value="true" >Yes</option>
+         <option value="false">No</option> 
+     </select>
+    
+     <button (click)="editFamilyMember()" type="submit" class="submit-btn">
+         Add Family Member
+     </button>
+ </div>

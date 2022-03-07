@@ -57,6 +57,20 @@ export class LoginComponent implements OnInit {
         sessionStorage.setItem('userId', response.data.id);
         sessionStorage.setItem('isadmin',user.isadmin);
         localStorage.setItem('loginId', loginId);
+        console.log("Token Decode",user)
+
+        if(user.isadmin === "RED_GOJAY"){
+          if(sessionStorage.getItem("subZoneId")){
+            sessionStorage.removeItem("subZoneId")
+          }
+          sessionStorage.setItem("subZoneId",user.scope);
+
+          this.router.navigate(['redbuilding/zonegojay'])
+        }else{
+          let navRoute = this.routerService.getRoleRoute(user.isadmin)
+          this.router.navigate([navRoute]);
+          
+        }
 
         // if(user.isadmin === "TRUE"){
         //   this.router.navigate(['admin']);
@@ -67,9 +81,8 @@ export class LoginComponent implements OnInit {
         // }else{
         //   this.router.navigate(['selectzone']);
         // }
-        let navRoute = this.routerService.getRoleRoute(user.isadmin)
-        this.router.navigate([navRoute]);
-        
+
+       
         this.snackBar.open('Welcome ' + response.data.username, '', {
           duration: 5000,
           verticalPosition: 'bottom',

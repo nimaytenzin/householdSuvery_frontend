@@ -63,6 +63,10 @@ import { ZonegojayMapComponent } from './redbuilding/zonegojay-map/zonegojay-map
 import { AddRedflatDialogComponent } from './redbuilding/add-redflat-dialog/add-redflat-dialog.component';
 import { RedflatsComponent } from './redbuilding/redflats/redflats.component';
 import { AddFlatmembersComponent } from './redbuilding/add-flatmembers/add-flatmembers.component';
+import { EditRedmemberComponent } from './redbuilding/edit-redmember/edit-redmember.component';
+import { DeleteRedmemberComponent } from './redbuilding/delete-redmember/delete-redmember.component';
+import { EditRedflatComponent } from './redbuilding/edit-redflat/edit-redflat.component';
+import { UnsealRedflatComponent } from './redbuilding/unseal-redflat/unseal-redflat.component';
 
 @NgModule({
   declarations: [
@@ -102,7 +106,11 @@ import { AddFlatmembersComponent } from './redbuilding/add-flatmembers/add-flatm
     ZonegojayMapComponent,
     AddRedflatDialogComponent,
     RedflatsComponent,
-    AddFlatmembersComponent
+    AddFlatmembersComponent,
+    EditRedmemberComponent,
+    DeleteRedmemberComponent,
+    EditRedflatComponent,
+    UnsealRedflatComponent
   ],
   imports: [
     BrowserModule,
@@ -138,6 +146,11 @@ import { AddFlatmembersComponent } from './redbuilding/add-flatmembers/add-flatm
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,AddFlatmembersComponent]
+  entryComponents: [ ConfirmDialogComponent, DialogBoxComponent,
+    MarkPositiveDialogComponent,EditPositiveDialogComponent,CreateRedBuildingDialogComponent,
+    AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,
+    AddFlatmembersComponent, EditRedmemberComponent,DeleteRedmemberComponent,
+    EditRedflatComponent,UnsealRedflatComponent
+  ]
 })
 export class AppModule { }
