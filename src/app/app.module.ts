@@ -71,6 +71,7 @@ import { AddSealhistoryComponent } from './redbuilding/add-sealhistory/add-sealh
 import { EditSealhistoryComponent } from './redbuilding/edit-sealhistory/edit-sealhistory.component';
 import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/delete-sealhistory.component';
 import { PublicHomeComponent } from './public/public-home/public-home.component';
+import { HomepageComponent } from './home/homepage/homepage.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { PublicHomeComponent } from './public/public-home/public-home.component'
     AddSealhistoryComponent,
     EditSealhistoryComponent,
     DeleteSealhistoryComponent,
-    PublicHomeComponent
+    PublicHomeComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,

@@ -719,5 +719,22 @@ export class DataService {
       catchError(this.handleError)
     )  
   }
+
+  //statistics Route
+
+  statsThimphuGetMegazoneRedflats(){
+    return this.http
+    .get<any>(`${this.API_URL}/red-flat/get-all-megazone-stat/`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )   
+  }
+  statsThimphuGetMegazoneRedBuilding(){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-all-megazone-stat/`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )   
+  }
   
 }

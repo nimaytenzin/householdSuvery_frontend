@@ -25,9 +25,10 @@ import { ZonegojayComponent } from './redbuilding/zonegojay/zonegojay.component'
 import { RedflatsComponent } from './redbuilding/redflats/redflats.component';
 import { ZonegojayMapComponent } from './redbuilding/zonegojay-map/zonegojay-map.component';
 import { PublicHomeComponent } from './public/public-home/public-home.component';
+import { HomepageComponent } from './home/homepage/homepage.component';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomepageComponent},
   {path: 'login', component: LoginComponent},
   {path: 'app-drawer', component: AppsDrawerComponent},
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},

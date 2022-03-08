@@ -1,0 +1,206 @@
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding:0;
+	font-family:sans-serif;
+	color: #E85A4F;
+}
+
+/* color scheme */
+*{
+	--light:#FFFFFF;
+	--darkgreen:#457B62;
+	--lightgreen: #E9E8DC;
+	--lightred:#E85A4F
+}
+
+.flex-row-center{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+}
+
+.main-container{
+	min-height: 100vh;
+	max-height: max-content;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.stats-container{
+	width: 50%;
+}
+
+.row-1{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 30px;
+	grid-auto-flow:column;
+	margin: 0.5rem 0;
+}
+
+
+.stat-card{
+	color: var(--light);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	padding: 20px;
+	background-color: var(--lightgreen);
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.stat-card .stats-card-title{
+	font-size: 30px;
+	font-weight: 300;
+	width: 200px;
+	color: #E85A4F;
+}
+
+.stat-card .stats-figure{
+	font-size: 50px;
+	position: relative;
+	margin: 1rem;
+}
+.stat-card .stats-figure span{
+	font-size: medium;
+	font-weight: lighter;
+	position: absolute;
+	left: 1px;
+	bottom: -15px;
+}
+
+
+.stat-card .stats-description{
+	font-size: smaller;
+	font-weight:lighter;
+	 margin: 5px;
+	 text-align:  justify;
+	 color: #8E8D89
+}
+.stat-minibarchart{
+	display: flex;
+	height: 40px;
+	align-items: flex-end;
+	justify-content: space-around;
+	border-left: 0.1px dashed var(--lightred);
+	border-bottom:  0.5px dashed var(--lightred);
+}
+
+.stats-bar{
+	width: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+}
+.stats-bar p{
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	background-color: var(--lightred);
+	border-radius: 100%;
+}
+
+
+.row-2{
+	display: grid;
+	grid-template-columns: 2fr 3fr;
+	margin: 2.5rem 0;
+	gap: 30px;
+	place-items: flex-end;
+
+}
+
+.megazonemaps{
+	height: 950px;
+	width: 350px;
+}
+
+.megazonestats-container{
+	display: flex;
+	flex-direction: column;
+	background-color: var(--lightgreen);
+	padding: 10px;
+	font-size: larger;
+	border-radius: 10px;
+	align-items: center;
+	width: 80%;
+}
+
+
+#map{
+	background: transparent;
+}
+
+.megazonemap{
+	height: 450px;
+	width: 400px;
+}
+
+.megazone-statcard-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+
+.megazonestats-card{
+	padding: 40px;
+	border: 0.5px solid rgb(250, 234, 234) ;
+	font-size: large;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.megazonestats-card .megazone-name{
+	font-size: 30px;
+	padding-bottom: 10px;
+	border-bottom: 0.5px solid #acabaa;
+	margin-bottom: 10px;
+	font-weight: 300;
+}
+
+.megazonestats-card .megazone-stat{
+	font-size: 50px;
+	font-weight: 600;
+}
+
+.megazonestats-card .megazone-stat span{
+	font-size: 20px;
+	font-weight: 400;
+}
+
+
+::ng-deep .myCSSClass {
+    background: white;
+    color: black;
+	font-size: x-small;
+    border: none;
+  }
+
+
+  .footer{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+  }
+
+  .informations{
+	background-color: var(--lightgreen);
+	height: 300px; 
+	border-radius: 10px;
+	width: 100%;
+	font-size: medium;
+	font-weight: 200;
+	padding: 10px;
+
+  }
+

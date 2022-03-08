@@ -46,9 +46,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const loginId = this.loginForm.get('cid').value;
       const password = this.loginForm.get('password').value;
-      if(loginId === 'public'){
-        this.router.navigate(['public/home']); 
-       }
       this.authService.validateLogin(loginId, password).subscribe(response => {
         let token = response.data.token
         // let token = jwt_decode(response.data.token)
