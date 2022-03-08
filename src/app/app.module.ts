@@ -70,6 +70,7 @@ import { UnsealRedflatComponent } from './redbuilding/unseal-redflat/unseal-redf
 import { AddSealhistoryComponent } from './redbuilding/add-sealhistory/add-sealhistory.component';
 import { EditSealhistoryComponent } from './redbuilding/edit-sealhistory/edit-sealhistory.component';
 import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/delete-sealhistory.component';
+import { PublicHomeComponent } from './public/public-home/public-home.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/del
     UnsealRedflatComponent,
     AddSealhistoryComponent,
     EditSealhistoryComponent,
-    DeleteSealhistoryComponent
+    DeleteSealhistoryComponent,
+    PublicHomeComponent
   ],
   imports: [
     BrowserModule,

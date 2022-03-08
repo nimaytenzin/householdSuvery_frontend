@@ -3,7 +3,11 @@
     <div class="form-header">
       <img src="../../assets/app-logo.png"  class="main-lock-icon" alt="">
     </div>
+    
+
+
     <div class="form-body">
+      
       <form [formGroup]="loginForm">
         <mat-form-field class="justifier">
           <input matInput type="text" placeholder="CID Number" class="form-input" name="cid" formControlName="cid" [ngClass]="{ 'is-invalid': submitted && f.cid.errors }" required autofocus>
