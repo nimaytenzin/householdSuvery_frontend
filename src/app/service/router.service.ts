@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppsDrawerComponent } from '../apps-drawer/apps-drawer.component';
 import { SelectzoneComponent } from '../dialogs/selectzone/selectzone.component';
+import { PublicHomeComponent } from '../public/public-home/public-home.component';
 import { SelectComponent } from '../select/select.component';
 
 @Injectable({
@@ -23,6 +24,7 @@ export class RouterService {
     this.routeRules.set('ENUM',this.routes.get(SelectComponent.name))
     this.routeRules.set('COV_VIEW',this.routes.get(AppsDrawerComponent.name))
     this.routeRules.set('DEFAULT',this.routes.get(AppsDrawerComponent.name))
+    this.routeRules.set('PUBLIC', this.routes.get(PublicHomeComponent.name))
   }
   
   private fillRoutes(){
