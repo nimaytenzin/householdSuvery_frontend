@@ -576,6 +576,13 @@ export class DataService {
       catchError(this.handleError)
     ) 
   }
+  getInProgressRedbuildingsInSubZone(subZoneId){
+    return this.http
+    .get<any>(`${this.API_URL}/red-building/get-zone-json/${subZoneId}`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
 
   getRedbuildingsDetailsById(redBuilingId){
     return this.http
@@ -735,6 +742,14 @@ export class DataService {
     .pipe(
       catchError(this.handleError)
     )   
+  }
+
+  updateRedBuilding(data){
+    return this.http
+    .patch<any>(`${this.API_URL}/red-building/update`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
   }
   
 }

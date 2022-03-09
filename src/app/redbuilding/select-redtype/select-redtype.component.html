@@ -1,0 +1,12 @@
+<div class="form-container">  
+    <p>
+        Select Case Type
+    </p>
+    <select [(ngModel)]="redbuilding.type"  class="custom-select">
+        <option value="FLAT"> Red Flat </option>
+        <option value="BUILDING"> Red Building </option>
+    </select>
+    <button (click)="addRedbuildingType()" type="submit" class="submit-btn">
+        Change Case Type
+    </button>
+</div>

@@ -12,6 +12,8 @@ import { UnsealRedflatComponent } from '../unseal-redflat/unseal-redflat.compone
 import { AddSealhistoryComponent } from '../add-sealhistory/add-sealhistory.component';
 import { EditSealhistoryComponent } from '../edit-sealhistory/edit-sealhistory.component';
 import { DeleteSealhistoryComponent } from '../delete-sealhistory/delete-sealhistory.component';
+import { SelectRedtypeComponent } from '../select-redtype/select-redtype.component';
+import { EditRedtypeComponent } from '../edit-redtype/edit-redtype.component';
 
 @Component({
   selector: 'app-redflats',
@@ -34,7 +36,8 @@ export class RedflatsComponent implements OnInit {
     nameOfBuildingOwner: "..fetching",
     status: "..fetching",
     cordonDate: "..fetching",
-    remarks: "..fetching"
+    remarks: "..fetching",
+    type:"FLAT"
   }
   googleMapLink: string;
   redFlats = [];
@@ -52,10 +55,6 @@ export class RedflatsComponent implements OnInit {
 
     this.structureId = this.route.snapshot.params['structure_id'];
     this.redBuildingId = this.route.snapshot.params['redbuildingId'];
-
-
-    console.log(this.structureId, this.redBuildingId)
-
     this.map = L.map('map', {
       center: [27.4774143, 89.6265286],
       zoom: 15,
@@ -72,11 +71,10 @@ export class RedflatsComponent implements OnInit {
       this.buildingData.nameOfBuildingOwner = res.data.nameOfBuildingOwner
       this.dataService.getRedbuildingsDetailsById(this.redBuildingId).subscribe(res => {
         this.buildingData.status = res.data.status;
-        console.log("RED BUILGIND ETIALS", res)
-        console.log(this.buildingData)
         this.buildingData.cordonDate = this.getReadableDate(res.data.createdAt);
         this.buildingData.remarks = res.data.remarks
-        console.log(this.buildingData)
+        this.buildingData.type = res.data.type? res.data.type:null
+      
       })
       this.dataService.getStructureDetailsByStructureId(this.structureId).subscribe(resp => {
         let coords = L.latLng(resp.data.lat, resp.data.lng)
@@ -114,9 +112,6 @@ export class RedflatsComponent implements OnInit {
         this.dataLoaded = true
 
       })
-
-
-      console.log("RED FLATS WITH MEMBERS", this.redFlats)
     });
 
 
@@ -129,8 +124,6 @@ export class RedflatsComponent implements OnInit {
       data: Number(this.redBuildingId)
     }).afterClosed().subscribe(res => {
       if (res.success === true) {
-        console.log("UPdate Success refresh data")
-
         this.refreshFlatsData()
       } else {
         console.log("Update Failed")
@@ -157,23 +150,17 @@ export class RedflatsComponent implements OnInit {
             hist.open_time = this.convert24Hrsto12hrs(hist.open_time);
             hist.close_time = this.convert24Hrsto12hrs(hist.close_time);
           })
-
-          console.log(data.sealHistory)
-
         })
-
         this.redFlats.push(data)
       })
     })
   }
 
   addFamilyMember(flat_id) {
-    console.log(flat_id)
     this.dialog.open(AddFlatmembersComponent, {
       data: Number(flat_id)
     }).afterClosed().subscribe(res => {
       if (res.success === true) {
-        console.log("UPdate Success refresh data")
         this.refreshFlatsData()
       } else {
         console.log("Update Failed")
@@ -186,10 +173,8 @@ export class RedflatsComponent implements OnInit {
   }
 
   getDaysElapsed(dateString) {
-    console.log("GEt DAYS ELAPSED CALLED")
     var dateSealed = new Date(dateString);
     var Difference_In_Time = this.today.getTime() - dateSealed.getTime();
-
     // To calculate the no. of days between two dates
     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
     return Math.floor(Difference_In_Days);
@@ -202,8 +187,6 @@ export class RedflatsComponent implements OnInit {
       res => {
         if (res) {
           if (res.success === true) {
-            console.log("UPdate Success refresh data")
-
             this.refreshFlatsData()
           } else {
             console.log("Update Failed")
@@ -219,8 +202,6 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("UPdate Success refresh data")
-
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -235,8 +216,6 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("UPdate Success refresh data")
-
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -250,8 +229,6 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("Update Success refresh data")
-
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -262,7 +239,6 @@ export class RedflatsComponent implements OnInit {
   }
 
   getReadableDate(date) {
-    console.log("READABLE DATE CALLED")
     return new Date(date).toDateString()
   }
 
@@ -282,7 +258,6 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("Update Success refresh data")
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -297,8 +272,6 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("UPdate Success refresh data")
-
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -312,14 +285,34 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
-          console.log("UPdate Success refresh data")
-
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
         }
       }
     )
+  }
+  selectCaseType(){
+    this.dialog.open(SelectRedtypeComponent,{
+      data:this.redBuildingId
+    }).afterClosed().subscribe(
+      res => {
+        if (res.success === true) {
+          this.refreshFlatsData()
+        } else {
+          console.log("Update Failed")
+        }
+      }
+    )
+  }
+
+  editCaseType(){
+    this.dialog.open(EditRedtypeComponent,{
+      data:{
+        id:this.redBuildingId,
+        type:this.buildingData.type
+      }
+    })
   }
 
 }

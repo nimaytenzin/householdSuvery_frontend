@@ -63,7 +63,7 @@
 
 
 .newredbuilding-cards-container{
-    height: 25vh;
+    height:max-content; 
     overflow-y: scroll;
 }
 

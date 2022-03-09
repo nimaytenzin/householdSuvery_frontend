@@ -71,7 +71,6 @@ export class HomepageComponent implements OnInit {
           .then(
             data => {
             
-
               function getColor(val) {
                 return val > 90 ? '#B71D1C' :
                   val > 80 ? '#c41a3c' :

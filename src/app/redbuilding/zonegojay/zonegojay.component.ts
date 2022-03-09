@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/service/data.service';
-import { AddRedflatDialogComponent } from '../add-redflat-dialog/add-redflat-dialog.component';
 
 interface RedBuilding{
   id:number,
@@ -49,10 +47,8 @@ export class ZonegojayComponent implements OnInit {
       this.subZoneName = res.data.name + " zone"
     })
     this.dataservice.getRedbuildingsInSubZone(this.subZoneId).subscribe(res =>{
-      console.log(res)
       res.data.forEach(building=>{
         this.dataservice.getBuildingInfo(building.structure_id).subscribe(res=>{
-
           let data:RedBuilding = {
             id:building.id,
             structure_id : building.structure_id,
@@ -70,10 +66,22 @@ export class ZonegojayComponent implements OnInit {
       
       
     })
-
-    console.log("RED BUILDINGS", this.redBuildings)
-
-
+    this.dataservice.getInProgressRedbuildingsInSubZone(this.subZoneId).subscribe(res =>{
+      res.data.forEach(building=>{
+        this.dataservice.getBuildingInfo(building.structure_id).subscribe(res=>{
+          let data:RedBuilding = {
+            id:building.id,
+            structure_id : building.structure_id,
+            remarks:building.remarks,
+            status:building.status,
+            cordonDate:this.getReadableDate(building.createdAt),
+            ownerName:res.data.nameOfBuildingOwner,
+            ownerContact:res.data.contactOwner
+          }
+          this.inProgressRedbuildings.push(data)
+        })
+      })
+    })
   }
 
 

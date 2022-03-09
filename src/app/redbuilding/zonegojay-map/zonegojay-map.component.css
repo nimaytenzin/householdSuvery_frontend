@@ -41,7 +41,7 @@
 
 .pry-btn{
     margin: 1px;
-    border: 0.5px solid rgb(238, 164, 164);
+    border:none; 
     padding: 2px 15px 2px 15px;
     background-size: 10px;
     background-color: rgb(255, 255, 255); 

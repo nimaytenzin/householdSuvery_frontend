@@ -72,6 +72,8 @@ import { EditSealhistoryComponent } from './redbuilding/edit-sealhistory/edit-se
 import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/delete-sealhistory.component';
 import { PublicHomeComponent } from './public/public-home/public-home.component';
 import { HomepageComponent } from './home/homepage/homepage.component';
+import { SelectRedtypeComponent } from './redbuilding/select-redtype/select-redtype.component';
+import { EditRedtypeComponent } from './redbuilding/edit-redtype/edit-redtype.component';
 
 @NgModule({
   declarations: [
@@ -120,7 +122,9 @@ import { HomepageComponent } from './home/homepage/homepage.component';
     EditSealhistoryComponent,
     DeleteSealhistoryComponent,
     PublicHomeComponent,
-    HomepageComponent
+    HomepageComponent,
+    SelectRedtypeComponent,
+    EditRedtypeComponent
   ],
   imports: [
     BrowserModule,
@@ -161,7 +165,7 @@ import { HomepageComponent } from './home/homepage/homepage.component';
     AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,
     AddFlatmembersComponent, EditRedmemberComponent,DeleteRedmemberComponent,
     EditRedflatComponent,UnsealRedflatComponent,AddSealhistoryComponent,
-    EditSealhistoryComponent,DeleteSealhistoryComponent
+    EditSealhistoryComponent,DeleteSealhistoryComponent,SelectRedtypeComponent,EditRedtypeComponent
   ]
 })
 export class AppModule { }

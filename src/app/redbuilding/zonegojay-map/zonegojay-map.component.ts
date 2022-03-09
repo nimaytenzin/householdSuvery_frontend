@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import { DataService } from 'src/app/service/data.service';
 @Component({
@@ -23,11 +24,13 @@ export class ZonegojayMapComponent implements OnInit {
     remarks:"...fetching",
     status:"...fetching",
     lat:0,
-    lng:0
+    lng:0,
+    id:"..fetching"
   }
 
   constructor(
-    private dataservice:DataService
+    private dataservice:DataService,
+    private router:Router
   ) { }
 
   ngOnInit() {
@@ -43,7 +46,6 @@ export class ZonegojayMapComponent implements OnInit {
       if(e.latlng.lat !== this.selectedRedBuilding.lat &&
         e.latlng.lng !== this.selectedRedBuilding.lng
         ){
-          console.log("CLICKED outside");
           this.clickedOnBtn = false;
           if(!this.clickedOnBtn){
             document.getElementById("overlay-widget").style.zIndex = '-1'
@@ -51,24 +53,37 @@ export class ZonegojayMapComponent implements OnInit {
         }
     })
 
+    function getColor(status){
+      switch (status){
+        case "ACTIVE":
+          return "red"
+          break;
+        case "INACTIVE":
+          return "green"
+          break;
+        case "PROGRESS":
+          return "blue"
+          break
+      }
+    }
+
     this.dataservice.getRedBuildingGeojsonByZoneId(this.subzoneId).subscribe(res=>{
       this.redBuildingGeojson = L.geoJSON(res, {
         onEachFeature: (feature:any, layer) => {
           layer.on('click', (e) => {
-            console.log(feature)
             this.selectedRedBuilding = feature.properties;
             this.selectedRedBuilding.lat = feature.coordinates[1];
             this.selectedRedBuilding.lng = feature.coordinates[0];
-            this.circleClick(feature)
             document.getElementById("overlay-widget").style.zIndex = '999'
           });
 
         },
         pointToLayer: (feature, latLng) => {
           let bldgMarker: L.CircleMarker = L.circleMarker(latLng, {
-            radius:5,
-            color:'red',
-            fillColor:'red'
+            radius:6,
+            fillOpacity:1,
+            weight:0.1,
+            fillColor:getColor(feature.properties.status)
           })
           return bldgMarker;
         }
@@ -77,15 +92,15 @@ export class ZonegojayMapComponent implements OnInit {
     })
   }
 
-  circleClick(feature){
-    console.log(feature);
-    
-  }
+
   viewDetails(){
     this.clickedOnBtn = true;
     
     document.getElementById("overlay-widget").style.zIndex = '999' 
-    console.log("CliCk on btn")
+    this.router.navigate(['redbuilding/redflats/',this.selectedRedBuilding.structure_id,this.selectedRedBuilding.id])
   }
 
+  openFlats(){
+    this.router.navigate(['redbuilding/zonegojay'])
+  }
 }

@@ -25,20 +25,48 @@
             </svg>
            {{ totalActiveRedFlats }} Active Red Flats
         </div>
-        <div class="statistics-card">
+        <!-- <div class="statistics-card">
             <svg xmlns="http://www.w3.org/2000/svg" class="statistics-icon" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd"
                     d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
                     clip-rule="evenodd" />
             </svg>
             0 Red Clusters
-        </div>
+        </div> -->
         <div style="display: flex; justify-content: center;margin: 10px;">
             <button class="submit-btn" (click)="viewMap()">View on Map</button>
         </div>
     </div>
  
-    
+    <div class="newredbuilding-container">     
+        <p  class="title"> Newly Identified Red Buildings</p>
+        <div class="newredbuilding-cards-container">
+            <div class="newredbuilding-card" *ngFor="let redBuilding of inProgressRedbuildings">
+                <div style="width: 70%;">
+                    <p>
+                        Building ID: {{redBuilding.structure_id  }}
+                    </p>
+                    <p>
+                        <br>
+                       Owner Name: {{redBuilding.ownerName  }}
+                        <br>
+                       Owner Contact: {{redBuilding.ownerContact  }}
+                    </p>
+                </div>
+
+                <div style=" height:100%;width: 30%; height: 100%;">
+                    <button (click)="viewRedBuildingDetails(redBuilding.structure_id,redBuilding.id )" class="view-btn">
+                        View Details
+                    </button>
+                  
+                    <p  style="margin-top: .5rem;">
+                        Cordoned on <br> {{redBuilding.cordonDate  }}
+                    </p>
+                </div>
+            </div>  
+        </div>
+       
+    </div> 
     <div class="redbuilding-container">     
         <p  class="title"> Red Buildings</p>
         <div class="redbuilding-cards-container">

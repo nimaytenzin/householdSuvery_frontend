@@ -16,14 +16,11 @@ export class UnsealRedflatComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.redflat = this.data;
-   
     this.redflat.final_seal_date = new Date().toISOString().substring(0, 10);
   }
 
   editRedFlat(){
-
     this.redflat.status = "INACTIVE";
     this.dataService.editRedFlat(this.redflat).subscribe(res =>{
       if(res.success === 'true'){
@@ -34,14 +31,7 @@ export class UnsealRedflatComponent implements OnInit {
     })
   }
 
-
   getReadableDate(date){
     return new Date(date).toDateString()
   }
-
-
-
-
-
-
 }

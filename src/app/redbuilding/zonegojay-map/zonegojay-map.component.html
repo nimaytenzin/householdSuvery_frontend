@@ -11,8 +11,14 @@
            <p>
                Remarks:  {{selectedRedBuilding.remarks  }}
            </p>
-            <p>
+            <p *ngIf="selectedRedBuilding.status == 'ACTIVE'" style="color:crimson;font-weight:bold">
                 Status: {{selectedRedBuilding.status  }}
+            </p>
+            <p *ngIf="selectedRedBuilding.status == 'INACTIVE'" style="color:green;font-weight:bold">
+                Status: Recovered
+            </p>
+            <p *ngIf="selectedRedBuilding.status == 'PROGRESS'" style="color:blue;font-weight:bold">
+                Status: New Red Building...Please Add details
             </p>
             
         </div>
@@ -22,6 +28,9 @@
     <div class="oks">
         <button class="pry-btn" (click)="viewDetails()" >
             View Details
+        </button>
+        <button class="pry-btn" (click)="openFlats()" >
+            Home Page
         </button>
     </div>
    

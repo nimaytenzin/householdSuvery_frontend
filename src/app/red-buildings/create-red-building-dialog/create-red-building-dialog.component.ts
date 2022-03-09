@@ -59,7 +59,6 @@ export class CreateRedBuildingDialogComponent implements OnInit {
     this.newRedBuilding.lng = this.data.lng;
     this.newRedBuilding.structure_id = this.data.structure_id;
     this.newRedBuilding.remarks = this.createRedBuildingForm.get('remarks').value;
-    this.newRedBuilding.status = this.createRedBuildingForm.get('status').value;
     this.newRedBuilding.dzo_id = this.data.dzo_id;
     this.dialogRef.close({event:'success',data:this.newRedBuilding})
    
