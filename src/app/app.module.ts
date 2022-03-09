@@ -74,9 +74,11 @@ import { PublicHomeComponent } from './public/public-home/public-home.component'
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { SelectRedtypeComponent } from './redbuilding/select-redtype/select-redtype.component';
 import { EditRedtypeComponent } from './redbuilding/edit-redtype/edit-redtype.component';
+import { Safe } from './public/public-home/safeHtml.pipe';
 
 @NgModule({
   declarations: [
+    Safe,
     AppComponent,
     LoginComponent,
     RegisterComponent,
