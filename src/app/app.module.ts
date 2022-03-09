@@ -71,9 +71,11 @@ import { AddSealhistoryComponent } from './redbuilding/add-sealhistory/add-sealh
 import { EditSealhistoryComponent } from './redbuilding/edit-sealhistory/edit-sealhistory.component';
 import { DeleteSealhistoryComponent } from './redbuilding/delete-sealhistory/delete-sealhistory.component';
 import { PublicHomeComponent } from './public/public-home/public-home.component';
+import { Safe } from './public/public-home/safeHtml.pipe';
 
 @NgModule({
   declarations: [
+    Safe,
     AppComponent,
     LoginComponent,
     RegisterComponent,

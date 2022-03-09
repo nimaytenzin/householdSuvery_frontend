@@ -1,20 +1,54 @@
-<p>public-home works!</p>
-<div>
-    <h2>
-        What is a Red Flat?
-    </h2>
-    <p>
-        The residential apartment or flat in a building from where COVID-19 positive cases are detected is classified as a Red Flats.
-    </p>
 
+<div class="main-container" >
+    <div style="background:#3f51b5;color:white;font-weight: bold;text-align: center;padding:20px;">
+        Zhichar | Public
+    </div>
+    <div class="card" style="color:#9c9c9c;margin-top:10px; margin-left: 10px; margin-right: 10px;padding:  5px 10px 5px 10px;">
+        <h4>
+            <span style="font-weight: bold; color: #545252;">
+                Building Number:
+            </span>
+             {{structureId}} | 
+            <span style="font-weight: bold; color: #545252;">
+                Subzone:
+            </span>
+              {{subzone}}
+        </h4>
+        <h4>
+            <span style="font-weight: bold; color: #545252;">
+                Latitude:
+            </span>
+            {{lat}}
+        <span style="font-weight: bold; color: #545252;">
+                Longitude:
+            </span>
+            {{lng}}
+        </h4>
+    </div>
 
-    <h3>
-        SEALING OF RED FLATS
-    </h3>
-    <p>
-       
-Only Red Flats in the building will be sealed Based on the approval received from RBP, De-suups will do the sealing.
-De-suups will visit and monitor to ensure the seal is not broken
-Sealing will be for a minimum 10 days
-    </p>
+    <div class="card" style="margin-top:10px; margin-left: 10px; margin-right: 10px;padding:  5px 10px 5px 10px;">
+        <h2 style="color: gray;" class="image-full">
+            Notice
+        </h2>
+        <div  [innerHTML]="content | safeHtml" class="content"></div>
+    </div>
+    <div class="card" style="margin-top:10px; margin-left: 10px; margin-right: 10px;padding:  5px 10px 5px 10px;">
+        <h3 style="color: gray;">
+            Emergency Contacts
+        </h3>
+        <div>
+            <h4>Desuup Contacts</h4>
+            <ul>
+                <li *ngFor="let item of filterContacts(contacts,'desuup')">
+                        {{item.name}} (contact# {{item.contact}})
+                </li>
+            </ul>
+            <h4>Health Contacts</h4>
+            <ul>
+                <li *ngFor="let item of filterContacts(contacts,'health')">
+                        {{item.name}} (contact# {{item.contact}})
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
