@@ -65,7 +65,18 @@ export class RedflatsComponent implements OnInit {
     });
 
 
+    this.refreshFlatsData()
+  }
 
+
+
+  openRedFlatAddDialog() {
+    this.dialog.open(AddRedflatDialogComponent, {
+      data: Number(this.redBuildingId)
+    }).afterClosed().subscribe(res => {
+      if (res.success === true) {
+       
+  
     this.dataService.getBuildingInfo(this.structureId).subscribe(res => {
       this.buildingData.contactOwner = res.data.contactOwner;
       this.buildingData.nameOfBuildingOwner = res.data.nameOfBuildingOwner
@@ -73,6 +84,7 @@ export class RedflatsComponent implements OnInit {
         this.buildingData.status = res.data.status;
         this.buildingData.cordonDate = this.getReadableDate(res.data.createdAt);
         this.buildingData.remarks = res.data.remarks
+       
         this.buildingData.type = res.data.type? res.data.type:null
       
       })
@@ -113,18 +125,6 @@ export class RedflatsComponent implements OnInit {
 
       })
     });
-
-
-  }
-
-
-
-  openRedFlatAddDialog() {
-    this.dialog.open(AddRedflatDialogComponent, {
-      data: Number(this.redBuildingId)
-    }).afterClosed().subscribe(res => {
-      if (res.success === true) {
-        this.refreshFlatsData()
       } else {
         console.log("Update Failed")
       }
@@ -133,27 +133,53 @@ export class RedflatsComponent implements OnInit {
 
   refreshFlatsData() {
     this.redFlats = [];
-    this.dataService.getRedflatsByRedbuildingId(this.redBuildingId).subscribe(response => {
-      response.data.forEach(dat => {
-        let data = dat
-        data.daysElapsed = this.getDaysElapsed(dat.first_seal_date);
-        data.first_seal_date = this.getReadableDate(dat.first_seal_date);
-        data.first_seal_time = this.convert24Hrsto12hrs(dat.first_seal_time);
-        data.final_unseal_date = this.getReadableDate(data.final_unseal_date);
-        this.dataService.getRedFamilyMembersByFlatId(dat.id).subscribe(respo => {
-          data.familyMembers = respo.data;
-        })
-        this.dataService.getSealHistoryByFlatId(dat.id).subscribe(e => {
-          data.sealHistory = e.data;
-          data.sealHistory.forEach(hist => {
-            hist.date = this.getReadableDate(hist.date);
-            hist.open_time = this.convert24Hrsto12hrs(hist.open_time);
-            hist.close_time = this.convert24Hrsto12hrs(hist.close_time);
+    this.dataService.getBuildingInfo(this.structureId).subscribe(res => {
+      this.buildingData.contactOwner = res.data.contactOwner;
+      this.buildingData.nameOfBuildingOwner = res.data.nameOfBuildingOwner
+      this.dataService.getRedbuildingsDetailsById(this.redBuildingId).subscribe(res => {
+        this.buildingData.status = res.data.status;
+        this.buildingData.cordonDate = this.getReadableDate(res.data.createdAt);
+        this.buildingData.remarks = res.data.remarks
+        this.buildingData.type = res.data.type? res.data.type:null
+        console.log("SAADASDASDASDSAd",res.data)
+      })
+      this.dataService.getStructureDetailsByStructureId(this.structureId).subscribe(resp => {
+        let coords = L.latLng(resp.data.lat, resp.data.lng)
+        this.googleMapLink = `http://www.google.com/maps/place/${resp.data.lat},${resp.data.lng}`
+        this.redbuildingMarker = new L.Circle(coords, {
+          radius: 18,
+          color: 'rgb(235, 58, 58)'
+        }).addTo(this.map)
+        this.map.flyTo(coords, 16);
+        this.dataService.getRedflatsByRedbuildingId(this.redBuildingId).subscribe(response => {
+          response.data.forEach(dat => {
+            let data = dat
+            data.daysElapsed = this.getDaysElapsed(dat.first_seal_date);
+            data.first_seal_date = this.getReadableDate(dat.first_seal_date);
+            data.first_seal_time = this.convert24Hrsto12hrs(dat.first_seal_time);
+            data.final_unseal_date = this.getReadableDate(data.final_unseal_date);
+            this.dataService.getRedFamilyMembersByFlatId(dat.id).subscribe(respo => {
+              data.familyMembers = respo.data;
+            })
+            this.dataService.getSealHistoryByFlatId(dat.id).subscribe(e => {
+              data.sealHistory = e.data;
+              data.sealHistory.forEach(hist => {
+                hist.date = this.getReadableDate(hist.date);
+                hist.open_time = this.convert24Hrsto12hrs(hist.open_time);
+                hist.close_time = this.convert24Hrsto12hrs(hist.close_time);
+              })
+
+              console.log(data.sealHistory)
+
+            })
+
+            this.redFlats.push(data)
           })
         })
-        this.redFlats.push(data)
+        this.dataLoaded = true
+
       })
-    })
+    });
   }
 
   addFamilyMember(flat_id) {
@@ -298,6 +324,7 @@ export class RedflatsComponent implements OnInit {
     }).afterClosed().subscribe(
       res => {
         if (res.success === true) {
+
           this.refreshFlatsData()
         } else {
           console.log("Update Failed")
@@ -312,7 +339,17 @@ export class RedflatsComponent implements OnInit {
         id:this.redBuildingId,
         type:this.buildingData.type
       }
-    })
+    }).afterClosed().subscribe(
+      res => {
+        if (res.success === true) {
+
+          this.refreshFlatsData()
+        } else {
+          console.log("Update Failed")
+        }
+      }
+    )
+
   }
 
 }

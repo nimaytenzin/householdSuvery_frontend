@@ -41,7 +41,7 @@
     <div class="newredbuilding-container">     
         <p  class="title"> Newly Identified Red Buildings</p>
         <div class="newredbuilding-cards-container">
-            <div class="newredbuilding-card" *ngFor="let redBuilding of inProgressRedbuildings">
+            <div class="newredbuilding-card" *ngFor="let redBuilding of inProgressRedbuildings" >
                 <div style="width: 70%;">
                     <p>
                         Building ID: {{redBuilding.structure_id  }}
@@ -71,9 +71,15 @@
         <p  class="title"> Red Buildings</p>
         <div class="redbuilding-cards-container">
             <div class="redbuilding-card" *ngFor="let redBuilding of redBuildings">
-                <div style="width: 70%;">
+                <div style="width: 70%;" >
                     <p>
                         Building ID: {{redBuilding.structure_id  }}
+                    </p>
+                    <p *ngIf="redBuilding.status == 'ACTIVE'" style="color: #E85A4F; font-weight: 600;">
+                        Status : ACTIVE
+                    </p>
+                    <p *ngIf="redBuilding.status == 'INACTIVE'" style="color:#95C895;font-weight: 600;">
+                        Status : RECOVERED
                     </p>
                     <p>
                       

@@ -578,7 +578,7 @@ export class DataService {
   }
   getInProgressRedbuildingsInSubZone(subZoneId){
     return this.http
-    .get<any>(`${this.API_URL}/red-building/get-zone-json/${subZoneId}`,this.AuthenticatedHttpOtions)
+    .get<any>(`${this.API_URL}/red-building/get-zone-progress/${subZoneId}`,this.AuthenticatedHttpOtions)
     .pipe(
       catchError(this.handleError)
     ) 
@@ -739,6 +739,21 @@ export class DataService {
   statsThimphuGetMegazoneRedBuilding(){
     return this.http
     .get<any>(`${this.API_URL}/red-building/get-all-megazone-stat/`,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    )   
+  }
+  
+  statsNotokenThimphuGetMegazoneRedflats(){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/get-flat-megazone-stat/`,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )   
+  }
+  statsNoTokenThimphuGetMegazoneRedBuilding(){
+    return this.http
+    .get<any>(`${this.API_URL}/stat/get-building-megazone-stat/`,this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )   

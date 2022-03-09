@@ -18,6 +18,7 @@ export class EditSealhistoryComponent implements OnInit {
 
   ngOnInit() {
     this.sealHistory = this.passedSealHistory
+    console.log("HELLOSDSDA", this.sealHistory)
   }
 
   editSealHistory(){

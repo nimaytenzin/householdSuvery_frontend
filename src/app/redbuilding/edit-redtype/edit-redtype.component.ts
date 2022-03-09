@@ -22,7 +22,7 @@ export class EditRedtypeComponent implements OnInit {
   }
 
   editRedBuildingType(){
-    this.dataService.updateBuilding(this.redbuilding).subscribe(res=>{
+    this.dataService.updateRedBuilding(this.redbuilding).subscribe(res=>{
       if(res.success === 'true'){
         this.dialogRef.close({success:true})
       }else{

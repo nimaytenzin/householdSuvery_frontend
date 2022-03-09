@@ -3,5 +3,5 @@ export const environment = {
   // API_URL: 'http://43.230.208.80:8080'
   // API_URL: 'https://zhichar.ddnsfree.com/api'
   API_URL: 'https://zhichar.ddnsfree.com/hpi',
-  BASE_URL: 'https//zhichar.ddnsfree.com'
+  BASE_URL: 'https//zhichar.bt'
 };

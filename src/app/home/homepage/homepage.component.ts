@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/service/data.service';
 import * as L from 'leaflet';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-homepage',
@@ -52,25 +53,24 @@ export class HomepageComponent implements OnInit {
 
 
 
-    this.dataservice.statsThimphuGetMegazoneRedflats().subscribe(res => {
+    this.dataservice.statsNotokenThimphuGetMegazoneRedflats().subscribe(res => {
       this.cumulativeStatistics.totalActiveRedFlats = res.data.totalActive;
       this.megaZoneStatistics.forEach(megazone => {
         megazone.activeFlats = res.data.activeFlats[megazone.id] ? res.data.activeFlats[megazone.id] : 0;
         megazone.inactiveFlats = res.data.activeFlats[megazone.id] ? res.data.inactiveFlats[megazone.id] : 0;
       })
-      this.dataservice.statsThimphuGetMegazoneRedBuilding().subscribe(resp => {
+      this.dataservice.statsNoTokenThimphuGetMegazoneRedBuilding().subscribe(resp => {
         this.cumulativeStatistics.totalActiveRedBuildings = resp.data.totalActive;
         this.megaZoneStatistics.forEach(megazone => {
           megazone.activeBuildings = resp.data.activeBuildings[megazone.id] ? resp.data.activeBuildings[megazone.id] : 0;
           megazone.inactiveBuildings = resp.data.inactiveBuildings[megazone.id] ? resp.data.inactiveBuildings[megazone.id] : 0;
         })
 
-        fetch('https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson')
+        fetch(`${environment.BASE_URL}/assets/megaZoneThimphu.geojson`)
           .then(res =>
             res.json())
           .then(
             data => {
-            
               function getColor(val) {
                 return val > 90 ? '#B71D1C' :
                   val > 80 ? '#c41a3c' :

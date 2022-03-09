@@ -67,7 +67,7 @@
     overflow-y: scroll;
 }
 
-.newredbuilding-container .newredbuilding-card{
+.newredbuilding-card{
     display: flex;
     align-items: flex-start;
     border-bottom: 0.5px dashed rgb(49, 46, 46);
@@ -103,7 +103,7 @@
     overflow-y: scroll;
 }
 
-.redbuilding-container .redbuilding-card{
+ .redbuilding-card{
     display: flex;
     align-items: flex-start;
     border-bottom: 0.5px dashed rgb(49, 46, 46);
