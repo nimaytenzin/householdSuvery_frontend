@@ -301,6 +301,16 @@ export class ViewPositiveComponent implements OnInit {
     fillOpacity: 0.8
   }
 
+  redFlatMarkerActiveOptions = {
+    radius: 8,
+    fillColor: "#bf580a",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
+
   setViewValue: boolean;
 
 
@@ -469,10 +479,8 @@ export class ViewPositiveComponent implements OnInit {
                         }).bindPopup("ok")
 
                       }
-
-
-
                     }).addTo(this.map)
+                    this.reOrderLayer()
                   })
 
                 fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
@@ -489,8 +497,11 @@ export class ViewPositiveComponent implements OnInit {
                         color: "#E72424CE", weight: 3, fillOpacity: 0.2
                       }
                     }).addTo(this.map)
+                    this.reOrderLayer()
                   })
+                  this.reOrderLayer()
               })
+              this.reOrderLayer()
           })
       }
 
@@ -675,6 +686,7 @@ export class ViewPositiveComponent implements OnInit {
     }
   }
 
+
   toggleThimphuZone() {
     if (this.map.hasLayer(this.thimphuZones)) {
       this.map.removeLayer(this.thimphuZones);
@@ -723,9 +735,13 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   reOrderLayer() {
-    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined) {
+    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined && this.thimphuMegaZones != undefined && this.thimphuZones != undefined) {
       this.map.removeLayer(this.buildingGeojson)
       this.map.removeLayer(this.redBuildingGeojson)
+      this.map.removeLayer(this.thimphuMegaZones)
+      this.map.removeLayer(this.thimphuZones)
+      this.map.addLayer(this.thimphuMegaZones)
+      this.map.addLayer(this.thimphuZones)
       this.map.addLayer(this.buildingGeojson)
       this.map.addLayer(this.redBuildingGeojson)
     }
@@ -794,12 +810,21 @@ export class ViewPositiveComponent implements OnInit {
           pointToLayer: (feature, latLng) => {
             let bldgMarker: L.CircleMarker;
             console.log(feature.properties.status)
-            switch (feature.properties.status) {
-              case "INACTIVE":
-                bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+            console.log(feature.properties.type)
+            switch (feature.properties.type) {
+              case "BUILDING":
+                if(feature.properties.status == "INACTIVE"){
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+                }else{
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingMarkerActiveOptions)
+                }
                 break;
-              case "ACTIVE":
-                bldgMarker = L.circleMarker(latLng, this.redBuildingMarkerActiveOptions)
+              case "FLAT":
+                if(feature.properties.status == "INACTIVE"){
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+                }else{
+                  bldgMarker = L.circleMarker(latLng, this.redFlatMarkerActiveOptions)
+                }
                 break;
             }
             return bldgMarker;
