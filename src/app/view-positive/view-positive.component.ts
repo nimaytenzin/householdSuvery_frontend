@@ -463,25 +463,31 @@ export class ViewPositiveComponent implements OnInit {
                   }
                 }).addTo(this.map)
 
-                fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
-                  .then(res => res.json())
-                  .then(dat => {
-                    this.thimphuPoe = L.geoJSON(dat, {
+                this.overlayMaps['Megazones'] = this.thimphuMegaZones
+                if(this.mapLayerControl !== undefined){
+                  this.mapLayerControl.remove()
+                }
+                this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+
+                // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
+                //   .then(res => res.json())
+                //   .then(dat => {
+                //     this.thimphuPoe = L.geoJSON(dat, {
 
 
-                      pointToLayer: (feature, latLng) => {
+                //       pointToLayer: (feature, latLng) => {
 
-                        return new L.CircleMarker(latLng, {
-                          radius: 4,
-                          color: "blue",
-                          fillOpacity: 1,
-                          weight: 2
-                        }).bindPopup("ok")
+                //         return new L.CircleMarker(latLng, {
+                //           radius: 4,
+                //           color: "blue",
+                //           fillOpacity: 1,
+                //           weight: 2
+                //         }).bindPopup("ok")
 
-                      }
-                    }).addTo(this.map)
-                    this.reOrderLayer()
-                  })
+                //       }
+                //     }).addTo(this.map)
+                //     this.reOrderLayer()
+                //   })
 
                 fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
                   .then(res => res.json())
@@ -501,6 +507,12 @@ export class ViewPositiveComponent implements OnInit {
                   })
                   this.reOrderLayer()
               })
+
+              this.overlayMaps['Thimphu Zones'] = this.thimphuZones
+              if(this.mapLayerControl !== undefined){
+                this.mapLayerControl.remove()
+              }
+              this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
               this.reOrderLayer()
           })
       }
@@ -559,13 +571,20 @@ export class ViewPositiveComponent implements OnInit {
             }
           });
 
-          this.overlayMaps = {
-            "Quarantine Facilities": this.quarantineFacilities,
-            "Isolation Facilities": this.isolationFacilities,
-            "Zone Map": this.zoneMap
-          };
+          // this.overlayMaps = {
+          //   "Quarantine Facilities": this.quarantineFacilities,
+          //   "Isolation Facilities": this.isolationFacilities,
+          //   "Zone Map": this.zoneMap
+          // };
+          this.overlayMaps['Quarantine Facilities'] = this.quarantineFacilities
+          this.overlayMaps['Isolation Facilities'] = this.isolationFacilities
+          this.overlayMaps['Zone map'] = this.zoneMap
 
+          if(this.mapLayerControl !== undefined){
+            this.mapLayerControl.remove()
+          }
           this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+
           this.fetchAndSetCovidStats(this.dzongkhagId)
           // this.renderMap();
           this.renderRedBuildings(this.dzongkhagId)
@@ -687,38 +706,38 @@ export class ViewPositiveComponent implements OnInit {
   }
 
 
-  toggleThimphuZone() {
-    if (this.map.hasLayer(this.thimphuZones)) {
-      this.map.removeLayer(this.thimphuZones);
-    } else {
-      this.map.addLayer(this.thimphuZones);
-    }
-  }
+  // toggleThimphuZone() {
+  //   if (this.map.hasLayer(this.thimphuZones)) {
+  //     this.map.removeLayer(this.thimphuZones);
+  //   } else {
+  //     this.map.addLayer(this.thimphuZones);
+  //   }
+  // }
 
-  togglePoes() {
-    if (this.map.hasLayer(this.thimphuPoe)) {
-      this.map.removeLayer(this.thimphuPoe);
-    } else {
-      this.map.addLayer(this.thimphuPoe);
-    }
-  }
+  // togglePoes() {
+  //   if (this.map.hasLayer(this.thimphuPoe)) {
+  //     this.map.removeLayer(this.thimphuPoe);
+  //   } else {
+  //     this.map.addLayer(this.thimphuPoe);
+  //   }
+  // }
 
-  toggleThimphuMegaZone() {
-    if (this.map.hasLayer(this.thimphuMegaZones)) {
-      this.map.removeLayer(this.thimphuMegaZones);
-    } else {
-      this.map.addLayer(this.thimphuMegaZones);
-    }
-    // this.map.removeLayer(this.thimphuMegaZones);
-  }
+  // toggleThimphuMegaZone() {
+  //   if (this.map.hasLayer(this.thimphuMegaZones)) {
+  //     this.map.removeLayer(this.thimphuMegaZones);
+  //   } else {
+  //     this.map.addLayer(this.thimphuMegaZones);
+  //   }
+  //   // this.map.removeLayer(this.thimphuMegaZones);
+  // }
 
-  toggleRedClusters() {
-    if (this.map.hasLayer(this.thimphuRedClusters)) {
-      this.map.removeLayer(this.thimphuRedClusters);
-    } else {
-      this.map.addLayer(this.thimphuRedClusters);
-    }
-  }
+  // toggleRedClusters() {
+  //   if (this.map.hasLayer(this.thimphuRedClusters)) {
+  //     this.map.removeLayer(this.thimphuRedClusters);
+  //   } else {
+  //     this.map.addLayer(this.thimphuRedClusters);
+  //   }
+  // }
 
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
