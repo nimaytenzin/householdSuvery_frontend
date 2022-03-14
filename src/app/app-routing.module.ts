@@ -28,7 +28,7 @@ import { PublicHomeComponent } from './public/public-home/public-home.component'
 import { HomepageComponent } from './home/homepage/homepage.component';
 
 const routes: Routes = [
-  {path: '', component: HomepageComponent},
+  {path: '', component: LoginComponent},
   {path: 'login', component: LoginComponent},
   {path: 'app-drawer', component: AppsDrawerComponent},
   // {path: 'dashboard', component: DashboardComponent, canActivate: [RouteGuard]},
