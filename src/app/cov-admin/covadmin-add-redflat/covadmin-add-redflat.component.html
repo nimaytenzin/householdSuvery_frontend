@@ -7,7 +7,7 @@
     <form [formGroup]="addNewRedFlat">
       <mat-form-field appearance="fill" class="justifier">
         <mat-label> Date Detected</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="first_seal_date" [max]="today" required>
+        <input matInput [matDatepicker]="picker" formControlName="first_seal_date"  required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
