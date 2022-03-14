@@ -1,0 +1,607 @@
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding:0;
+	font-family:sans-serif;
+	color: #E85A4F;
+}
+
+/* color scheme */
+*{
+	--light:#FFFFFF;
+	--darkgreen:#457B62;
+	--lightgreen: #E9E8DC;
+	--lightred:#E85A4F
+}
+
+.flex-row-center{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+}
+
+.main-container{
+	min-height: 100vh;
+	max-height: max-content;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.stats-container{
+	width: 50%;
+}
+
+.title-container{
+	display: flex; 
+	justify-content: space-between;
+	align-items: center; 
+	width: 100%;
+}
+
+.title-container h1{
+	text-align: center;color: #C5C4B7;font-size: xx-large;margin: 1rem 0;font-weight: 300;
+}
+
+.title-container a{
+	text-align: center;color: #70706F;font-size: large;margin: 1rem 0;font-weight: bold;
+}
+
+.row-1{
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 30px;
+	grid-auto-flow:column;
+	margin: 0.5rem 0;
+}
+
+
+.stat-card{
+	color: var(--light);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	padding: 20px;
+	background-color: var(--lightgreen);
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.stat-card .stats-card-title{
+	font-size: 30px;
+	font-weight: 300;
+	width: 200px;
+	color: #E85A4F;
+}
+
+.stat-card .stats-figure{
+	font-size: 50px;
+	position: relative;
+	margin: 1rem;
+}
+.stat-card .stats-figure span{
+	font-size: medium;
+	font-weight: lighter;
+	position: absolute;
+	left: 1px;
+	bottom: -15px;
+}
+
+
+.stat-card .stats-description{
+	font-size: smaller;
+	font-weight:lighter;
+	 margin: 5px;
+	 text-align:  justify;
+	 color: #8E8D89
+}
+.stat-minibarchart{
+	display: flex;
+	height: 75px;
+	align-items: flex-end;
+	justify-content: center;
+
+	border-left: 0.1px dashed var(--lightred);
+	border-bottom:  0.5px dashed var(--lightred);
+}
+
+.stats-bar{
+	width: 12px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	position: relative;
+	border: 0.5px solid var(--lightgreen);
+	background-color: var(--lightred);
+}
+.stats-bar p{
+	position: absolute;
+	width: 5px;
+	height: 5px;
+	background-color: var(--lightred);
+	border-radius: 100%;
+}
+
+
+.row-2{
+	display: grid;
+	grid-template-columns: 2fr 3fr;
+	margin: 2.5rem 0;
+	gap: 30px;
+	place-items: flex-end;
+
+}
+
+.megazonemaps{
+	height: 950px;
+	width: 350px;
+}
+
+.megazonestats-container{
+	display: flex;
+	flex-direction: column;
+	background-color: var(--lightgreen);
+	padding: 10px;
+	font-size: larger;
+	border-radius: 10px;
+	align-items: center;
+	width: 80%;
+}
+
+
+#map{
+	background: transparent;
+}
+
+.megazonemap{
+	height: 450px;
+	width: 400px;
+}
+
+.megazone-statcard-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+
+.megazonestats-card{
+	padding: 40px;
+	border: 0.5px solid rgb(250, 234, 234) ;
+	font-size: large;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.megazonestats-card .megazone-name{
+	font-size: 30px;
+	padding-bottom: 10px;
+	border-bottom: 0.5px solid #acabaa;
+	margin-bottom: 10px;
+	font-weight: 300;
+}
+
+.megazonestats-card .megazone-stat{
+	font-size: 50px;
+	font-weight: 600;
+}
+
+.megazonestats-card .megazone-stat span{
+	font-size: 20px;
+	font-weight: 400;
+}
+
+
+::ng-deep .myCSSClass {
+    background: white;
+    color: black;
+	font-size: x-small;
+    border: none;
+  }
+
+
+  .footer{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+  }
+
+  .informations{
+	background-color: var(--lightgreen);
+	height: 300px; 
+	border-radius: 10px;
+	width: 100%;
+	font-size: medium;
+	font-weight: 200;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+
+  }
+
+  .info-1-container{
+	  width: 50%;
+	  padding: 40px;
+	  font-size: 20px;
+  }
+
+  .info-2-container{
+	  width: 50%;
+
+  }
+
+
+
+  /* For Tablet View */
+@media screen and (min-device-width: 768px)
+and (max-device-width: 1024px) {
+ 
+ .stats-container{
+	width: 70%;
+}
+ .row-1{
+	 display: flex;
+	 justify-content: center;
+	 flex-wrap: wrap;
+ }
+ .stat-card{
+	 width: 300px;
+ }
+
+
+.stat-card .stats-card-title{
+	font-size: 20px;
+	font-weight: 300;
+	width: 150px;
+	color: #E85A4F;
+}
+
+.stat-card .stats-figure{
+	font-size: 30px;
+	position: relative;
+	margin: 1rem;
+}
+.stat-card .stats-figure span{
+	font-size: medium;
+	font-weight: lighter;
+	position: absolute;
+	left: 1px;
+	bottom: -15px;
+}
+
+
+.stat-card .stats-description{
+	font-size: smaller;
+	font-weight:lighter;
+	 margin: 5px;
+	 text-align:  justify;
+	 color: #8E8D89
+}
+
+
+ .row-2{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+ }
+
+ .megazonemaps{
+	 order: 2;
+ }
+ .megazonestats-container{
+	 order: 1;
+ }
+
+
+.megazonemaps{
+	height: 950px;
+	width: 350px;
+}
+
+.megazonestats-container{
+	display: flex;
+	flex-direction: column;
+	background-color: var(--lightgreen);
+	padding: 10px;
+	font-size: larger;
+	border-radius: 10px;
+	align-items: center;
+	width: 80%;
+}
+
+
+#map{
+	background: transparent;
+}
+
+.megazonemap{
+	height: 450px;
+	width: 500px;
+}
+
+.megazone-statcard-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+
+.megazonestats-card{
+	padding: 30px;
+	border: 0.5px solid rgb(250, 234, 234) ;
+	font-size: large;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.megazonestats-card .megazone-name{
+	font-size: 20px;
+	padding-bottom: 10px;
+	border-bottom: 0.5px solid #acabaa;
+	margin-bottom: 10px;
+	font-weight: 300;
+}
+
+.megazonestats-card .megazone-stat{
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.megazonestats-card .megazone-stat span{
+	font-size: 10px;
+	font-weight: 400;
+}
+
+
+::ng-deep .myCSSClass {
+    background: white;
+    color: black;
+	font-size: x-small;
+    border: none;
+  }
+
+
+  .footer{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+  }
+
+  .informations{
+	background-color: var(--lightgreen);
+	height: 300px; 
+	border-radius: 10px;
+	width: 100%;
+	font-size: medium;
+	font-weight: 200;
+	padding: 10px;
+
+  }
+
+
+
+}
+ 
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 480px)
+and (orientation: portrait) {
+  
+ .stats-container{
+	width: 70%;
+}
+ .row-1{
+	 display: flex;
+	 justify-content: center;
+	 flex-wrap: wrap;
+ }
+ .stat-card{
+	 width: 300px;
+ }
+
+ .title-container h1{
+	text-align: center;color: #C5C4B7;font-size: 15px;margin:1px;font-weight: 300;
+}
+
+.title-container a{
+	text-align: center;color: #70706F;font-size: 15px;margin: 1px;font-weight: bold;
+}
+
+
+.stat-card .stats-card-title{
+	font-size: 15px;
+	font-weight: 300;
+	width: 150px;
+	color: #E85A4F;
+}
+
+.stat-card .stats-figure{
+	font-size: 30px;
+	position: relative;
+	margin: 1rem;
+}
+.stat-card .stats-figure span{
+	font-size: medium;
+	font-weight: lighter;
+	position: absolute;
+	left: 1px;
+	bottom: -15px;
+}
+
+
+.stat-card .stats-description{
+	font-size: smaller;
+	font-weight:lighter;
+	 margin: 5px;
+	 text-align:  justify;
+	 color: #8E8D89
+}
+
+
+ .row-2{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+ }
+
+ .megazonemaps{
+	 order: 2;
+ }
+ .megazonestats-container{
+	 order: 1;
+ }
+
+
+.megazonemaps{
+	height: 950px;
+	width: 100%;
+}
+
+.megazonestats-container{
+	display: flex;
+	flex-direction: column;
+	background-color: var(--lightgreen);
+	padding: 20px;
+	font-size: larger;
+	border-radius: 10px;
+	align-items: center;
+	width: 100%;
+}
+
+
+#map{
+	background: transparent;
+}
+
+.megazonemap{
+	height: 450px;
+	width: 500px;
+}
+
+.megazone-statcard-container{
+	display: flex;
+	flex-wrap: wrap;
+}
+.megazonestats-container h2{
+	font-size: 20px;
+}
+
+
+.megazonestats-card{
+	padding: 10px;
+	border: 0.5px solid rgb(250, 234, 234) ;
+	font-size: large;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.megazonestats-card p{
+	font-size: 13px;
+	font-weight: 300;
+}
+
+.megazonestats-card .megazone-name{
+	font-size: 20px;
+	padding-bottom: 10px;
+	border-bottom: 0.5px solid #acabaa;
+	margin-bottom: 10px;
+	font-weight: 300;
+}
+
+.megazonestats-card .megazone-stat{
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.megazonestats-card .megazone-stat span{
+	font-size: 10px;
+	font-weight: 400;
+}
+
+
+::ng-deep .myCSSClass {
+    background: white;
+    color: black;
+	font-size: x-small;
+    border: none;
+  }
+
+
+  .footer{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	flex-wrap: wrap;
+  }
+
+  .informations{
+	background-color: var(--lightgreen);
+	height: 300px; 
+	border-radius: 10px;
+	width: 100%;
+	font-size: medium;
+	font-weight: 200;
+	padding: 10px;
+
+  }
+}
+ 
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px)
+and (orientation: landscape) {
+  .gfg-div {
+    width: 400px;
+    height: 200px;
+    background-color: cyan;
+    color: black;
+  }
+}
+ 
+/* For Mobile Phones Portrait or Landscape View */
+@media screen and (max-device-width: 640px) {
+  .gfg-div {
+    width: 400px;
+    height: 200px;
+    background-color: chartreuse;
+    color: black;
+  }
+}
+ 
+/* For iPhone 4 Portrait or Landscape View */
+@media screen and (min-device-width: 320px)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .gfg-div {
+    width: 400px;
+    height: 400px;
+    background-color: brown;
+    color: black;
+  }
+}
+ 
+/* For iPhone 5 Portrait or Landscape View */
+@media (device-height: 568px) and (device-width: 320px)
+and (-webkit-min-device-pixel-ratio: 2) {
+  .gfg-div {
+    width: 400px;
+    height: 400px;
+    background-color: cornflowerblue;
+    color: black;
+  }
+}
+ 
+/* For iPhone 6 and 6 plus Portrait or Landscape View */
+@media (min-device-height: 667px) and (min-device-width: 375px)
+and (-webkit-min-device-pixel-ratio: 3) {
+  .gfg-div {
+    width: 400px;
+    height: 400px;
+    background-color: darkgoldenrod;
+    color: black;
+  }
+}
