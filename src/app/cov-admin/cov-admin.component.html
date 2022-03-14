@@ -59,24 +59,28 @@
         </mat-select>
       </mat-form-field>
       <div style="margin-left:10px;">
-        <button mat-flat-button (click)="zoneSearch()" style="padding:5px;padding-left: 10px;padding-right: 10px; background: green;color: white;">Load Data</button>
+        <button mat-flat-button (click)="zoneSearch()"
+          style="padding:5px;padding-left: 10px;padding-right: 10px; background: green;color: white;">Load Data</button>
       </div>
     </form>
 
     <!-- lat lng field -->
     <h4 style="margin-bottom: 5px;">Go To Lat Lng point</h4>
     <form [formGroup]="xyForm" style="margin: 0px; display: flex; flex-direction: row;">
-        <mat-form-field class="justifier" style="margin-left:5px;">
-          <input matInput type="number" placeholder="Latitude" class="form-input" name="lat" formControlName="lat" >
-        </mat-form-field>
-        <mat-form-field class="justifier" style="margin-left:5px;">
-          <input matInput type="number" placeholder="Longitude" class="form-input" name="lng" formControlName="lng" >
-        </mat-form-field>
-        <div style="margin-left: 5px;">
-          <button *ngIf="xyCircle == undefined" mat-flat-button (click)="goToXY()" style="color:white;background-color:green;padding:5px;padding-left:10px;padding-right: 10px;">Go to XY</button>
-          <button *ngIf="xyCircle !== undefined" mat-flat-button (click)="clearXY()" style="color: white; background-color:red;padding:5px;padding-left: 10px;padding-right: 10px;">Clear</button>
+      <mat-form-field class="justifier" style="margin-left:5px;">
+        <input matInput type="number" placeholder="Latitude" class="form-input" name="lat" formControlName="lat">
+      </mat-form-field>
+      <mat-form-field class="justifier" style="margin-left:5px;">
+        <input matInput type="number" placeholder="Longitude" class="form-input" name="lng" formControlName="lng">
+      </mat-form-field>
+      <div style="margin-left: 5px;">
+        <button *ngIf="xyCircle == undefined" mat-flat-button (click)="goToXY()"
+          style="color:white;background-color:green;padding:5px;padding-left:10px;padding-right: 10px;">Go to
+          XY</button>
+        <button *ngIf="xyCircle !== undefined" mat-flat-button (click)="clearXY()"
+          style="color: white; background-color:red;padding:5px;padding-left: 10px;padding-right: 10px;">Clear</button>
 
-        </div>
+      </div>
     </form>
 
 
@@ -84,55 +88,127 @@
       <h4 style="margin-bottom:2px;">Structure Controls</h4>
       <button *ngIf="!isAddAllowed" mat-raised-button (click)="toggleAdd()" color="primary">
         <mat-icon>add</mat-icon>
-        <mat-label >Add Buildings</mat-label>
+        <mat-label>Add Buildings</mat-label>
       </button>
 
       <button *ngIf="isAddAllowed" mat-raised-button (click)="cancelAdd()" style="background-color: red;">
-        <mat-label >Cancel Add Building</mat-label>
+        <mat-label>Cancel Add Building</mat-label>
       </button>
     </div>
 
     <br>
+    <button style="margin-right: 10px;" mat-flat-button color="primary" (click)=markStructureAsRedBuilding()
+      [disabled]="selectedStructure == null"> Mark as Red Building </button>
 
-    <div>
-      <h4 style="margin-bottom:2px;">Red Building Controls</h4>
-      <button style="margin-right: 10px;" mat-flat-button color="primary" (click)=markStructureAsRedBuilding() [disabled]="selectedStructure == null"> Mark as Red Building </button>
-      <button [disabled]="selectedRedBuilding == null" style="margin-right:10px;" mat-flat-button color="primary" (click)=addNewCase()> Add New Case</button>
-
-    </div>
-
-
-    <div *ngIf="redBuildingCases" style="
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    width: 95%;
-    margin-top: 10px;
-    ">
-      <h2>Case History</h2>
-      <div class="caseCard" *ngFor="let case of redBuildingCases">
-        <h3>
-          Cases: <span style="font-size: x-large; margin:0;"> {{ case.numCases }} </span>
-        </h3>
-        <p>
-          Id: {{ case.id }}
-        </p>
-        <p>
-          Status: <span> {{ case.status }}</span>
-        </p>
-        <p>
-          Date: <span> {{ parseDate(case.date) }}</span>
-        </p>
-        <p style="word-break: break-all;">
-          Remarks: {{ case.remarks }}
-        </p>
+    <div *ngIf="selectedRedBuilding">
+      <h4 style="margin-bottom:2px;">Red Building Details</h4>
+      <div style="display: flex; gap:10px; flex-wrap: wrap;">
+        <button [disabled]="selectedRedBuilding == null" style="margin-right:10px;" mat-flat-button color="primary"
+          (click)=editRedBuildingDetails(selectedRedBuilding.id)>Edit Red Building Status</button>
+        <button [disabled]="selectedRedBuilding == null" style="margin-right:10px;" mat-flat-button color="primary"
+          (click)=addNewCase()> Register New Case</button>
+        <button [disabled]="selectedRedBuilding == null" style="margin-right:10px;" mat-flat-button color="primary"
+          (click)=addRedFlat()> Register New Red Flat</button>
       </div>
 
+
+      <br style="margin-top: 8rem;">
+
+      <h2 style="text-align: center; font-size: large; font-weight: bold;">Case Details</h2>
+      <h2 style="text-align: center; font-size: large; font-weight: bolder;color: brown;">Type Specified: {{ selectedRedBuilding.type }} </h2>
+      <h2 style="text-align: center; font-size: large; font-weight: bolder;color: brown;" *ngIf="selectedRedBuilding.status == 'ACTIVE'">Status: {{ selectedRedBuilding.status }} </h2>
+      <h2 style="text-align: center; font-size: large; font-weight: bolder;color: rgb(28, 138, 101);"  *ngIf="selectedRedBuilding.status == 'INACTIVE'">Status: RECOVERED/RELEASED </h2>
+      <div style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            width: 95%;
+            margin-top: 10px;"
+            *ngIf="redBuildingCases.length"
+        >
+        <h2 style="color:cadetblue; font-size: large;">Cases Registered</h2>
+        <div class="caseCard" *ngFor="let case of redBuildingCases">
+          
+          <p>
+            Id: {{ case.id }}
+          </p>
+
+         
+          <p style="word-break: break-all;">
+            Case Name: {{ case.case_id }}
+          </p>
+          <p style="word-break: break-all;">
+           Contact Details: {{ case.remarks }}
+          </p>
+          <p style="color: red; font-weight: 700;" *ngIf="case.status == 'ACTIVE'">
+            Status: {{case.status  }}
+          </p>
+          <p style="color: rgb(58, 182, 130); font-weight: 700;"  *ngIf="case.status == 'INACTIVE'">
+           Status: Recovered & Lifted
+         </p>
+          <p>
+            Numbers: <span style="font-size: x-large; margin:0;"> {{ case.numCases }} </span>
+          </p>
+          <p>
+            Detected on Date: <span> {{ parseDate(case.date) }}</span>
+          </p>
+          <button (click)="editRedCase(case)" style="background-color: cadetblue;padding: 5px; color: aliceblue; border-radius: 5px;">
+            Edit Case 
+          </button>
+        
+        </div>
+
+
+      </div>
+      <div style="
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      width: 95%;
+      margin-top: 10px;
+      "
+        *ngIf="redflats.length"
+      >
+        <h2 style="color:rgb(182, 37, 37); font-size: large;">Red Flats Registered</h2>
+        <div class="caseCard" *ngFor="let flat of redflats">
+         <p>
+           Unit Name: {{flat.unitName  }}
+         </p>
+         <p style="color: red; font-weight: 700;" *ngIf="flat.status == 'ACTIVE'">
+           Status: {{flat.status  }}
+         </p>
+         <p style="color: rgb(58, 182, 130); font-weight: 700;"  *ngIf="flat.status == 'INACTIVE'">
+          Status: Recovered & Lifted
+        </p>
+         <p>
+           Case Name: {{flat.hh_name  }}
+         </p>
+         <p>
+           Case Contact: {{flat.contact  }}
+         </p>
+         <p>
+           Case CID: {{flat.cid  }}
+         </p>
+         <p>
+           Seal Date: {{flat.first_seal_date  }}
+         </p>
+
+         <button (click)="editRedFlat(flat)" style="background-color: cadetblue;padding: 5px; color: aliceblue; border-radius: 5px;">
+          Edit Red Flat 
+        </button>
+        </div>
+
+
+      </div>
     </div>
 
-    <br>
 
+
+<br style="margin-top: 4rem;">
+<br>
+   
 
     <div *ngIf="showBuildingInfo">
       <h3>Building Details</h3>
@@ -167,39 +243,6 @@
 
       <!-- <button  mat-flat-button color="primary" (click)=deleteBuildingInfo();>Delete Building Information</button> -->
       <br>
-
-      <table style="width:100%;">
-        <tr>
-          <th>Sl#</th>
-          <th>Date Detected</th>
-          <th>Number of Cases</th>
-          <th>Remarks</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-        <tr style="width: 100%;">
-          <td>
-            1
-          </td>
-          <td>
-            23rd Jan 2022
-          </td>
-          <td>
-            2
-          </td>
-          <td>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, vel.
-          </td>
-          <td>
-            Active
-          </td>
-          <td>
-            <button (click)="editCase()">
-
-            </button>
-          </td>
-        </tr>
-      </table>
     </div>
     <br>
     <br>
@@ -250,7 +293,6 @@
 
     </div>
 
-    <br><br>
     <div *ngIf="residentTableShow">
       <h3> Household Details</h3>
 

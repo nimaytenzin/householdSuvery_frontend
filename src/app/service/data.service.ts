@@ -701,6 +701,13 @@ export class DataService {
       catchError(this.handleError)
     ) 
   }
+  editCase(data){
+    return this.http
+    .patch<any>(`${this.API_URL}/case/update`,data,this.AuthenticatedHttpOtions)
+    .pipe(
+      catchError(this.handleError)
+    ) 
+  }
   deleteSealHistory(data){
     return this.http
     .post<any>(`${this.API_URL}/seal/delete`,data,this.AuthenticatedHttpOtions)

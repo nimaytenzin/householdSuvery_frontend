@@ -75,6 +75,11 @@ import { HomepageComponent } from './home/homepage/homepage.component';
 import { SelectRedtypeComponent } from './redbuilding/select-redtype/select-redtype.component';
 import { EditRedtypeComponent } from './redbuilding/edit-redtype/edit-redtype.component';
 import { Safe } from './public/public-home/safeHtml.pipe';
+import { CovadminAddRedflatComponent } from './cov-admin/covadmin-add-redflat/covadmin-add-redflat.component';
+import { CovadminAddRedbuildingDetailsComponent } from './cov-admin/covadmin-add-redbuilding-details/covadmin-add-redbuilding-details.component';
+import { CovadminEditRedbuildingDetailsComponent } from './cov-admin/covadmin-edit-redbuilding-details/covadmin-edit-redbuilding-details.component';
+import { CovadminEditRedflatDetailsComponent } from './cov-admin/covadmin-edit-redflat-details/covadmin-edit-redflat-details.component';
+import { CovadminEditRedCaseDetailsComponent } from './cov-admin/covadmin-edit-red-case-details/covadmin-edit-red-case-details.component';
 
 @NgModule({
   declarations: [
@@ -126,7 +131,12 @@ import { Safe } from './public/public-home/safeHtml.pipe';
     PublicHomeComponent,
     HomepageComponent,
     SelectRedtypeComponent,
-    EditRedtypeComponent
+    EditRedtypeComponent,
+    CovadminAddRedflatComponent,
+    CovadminAddRedbuildingDetailsComponent,
+    CovadminEditRedbuildingDetailsComponent,
+    CovadminEditRedflatDetailsComponent,
+    CovadminEditRedCaseDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -167,7 +177,9 @@ import { Safe } from './public/public-home/safeHtml.pipe';
     AddCasesDialogComponent,SelectdzongkhagComponent,SelectzoneComponent,AddRedflatDialogComponent,
     AddFlatmembersComponent, EditRedmemberComponent,DeleteRedmemberComponent,
     EditRedflatComponent,UnsealRedflatComponent,AddSealhistoryComponent,
-    EditSealhistoryComponent,DeleteSealhistoryComponent,SelectRedtypeComponent,EditRedtypeComponent
+    EditSealhistoryComponent,DeleteSealhistoryComponent,SelectRedtypeComponent,EditRedtypeComponent,
+    CovadminAddRedflatComponent,CovadminAddRedbuildingDetailsComponent,CovadminEditRedbuildingDetailsComponent,
+    CovadminEditRedflatDetailsComponent, CovadminEditRedCaseDetailsComponent
   ]
 })
 export class AppModule { }

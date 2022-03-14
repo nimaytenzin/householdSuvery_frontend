@@ -54,6 +54,7 @@ export class HomepageComponent implements OnInit {
 
 
     this.dataservice.statsNotokenThimphuGetMegazoneRedflats().subscribe(res => {
+      console.log(res)
       this.cumulativeStatistics.totalActiveRedFlats = res.data.totalActive;
       this.megaZoneStatistics.forEach(megazone => {
         megazone.activeFlats = res.data.activeFlats[megazone.id] ? res.data.activeFlats[megazone.id] : 0;

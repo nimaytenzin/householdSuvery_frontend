@@ -11,6 +11,11 @@ import { MarkPositiveDialogComponent } from '../mark-positive-dialog/mark-positi
 import { EditPositiveDialogComponent } from '../edit-positive-dialog/edit-positive-dialog.component';
 import { CreateRedBuildingDialogComponent } from '../red-buildings/create-red-building-dialog/create-red-building-dialog.component';
 import { AddCasesDialogComponent } from '../red-buildings/add-cases-dialog/add-cases-dialog.component';
+import { CovadminAddRedflatComponent } from './covadmin-add-redflat/covadmin-add-redflat.component';
+import { CovadminAddRedbuildingDetailsComponent } from './covadmin-add-redbuilding-details/covadmin-add-redbuilding-details.component';
+import { CovadminEditRedbuildingDetailsComponent } from './covadmin-edit-redbuilding-details/covadmin-edit-redbuilding-details.component';
+import { CovadminEditRedflatDetailsComponent } from './covadmin-edit-redflat-details/covadmin-edit-redflat-details.component';
+import { CovadminEditRedCaseDetailsComponent } from './covadmin-edit-red-case-details/covadmin-edit-red-case-details.component';
 
 export class Case{
   red_building_id:number
@@ -203,6 +208,7 @@ export class CovAdminComponent implements OnInit {
   selectedStructure = null;
 
   newBuildingPoint: any;
+  redflats=[];
 
   //markers
   xyCircle: L.Circle;
@@ -277,9 +283,12 @@ export class CovAdminComponent implements OnInit {
 
   //redBuildings
   redBuildingGeojson: any;
-  redBuildingCases: any;
+  redBuildingCases: any=[]
   selectedRedBuilding:any;
   selectedDzongkhagId:number;
+
+  //
+  currentRedBuildingMarker:L.CircleMarker;
 
   constructor(
     private http: HttpClient,
@@ -299,22 +308,16 @@ export class CovAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    let subzoneId = Number(sessionStorage.getItem("subzoneID"));
+    let dzo_id =  Number(sessionStorage.getItem('dzo_id'))
+    if(subzoneId && dzo_id){ 
+      this.renderBoundary(subzoneId,true)
+      this.addStructures(subzoneId,true);
+      this.renderRedBuildings(dzo_id,false);
+    }
     this.getDzongkhagList();
     this.reactiveForm();
-    // const zoneId = sessionStorage.getItem('zoneId');
-    // const subZoneId = sessionStorage.getItem('subZoneId');
-    // const dzongkhagId = sessionStorage.getItem('dzongkhagId')
-
-    // this.getZoneList(dzongkhagId);
-    // this.getSubzoneList(zoneId);
     this.renderMap();
-
-    // if (sessionStorage.getItem("subzoneID") !== null) {
-    //   this.renderBuildings(sessionStorage.getItem("subzoneID"))
-    // } else {
-
-    // }
-
   }
 
   submit() {
@@ -624,6 +627,7 @@ export class CovAdminComponent implements OnInit {
     console.log()
     const zoneId = this.zoneForm.get('subZoneControl').value;
     sessionStorage.setItem('subzoneID', zoneId)
+    sessionStorage.setItem('dzo_id', this.zoneForm.get('dzongkhagControl').value.id)
     this.selectedDzongkhagId = this.zoneForm.get('dzongkhagControl').value.id;
     // this.map.setView([this.zoneForm.get('dzongkhagControl').value.lat, this.zoneForm.get('dzongkhagControl').value.lng], 14);
 
@@ -660,17 +664,24 @@ export class CovAdminComponent implements OnInit {
           }
         }
       }).addTo(this.map);
+      this.map.fitBounds(this.bound.getBounds())
     })
   }
 
 
   addNewCase(){
-    console.log(this.selectedRedBuilding)
     let caseData:caseInterface = {
-        red_building_id:this.selectedRedBuilding.properties.id,
+        red_building_id:this.selectedRedBuilding.id,
         dzo_id:this.selectedDzongkhagId
     }
-    this.addCaseDialog(caseData,true)
+    this.dialog.open(CovadminAddRedbuildingDetailsComponent, {
+      data:caseData
+    }).afterClosed().subscribe(res=>{
+      if(res.success == true){
+        this.refreshRedBuildingData()
+       
+      }
+    })
   }
 
 
@@ -680,21 +691,28 @@ export class CovAdminComponent implements OnInit {
         this.map.removeLayer(this.redBuildingGeojson)
       }
       this.redBuildingGeojson = L.geoJSON(res, {
-        onEachFeature: (feature, layer) => {
+        onEachFeature: (feature:any, layer) => {
           layer.on('click', (e) => {
-            this.selectedRedBuilding = feature
-            // this.map.setView([e.target.feature.geometry.coordinates[1],e.target.feature.geometry.coordinates[0]], 18);
+            this.selectedRedBuilding = feature.properties;
+
+            let cord =  L.latLng(feature.coordinates[1],feature.coordinates[0]);
+            if(this.currentRedBuildingMarker){
+              this.map.removeLayer(this.currentRedBuildingMarker)
+            }
+            
+             this.currentRedBuildingMarker = new L.CircleMarker(cord,{
+              radius:20,
+              weight:2
+            }).addTo(this.map)
+            this.dataService.getRedflatsByRedbuildingId(feature.properties.id).subscribe(res=>{
+              this.redflats= res.data
+            })
             this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
               this.redBuildingCases = res.data;
               let totalCases=0;
               res.data.forEach(element => {
                 totalCases+= element.numCases;
               });
-              layer.bindPopup(
-                '<p style:"color:tomtato">Status: ' + feature.properties.status + '</p>' +
-                '<p style:"color:tomtato">Number of Cases: ' + totalCases + '</p>' +
-                '<p style:"color:tomtato">First Detection: ' + new Date(res.data[0].date).toLocaleDateString() + '</p>'
-              )
               this.buildingId = feature.properties.structure_id;
               this.deleteButton = true
               this.unitDetailShow = true
@@ -924,7 +942,7 @@ export class CovAdminComponent implements OnInit {
     this.selectedStructure.properties.dzongkhag_id = 1;
 
     let data = {
-      dzo_id: this.selectedDzongkhagId,
+      dzo_id: this.selectedDzongkhagId? this.selectedDzongkhagId: Number(sessionStorage.getItem('dzo_id')),
       lat: this.selectedStructure.coordinates[1],
       lng: this.selectedStructure.coordinates[0],
       structure_id: this.selectedStructure.properties.structure_id
@@ -965,7 +983,7 @@ export class CovAdminComponent implements OnInit {
       canCancel:canCancel,
       ...data
     }
-    this.dialog.open(AddCasesDialogComponent,{disableClose:!canCancel, data:cdData }).afterClosed().subscribe(result=>{
+    this.dialog.open(CovadminAddRedbuildingDetailsComponent,{disableClose:!canCancel, data:cdData }).afterClosed().subscribe(result=>{
       if(result.event === "success"){
         let newCase = new Case;
         newCase.case_id = result.data.case_id
@@ -1202,6 +1220,66 @@ export class CovAdminComponent implements OnInit {
 
   parseDate(date){
     return new Date(date).toLocaleDateString()
+  }
+
+  addRedFlat(){
+    console.log(this.selectedRedBuilding)
+    this.dialog.open(CovadminAddRedflatComponent,{
+      data:{
+        red_building_id:this.selectedRedBuilding.id
+      }
+    }).afterClosed().subscribe(res=>{
+      if (res.success == true) {
+          this.refreshRedBuildingData()
+      } 
+    })
+  }
+
+  editRedBuildingDetails(redBuildingID){
+    console.log("OPENED EDIT RED BUILDING DETAILS")
+    this.dialog.open(CovadminEditRedbuildingDetailsComponent,{
+      data:redBuildingID
+    }).afterClosed().subscribe(res=>{
+      if(res.success == true){
+        this.renderRedBuildings(1,false);
+        this.dataService.getRedbuildingsDetailsById(this.selectedRedBuilding.id).subscribe(res=>{
+          this.selectedRedBuilding = res.data
+        })
+      }
+    })
+
+  }
+
+  editRedFlat(selectedRedFlat){
+    this.dialog.open(CovadminEditRedflatDetailsComponent,{
+      data:selectedRedFlat
+    }).afterClosed().subscribe(res=>{
+      if(res.success == true){
+        this.refreshRedBuildingData()
+       
+      }
+    })
+  }
+
+  editRedCase(selectedRedCase){
+
+    this.dialog.open(CovadminEditRedCaseDetailsComponent, {
+      data:selectedRedCase
+    }).afterClosed().subscribe(res=>{
+      if(res.success == true){
+        this.refreshRedBuildingData()
+       
+      }
+    })
+  }
+
+  refreshRedBuildingData(){
+    this.dataService.getRedflatsByRedbuildingId(this.selectedRedBuilding.id).subscribe(res=>{
+      this.redflats= res.data
+    })
+    this.dataService.getCasesByRedbuilingId(this.selectedRedBuilding.id).subscribe(res => {
+      this.redBuildingCases = res.data;
+    })
   }
 
 }
