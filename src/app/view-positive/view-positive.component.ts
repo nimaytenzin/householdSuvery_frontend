@@ -301,6 +301,16 @@ export class ViewPositiveComponent implements OnInit {
     fillOpacity: 0.8
   }
 
+  redFlatMarkerActiveOptions = {
+    radius: 8,
+    fillColor: "#bf580a",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  }
+
+
   setViewValue: boolean;
 
 
@@ -453,27 +463,31 @@ export class ViewPositiveComponent implements OnInit {
                   }
                 }).addTo(this.map)
 
-                fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
-                  .then(res => res.json())
-                  .then(dat => {
-                    this.thimphuPoe = L.geoJSON(dat, {
+                this.overlayMaps['Megazones'] = this.thimphuMegaZones
+                if(this.mapLayerControl !== undefined){
+                  this.mapLayerControl.remove()
+                }
+                this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+
+                // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
+                //   .then(res => res.json())
+                //   .then(dat => {
+                //     this.thimphuPoe = L.geoJSON(dat, {
 
 
-                      pointToLayer: (feature, latLng) => {
+                //       pointToLayer: (feature, latLng) => {
 
-                        return new L.CircleMarker(latLng, {
-                          radius: 4,
-                          color: "blue",
-                          fillOpacity: 1,
-                          weight: 2
-                        }).bindPopup("ok")
+                //         return new L.CircleMarker(latLng, {
+                //           radius: 4,
+                //           color: "blue",
+                //           fillOpacity: 1,
+                //           weight: 2
+                //         }).bindPopup("ok")
 
-                      }
-
-
-
-                    }).addTo(this.map)
-                  })
+                //       }
+                //     }).addTo(this.map)
+                //     this.reOrderLayer()
+                //   })
 
                 fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
                   .then(res => res.json())
@@ -489,8 +503,17 @@ export class ViewPositiveComponent implements OnInit {
                         color: "#E72424CE", weight: 3, fillOpacity: 0.2
                       }
                     }).addTo(this.map)
+                    this.reOrderLayer()
                   })
+                  this.reOrderLayer()
               })
+
+              this.overlayMaps['Thimphu Zones'] = this.thimphuZones
+              if(this.mapLayerControl !== undefined){
+                this.mapLayerControl.remove()
+              }
+              this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+              this.reOrderLayer()
           })
       }
 
@@ -548,13 +571,20 @@ export class ViewPositiveComponent implements OnInit {
             }
           });
 
-          this.overlayMaps = {
-            "Quarantine Facilities": this.quarantineFacilities,
-            "Isolation Facilities": this.isolationFacilities,
-            "Zone Map": this.zoneMap
-          };
+          // this.overlayMaps = {
+          //   "Quarantine Facilities": this.quarantineFacilities,
+          //   "Isolation Facilities": this.isolationFacilities,
+          //   "Zone Map": this.zoneMap
+          // };
+          this.overlayMaps['Quarantine Facilities'] = this.quarantineFacilities
+          this.overlayMaps['Isolation Facilities'] = this.isolationFacilities
+          this.overlayMaps['Zone map'] = this.zoneMap
 
+          if(this.mapLayerControl !== undefined){
+            this.mapLayerControl.remove()
+          }
           this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+
           this.fetchAndSetCovidStats(this.dzongkhagId)
           // this.renderMap();
           this.renderRedBuildings(this.dzongkhagId)
@@ -675,38 +705,39 @@ export class ViewPositiveComponent implements OnInit {
     }
   }
 
-  toggleThimphuZone() {
-    if (this.map.hasLayer(this.thimphuZones)) {
-      this.map.removeLayer(this.thimphuZones);
-    } else {
-      this.map.addLayer(this.thimphuZones);
-    }
-  }
 
-  togglePoes() {
-    if (this.map.hasLayer(this.thimphuPoe)) {
-      this.map.removeLayer(this.thimphuPoe);
-    } else {
-      this.map.addLayer(this.thimphuPoe);
-    }
-  }
+  // toggleThimphuZone() {
+  //   if (this.map.hasLayer(this.thimphuZones)) {
+  //     this.map.removeLayer(this.thimphuZones);
+  //   } else {
+  //     this.map.addLayer(this.thimphuZones);
+  //   }
+  // }
 
-  toggleThimphuMegaZone() {
-    if (this.map.hasLayer(this.thimphuMegaZones)) {
-      this.map.removeLayer(this.thimphuMegaZones);
-    } else {
-      this.map.addLayer(this.thimphuMegaZones);
-    }
-    // this.map.removeLayer(this.thimphuMegaZones);
-  }
+  // togglePoes() {
+  //   if (this.map.hasLayer(this.thimphuPoe)) {
+  //     this.map.removeLayer(this.thimphuPoe);
+  //   } else {
+  //     this.map.addLayer(this.thimphuPoe);
+  //   }
+  // }
 
-  toggleRedClusters() {
-    if (this.map.hasLayer(this.thimphuRedClusters)) {
-      this.map.removeLayer(this.thimphuRedClusters);
-    } else {
-      this.map.addLayer(this.thimphuRedClusters);
-    }
-  }
+  // toggleThimphuMegaZone() {
+  //   if (this.map.hasLayer(this.thimphuMegaZones)) {
+  //     this.map.removeLayer(this.thimphuMegaZones);
+  //   } else {
+  //     this.map.addLayer(this.thimphuMegaZones);
+  //   }
+  //   // this.map.removeLayer(this.thimphuMegaZones);
+  // }
+
+  // toggleRedClusters() {
+  //   if (this.map.hasLayer(this.thimphuRedClusters)) {
+  //     this.map.removeLayer(this.thimphuRedClusters);
+  //   } else {
+  //     this.map.addLayer(this.thimphuRedClusters);
+  //   }
+  // }
 
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
@@ -723,9 +754,13 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   reOrderLayer() {
-    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined) {
+    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined && this.thimphuMegaZones != undefined && this.thimphuZones != undefined) {
       this.map.removeLayer(this.buildingGeojson)
       this.map.removeLayer(this.redBuildingGeojson)
+      this.map.removeLayer(this.thimphuMegaZones)
+      this.map.removeLayer(this.thimphuZones)
+      this.map.addLayer(this.thimphuMegaZones)
+      this.map.addLayer(this.thimphuZones)
       this.map.addLayer(this.buildingGeojson)
       this.map.addLayer(this.redBuildingGeojson)
     }
@@ -794,12 +829,21 @@ export class ViewPositiveComponent implements OnInit {
           pointToLayer: (feature, latLng) => {
             let bldgMarker: L.CircleMarker;
             console.log(feature.properties.status)
-            switch (feature.properties.status) {
-              case "INACTIVE":
-                bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+            console.log(feature.properties.type)
+            switch (feature.properties.type) {
+              case "BUILDING":
+                if(feature.properties.status == "INACTIVE"){
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+                }else{
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingMarkerActiveOptions)
+                }
                 break;
-              case "ACTIVE":
-                bldgMarker = L.circleMarker(latLng, this.redBuildingMarkerActiveOptions)
+              case "FLAT":
+                if(feature.properties.status == "INACTIVE"){
+                  bldgMarker = L.circleMarker(latLng, this.redBuildingInactiveMarkerOptions)
+                }else{
+                  bldgMarker = L.circleMarker(latLng, this.redFlatMarkerActiveOptions)
+                }
                 break;
             }
             return bldgMarker;
