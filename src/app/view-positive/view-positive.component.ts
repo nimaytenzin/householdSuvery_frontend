@@ -374,7 +374,6 @@ export class ViewPositiveComponent implements OnInit {
               color: "#29DCFB", weight: 1.5, fillOpacity: 0.1
             }
           })
-
           fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
             .then(res => res.json())
             .then(dat => {
@@ -392,7 +391,6 @@ export class ViewPositiveComponent implements OnInit {
                   color: "#FFF67FCE", weight: 1.5, fillOpacity: 0,fillColor:"black"
                 }
               })
-
               this.overlayMaps['Megazones'] = this.thimphuMegaZones
               if(this.mapLayerControl !== undefined){
                 this.mapLayerControl.remove()
@@ -401,7 +399,6 @@ export class ViewPositiveComponent implements OnInit {
               fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
                 .then(res => res.json())
                 .then(ok => {
-                  console.log(ok)
                   this.thimphuRedClusters = L.geoJSON(ok, {
                     onEachFeature: function (feature, featureLayer) {
                       featureLayer.bindPopup(
@@ -411,13 +408,18 @@ export class ViewPositiveComponent implements OnInit {
                     style: {
                       color: "#E72424CE", weight: 3, fillOpacity: 0.2
                     }
-                  }).addTo(this.map)
+                  })
+                  this.overlayMaps['RedClusters'] = this.thimphuRedClusters
+                  if(this.mapLayerControl !== undefined){
+                    this.mapLayerControl.remove()
+                  }
+                  this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
                   this.reOrderLayer()
                 })
-                this.reOrderLayer()
             })
 
             this.overlayMaps['Thimphu Zones'] = this.thimphuZones
+            
             if(this.mapLayerControl !== undefined){
               this.mapLayerControl.remove()
             }
