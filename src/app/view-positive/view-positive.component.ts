@@ -197,7 +197,7 @@ export class ViewPositiveComponent implements OnInit {
   showSubZone = false;
   residentialUnits = [];
 
-  zoneForm: FormGroup;
+ 
   dzongkhags: Dzongkhag[] = [];
   zones: Zone[] = [];
   subZones: Subzone[] = [];
@@ -230,10 +230,6 @@ export class ViewPositiveComponent implements OnInit {
   stepvalue = []
   monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   //logic
-  officeShopDetailShow: boolean
-  residentialUnitDetailShow: boolean
-  sliderControl: any;
-  NationalCase: any;
 
   total_cases: Number = 0;
   red_buildings: any = 0;
@@ -265,8 +261,8 @@ export class ViewPositiveComponent implements OnInit {
 
   redFlatMarkerActiveOptions = {
     radius: 8,
-    fillColor: "#158DFD",
-    color: "#000",
+    fillColor: "#FF1BBB",
+    color: "#4B4B44",
     weight: 1,
     opacity: 1,
     fillOpacity: 0.8
@@ -323,6 +319,7 @@ export class ViewPositiveComponent implements OnInit {
   thimphuMegaZones: L.GeoJSON;
   thimphuPoe: L.GeoJSON;
   thimphuRedClusters: L.GeoJSON;
+  redflats:[];
 
 
 
@@ -392,9 +389,9 @@ export class ViewPositiveComponent implements OnInit {
                   featureLayer.openPopup()
                 },
                 style: {
-                  color: "#EEE34CCE", weight: 2, fillOpacity: 0.2,fillColor:"black"
+                  color: "#FFF67FCE", weight: 1.5, fillOpacity: 0,fillColor:"black"
                 }
-              }).addTo(this.map)
+              })
 
               this.overlayMaps['Megazones'] = this.thimphuMegaZones
               if(this.mapLayerControl !== undefined){
@@ -426,8 +423,6 @@ export class ViewPositiveComponent implements OnInit {
             }
             this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
             this.reOrderLayer();
-          
-      
             this.fetchAndSetCovidStats(this.dzongkhagId)
             this.renderRedBuildings(this.dzongkhagId)
         })
@@ -454,11 +449,6 @@ export class ViewPositiveComponent implements OnInit {
       this.totalRedFlats = res.data.activeFlats
     })
   }
-
-  transformChiwogName(name) {
-    return name.replace(/_/g, ' ');
-  }
-
   getMyLocation() {
     this.map.locate({ watch: true, enableHighAccuracy: true });
     this.map.on('locationfound', (e) => {
@@ -485,21 +475,11 @@ export class ViewPositiveComponent implements OnInit {
     this.totalRedBuildings = 0;
     sessionStorage.removeItem("dzongkhagId")
     sessionStorage.setItem("dzongkhagId", String(this.searchDzongkhagId));
-    console.log("Load zone map of dzo_id", this.searchDzongkhagId)
     window.location.reload();
-
-    // this.dzongkhags.forEach(dzo => {
-    //   if (Number(dzo.id) === Number(sessionStorage.getItem("dzongkhagId"))) {
-    //     this.dzongkhag = dzo.name
-    //   }
-    // })
-    // this.fetchAndSetCovidStats(this.searchDzongkhagId);
-    // this.renderRedBuildings(this.searchDzongkhagId);
   }
 
 
   downloadKml() {
-
     this.dataService.getRedBuildingKmlByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
       let filename: string = `${this.dzongkhag}_redbuilding.kml`
       let binaryData = [];
@@ -514,8 +494,6 @@ export class ViewPositiveComponent implements OnInit {
 
   searchBuildingByBuildingNumber() {
     if (this.searchBuildingId) {
-      console.log(this.searchBuildingId)
-
       for (let i = 0; i < this.redbuildings.length; i++) {
         if (this.searchBuildingId === this.redbuildings[i].properties.structure_id) {
           let lat = this.redbuildings[i].coordinates[1];
@@ -546,39 +524,6 @@ export class ViewPositiveComponent implements OnInit {
   }
 
 
-  // toggleThimphuZone() {
-  //   if (this.map.hasLayer(this.thimphuZones)) {
-  //     this.map.removeLayer(this.thimphuZones);
-  //   } else {
-  //     this.map.addLayer(this.thimphuZones);
-  //   }
-  // }
-
-  // togglePoes() {
-  //   if (this.map.hasLayer(this.thimphuPoe)) {
-  //     this.map.removeLayer(this.thimphuPoe);
-  //   } else {
-  //     this.map.addLayer(this.thimphuPoe);
-  //   }
-  // }
-
-  // toggleThimphuMegaZone() {
-  //   if (this.map.hasLayer(this.thimphuMegaZones)) {
-  //     this.map.removeLayer(this.thimphuMegaZones);
-  //   } else {
-  //     this.map.addLayer(this.thimphuMegaZones);
-  //   }
-  //   // this.map.removeLayer(this.thimphuMegaZones);
-  // }
-
-  // toggleRedClusters() {
-  //   if (this.map.hasLayer(this.thimphuRedClusters)) {
-  //     this.map.removeLayer(this.thimphuRedClusters);
-  //   } else {
-  //     this.map.addLayer(this.thimphuRedClusters);
-  //   }
-  // }
-
   downloadZoneKml() {
     this.dataService.DownloadChiwogGeojsonByDzongkhag(Number(sessionStorage.getItem("dzongkhagId"))).subscribe(res => {
       let filename: string = `${this.dzongkhag}_zone.geojson`
@@ -594,13 +539,11 @@ export class ViewPositiveComponent implements OnInit {
   }
 
   reOrderLayer() {
-    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined && this.thimphuMegaZones != undefined && this.thimphuZones != undefined) {
+    if (this.buildingGeojson != undefined && this.redBuildingGeojson != undefined && this.thimphuMegaZones != undefined ) {
       this.map.removeLayer(this.buildingGeojson)
       this.map.removeLayer(this.redBuildingGeojson)
       this.map.removeLayer(this.thimphuMegaZones)
-      this.map.removeLayer(this.thimphuZones)
       this.map.addLayer(this.thimphuMegaZones)
-      this.map.addLayer(this.thimphuZones)
       this.map.addLayer(this.buildingGeojson)
       this.map.addLayer(this.redBuildingGeojson)
     }
@@ -613,22 +556,22 @@ export class ViewPositiveComponent implements OnInit {
         this.redBuildingGeojson = L.geoJSON(res, {
           onEachFeature: (feature, layer) => {
             layer.on('click', (e) => {
-              console.log(feature)
-              this.selectedRedBuilding = feature
+             
+              this.selectedRedBuilding = feature.properties
+              this.dataService.getRedflatsByRedbuildingId(feature.properties.id).subscribe(res=>{
+                this.redflats= res.data
+              })
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
                 this.redBuildingCases = res.data;
-                this.unitDetailShow = true;
                 this.buildingId = feature.properties.structure_id;
                 this.showBuildingInfo = true;
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   if (res.success === "true") {
                     this.bid = res.data.id
-                    this.buildingUse = res.data.buildingUse;
                     this.cidOwner = res.data.cidOwner;
                     this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
                     this.contactOwner = res.data.contactOwner;
                   } else {
-                    this.buildingUse = "No Record";
                     this.cidOwner = "No Record";
                     this.nameOfBuildingOwner = "No Record";
                     this.contactOwner = "No Record";
@@ -641,25 +584,12 @@ export class ViewPositiveComponent implements OnInit {
                     this.imgs = res.data
                   }
                 })
-
-                this.dataService.getHouseholds(this.buildingId).subscribe(res => {
-                  this.unitsData = res.data
-                  this.length = res.data.length
-                })
-
-              })
-              this.dataService.getRedflats(feature.properties.id).subscribe(res=>{
-                this.redFlatTableShow = true
-                this.redFlatDetailShow= false 
-                this.redFlats = res.data
               })
             });
 
           },
           pointToLayer: (feature, latLng) => {
             let bldgMarker: L.CircleMarker;
-            console.log(feature.properties.status)
-            console.log(feature.properties.type)
             switch (feature.properties.type) {
               case "BUILDING":
                 if(feature.properties.status == "INACTIVE"){
@@ -679,51 +609,8 @@ export class ViewPositiveComponent implements OnInit {
             return bldgMarker;
           }
         }).addTo(this.map);
-
-        // const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
-        //   if (this.bound !== undefined) {
-        //     this.map.removeLayer(this.bound);
-        //   }
-        //   this.bound = L.geoJSON(json.data, {
-        //     onEachFeature: (feature, layer) => {
-
-        //     },
-        //     style: (feature) => {
-        //       return {
-        //         color: "white",
-        //         fillOpacity: 0,
-        //         weight: 1.5
-        //       }
-        //     }
-        //   }).addTo(this.map);
-        //   this.map.addLayer(this.redBuildingGeojson)
-        // })
-
-
         this.map.fitBounds(this.redBuildingGeojson.getBounds());
       }
-      // else {
-      //   if (this.bound !== undefined) {
-      //     this.map.removeLayer(this.bound);
-      //     if (this.redBuildingGeojson !== undefined) {
-      //       this.map.removeLayer(this.redBuildingGeojson);
-      //       const geojson = this.http.get(`https://zhichar-pling.ddnsfree.com/zone/map/getDzo/${dzongkhagId}`).subscribe((json: any) => {
-      //         this.bound = L.geoJSON(json.data, {
-      //           style: (feature) => {
-      //             return {
-      //               color: "#f8fafc",
-      //               fillOpacity: 0,
-      //               weight: 1
-      //             }
-      //           }
-      //         }).addTo(this.map);
-      //       })
-
-      //       this.map.fitBounds(this.bound.getBounds());
-      //     }
-      //   }
-      // }
-
     })
   }
 
@@ -749,51 +636,9 @@ export class ViewPositiveComponent implements OnInit {
     return new Date(date).toLocaleDateString()
   }
 
-  showRedflatDetail(flatId){
-    this.snackBar.open('Scroll down', '', {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: ['success-snackbar']
-    });
-    this.dataService.getRedflatDetail(flatId).subscribe(res=>{
-      if(res.data){
-        this.redFlatDetailShow = true;
-        this.redHouseholdData = res.data
-      }
-    })
-
-  }
-
-  showResident(unitid) {
-    this.resident = null;
-    this.residentTableShow = true
-
-    this.snackBar.open('Scroll down', '', {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: ['success-snackbar']
-    });
-    this.dataService.getAHousehold(unitid).subscribe(resp => {
 
 
-      if (resp.data.unitUse !== "Residential") {
-        this.residentialUnitDetailShow = false
-        this.officeShopDetailShow = true
-      } else {
-        this.residentialUnitDetailShow = true
-        this.officeShopDetailShow = false
-      }
-      this.housholdsData = resp.data
 
-      this.dataService.getFamilyMembers(unitid).subscribe(resp => {
-        this.familyMembers = resp.data
-      })
-    });
-  }
 
-  selectedRowIndex = -1;
 
-  highlight(row) {
-    this.selectedRowIndex = row.id;
-  }
 }

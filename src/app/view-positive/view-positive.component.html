@@ -10,28 +10,31 @@
             padding: 5px;
             color: rgb(226 232 240);
             background-color: rgb(51 65 85);
-            margin-right: 50px;">Click on a point to view Details, doubleclick to view Summary</mat-label>
+            margin-right: 50px;">Red: RedBuilding | Pink: Red Flats | Green: Recovered</mat-label>
         </div>
-
-
-
         <div class="leaflet-top leaflet-left" *ngIf="dzongkhagId === 1" style=" color: rgb(226 232 240); padding: 0%;">
-            <div style="background-color: #1E2A3B; color: rgb(226 232 240); display: flex; width: 300px; border: 5%;padding: 0;">
-                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
-                    <span style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: blue; margin-right: 4px;"></span>POE
-                  </p>
-      
-                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
-                    <span style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: red;margin-right: 4px;"></span>Red Buildings
-                  </p>
+          <div
+            style="background-color: #1E2A3B; color: rgb(226 232 240); display: flex; width: 300px; border: 5%;padding: 0;">
+            <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+              <span
+                style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: blue; margin-right: 4px;"></span>POE
+            </p>
 
-                  <p style="display: flex; align-items: center;gap: 1%;width:100%;">
-                    <span style="display: inline-block; height: 13px;width: 13px;background-color: none; border:1px solid red;margin-right: 4px;"></span>Red Clusters
-                  </p>
-            </div>
+            <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+              <span
+                style="display: inline-block; height: 13px;width: 13px; border-radius: 100%;background-color: red;margin-right: 4px;"></span>Red
+              Buildings
+            </p>
+
+            <p style="display: flex; align-items: center;gap: 1%;width:100%;">
+              <span
+                style="display: inline-block; height: 13px;width: 13px;background-color: none; border:1px solid red;margin-right: 4px;"></span>Red
+              Clusters
+            </p>
+          </div>
         </div>
 
-        
+
 
         <div class="leaflet-bottom leaflet-right">
           <button style="
@@ -43,32 +46,14 @@
           border: none;" value="Cancel" class=" span3 leaflet-control" (click)="getMyLocation()">
             <mat-icon style="color: blue;">location_searching</mat-icon>
           </button>
-      </div>
+        </div>
 
-      
+
       </div>
     </div>
 
   </div>
   <div class="scroll" style="margin: 0;">
-    <!-- <div style="display: flex; margin-top: 2%; flex-wrap: wrap; justify-content: center; align-items: center;font-size: larger; ">
-      <div style="padding:1px">
-        <button (click)="toggleThimphuZone()">Toggle <span style="font-weight: bold;cursor: pointer;">ZONE</span></button>  <br>
-      </div>
-
-      <div style="padding:1px">
-        <button (click)="togglePoes()">Toggle<span style="font-weight: bold;cursor: pointer;">POE</span></button>  <br>
-      </div>
-
-      <div style="padding:1px">
-        <button (click)="toggleThimphuMegaZone()">Toggle <span style="font-weight: bold;cursor: pointer;">MegaZone</span></button> <br>
-      </div>
-
-      <div style="padding:1px">
-        <button (click)="toggleRedClusters()">Toggle <span style="font-weight: bold;cursor: pointer;">Red Clusters</span></button> <br>
-      </div>
-      
-     </div> -->
     <p style="text-align: center;font-weight: 100;font-size: x-large;margin-top: 5%;">
       འབྱོན་པ ལེགས་སོ།།
     </p>
@@ -90,8 +75,6 @@
         </h1>
       </mat-card>
       <mat-card style="
-                  border-top-left-radius: 0.125rem;
-                  border-bottom-left-radius: 0.125rem;
                   align-items: center;
                   justify-content: 
                   center;padding-bottom: 0;
@@ -106,66 +89,34 @@
                   align-items: center;
                   justify-content: 
                   center;padding-bottom: 0;
-                  background-color: rgb(196, 195, 190);
+                  background-color: rgb(226 232 240);
                   ">
         <p style="font-size: small;">Total Red flats</p>
         <h1 style="color: #DE3163; font-weight: bolder;">{{totalRedFlats}}</h1>
       </mat-card>
 
-
-     
-
-
-
-      
     </div>
 
-    <div *ngIf="dzongkhagId === 1" style="width: 100%;display: flex;gap:2%; flex-direction: column; justify-content: center;align-items: center; margin-top: 5%;">
 
-      <div>
-
-        
-      </div>
-
-  
-
-    </div>
-
-   <div class="search-container" >
-    <div class="search-sub-container" >
-      <div>
-        <input type="number" placeholder="Building ID" [(ngModel)]="searchBuildingId">
-      </div>
-      <div class="search-icon" (click)="searchBuildingByBuildingNumber()" >
-        <img src="../../assets/search-gray.png" alt="">
+    <div class="search-container">
+      <div class="search-sub-container">
+        <div>
+          <input type="number" placeholder="Building ID" [(ngModel)]="searchBuildingId">
+        </div>
+        <div class="search-icon" (click)="searchBuildingByBuildingNumber()">
+          <img src="../../assets/search-gray.png" alt="">
+        </div>
       </div>
     </div>
-   </div>
 
-    <!-- <div style="display:flex; gap:2%; padding-left:5%; padding-right:5%;justify-items:center;width: 100%;">
-      <div>
-        <p> Total Red Chiwogs: {{ redChiwogs.length }}</p>
-         <li *ngFor="let chiwog of redChiwogs" >
-            {{ transformChiwogName(chiwog) }}
-         </li>
-       </div>
-      <div style="line-height: 100%;">
-        <p>Total Yellow Chiwogs: {{ yellowChiwogs.length }}</p>
-        <li *ngFor="let chiwog of yellowChiwogs" style="text-transform: capitalize;" >
-           {{ transformChiwogName(chiwog) }}
-        </li>
-      </div>
-      
-    </div> -->
-
-
-    <div style="display: flex; align-items: center; flex-direction: column; flex-wrap: wrap; margin-top: 10%; cursor: pointer;">
+    <div
+      style="display: flex; align-items: center; flex-direction: column; flex-wrap: wrap; margin-top: 10%; cursor: pointer;">
       <button class="download-kml" (click)="downloadKml()">
         Download Red Buildings as KML
       </button>
 
       <button class="download-kml" (click)="downloadZoneKml()">
-        Download Zones as Geojson   
+        Download Zones as Geojson
       </button>
 
     </div>
@@ -181,45 +132,8 @@
       </div>
 
     </div>
-  
+
     <div *ngIf="showBuildingInfo" class="buildingDetails">
-
-      <div class="caseDetails">
-        <p style="font-weight: 400; font-size: large;">
-          Case History
-        </p>
-        <div style="
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-              align-items: center;
-              width: 95%;
-        ">
-          <div class="caseCard" *ngFor="let case of redBuildingCases">
-            <p>
-              Date Recorded: <span>{{ parseDate(case.date) }}</span>
-            </p>
-            <p>
-              Cases: <span style="font-size: x-large; margin:0;">{{ case.numCases }}</span>
-            </p>
-
-            <p style="word-break: break-all;">
-              CaseCode:{{ case.case_id }}
-            </p>
-            <p style="word-break: break-all;">
-              Remarks:{{ case.remarks }}
-            </p>
-            <h4 *ngIf="case.status === 'ACTIVE'" style="color: #DE3262;">
-              Status: Active
-            </h4>
-            <p *ngIf="case.status === 'INACTIVE'" style="color: rgb(60, 134, 60);">
-              Status: Recovered
-            </p>
-          </div>
-
-        </div>
-      </div>
-
       <div>
         <p style="font-weight: 400; font-size: large;">
           Building Details
@@ -232,10 +146,6 @@
             <th class="table-header">Building ID</th>
             <td>{{buildingId}}</td>
           </tr>
-          <tr>
-            <th class="table-header">Building Use</th>
-            <td>{{buildingUse}}</td>
-          </tr>
           <p>
             Owner Details
           </p>
@@ -247,118 +157,100 @@
             <th class="table-header">Contact</th>
             <td>{{contactOwner}}</td>
           </tr>
-          <tr>
-            <th class="table-header">Total Units</th>
-            <td>{{length}}</td>
-          </tr>
         </table>
       </div>
 
-      <div *ngIf="redFlatTableShow" class="unitDIV">
-      
-      
-        <div *ngIf="redFlats.length">
-          <p style="font-weight: 400; font-size: large;">
-            Red flats
-          </p>
-          <table mat-table [dataSource]="redFlats">
-            <ng-container matColumnDef="position">
-              <th mat-header-cell *matHeaderCellDef> Unit Name</th>
-              <td mat-cell *matCellDef="let element"> {{element.unitName}} </td>
-            </ng-container>
-            <ng-container matColumnDef="view">
-              <th mat-header-cell *matHeaderCellDef> View Details </th>
-              <td mat-cell *matCellDef="let element" (click)=showRedflatDetail(element.id)> view </td>
-            </ng-container>
-      
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}"
-              (click)="highlight(row)"></tr>
-          </table>
-        </div>
-        <div *ngIf="redFlatDetailShow" style="margin-top:10;">
-          <p style="font-weight: 400; font-size: large;">
-            Red Flat Details
-          </p>
+      <hr style="width: 100%;margin-top: 2rem; margin-bottom: 1.5rem;">
 
-          <table style="width:100%;">
-            <tr>
-              <th>Status</th>
-              <td>{{redHouseholdData.status}}</td>
-            </tr>
-            <tr>
-              <th>Unit Name</th>
-              <td>{{redHouseholdData.unitName}}</td>
-            </tr>
-            <tr>
-              <th>Name</th>
-              <td>{{redHouseholdData.hh_name}}</td>
-            </tr>
-            <tr>
-              <th>CID</th>
-              <td>{{redHouseholdData.cid}}</td>
-            </tr>
-            <tr>
-              <th>Contact</th>
-              <td>{{redHouseholdData.contact}}</td>
-            </tr>
-            <tr>
-              <th>First Seal date and time</th>
-              <td>{{redHouseholdData.first_seal_date}}/{{redHouseholdData.first_seal_time}}</td>
-            </tr>
-            <tr *ngIf="redHouseholdData.final_unseal_date">
-              <th>Final unseal date</th>
-              <td>{{redHouseholdData.final_unseal_date}}</td>
-            </tr>
-            <tr>
-              <th *ngIf="redHouseholdData.remarks">Remarks</th>
-              <td>{{redHouseholdData.remarks}}</td>
-            </tr>
-            <tr>
-              <th>Sealed by Desuup</th>
-              <td>{{redHouseholdData.sealer.username}}/cid{{redHouseholdData.sealer.cid}}:</td>
-            </tr>
-          </table>
-          
-          <p>Family Members</p>
-          <table style="width:100%;">
-            <tr>
-              <th>Name</th>
-              <th>Age/Gender</th>
-              <th>Is Co-morbid</th>
-            </tr>
-            <tr *ngFor="let member of redHouseholdData.members">
-              <td>{{member.name}}</td>
-              <td>{{ member.age}} {{member.gender}}</td>
-              <td>{{member.isComorbid? "Yes" : "No" }}</td>
-            </tr>
-          </table>
+      <h2 style="text-align: center; font-size: large; font-weight: semibold; margin: 1rem;">Case Details</h2>
 
-          <p>Seal History</p>
-          <table style="width:100%;">
-            <tr>
-              <th>Date</th>
-              <th>Open/Close time</th>
-              <th>Reason</th>
-              <th>Desuup</th>
-            </tr>
-            <tr *ngFor="let seal of redHouseholdData.seals">
-              <td>{{seal.date}}</td>
-              <td>{{ seal.open_time}} / {{seal.close_time}}</td>
-              <td>{{ seal.reason}}</td>
-              <td>{{ seal.operator.username }}/{{seal.operator.cid}}</td>
-            </tr>
-          </table>
+      <h2 style="text-align: left; font-size: large; font-weight: bolder;" *ngIf="selectedRedBuilding.type == 'FLAT'">
+        Type : <span style="color: #FF1BBB;">{{
+          selectedRedBuilding.type }}</span> </h2>
+      <h2 style="text-align: left; font-size: large; font-weight: bolder;"
+        *ngIf="selectedRedBuilding.type == 'BUILDING'">Type : <span style="color: #FF0000;">{{
+          selectedRedBuilding.type }}</span> </h2>
+      <h2 style="text-align: left; font-size: large; font-weight: bolder;"
+        *ngIf="selectedRedBuilding.status == 'ACTIVE'">Status: {{ selectedRedBuilding.status }} </h2>
+      <h2 style="text-align: left; font-size: large; font-weight: bolder;color: rgb(28, 138, 101);"
+        *ngIf="selectedRedBuilding.status == 'INACTIVE'">Status: RECOVERED/RELEASED </h2>
+      <h2 style="text-align: left; font-size: large; font-weight: bolder;" *ngIf="selectedRedBuilding.type == 'FLAT'">
+        Building ID : <span>{{
+          selectedRedBuilding.structure_id }}</span> </h2>
+      <div style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            width: 95%;
+            margin-top: 10px;" *ngIf="redBuildingCases.length">
+        <p style=" font-size: large;width: 100%; text-align: left;">Cases Registered</p>
+        <div class="caseCard" *ngFor="let case of redBuildingCases">
+          <p style="word-break: break-all;">
+            Case Name: {{ case.case_id }}
+          </p>
+          <p style="word-break: break-all;">
+            Contact Details: {{ case.remarks }}
+          </p>
+          <p *ngIf="case.status == 'ACTIVE'">
+            Status: <span style="color: #FF0000;">
+              {{case.status }}
+            </span>
+          </p>
+          <p style="color: rgb(58, 182, 130); font-weight: 700;" *ngIf="case.status == 'INACTIVE'">
+            Status: Recovered & Lifted
+          </p>
+          <p>
+            Sealed Date: <span> {{ parseDate(case.date) }}</span>
+          </p>
         </div>
+
+
       </div>
+      <div style="
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      width: 95%;
+      margin-top: 10px;
+      " *ngIf="redflats.length">
+        <p style=" font-size: large;width: 100%; text-align: left;">Red Flats Registered</p>
+        <div class="caseCard" *ngFor="let flat of redflats">
+          <p>
+            Flat Name: {{flat.unitName }}
+          </p>
+
+          <p *ngIf="flat.status == 'ACTIVE'">
+            Status: <span style="color: #FF1BBB;">
+              {{flat.status }}
+            </span>
+          </p>
+          <p *ngIf="flat.status == 'INACTIVE'">
+            Status: <span style="color: #3A7A43;">
+              {{flat.status }}
+            </span>
+          </p>
+          <p>
+            Case Name: {{flat.hh_name }}
+          </p>
+          <p>
+            Case Contact: {{flat.contact }}
+          </p>
+          <p>
+            Seal Date: {{flat.first_seal_date }}
+          </p>
+        </div>
 
 
+      </div>
+      <br style="margin-top: 1rem;margin-bottom: 2rem;">
 
-      <div style="margin-top: 5%;">
+      <div>
         <p style="font-weight: 400; font-size: large;">
           Building Images
         </p>
-        <div style="display: flex; flex-direction: row;justify-content: center; flex-wrap: wrap;" *ngIf="imgs.length" >
+        <div style="display: flex; flex-direction: row;justify-content: center; flex-wrap: wrap;" *ngIf="imgs.length">
           <mat-list-item *ngFor="let image of imgs">
             <img src="https://zhichar.ddnsfree.com/hh/{{image.uri}}" style="width: 250px; margin: 3px;">
           </mat-list-item>
@@ -367,114 +259,6 @@
           <p>
             No images found in zhichar database!
           </p>
-        </div>
-
-
-        <div *ngIf="unitDetailShow" class="unitDIV">
-      
-          <p style="font-weight: 400; font-size: large;">
-            Building Units 
-          </p>
-
-          <div *ngIf="unitsData.length">
-            <table mat-table [dataSource]="unitsData">
-              <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef> Unit ID </th>
-                <td mat-cell *matCellDef="let element"> {{element.unitId}} </td>
-              </ng-container>
-              <ng-container matColumnDef="view">
-                <th mat-header-cell *matHeaderCellDef> View Details </th>
-                <td mat-cell *matCellDef="let element" (click)=showResident(element.id)> view </td>
-              </ng-container>
-      
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="highlight(row)"></tr>
-            </table>
-          </div>
-
-          <div *ngIf="!unitsData.length">
-            <p>
-              No Units found in zhichar database!
-            </p>
-          </div>
-    
-    
-        </div>
-
-        <div *ngIf="residentTableShow">
-          <h3> Household Details</h3>
-    
-      
-          <p>Details of the Head of the Household</p>
-    
-          <table style="width:100%;">
-            <tr>
-              <th>Unit ID</th>
-              <td>{{housholdsData.unitId}}</td>
-            </tr>
-            <tr>
-              <th>Name</th>
-              <td>{{housholdsData.name}}</td>
-            </tr>
-            <tr>
-              <th>CID</th>
-              <td>{{housholdsData.cid}}</td>
-            </tr>
-            <tr>
-              <th>Age</th>
-              <td>{{housholdsData.age}}</td>
-            </tr>
-            <tr>
-              <th>Gender</th>
-              <td>{{housholdsData.gender}}</td>
-            </tr>
-            <tr>
-              <th>Occupation</th>
-              <td>{{housholdsData.employment}}</td>
-            </tr>
-            <tr>
-              <th>Working Agency</th>
-              <td>{{housholdsData.employmentOrg}}</td>
-            </tr>
-            <tr>
-              <th>Working Zone</th>
-              <td>{{housholdsData.workzone}}</td>
-            </tr>
-          </table>
-  
-    
-            <table *ngIf="officeShopDetailShow">
-              <tr>
-                <th>Unit Name</th>
-                <td>{{housholdsData.shopOfficeName !== undefined ?housholdsData.shopOfficeName:''}}</td>
-              </tr>
-              <tr>
-                <th>Contact</th>
-                <td>{{housholdsData.shopOfficeContact!== undefined ? housholdsData.shopOfficeContact: ''}}</td>
-              </tr>
-              <tr>
-                <th>Rent</th>
-                <td>{{housholdsData.shopOfficeRent!== undefined ?housholdsData.shopOfficeRent:''}}</td>
-              </tr>
-            </table> 
-        </div>
-      
-        <div *ngIf="residentTableShow">
-          Family Member Details
-    
-          <table style="width:100%;">
-            <tr>
-              <th>CID/Work Permit</th>
-              <th>Age/Gender</th>
-              <th>Occupation</th>
-            </tr>
-            <tr *ngFor="let member of familyMembers">
-              <td>{{member.idNumber? member.idNumber: "-"}}</td>
-              <td>{{ member.age}} {{member.gender}}</td>
-              <td>{{member.occupation?member.occupation : "-" }}</td>
-            </tr>
-          </table>
         </div>
       </div>
 
