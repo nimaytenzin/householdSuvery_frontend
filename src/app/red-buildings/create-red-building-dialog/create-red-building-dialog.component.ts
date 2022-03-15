@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CovadminAddRedCaseDetailsComponent } from 'src/app/cov-admin/covadmin-add-red-case-details/covadmin-add-red-case-details.component';
 import { CovadminAddRedbuildingDetailsComponent } from 'src/app/cov-admin/covadmin-add-redbuilding-details/covadmin-add-redbuilding-details.component';
 import { CovadminAddRedflatComponent } from 'src/app/cov-admin/covadmin-add-redflat/covadmin-add-redflat.component';
 import { DataService } from 'src/app/service/data.service';
@@ -87,7 +88,7 @@ export class CreateRedBuildingDialogComponent implements OnInit {
             red_building_id: res.data.id,
             dzo_id: res.data.dzo_id
           }
-          this.dialog.open(AddCasesDialogComponent, {
+          this.dialog.open(CovadminAddRedCaseDetailsComponent, {
             data: data,
             disableClose: true
 

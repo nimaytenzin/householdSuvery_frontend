@@ -80,6 +80,7 @@ import { CovadminAddRedbuildingDetailsComponent } from './cov-admin/covadmin-add
 import { CovadminEditRedbuildingDetailsComponent } from './cov-admin/covadmin-edit-redbuilding-details/covadmin-edit-redbuilding-details.component';
 import { CovadminEditRedflatDetailsComponent } from './cov-admin/covadmin-edit-redflat-details/covadmin-edit-redflat-details.component';
 import { CovadminEditRedCaseDetailsComponent } from './cov-admin/covadmin-edit-red-case-details/covadmin-edit-red-case-details.component';
+import { CovadminAddRedCaseDetailsComponent } from './cov-admin/covadmin-add-red-case-details/covadmin-add-red-case-details.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { CovadminEditRedCaseDetailsComponent } from './cov-admin/covadmin-edit-r
     CovadminAddRedbuildingDetailsComponent,
     CovadminEditRedbuildingDetailsComponent,
     CovadminEditRedflatDetailsComponent,
-    CovadminEditRedCaseDetailsComponent
+    CovadminEditRedCaseDetailsComponent,
+    CovadminAddRedCaseDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -179,7 +181,7 @@ import { CovadminEditRedCaseDetailsComponent } from './cov-admin/covadmin-edit-r
     EditRedflatComponent,UnsealRedflatComponent,AddSealhistoryComponent,
     EditSealhistoryComponent,DeleteSealhistoryComponent,SelectRedtypeComponent,EditRedtypeComponent,
     CovadminAddRedflatComponent,CovadminAddRedbuildingDetailsComponent,CovadminEditRedbuildingDetailsComponent,
-    CovadminEditRedflatDetailsComponent, CovadminEditRedCaseDetailsComponent
+    CovadminEditRedflatDetailsComponent, CovadminEditRedCaseDetailsComponent, CovadminAddRedCaseDetailsComponent
   ]
 })
 export class AppModule { }

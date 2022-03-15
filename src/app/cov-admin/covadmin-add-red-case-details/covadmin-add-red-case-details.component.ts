@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DataService } from 'src/app/service/data.service';
-
 
 
 export class Case{
@@ -15,22 +14,20 @@ export class Case{
   case_id:string;
 }
 
-
 @Component({
-  selector: 'app-add-cases-dialog',
-  templateUrl: './add-cases-dialog.component.html',
-  styleUrls: ['./add-cases-dialog.component.css']
+  selector: 'app-covadmin-add-red-case-details',
+  templateUrl: './covadmin-add-red-case-details.component.html',
+  styleUrls: ['./covadmin-add-red-case-details.component.css']
 })
-export class AddCasesDialogComponent implements OnInit {
+export class CovadminAddRedCaseDetailsComponent implements OnInit {
 
-  addCaseForm:FormGroup;
+  addCaseForm;
   newCase = new Case;
-  today:Date;
-  covidCases:[];
+
 
   constructor(
     private fb:FormBuilder,
-    public dialogRef: MatDialogRef<AddCasesDialogComponent>,
+    public dialogRef: MatDialogRef<CovadminAddRedCaseDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialog:MatDialog,
     private dataservice:DataService
@@ -38,15 +35,9 @@ export class AddCasesDialogComponent implements OnInit {
 
   ngOnInit() {
     this.reactiveForm();
-    this.fetchCaseData();
   }
 
-  fetchCaseData(){
-    this.dataservice.getCasesByRedbuilingId(this.data.red_building_id).subscribe(res =>{
-      this.covidCases = res.data;
-      console.log(res.data)
-    })
-  }
+ 
 
   reactiveForm(){
     this.addCaseForm = this.fb.group({
@@ -58,9 +49,7 @@ export class AddCasesDialogComponent implements OnInit {
     });   
   }
 
-  cancel(){
-    this.dialogRef.close({event:"cancel"})
-  }
+
 
   submit(){
 
@@ -71,8 +60,15 @@ export class AddCasesDialogComponent implements OnInit {
       this.newCase.red_building_id = this.data.red_building_id;
       this.newCase.remarks =this.addCaseForm.get('remarks').value;
       this.newCase.status = this.addCaseForm.get("status").value;
-      this.dialogRef.close({event:"success",data: this.newCase})
-      
+
+      this.dataservice.createNewCase(this.newCase).subscribe(res=>{
+        if(res.success === 'true'){
+          this.dialogRef.close({success:true})
+        }else{
+          this.dialogRef.close({success:false}) 
+        }
+      })      
   }
+
 
 }
