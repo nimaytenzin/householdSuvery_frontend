@@ -4,16 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DataService } from '../service/data.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { environment } from '../../environments/environment';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MarkPositiveDialogComponent } from '../mark-positive-dialog/mark-positive-dialog.component';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Options } from "@angular-slider/ngx-slider";
-// import '../libs/SliderControl';
-import jwt_decode from 'jwt-decode';
-import tokml from "geojson-to-kml";
-import { ifStmt } from '@angular/compiler/src/output/output_ast';
-// let $: any = jquery;
+
 
 export class Building {
   lat: number;
@@ -33,13 +27,7 @@ interface Zone {
   created_at: string;
   updated_date: string;
 }
-interface UNITSDATA {
-  id: number,
-  unitId: string,
-  unitOwnership: string,
-  unitUse: string,
-  familiesSharing: number
-}
+
 
 interface Subzone {
   id: string;
@@ -252,44 +240,18 @@ export class ViewPositiveComponent implements OnInit {
 
 
   cases: [
-    {
-      date: "22/01/2022",
-      cases: 12,
-      remarks: "Workers from PHAPA",
-      status: "ACTIVE"
-    },
-    {
-      date: "23/01/2022",
-      cases: 2,
-      remarks: "Marked Red Building and cordend ",
-      status: "ACTIVE"
-    }
+
   ]
 
-  greenMarker = L.icon({
-    iconUrl: 'assets/marker-green.png',
-    iconSize: [12, 12]
-  });
-  redMarker = L.icon({
-    iconUrl: 'assets/marker-red.png',
-    iconSize: [8, 8]
-  });
-  yellowMarker = L.icon({
-    iconUrl: 'assets/marker-yellow.png',
-    iconSize: [12, 12]
-  })
-  myMarker = L.icon({
-    iconUrl: 'assets/mymarker.png',
-    iconSize: [12, 12]
-  });
+  
 
   redBuildingInactiveMarkerOptions = {
-    radius: 8,
-    fillColor: "#008000",
+    radius: 5,
+    fillColor: "#33A733",
     color: "#000",
     weight: 1,
     opacity: 1,
-    fillOpacity: 0.8
+    fillOpacity: 1  
   }
 
   redBuildingMarkerActiveOptions = {
@@ -303,7 +265,7 @@ export class ViewPositiveComponent implements OnInit {
 
   redFlatMarkerActiveOptions = {
     radius: 8,
-    fillColor: "#75C3F6",
+    fillColor: "#158DFD",
     color: "#000",
     weight: 1,
     opacity: 1,
@@ -388,7 +350,6 @@ export class ViewPositiveComponent implements OnInit {
     this.dzongkhagId = Number(sessionStorage.getItem("dzongkhagId"));
     this.searchDzongkhagId = Number(sessionStorage.getItem("dzongkhagId"))
 
-    console.log("Load zone map of dzo_id", this.searchDzongkhagId);
 
     this.map = L.map('map', {
       center: [26.864894, 89.38203],
@@ -399,201 +360,80 @@ export class ViewPositiveComponent implements OnInit {
       zoomControl: false
     });
 
-    this.dataService.getChiwogGeojsonByDzongkhag(this.dzongkhagId).subscribe(res => {
-      let yellowChiwogs = [];
-      let redChiwogs = [];
 
-      this.zoneMap = L.geoJSON(res, {
-        onEachFeature: function (feature, featureLayer) {
-          // if(feature.properties.status === "Red"){
-          //   redChiwogs.push(feature.properties.chiwog)
-          // }else if(feature.properties.status === "Yellow"){
-          //   yellowChiwogs.push(feature.properties.chiwog)
-          // }
-          featureLayer.bindPopup("Chiwog: " + feature.properties.chiwog + "<br>" +
-            "Gewog: " + feature.properties.gewog + "<br>" +
-            "Dzongkhag: " + feature.properties.dzongkhag + "<br>" +
-            "Population: " + feature.properties.population
-          );
-        },
-        style: function (feature) {
-          switch (feature.properties.status) {
-            case 'Green': return { color: "#10A335", weight: 0.4, fillOpacity: 0.4 };
-            case 'Yellow': return { color: "#C0DD40", weight: 0.4, fillOpacity: 0.4 };
-            case 'Red': return { color: "#E63D27", weight: 0.4, fillOpacity: 0.4 };
-          }
-        }
-      })
+    if (this.dzongkhagId === 1) {
+      fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/thimphuZones.geojson")
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          this.thimphuZones = L.geoJSON(data, {
+            onEachFeature: function (feature, featureLayer) {
+              featureLayer.bindPopup(
+                '<p style:"color:tomtato">Zone Name: ' + feature.properties.Zone + '</p>'
+              )
 
-      if (this.dzongkhagId === 1) {
-        fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/thimphuZones.geojson")
-          .then(res => res.json())
-          .then(data => {
-            console.log(data)
-            this.thimphuZones = L.geoJSON(data, {
-              onEachFeature: function (feature, featureLayer) {
-                featureLayer.bindPopup(
-                  '<p style:"color:tomtato">Zone Name: ' + feature.properties.Zone + '</p>'
-                )
+            },
+            style: {
+              color: "#29DCFB", weight: 1.5, fillOpacity: 0.1
+            }
+          })
 
-              },
-              style: {
-                color: "#29DCFB", weight: 1.5, fillOpacity: 0.1
-              }
-            })
-
-
-            fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
-              .then(res => res.json())
-              .then(dat => {
-                this.thimphuMegaZones = L.geoJSON(dat, {
-                  onEachFeature: function (feature, featureLayer) {
-                    featureLayer.bindPopup(
-                      '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
-                    )
-                    // let ok = new L.Marker(feature.)
-                    // console.log9
-                    if (!featureLayer.isPopupOpen()) {
-                      featureLayer.openPopup()
-                    }
+          fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/megaZoneThimphu.geojson")
+            .then(res => res.json())
+            .then(dat => {
+              this.thimphuMegaZones = L.geoJSON(dat, {
+                onEachFeature: function (feature, featureLayer) {
+                  featureLayer.bindPopup(
+                    '<p style:"color:tomtato">MegaZone: ' + feature.properties.Name + '</p>'
+                  )
+                  if (!featureLayer.isPopupOpen()) {
                     featureLayer.openPopup()
-                  },
-                  style: {
-                    color: "#D2FF0CCE", weight: 2, fillOpacity: 0.1
                   }
-                }).addTo(this.map)
-
-                this.overlayMaps['Megazones'] = this.thimphuMegaZones
-                if(this.mapLayerControl !== undefined){
-                  this.mapLayerControl.remove()
+                  featureLayer.openPopup()
+                },
+                style: {
+                  color: "#EEE34CCE", weight: 2, fillOpacity: 0.2,fillColor:"black"
                 }
-                this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+              }).addTo(this.map)
 
-                // fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/pointOfentry.geojson")
-                //   .then(res => res.json())
-                //   .then(dat => {
-                //     this.thimphuPoe = L.geoJSON(dat, {
-
-
-                //       pointToLayer: (feature, latLng) => {
-
-                //         return new L.CircleMarker(latLng, {
-                //           radius: 4,
-                //           color: "blue",
-                //           fillOpacity: 1,
-                //           weight: 2
-                //         }).bindPopup("ok")
-
-                //       }
-                //     }).addTo(this.map)
-                //     this.reOrderLayer()
-                //   })
-
-                fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
-                  .then(res => res.json())
-                  .then(ok => {
-                    console.log(ok)
-                    this.thimphuRedClusters = L.geoJSON(ok, {
-                      onEachFeature: function (feature, featureLayer) {
-                        featureLayer.bindPopup(
-                          '<p style:"color:tomtato">Cluster: ' + feature.properties.Name + '</p>'
-                        )
-                      },
-                      style: {
-                        color: "#E72424CE", weight: 3, fillOpacity: 0.2
-                      }
-                    }).addTo(this.map)
-                    this.reOrderLayer()
-                  })
-                  this.reOrderLayer()
-              })
-
-              this.overlayMaps['Thimphu Zones'] = this.thimphuZones
+              this.overlayMaps['Megazones'] = this.thimphuMegaZones
               if(this.mapLayerControl !== undefined){
                 this.mapLayerControl.remove()
               }
               this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
-              this.reOrderLayer()
-          })
-      }
+              fetch("https://raw.githubusercontent.com/nimaytenzin/householdSuvery_frontend/main/redclusterThimphu.geojson")
+                .then(res => res.json())
+                .then(ok => {
+                  console.log(ok)
+                  this.thimphuRedClusters = L.geoJSON(ok, {
+                    onEachFeature: function (feature, featureLayer) {
+                      featureLayer.bindPopup(
+                        '<p style:"color:tomtato">Cluster: ' + feature.properties.Name + '</p>'
+                      )
+                    },
+                    style: {
+                      color: "#E72424CE", weight: 3, fillOpacity: 0.2
+                    }
+                  }).addTo(this.map)
+                  this.reOrderLayer()
+                })
+                this.reOrderLayer()
+            })
 
-      // if (this.dzongkhagId === 1) {
-      //   fetch(this.zonesUrl).then(res => res.json()).then(data => {
-      //     console.log(data)
-      //     let ok = L.geoJSON(data, {
-      //       // onEachFeature: function (feature, featureLayer) {
-      //       //  console.log(feature);
-      //       // },
-      //       style: {
-      //         color: "#10A335", weight: 0.4, fillOpacity: 0.4
-      //       }}
-      //     )
-      //   })
-      // }
-
-
-
-      fetch(this.quarantineFacilityGeojsonUrl).then(data => data.json()).then(res => {
-        this.quarantineFacilities = L.geoJSON(res, {
-          onEachFeature: (feature, layer) => {
-            layer.bindPopup(
-              '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
-              '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
-            )
-            layer.on('click', (e) => {
-              console.log(feature)
-            });
-
-          },
-          pointToLayer: (feature, latLng) => {
-            return new L.CircleMarker(latLng, {
-              radius: 4,
-              color: "yellow",
-              fillOpacity: 0.85
-            });
-          }
-        });
-
-        fetch(this.isolationFacilityGeojsonUrl).then(res => res.json()).then(data => {
-          this.isolationFacilities = L.geoJSON(data, {
-            onEachFeature: (feature, layer) => {
-              layer.bindPopup(
-                '<p style:"color:tomtato">Name: ' + feature.properties.Name + '</p>' +
-                '<p style:"color:tomtato">Dzongkhag: ' + feature.properties.dzongkhag + '</p>'
-              ).openPopup()
-            },
-            pointToLayer: (feature, latLng) => {
-              return new L.CircleMarker(latLng, {
-                radius: 4,
-                color: "blue",
-                fillOpacity: 0.85
-              });
+            this.overlayMaps['Thimphu Zones'] = this.thimphuZones
+            if(this.mapLayerControl !== undefined){
+              this.mapLayerControl.remove()
             }
-          });
-
-          // this.overlayMaps = {
-          //   "Quarantine Facilities": this.quarantineFacilities,
-          //   "Isolation Facilities": this.isolationFacilities,
-          //   "Zone Map": this.zoneMap
-          // };
-          this.overlayMaps['Quarantine Facilities'] = this.quarantineFacilities
-          this.overlayMaps['Isolation Facilities'] = this.isolationFacilities
-          this.overlayMaps['Zone map'] = this.zoneMap
-
-          if(this.mapLayerControl !== undefined){
-            this.mapLayerControl.remove()
-          }
-          this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
-
-          this.fetchAndSetCovidStats(this.dzongkhagId)
-          // this.renderMap();
-          this.renderRedBuildings(this.dzongkhagId)
-          this.yellowChiwogs = yellowChiwogs;
-          this.redChiwogs = redChiwogs;
-          console.log(this.yellowChiwogs, this.redChiwogs)
+            this.mapLayerControl = L.control.layers(this.baseMaps, this.overlayMaps).addTo(this.map);
+            this.reOrderLayer();
+          
+      
+            this.fetchAndSetCovidStats(this.dzongkhagId)
+            this.renderRedBuildings(this.dzongkhagId)
         })
-      })
-    })
+    }
+
+  
     this.dataService.getDzongkhags().subscribe(response => {
       this.dzongkhags = response.data
       response.data.forEach(element => {
@@ -775,12 +615,9 @@ export class ViewPositiveComponent implements OnInit {
             layer.on('click', (e) => {
               console.log(feature)
               this.selectedRedBuilding = feature
-              // this.map.setView([e.target.feature.geometry.coordinates[1], e.target.feature.geometry.coordinates[0]], 18);
               this.dataService.getCasesByRedbuilingId(feature.properties.id).subscribe(res => {
                 this.redBuildingCases = res.data;
                 this.unitDetailShow = true;
-              
-               
                 this.buildingId = feature.properties.structure_id;
                 this.showBuildingInfo = true;
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {

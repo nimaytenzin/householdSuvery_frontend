@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.reactiveForm();
+    window.navigator.vibrate(300)
   }
 
   get f() { return this.loginForm.controls; }
