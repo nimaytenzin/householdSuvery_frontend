@@ -847,6 +847,37 @@ export class HhDashboardComponent implements OnInit {
             }
           };
 
+          this.residentTableShow = false;
+          
+        
+          this.deleteButton = true
+          this.unitDetailShow = true
+          this.showBuildingInfo = true;
+          
+          this.resetBuildingInfo()
+
+          this.dataService.getBuildingInfo(this.searchBuildingId).subscribe(res => {
+            this.bid = res.data.id
+            this.buildingUse = res.data.buildingUse;
+            this.cidOwner = res.data.cidOwner;
+            this.nameOfBuildingOwner = res.data.nameOfBuildingOwner;
+            this.contactOwner = res.data.contactOwner;
+          })
+          this.dataService.getHouseholds(this.searchBuildingId).subscribe(res => {
+            this.unitsData = res.data
+            this.length = res.data.length
+          })
+          this.dataService.getImg(this.searchBuildingId).subscribe(res => {
+            if (res.success) {
+              this.imgs = res.data
+            }
+          })
+          this.addDeleteButtons = true;
+          this.showBuildingInfo = true;
+          this.showBuilding(this.searchBuildingId);
+          this.clearData = true;
+          this.resident = null;
+
           this.searchmarker = L.geoJSON(<GeoJSON.Point>responseJson, {
             onEachFeature: (feature, layer) => {
               layer.on('click', (e) => {
@@ -858,7 +889,7 @@ export class HhDashboardComponent implements OnInit {
                 this.unitDetailShow = true
                 this.showBuildingInfo = true;
                 this.deleteID = feature.properties.structure_id;
-            this.resetBuildingInfo()
+                this.resetBuildingInfo()
 
                 this.dataService.getBuildingInfo(this.buildingId).subscribe(res => {
                   this.bid = res.data.id
