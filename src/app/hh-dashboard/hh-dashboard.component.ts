@@ -231,6 +231,7 @@ export class HhDashboardComponent implements OnInit {
 
   lat: number;
   lng: number;
+  buildingRentalIncome:number =0;
 
   selectedBuilding:L.Circle= undefined;
 
@@ -324,6 +325,7 @@ export class HhDashboardComponent implements OnInit {
               this.unitsData = res.data
               this.length = res.data.length
               console.log("oj", this.unitsData)
+             
             })
             this.dataService.getImg(this.buildingId).subscribe(res => {
               if (res.success) {
@@ -865,6 +867,7 @@ export class HhDashboardComponent implements OnInit {
           })
           this.dataService.getHouseholds(this.searchBuildingId).subscribe(res => {
             this.unitsData = res.data
+            console.log(this.unitsData)
             this.length = res.data.length
           })
           this.dataService.getImg(this.searchBuildingId).subscribe(res => {
@@ -1177,6 +1180,36 @@ export class HhDashboardComponent implements OnInit {
 
   parseDate(date) {
     return new Date(date).toLocaleDateString()
+  }
+  
+  parseRent(unit){
+
+    if(unit.rent){
+      return `Nu ${unit.rent.toLocaleString()}`
+    }
+    if(unit.shopOfficeRent){
+      return `Nu ${unit.shopOfficeRent.toLocaleString()}`
+    }
+    return "Rent not Specified"
+
+  }
+
+  getBuildingRentalIncome(){
+    this.buildingRentalIncome =0
+
+    for(let i = 0; i< this.unitsData.length; i++){
+      console.log("Looping")
+      let unit = this.unitsData[i]
+      if(unit.rent){
+        this.buildingRentalIncome = this.buildingRentalIncome + unit.rent
+      }
+      if(unit.shopOfficeRent){
+        this.buildingRentalIncome = this.buildingRentalIncome + unit.shopOfficeRent
+      }
+      
+    }
+
+    return this.buildingRentalIncome
   }
 
 }
